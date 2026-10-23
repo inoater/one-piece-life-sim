@@ -1,0 +1,47 @@
+{
+  "id": "race_mink",
+  "name": "Mink",
+  "adjective": "mink",
+  "noun": {
+    "he": "mink",
+    "she": "mink",
+    "they": "mink"
+  },
+  "description": "Furred warrior people of the New World, every one of them a fighter from childhood. They channel lightning through their bodies, and under a full moon some become something more.",
+  "capMods": {
+    "speed": 25,
+    "dexterity": 10,
+    "strength": 10
+  },
+  "innateTraits": ["trait_electro", "trait_sulong", "trait_animal_features"],
+  "anchors": {
+    "childEnds": 12,
+    "primeStarts": 18,
+    "elderStarts": 65
+  },
+  "lifespan": {
+    "min": 70,
+    "max": 100
+  },
+  "weight": 7,
+  "namePool": "names_mink",
+  "skinNoun": "fur",
+  "heights": {
+    "short": {
+      "min": 120,
+      "max": 150
+    },
+    "average": {
+      "min": 151,
+      "max": 185
+    },
+    "tall": {
+      "min": 186,
+      "max": 230
+    },
+    "towering": {
+      "min": 231,
+      "max": 450
+    }
+  }
+}

@@ -1,0 +1,139 @@
+[
+  {
+    "id": "trait_adaptable",
+    "name": "Adaptable",
+    "description": "Humans make up for their lack of anything special by learning anything at all: +10% to every training gain.",
+    "category": "racial",
+    "trainingGainPct": 10
+  },
+  {
+    "id": "trait_water_breathing",
+    "name": "Water breathing",
+    "description": "Breathes underwater as easily as on land. Gills, or something like them.",
+    "category": "racial",
+    "flags": {
+      "body.water_breathing": true
+    }
+  },
+  {
+    "id": "trait_strong_swimmer",
+    "name": "Born swimmer",
+    "description": "Swims faster than any human can run, and fights in the water without penalty.",
+    "category": "racial",
+    "flags": {
+      "swim.bonus": 2
+    }
+  },
+  {
+    "id": "trait_fishman_karate",
+    "name": "Fish-Man Karate (unlock)",
+    "description": "The body to learn Fish-Man Karate, the art of striking through the water inside an enemy. Needs a teacher.",
+    "category": "racial",
+    "flags": {
+      "unlock.fishman_karate": true
+    }
+  },
+  {
+    "id": "trait_mer_tail",
+    "name": "Merfolk tail",
+    "description": "Swift as anything in the water, slow and clumsy on land until the tail splits at thirty.",
+    "category": "racial",
+    "flags": {
+      "body.tail": true
+    }
+  },
+  {
+    "id": "trait_electro",
+    "name": "Electro",
+    "description": "Every mink can channel electricity through their body and into a strike.",
+    "category": "racial",
+    "flags": {
+      "unlock.electro": true
+    }
+  },
+  {
+    "id": "trait_sulong",
+    "name": "Sulong (moon-gated)",
+    "description": "Under a full moon, a mink who looks at it may transform into a far stronger, far less controlled form.",
+    "category": "racial",
+    "flags": {
+      "unlock.sulong": true
+    }
+  },
+  {
+    "id": "trait_animal_features",
+    "name": "Animal features",
+    "description": "Ears, fur, a nose, a tail: the animal the mink descends from shows in every one of them.",
+    "category": "racial",
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": 2,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "body.animal": true
+    }
+  },
+  {
+    "id": "trait_colossal_body",
+    "name": "Colossal body",
+    "description": "Everything a giant needs is giant-sized: gear, food, doorways and ships.",
+    "category": "racial",
+    "flags": {
+      "body.colossal": true
+    }
+  },
+  {
+    "id": "trait_tiny",
+    "name": "Tiny",
+    "description": "Small enough to hide in a teacup. A stealth bonus everywhere, but no human gear fits.",
+    "category": "racial",
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": 2,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "body.tiny": true,
+      "stealth.bonus": 2
+    }
+  },
+  {
+    "id": "trait_mantra",
+    "name": "Mantra",
+    "description": "Skypieans call it Mantra; the rest of the world calls it Observation Haki. It starts at level 1.",
+    "category": "racial",
+    "flags": {
+      "haki.observation": 1
+    }
+  },
+  {
+    "id": "trait_lunarian_flight",
+    "name": "Lunarian wings",
+    "description": "Black wings strong enough to fly with.",
+    "category": "racial",
+    "flags": {
+      "body.flight": true
+    }
+  },
+  {
+    "id": "trait_lunarian_flames",
+    "name": "Lunarian flames",
+    "description": "A flame burns at the back. While it burns, the body shrugs off blows that would kill anyone else.",
+    "category": "racial",
+    "statMods": [
+      {
+        "stat": "durability",
+        "value": 4,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "body.flames": true
+    }
+  }
+]

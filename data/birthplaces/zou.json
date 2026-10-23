@@ -1,0 +1,31 @@
+{
+  "id": "bp_zou",
+  "name": "Zou, on the back of the elephant",
+  "shortName": "Zou",
+  "home": "Zou",
+  "bornIn": "on Zou, the elephant that walks the sea",
+  "region": "new_world",
+  "description": "The Mokomo Dukedom, a forest kingdom on the back of an elephant that has walked the sea for a thousand years.",
+  "opens": "Mink guard training and Electro",
+  "wealth": "medium",
+  "safety": "medium",
+  "races": ["race_mink"],
+  "traitPool": ["trait_sure_footed"],
+  "namePool": "names_mink",
+  "childhood": {
+    "speed": 3,
+    "dexterity": 1,
+    "perception": 1
+  },
+  "legacyWeights": {
+    "legacy_marine_veteran": 0.1,
+    "legacy_pirate_parent": 0.5
+  },
+  "focusWeights": {
+    "focus_fighter": 2
+  },
+  "eventTags": {
+    "zou": 4,
+    "guard": 2
+  }
+}

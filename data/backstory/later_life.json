@@ -1,0 +1,124 @@
+[
+  {
+    "id": "bs_going_grey",
+    "text": "You noticed you were going grey, and decided it looked distinguished.",
+    "ages": {
+      "min": 50,
+      "max": 64
+    },
+    "notability": 0,
+    "tags": ["everyday"]
+  },
+  {
+    "id": "bs_old_friend",
+    "text": "{other}, someone you had not seen in thirty years, turned up at your door with a bottle and a long story.",
+    "ages": {
+      "min": 50,
+      "max": 80
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "friend",
+        "opinion": 50,
+        "ageOffset": {
+          "min": -3,
+          "max": 3
+        }
+      }
+    ],
+    "tags": ["social"]
+  },
+  {
+    "id": "bs_long_illness",
+    "text": "A long illness left you weaker, but not done.",
+    "ages": {
+      "min": 55,
+      "max": 85
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "mod",
+        "stat": "endurance",
+        "value": -2,
+        "source": "Long illness"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["illness", "hardship"]
+  },
+  {
+    "id": "bs_advice",
+    "text": "Young people started coming to you for advice. Some of them even took it.",
+    "ages": {
+      "min": 50,
+      "max": 85
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 2,
+          "intellect": 1
+        }
+      }
+    ],
+    "tags": ["teaching"]
+  },
+  {
+    "id": "bs_retired",
+    "text": "You put down your work for good, or told everyone you had.",
+    "ages": {
+      "min": 55,
+      "max": 75
+    },
+    "tags": ["everyday"]
+  },
+  {
+    "id": "bs_widowed",
+    "text": "You lost {other}, the one you married. The house has been quiet since.",
+    "ages": {
+      "min": 45,
+      "max": 85
+    },
+    "weight": 0.4,
+    "notability": 3,
+    "conditions": {
+      "hasRelation": "sweetheart",
+      "flags": {
+        "married": true
+      }
+    },
+    "effects": [
+      {
+        "kind": "relationDies",
+        "role": "sweetheart",
+        "cause": "illness"
+      },
+      {
+        "kind": "trait",
+        "trait": "trait_bereaved"
+      }
+    ],
+    "tags": ["family", "hardship"]
+  },
+  {
+    "id": "bs_elder_everyday",
+    "text": "Another year of slower mornings and longer stories.",
+    "ages": {
+      "min": 65,
+      "max": 120
+    },
+    "notability": 0,
+    "once": false,
+    "cooldownYears": 3,
+    "tags": ["everyday"]
+  }
+]

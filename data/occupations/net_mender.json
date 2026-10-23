@@ -1,0 +1,6 @@
+{
+  "id": "occ_net_mender",
+  "name": "net-mender",
+  "places": ["bp_east_blue_village", "bp_south_blue_island", "bp_fishman_island"],
+  "wealth": ["indebted", "destitute", "poor", "modest"]
+}

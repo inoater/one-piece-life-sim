@@ -36,9 +36,17 @@ describe('golden session (regression anchor for determinism)', () => {
   it('covers every feature it is meant to anchor', () => {
     const state = playGoldenSession(data);
     const kinds = new Set(state.log.map((r) => r.kind));
-    expect([...kinds].sort()).toEqual(['decision', 'effect', 'event', 'system']);
+    expect([...kinds].sort()).toEqual(
+      expect.arrayContaining(['backstory', 'decision', 'effect', 'event', 'life', 'system']),
+    );
     expect(state.news.length).toBeGreaterThan(0);
-    expect(Object.keys(state.entities)).toHaveLength(1);
+    // The player, their family, and the dev fixture entity.
+    expect(state.playerId).not.toBeNull();
+    expect(state.entities[state.playerId as string]?.character?.backstory).toBeTruthy();
+    expect(Object.values(state.entities).some((e) => e.flags['dev.fixture'] === true)).toBe(true);
+    expect(
+      Object.values(state.entities).filter((e) => e.origin === 'generated').length,
+    ).toBeGreaterThan(2);
     expect(state.flags['dev.crossroads']).toBe('left');
     expect(state.log.some((r) => r.knownBy.length === 0)).toBe(true); // the secret event
   });

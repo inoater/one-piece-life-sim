@@ -1,0 +1,6 @@
+{
+  "id": "occ_cloud_farmer",
+  "name": "cloud farmer",
+  "places": ["bp_sky_island"],
+  "wealth": ["indebted", "destitute", "poor", "modest"]
+}

@@ -6,6 +6,12 @@ import type { LogFilter } from '../engine/log';
 import type { LoadReport } from '../engine/saves/manager';
 import type { SlotSummary } from '../engine/saves/store';
 import type { BreakdownLine } from '../engine/stats';
+import type { GenesisOptions } from '../systems/genesis/options';
+import type { CharacterSheet } from '../systems/genesis/sheet';
+import type { GenesisStats } from '../systems/genesis/stats-report';
+import type { EntryWarning } from '../systems/genesis/warnings';
+
+export type { CharacterSheet, EntryWarning, GenesisOptions, GenesisStats };
 
 /**
  * What the page and the simulation say to each other (rule 7: the UI reads state and sends
@@ -65,8 +71,19 @@ export interface Snapshot {
   atPresent: boolean;
   openEnded: boolean;
   seed: string;
-  /** Null until character creation exists (Phase 1). */
-  player: null | { id: string; name: string };
+  /** Null in a world nobody lives in (a debug world, or before New Life). */
+  player: null | {
+    id: string;
+    name: string;
+    age: number;
+    /** Life stage name ("Adolescent"). */
+    stage: string;
+    /** Where they are: the birthplace until travel exists (Phase 3). */
+    location: string;
+    berries: number;
+  };
+  /** The player's character sheet. Hidden facts are included only in omniscient views. */
+  sheet: CharacterSheet | null;
   pending: DecisionView[];
   feed: FeedEntry[];
   news: NewsEntry[];
@@ -191,6 +208,87 @@ export interface SavesState {
   limits: { maxImportBytes: number };
 }
 
+/** The fixed lists the New Life screens choose from. */
+export interface GenesisSetup {
+  races: {
+    id: string;
+    name: string;
+    description: string;
+    rare: boolean;
+    capMods: Record<string, number>;
+    anchors: { childEnds: number; primeStarts: number; elderStarts: number };
+    lifespan: { min: number; max: number };
+    traits: { name: string; description: string }[];
+    birthplaces: string[];
+  }[];
+  birthplaces: {
+    id: string;
+    name: string;
+    shortName: string;
+    description: string;
+    opens: string;
+    wealth: string;
+    safety: string;
+    races: string[];
+    traits: string[];
+  }[];
+  legacies: { id: string; name: string; description: string; traits: string[] }[];
+  foci: { id: string; name: string; description: string }[];
+  difficulties: { id: string; name: string; summary: string }[];
+  canonModes: { id: string; name: string; summary: string }[];
+  entry: {
+    minYear: number;
+    maxYear: number;
+    minAge: number;
+    maxAge: number;
+    focusAboveAge: number;
+  };
+  defaults: GenesisOptions;
+  presentYear: number;
+  canonYearOffset: number;
+  appearanceFields: { id: string; label: string }[];
+  /** Month names, for writing dates. */
+  months: string[];
+}
+
+export interface GenesisPreview {
+  /** The options as understood (a blank seed filled in, defaults applied). */
+  options: GenesisOptions;
+  /** What "random" turned into. */
+  resolved: null | {
+    race: string;
+    birthplace: string;
+    legacy: string;
+    focus: string | null;
+    random: { race: boolean; birthplace: boolean; legacy: boolean; focus: boolean };
+  };
+  /** Whether a backstory focus applies at this entry age. */
+  focusApplies: boolean;
+  warnings: EntryWarning[];
+  notes: string[];
+  /** Null when these options cannot make a character; `error` says why. */
+  sheet: CharacterSheet | null;
+  error: string | null;
+  /** True when the character could start (no blocking problem). */
+  canStart: boolean;
+  appearance: {
+    field: string;
+    label: string;
+    optionId: string;
+    locked: boolean;
+    options: { id: string; label: string }[];
+  }[];
+  entry: null | {
+    tick: number;
+    label: string;
+    canonYear: number;
+    birthLabel: string;
+    ageAtPresent: number;
+  };
+  /** How long generating took, in milliseconds (the plan's target is under 200). */
+  ms: number;
+}
+
 export interface AdvanceReport {
   ticksRun: number;
   stop: StopReason | 'cancelled';
@@ -240,6 +338,10 @@ export interface Protocol {
     res: { snapshot: Snapshot; load: LoadInfo };
   };
   hash: { req: Record<string, never>; res: { stateHash: string; dataHash: string } };
+  'genesis/setup': { req: Record<string, never>; res: GenesisSetup };
+  'genesis/preview': { req: { options: unknown; view: ViewOptions }; res: GenesisPreview };
+  'genesis/start': { req: { options: unknown; view: ViewOptions }; res: { snapshot: Snapshot } };
+  'debug/genesisStats': { req: { raceId: string; rolls?: number }; res: GenesisStats };
 }
 
 export type Op = keyof Protocol;

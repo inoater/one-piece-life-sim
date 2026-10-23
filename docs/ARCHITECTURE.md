@@ -93,6 +93,21 @@ Fields beyond the plan's list, and why: `tier` (rule 5 needs it), `counters` (st
 (Phase 2 epilogue), `scheduled`/`pending`/`queue` (event scheduler, decisions, queued actions), `seq`,
 `cause`, `causeSeq`, `knownBy` on log records.
 
+## Character genesis (Phase 1)
+
+`createLife(data, options)` in `src/systems/genesis/generate.ts` is one pure function from New Life
+options to a world: it creates the world at the entry month, the player (with hidden potential and
+talent), their family, and their past, one compressed pass per year lived before entry (natural
+growth by life stage, training shaped by birthplace, family and focus, 0-3 backstory events), then
+appearance, starting Berries and the written backstory. The New Life preview calls the same function
+(`genesis/preview`) on a throwaway world, so the preview is exactly what `genesis/start` makes.
+
+Every random choice has its own keyed stream under `fork('genesis', ...)`: rerolling one section or
+one appearance field changes only what depends on it, and the talent tier is keyed to the seed
+alone. The sheet the page shows (`systems/genesis/sheet.ts`) carries every stat's breakdown and every
+derived value's formula (rule 3), and includes potential, talent and Luck only in omniscient views
+(rule 4).
+
 ## Worker protocol
 
 `src/worker/protocol.ts` types every request and response (`boot`, `newWorld`, `advance`, `dispatch`,

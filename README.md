@@ -1,15 +1,18 @@
 # One Piece Life Sim
 
-A static-site life simulation. This repository is **Phase 0: the bones**: an empty world that ticks
-through 468 months (Year 0 to Year 38, then the present), saves, reloads and replays identically,
-behind a UI shell and a debug panel. There is no lore and no character yet; those are Phases 1 to 3.
+A static-site life simulation. **Phase 0** (the bones) gives a world that ticks through 468 months
+(Year 0 to Year 38, then the present), saves, reloads and replays identically, behind a UI shell and a
+debug panel. **Phase 1** (character genesis) adds New Life: race, birthplace, family, hidden potential,
+an entry year and age with a simulated backstory, and a written appearance, as a full character
+sheet. The life loop, the world map and the canon story are Phases 2 and 3. Status reports:
+`docs/PHASE0.md`, `docs/PHASE1.md`.
 
 ## Quick start
 
 ```bash
 npm install          # also points git at .githooks (the pre-commit data check)
-npm run dev          # http://localhost:5173, debug panel on (press ` to toggle)
-npm test             # 499 unit and integration tests, about 35 seconds
+npm run dev          # http://localhost:5173 opens New Life; debug panel on (press ` to toggle)
+npm test             # 557 unit and integration tests, about 20 seconds
 npm run check        # typecheck, validate data, source rules, tests, formatting
 ```
 
@@ -17,17 +20,18 @@ Node 20 or newer (`.nvmrc` pins 22).
 
 ## Scripts
 
-| Command                 | What it does                                                                                               |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `npm run dev`           | Dev server. Validates `/data` at start and on every change; problems show in the browser overlay.          |
-| `npm run build`         | Typecheck, then a production build in `dist/`. **Fails if any data file is invalid.** No debug panel.      |
-| `npm run build:preview` | One self-contained HTML file with the debug panel: `dist-preview/opsim-preview.html`.                      |
-| `npm run validate`      | Every JSON file against its schema, plus references between files; then canon lint. Exit 1 on any problem. |
-| `npm run lint:sim`      | Determinism and layering rules (see below).                                                                |
-| `npm run sim -- ...`    | Headless simulation: `--seed s --ticks 468 --worlds 1000 --verify --probe --json`.                         |
-| `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                      |
-| `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                       |
-| `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                     |
+| Command                 | What it does                                                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `npm run dev`           | Dev server. Validates `/data` at start and on every change; problems show in the browser overlay.                        |
+| `npm run build`         | Typecheck, then a production build in `dist/`. **Fails if any data file is invalid.** No debug panel.                    |
+| `npm run build:preview` | One self-contained HTML file with the debug panel: `dist-preview/opsim-preview.html`.                                    |
+| `npm run validate`      | Every JSON file against its schema, plus references between files; then canon lint. Exit 1 on any problem.               |
+| `npm run lint:sim`      | Determinism and layering rules (see below).                                                                              |
+| `npm run sim -- ...`    | Headless simulation: `--seed s --ticks 468 --worlds 1000 --verify --probe --json`.                                       |
+| `npm run genesis`       | Phase 1 checks: 1,000 potential rolls per race against the cap table, New Life timing. `-- --sample` prints a character. |
+| `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                                    |
+| `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                                     |
+| `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                                   |
 
 ## Where things live
 
@@ -35,14 +39,17 @@ Node 20 or newer (`.nvmrc` pins 22).
 index.html
 src/engine/    clock, rng, tick runner, modifier stacks, event log, saves, data loading, the autosave step  (no game rules)
 src/systems/   seven of the eight pipeline steps (actions, travel, population, world, events, news, aging)  (game rules)
+src/systems/genesis/  character genesis: New Life options, family, backfill, appearance, the sheet
 src/core.ts    wires engine + systems: tick(state, data, rng) -> state
 src/worker/    runs the simulation off the main thread; the typed message protocol
-src/ui/        hash router, shell, screens, menu, debug panel (vanilla DOM)
+src/ui/        hash router, shell, screens (New Life at #/new), menu, debug panel (vanilla DOM)
 src/styles/    design tokens and CSS (cascade layers)
-data/          calendar.json, settings.json, traits/ weapons/ locations/ events/  (+ races/ canon/ fruits/ news/ reserved)
+data/          calendar, settings, character (growth, talent, stages), creation (entry, wealth, family), appearance;
+               races/ birthplaces/ legacies/ occupations/ names/ foci/ backstory/ traits/ events/ weapons/ locations/
+               (canon/ fruits/ news/ reserved)
 tools/         validate-data, headless-sim, canon-lint, lint-sim, update-golden, build helpers
 tests/         engine/ worker/ ui/ tools/ e2e/ fixtures/golden/
-docs/          ARCHITECTURE, DATA, SAVES, DESIGN, PHASE0 (status report)
+docs/          ARCHITECTURE, DATA, SAVES, DESIGN, PHASE0 and PHASE1 (status reports)
 ```
 
 ## The plan's seven rules, and where each is enforced

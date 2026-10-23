@@ -1,0 +1,44 @@
+{
+  "id": "legacy_noble_line",
+  "name": "Noble line",
+  "description": "An old family with a name, a seat and expectations. Wealth, tutors and duty, in roughly that order.",
+  "weight": 0.8,
+  "berries": {
+    "min": 20000,
+    "max": 120000
+  },
+  "wealthShift": 2,
+  "traitPool": ["trait_well_bred", "trait_entitled"],
+  "parent": {
+    "role": "either",
+    "occupation": "occ_noble",
+    "title": "the head of a minor noble house",
+    "flags": {
+      "noble": true
+    }
+  },
+  "childhood": {
+    "intellect": 2,
+    "charisma": 2,
+    "dexterity": 1
+  },
+  "focusWeights": {
+    "focus_noble": 4,
+    "focus_scholar": 2
+  },
+  "eventTags": {
+    "court": 3,
+    "wealth": 2
+  },
+  "appearanceWeights": {
+    "tag:scar": 0.4,
+    "tag:tattoo": 0.1,
+    "complexion.sunburnt": 0.3,
+    "complexion.weathered": 0.3
+  },
+  "chain": {
+    "eventId": "evt_legacy_noble_summons",
+    "atAge": 18,
+    "pastText": "You were called before the family to swear yourself to the line."
+  }
+}

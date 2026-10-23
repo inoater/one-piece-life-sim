@@ -1,0 +1,544 @@
+[
+  {
+    "id": "bs_merchant_crew",
+    "text": "You signed on with a merchant crew and saw a dozen islands in two years.",
+    "ages": {
+      "min": 18,
+      "max": 30
+    },
+    "notability": 2,
+    "conditions": {
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "trait",
+        "trait": "trait_well_travelled"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 2,
+          "perception": 2,
+          "charisma": 1
+        }
+      },
+      {
+        "kind": "berries",
+        "min": 1000,
+        "max": 5000
+      }
+    ],
+    "tags": ["sea", "voyage"]
+  },
+  {
+    "id": "bs_mercenary_war",
+    "text": "You fought for a mercenary company in someone else's war, and came home with pay and a limp.",
+    "ages": {
+      "min": 18,
+      "max": 35
+    },
+    "weight": 0.6,
+    "notability": 3,
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 2,
+          "durability": 2,
+          "willpower": 1
+        }
+      },
+      {
+        "kind": "mod",
+        "stat": "speed",
+        "value": -1,
+        "source": "Old leg wound"
+      },
+      {
+        "kind": "berries",
+        "min": 5000,
+        "max": 20000
+      },
+      {
+        "kind": "scar",
+        "area": "legs",
+        "text": "a puckered bullet scar on one thigh"
+      }
+    ],
+    "tags": ["fight", "mercenary", "war"]
+  },
+  {
+    "id": "bs_married",
+    "text": "You married {other}. It was a small wedding and a loud party.",
+    "ages": {
+      "min": 20,
+      "max": 40
+    },
+    "notability": 2,
+    "conditions": {
+      "notFlags": ["married"]
+    },
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "sweetheart",
+        "opinion": 75,
+        "ageOffset": {
+          "min": -4,
+          "max": 4
+        }
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "married",
+        "value": true
+      }
+    ],
+    "tags": ["social", "family"]
+  },
+  {
+    "id": "bs_business",
+    "text": "You opened a small business of your own. It made money, then lost it, then made a little more.",
+    "ages": {
+      "min": 22,
+      "max": 45
+    },
+    "notability": 2,
+    "conditions": {
+      "wealthMin": "poor"
+    },
+    "effects": [
+      {
+        "kind": "berries",
+        "min": 2000,
+        "max": 15000
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 1,
+          "charisma": 1
+        }
+      }
+    ],
+    "tags": ["trade", "work"]
+  },
+  {
+    "id": "bs_cheated",
+    "text": "{other} cheated you out of a year's savings and left on the next ship.",
+    "ages": {
+      "min": 20,
+      "max": 45
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "rival",
+        "opinion": -70,
+        "ageOffset": {
+          "min": -10,
+          "max": 10
+        }
+      },
+      {
+        "kind": "berries",
+        "min": -8000,
+        "max": -2000
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "perception": 2
+        }
+      }
+    ],
+    "tags": ["hardship", "trade"]
+  },
+  {
+    "id": "bs_marine_service",
+    "text": "You served three years in the Marines and left with a good record and a few things you would rather not talk about.",
+    "ages": {
+      "min": 18,
+      "max": 30
+    },
+    "weight": 0.7,
+    "notability": 3,
+    "conditions": {
+      "birthplaces": [
+        "bp_marine_base_town",
+        "bp_grand_line_island",
+        "bp_east_blue_village",
+        "bp_west_blue_port"
+      ]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 2,
+          "endurance": 2,
+          "willpower": 2
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "marine.served",
+        "value": true
+      },
+      {
+        "kind": "berries",
+        "min": 3000,
+        "max": 10000
+      }
+    ],
+    "tags": ["marines", "fight"]
+  },
+  {
+    "id": "bs_first_bounty",
+    "text": "You collected your first bounty: a small-time pirate who did not see you coming.",
+    "ages": {
+      "min": 20,
+      "max": 35
+    },
+    "weight": 0.6,
+    "notability": 2,
+    "conditions": {
+      "foci": ["focus_fighter"]
+    },
+    "effects": [
+      {
+        "kind": "berries",
+        "min": 5000,
+        "max": 30000
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "speed": 1,
+          "strength": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "bounty_hunter.first",
+        "value": true
+      }
+    ],
+    "tags": ["fight"]
+  },
+  {
+    "id": "bs_wanted",
+    "text": "A job went wrong, and a Marine sketch artist got your face almost right. Almost.",
+    "ages": {
+      "min": 18,
+      "max": 35
+    },
+    "weight": 0.5,
+    "notability": 3,
+    "conditions": {
+      "foci": ["focus_criminal"]
+    },
+    "effects": [
+      {
+        "kind": "trait",
+        "trait": "trait_wanted"
+      }
+    ],
+    "tags": ["crime", "marines"]
+  },
+  {
+    "id": "bs_first_child",
+    "text": "Your first child was born, and you stopped sleeping for a year.",
+    "ages": {
+      "min": 22,
+      "max": 40
+    },
+    "notability": 2,
+    "conditions": {
+      "flags": {
+        "married": true
+      }
+    },
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "parent",
+        "value": true
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["family"]
+  },
+  {
+    "id": "bs_protege",
+    "text": "You took on an apprentice of your own, {other}, and found out how little you really knew.",
+    "ages": {
+      "min": 25,
+      "max": 49
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "protege",
+        "opinion": 50,
+        "ageOffset": {
+          "min": -20,
+          "max": -10
+        }
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 1,
+          "charisma": 1
+        }
+      }
+    ],
+    "tags": ["teaching"]
+  },
+  {
+    "id": "bs_crushed_leg",
+    "text": "A cargo net snapped and pinned your leg. It healed, mostly.",
+    "ages": {
+      "min": 20,
+      "max": 45
+    },
+    "weight": 0.6,
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "mod",
+        "stat": "speed",
+        "value": -2,
+        "source": "Crushed leg"
+      },
+      {
+        "kind": "scar",
+        "area": "legs",
+        "text": "a long surgical scar down one shin"
+      }
+    ],
+    "tags": ["hardship", "work"]
+  },
+  {
+    "id": "bs_haki_glimpse",
+    "text": "In a fight you should have lost, you knew where the blow would land before it came. You have never managed it again.",
+    "ages": {
+      "min": 18,
+      "max": 45
+    },
+    "weight": 0.25,
+    "notability": 3,
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "haki.observation.seed",
+        "value": true
+      },
+      {
+        "kind": "potential",
+        "stat": "perception",
+        "min": 2,
+        "max": 5
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2
+        }
+      }
+    ],
+    "tags": ["fight"]
+  },
+  {
+    "id": "bs_cards",
+    "text": "You won big at cards and lost it all again the same night.",
+    "ages": {
+      "min": 18,
+      "max": 45
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 1
+        }
+      }
+    ],
+    "tags": ["luck", "crime"]
+  },
+  {
+    "id": "bs_sea_cave",
+    "text": "You found a small chest in a sea cave: old coins, mostly, but enough to matter.",
+    "ages": {
+      "min": 18,
+      "max": 45
+    },
+    "weight": 0.3,
+    "notability": 2,
+    "conditions": {
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "berries",
+        "min": 10000,
+        "max": 60000
+      }
+    ],
+    "tags": ["luck", "explore", "sea"]
+  },
+  {
+    "id": "bs_fighter_year",
+    "text": "You trained, fought, and trained some more.",
+    "ages": {
+      "min": 13,
+      "max": 64
+    },
+    "notability": 0,
+    "once": false,
+    "cooldownYears": 2,
+    "conditions": {
+      "foci": ["focus_fighter"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 1,
+          "dexterity": 1
+        }
+      }
+    ],
+    "tags": ["everyday", "training"]
+  },
+  {
+    "id": "bs_scholar_year",
+    "text": "Another year of books, lectures and late nights.",
+    "ages": {
+      "min": 13,
+      "max": 64
+    },
+    "notability": 0,
+    "once": false,
+    "cooldownYears": 2,
+    "conditions": {
+      "foci": ["focus_scholar"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 1
+        }
+      }
+    ],
+    "tags": ["everyday", "study"]
+  },
+  {
+    "id": "bs_sailor_year",
+    "text": "Another year at sea, port to port.",
+    "ages": {
+      "min": 13,
+      "max": 64
+    },
+    "notability": 0,
+    "once": false,
+    "cooldownYears": 2,
+    "conditions": {
+      "foci": ["focus_sailor"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 1
+        }
+      }
+    ],
+    "tags": ["everyday", "sea"]
+  },
+  {
+    "id": "bs_criminal_year",
+    "text": "Another year of jobs you would rather not describe in detail.",
+    "ages": {
+      "min": 13,
+      "max": 64
+    },
+    "notability": 0,
+    "once": false,
+    "cooldownYears": 2,
+    "conditions": {
+      "foci": ["focus_criminal"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 1
+        }
+      }
+    ],
+    "tags": ["everyday", "crime"]
+  },
+  {
+    "id": "bs_laborer_year",
+    "text": "Another year of hard work and early mornings.",
+    "ages": {
+      "min": 13,
+      "max": 64
+    },
+    "notability": 0,
+    "once": false,
+    "cooldownYears": 2,
+    "conditions": {
+      "foci": ["focus_laborer"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 1
+        }
+      }
+    ],
+    "tags": ["everyday", "work"]
+  },
+  {
+    "id": "bs_noble_year",
+    "text": "Another year of dinners, duels of words and the occasional duel of swords.",
+    "ages": {
+      "min": 13,
+      "max": 64
+    },
+    "notability": 0,
+    "once": false,
+    "cooldownYears": 2,
+    "conditions": {
+      "foci": ["focus_noble"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 1
+        }
+      }
+    ],
+    "tags": ["everyday", "court"]
+  }
+]

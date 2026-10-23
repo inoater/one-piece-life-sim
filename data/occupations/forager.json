@@ -1,0 +1,7 @@
+{
+  "id": "occ_forager",
+  "name": "forager",
+  "places": ["bp_green_bit"],
+  "wealth": ["indebted", "destitute", "poor", "modest"],
+  "weight": 3
+}

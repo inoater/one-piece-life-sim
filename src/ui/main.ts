@@ -1,7 +1,7 @@
 import '../styles/index.css';
 import { createApp } from './app';
 import { createSimHost } from './host';
-import { currentRoute, isSideRoute, onRouteChange } from './router';
+import { currentRoute, isSideRoute, navigate, onRouteChange } from './router';
 import { renderFatal, renderLoading } from './screens/boot';
 import { mountShell } from './shell';
 import { createUiStore } from './store';
@@ -36,6 +36,10 @@ async function start(): Promise<void> {
 
     mountShell(root, app);
     await app.boot(true);
+    // Nothing to resume and nobody alive: the first thing to do is make someone. A link to a
+    // particular screen (#/world, #/feed) is respected.
+    const bare = window.location.hash === '' || window.location.hash === '#';
+    if (!store.get().snapshot?.player && bare) navigate('new');
 
     if (__DEBUG_PANEL__) {
       const { mountDebug } = await import('./debug/panel');

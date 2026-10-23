@@ -1,0 +1,48 @@
+{
+  "id": "legacy_pirate_parent",
+  "name": "Pirate parent with a bounty",
+  "description": "One parent is a pirate with a price on their head. They come home rarely, never for long, and the Marines keep asking where they went.",
+  "weight": 1,
+  "berries": {
+    "min": -2000,
+    "max": 30000
+  },
+  "traitPool": ["trait_pirates_blood", "trait_restless"],
+  "parent": {
+    "role": "either",
+    "occupation": "occ_pirate",
+    "status": "absent",
+    "title": "a wanted pirate, away at sea",
+    "bounty": {
+      "min": 3000000,
+      "max": 40000000
+    },
+    "flags": {
+      "pirate": true
+    }
+  },
+  "childhood": {
+    "speed": 2,
+    "strength": 1,
+    "willpower": 1,
+    "charisma": 1
+  },
+  "focusWeights": {
+    "focus_sailor": 1.5,
+    "focus_criminal": 1.5,
+    "focus_fighter": 1.5
+  },
+  "eventTags": {
+    "pirates": 2,
+    "marines": 1.5,
+    "shame": 2
+  },
+  "appearanceWeights": {
+    "tag:tattoo": 1.5
+  },
+  "chain": {
+    "eventId": "evt_legacy_pirate_questions",
+    "atAge": 13,
+    "pastText": "A Marine officer came asking where {parent} had gone. You did not know, and said so."
+  }
+}

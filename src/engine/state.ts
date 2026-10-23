@@ -20,6 +20,8 @@ import { ID_FORMAT_HINT, isEntityId } from './ids';
  *  - `openEnded`: set when the player continues past the present (Phase 2 epilogue).
  *  - `scheduled`, `pending`, `queue`: the event scheduler, decisions waiting on the player, and the
  *    player's chosen actions awaiting step 1 of the next tick.
+ *  - `config` (save version 2): canon mode and difficulty, chosen once at world setup.
+ *  - `character` on entities (save version 2): race, birth, family, appearance, hidden potential.
  */
 
 export const ENTITY_TYPES = [
@@ -63,6 +65,101 @@ export const StatSchema = z.strictObject({
 });
 export type Stat = z.infer<typeof StatSchema>;
 
+export const PRONOUNS = ['he', 'she', 'they'] as const;
+export const PronounsSchema = z.enum(PRONOUNS);
+export type Pronouns = z.infer<typeof PronounsSchema>;
+
+export const RELATION_KINDS = [
+  'parent',
+  'child',
+  'sibling',
+  'guardian',
+  'mentor',
+  'friend',
+  'rival',
+  'sweetheart',
+  'benefactor',
+  'protege',
+  'ward',
+] as const;
+export type RelationKind = (typeof RELATION_KINDS)[number];
+
+export const RelationshipSchema = z.strictObject({
+  /** The other character's entity id. */
+  id: EntityIdSchema,
+  kind: z.enum(RELATION_KINDS),
+  /** How this character feels about the other: a Stat, so later systems can explain it (rule 3). */
+  opinion: StatSchema,
+  sinceTick: z.number().int(),
+});
+export type Relationship = z.infer<typeof RelationshipSchema>;
+
+export const SCAR_AREAS = ['head', 'torso', 'arms', 'legs', 'eyes'] as const;
+export const ScarSchema = z.strictObject({
+  area: z.enum(SCAR_AREAS),
+  text: z.string().min(1),
+  tick: z.number().int(),
+});
+export type Scar = z.infer<typeof ScarSchema>;
+
+/**
+ * Family facts that only make sense for the character they were generated around (the player).
+ * Parents and siblings are ordinary entities; this records how they relate.
+ */
+export const FamilySchema = z.strictObject({
+  legacy: z.string().min(1),
+  /** A wealth tier id from creation.json. */
+  wealth: z.string().min(1),
+  birthOrder: z.enum(['only', 'eldest', 'middle', 'youngest']),
+  parentIds: z.array(EntityIdSchema),
+  siblingIds: z.array(EntityIdSchema),
+  /** Brothers and sisters not yet born when the story starts (Phase 2 brings births). */
+  expected: z.array(z.strictObject({ birthTick: z.number().int(), pronouns: PronounsSchema })),
+});
+export type Family = z.infer<typeof FamilySchema>;
+
+/**
+ * What makes an entity a person. Present on every `character` entity created from Phase 1 on.
+ *
+ * `hidden` holds facts that are true but known to nobody, the player included (rule 4): the talent
+ * tier and each stat's potential. Views show them only in omniscient mode; the player gets hints.
+ */
+export const CharacterSchema = z.strictObject({
+  givenName: z.string().min(1),
+  familyName: z.string(),
+  pronouns: PronounsSchema,
+  race: z.string().min(1),
+  /** The month of birth. Negative ticks are births before Year 0 (before God Valley). */
+  birthTick: z.number().int(),
+  birthplace: z.string().min(1),
+  /** Occupation id from data/occupations, if any. */
+  occupation: z.string().optional(),
+  alive: z.boolean(),
+  death: z.strictObject({ tick: z.number().int(), cause: z.string().min(1) }).optional(),
+  /** Trait ids in the order they were gained. */
+  traits: z.array(z.string().min(1)),
+  /** Appearance field id -> option id (see data/appearance.json). Text is written from these. */
+  appearance: z.record(z.string(), z.string()),
+  /** Grown height in centimetres, within the height class. A child's height is a fraction of it. */
+  adultHeightCm: z.number().int().min(1).optional(),
+  scars: z.array(ScarSchema),
+  relationships: z.array(RelationshipSchema),
+  /** Negative means debt. */
+  berries: z.number().int(),
+  family: FamilySchema.optional(),
+  /** Backstory focus id (data/foci), when the character had one. */
+  focus: z.string().optional(),
+  /** The written backstory paragraph. */
+  backstory: z.string().optional(),
+  hidden: z
+    .strictObject({
+      talent: z.string().min(1),
+      potential: z.record(z.string(), StatSchema),
+    })
+    .optional(),
+});
+export type CharacterData = z.infer<typeof CharacterSchema>;
+
 export const EntitySchema = z.strictObject({
   id: EntityIdSchema,
   type: EntityTypeSchema,
@@ -74,8 +171,29 @@ export const EntitySchema = z.strictObject({
   flags: z.record(z.string(), FlagValueSchema),
   stats: z.record(z.string(), StatSchema),
   knownBy: KnownBySchema,
+  /** Present on characters made by character genesis (Phase 1 on). */
+  character: CharacterSchema.optional(),
 });
 export type Entity = z.infer<typeof EntitySchema>;
+
+/**
+ * Choices made once, at world setup. Canon mode is acted on from Phase 3; difficulty changes
+ * starting money and how hard a backstory is now, and more later. Ids refer to data/creation.json.
+ */
+export const WorldConfigSchema = z.strictObject({
+  canonMode: z.string().min(1),
+  difficulty: z.string().min(1),
+  /** Whether rare races (Lunarians) could be chosen when this world was made. */
+  rareRaces: z.boolean(),
+});
+export type WorldConfig = z.infer<typeof WorldConfigSchema>;
+
+/** The configuration of a world made without character creation (and of every save before version 2). */
+export const DEFAULT_WORLD_CONFIG: WorldConfig = {
+  canonMode: 'canon',
+  difficulty: 'normal',
+  rareRaces: false,
+};
 
 export const EventRecordSchema = z.strictObject({
   /** Position in the world's history; stable even if old records are ever archived. */
@@ -155,6 +273,7 @@ export const WorldStateSchema = z
     /** The month about to be (or being) processed. Tick 0 is Year 0, month 1. */
     tick: z.number().int(),
     openEnded: z.boolean(),
+    config: WorldConfigSchema,
     playerId: EntityIdSchema.nullable(),
     counters: CountersSchema,
     entities: z.record(z.string(), EntitySchema),

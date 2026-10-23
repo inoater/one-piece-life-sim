@@ -3,8 +3,12 @@
  * page can be linked, with no server needed (the game is a static site).
  */
 
+/** The sections, each a tab. */
 export const ROUTES = ['feed', 'character', 'actions', 'world', 'news'] as const;
-export type Route = (typeof ROUTES)[number];
+/** Full-page screens that are not tabs: New Life. */
+export const PAGE_ROUTES = ['new'] as const;
+export type TabRoute = (typeof ROUTES)[number];
+export type Route = TabRoute | (typeof PAGE_ROUTES)[number];
 /** The routes that live in the side panel on a wide screen (the feed is always visible there). */
 export const SIDE_ROUTES = ['character', 'actions', 'world', 'news'] as const;
 export type SideRoute = (typeof SIDE_ROUTES)[number];
@@ -15,11 +19,16 @@ export const ROUTE_LABELS: Record<Route, string> = {
   actions: 'Actions',
   world: 'World',
   news: 'News',
+  new: 'New Life',
 };
 
 export function parseHash(hash: string): Route {
   const name = hash.replace(/^#\/?/, '').split(/[/?]/)[0] ?? '';
-  return (ROUTES as readonly string[]).includes(name) ? (name as Route) : 'feed';
+  return [...ROUTES, ...PAGE_ROUTES].includes(name as Route) ? (name as Route) : 'feed';
+}
+
+export function isPageRoute(route: Route): boolean {
+  return (PAGE_ROUTES as readonly string[]).includes(route);
 }
 
 export function isSideRoute(route: Route): route is SideRoute {

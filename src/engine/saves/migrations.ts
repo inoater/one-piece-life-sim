@@ -1,4 +1,5 @@
 import { SaveError } from './codec';
+import { DEFAULT_WORLD_CONFIG } from '../state';
 import { SAVE_VERSION } from '../version';
 
 /**
@@ -19,8 +20,26 @@ import { SAVE_VERSION } from '../version';
 export type RawEnvelope = Record<string, unknown>;
 export type Migration = (envelope: RawEnvelope) => RawEnvelope;
 
-/** Version 1 is the first release, so there is nothing to migrate from yet. */
-export const MIGRATIONS: Readonly<Record<number, Migration>> = {};
+function stateOf(envelope: RawEnvelope): Record<string, unknown> {
+  const state = envelope['state'];
+  if (state === null || typeof state !== 'object' || Array.isArray(state)) {
+    throw new SaveError('invalid', 'The save has no world state');
+  }
+  return state as Record<string, unknown>;
+}
+
+export const MIGRATIONS: Readonly<Record<number, Migration>> = {
+  /**
+   * 1 -> 2 (Phase 1, character genesis): worlds gain `config` (canon mode, difficulty). A version 1
+   * world was made before world setup existed, so it gets the defaults. Entities gain an optional
+   * `character` block, which old entities simply do not have.
+   */
+  1: (envelope) => ({
+    ...envelope,
+    saveVersion: 2,
+    state: { ...stateOf(envelope), config: { ...DEFAULT_WORLD_CONFIG } },
+  }),
+};
 
 export interface MigrationResult {
   envelope: RawEnvelope;

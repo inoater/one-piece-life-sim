@@ -1,0 +1,163 @@
+[
+  {
+    "id": "bs_storm_birth",
+    "text": "In your first year, the worst storm {home} had seen in a decade flattened half the houses. The midwife who delivered you called you an omen; nobody agreed on what of.",
+    "ages": {
+      "min": 0,
+      "max": 1
+    },
+    "weight": 0.6,
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "omen.storm_birth",
+        "value": true
+      }
+    ],
+    "tags": ["omen", "weather"]
+  },
+  {
+    "id": "bs_infant_fever",
+    "text": "You survived a fever that took two other children on your street.",
+    "ages": {
+      "min": 0,
+      "max": 2
+    },
+    "weight": 0.8,
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "durability": 1,
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["hardship", "illness"]
+  },
+  {
+    "id": "bs_hungry_winter",
+    "text": "Your family went hungry through a hard winter, and you were small for your age long after.",
+    "ages": {
+      "min": 0,
+      "max": 4
+    },
+    "conditions": {
+      "wealthMax": "poor"
+    },
+    "effects": [
+      {
+        "kind": "mod",
+        "stat": "strength",
+        "value": -1,
+        "source": "A hungry childhood"
+      }
+    ],
+    "tags": ["hardship", "cold"]
+  },
+  {
+    "id": "bs_first_word",
+    "text": "Your first word was a curse, learned from {parent}.",
+    "ages": {
+      "min": 1,
+      "max": 2
+    },
+    "conditions": {
+      "parentAlive": true
+    },
+    "tags": ["family", "mischief"]
+  },
+  {
+    "id": "bs_lost_in_net",
+    "text": "You wandered off and were found a day later, asleep and perfectly happy, in a pile of fishing nets.",
+    "ages": {
+      "min": 2,
+      "max": 4
+    },
+    "conditions": {
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["explore", "mischief", "sea"]
+  },
+  {
+    "id": "bs_split_brow",
+    "text": "You fell from a wall and split your brow open. It healed into a thin white line.",
+    "ages": {
+      "min": 2,
+      "max": 5
+    },
+    "effects": [
+      {
+        "kind": "scar",
+        "area": "head",
+        "text": "a thin white scar through one eyebrow"
+      }
+    ],
+    "tags": ["hardship", "mischief"]
+  },
+  {
+    "id": "bs_stray_dog",
+    "text": "A stray dog followed you home and refused to leave. It slept at the foot of your bed for years.",
+    "ages": {
+      "min": 3,
+      "max": 5
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "pet.dog",
+        "value": true
+      }
+    ],
+    "tags": ["social", "lonely"]
+  },
+  {
+    "id": "bs_pier_fall",
+    "text": "You fell off the pier and sank like a stone before someone hauled you out.",
+    "ages": {
+      "min": 2,
+      "max": 5
+    },
+    "conditions": {
+      "notRaces": ["race_fishman", "race_merfolk"],
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["sea", "hardship"]
+  },
+  {
+    "id": "bs_toddler_everyday",
+    "text": "You spent the year underfoot, asking why about everything.",
+    "ages": {
+      "min": 3,
+      "max": 5
+    },
+    "weight": 0.6,
+    "notability": 0,
+    "once": false,
+    "cooldownYears": 2,
+    "tags": ["everyday"]
+  }
+]

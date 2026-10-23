@@ -1,0 +1,323 @@
+[
+  {
+    "id": "bs_war_stories",
+    "text": "{parent} told war stories at dinner: the true ones, and the ones that got better every year.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "conditions": {
+      "legacies": ["legacy_marine_veteran"],
+      "parentAlive": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 1,
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["marines", "family"]
+  },
+  {
+    "id": "bs_dawn_drills",
+    "text": "{parent} started drilling you at dawn every day: push-ups, pull-ups and running until you were sick.",
+    "ages": {
+      "min": 10,
+      "max": 15
+    },
+    "notability": 2,
+    "conditions": {
+      "legacies": ["legacy_marine_veteran"],
+      "parentAlive": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 2,
+          "endurance": 2,
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["marines", "training", "family"]
+  },
+  {
+    "id": "bs_pirate_visit",
+    "text": "{parent} came home for a single night, smelling of salt and gunpowder, and was gone before you woke, leaving a gold coin under your pillow.",
+    "ages": {
+      "min": 6,
+      "max": 14
+    },
+    "notability": 3,
+    "conditions": {
+      "legacies": ["legacy_pirate_parent"],
+      "parentAlive": true
+    },
+    "effects": [
+      {
+        "kind": "berries",
+        "min": 1000,
+        "max": 5000
+      },
+      {
+        "kind": "flag",
+        "flag": "pirate.parent_seen",
+        "value": true
+      }
+    ],
+    "tags": ["pirates", "family"]
+  },
+  {
+    "id": "bs_shunned",
+    "text": "The other children's parents found out whose child you were, and the invitations stopped.",
+    "ages": {
+      "min": 8,
+      "max": 15
+    },
+    "notability": 2,
+    "conditions": {
+      "legacies": ["legacy_pirate_parent"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2
+        }
+      }
+    ],
+    "tags": ["shame"]
+  },
+  {
+    "id": "bs_first_ball",
+    "text": "You danced at your first ball and made two friends and one enemy, {other}, all before midnight.",
+    "ages": {
+      "min": 13,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "legacies": ["legacy_noble_line"]
+    },
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "rival",
+        "opinion": -40,
+        "ageOffset": {
+          "min": -1,
+          "max": 1
+        }
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 2
+        }
+      }
+    ],
+    "tags": ["court", "social"]
+  },
+  {
+    "id": "bs_duel",
+    "text": "You fought your first duel over an insult, and won on a technicality.",
+    "ages": {
+      "min": 15,
+      "max": 25
+    },
+    "notability": 2,
+    "conditions": {
+      "legacies": ["legacy_noble_line"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 2,
+          "willpower": 1
+        }
+      },
+      {
+        "kind": "scar",
+        "area": "head",
+        "text": "a fine duelling scar on one cheek"
+      }
+    ],
+    "tags": ["court", "fight"]
+  },
+  {
+    "id": "bs_orphanage",
+    "text": "The orphanage keeper was strict, kind and always tired. You learned more there than you admit.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "conditions": {
+      "legacies": ["legacy_orphan"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 1,
+          "endurance": 1
+        }
+      }
+    ],
+    "tags": ["family"]
+  },
+  {
+    "id": "bs_street_winter",
+    "text": "You ran away from the orphanage and lived on the streets of {home} for a winter.",
+    "ages": {
+      "min": 10,
+      "max": 15
+    },
+    "notability": 2,
+    "conditions": {
+      "legacies": ["legacy_orphan"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "perception": 2,
+          "dexterity": 1,
+          "endurance": 1
+        }
+      },
+      {
+        "kind": "trait",
+        "trait": "trait_street_fighter"
+      }
+    ],
+    "tags": ["street", "hardship"]
+  },
+  {
+    "id": "bs_ledger",
+    "text": "You found your own name in an old shipping ledger, next to a ship that sank the year you were born.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "weight": 0.6,
+    "notability": 3,
+    "conditions": {
+      "legacies": ["legacy_orphan"]
+    },
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "orphan.clue",
+        "value": "ledger"
+      }
+    ],
+    "tags": ["mystery"]
+  },
+  {
+    "id": "bs_big_catch",
+    "text": "You and {parent} landed a fish bigger than the boat. Half of {home} ate well that week.",
+    "ages": {
+      "min": 10,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "legacies": ["legacy_fisher_family"],
+      "parentAlive": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 2,
+          "endurance": 1
+        }
+      },
+      {
+        "kind": "berries",
+        "min": 500,
+        "max": 2000
+      }
+    ],
+    "tags": ["fishing", "sea"]
+  },
+  {
+    "id": "bs_bailing",
+    "text": "A storm caught the family boat far from shore, and you bailed water through the night to keep it afloat.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "legacies": ["legacy_fisher_family"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 3,
+          "willpower": 2
+        }
+      }
+    ],
+    "tags": ["sea", "hardship", "fishing"]
+  },
+  {
+    "id": "bs_first_piece",
+    "text": "You made your first piece good enough to sell, and {parent} sold it without a word, which was praise.",
+    "ages": {
+      "min": 10,
+      "max": 16
+    },
+    "notability": 2,
+    "conditions": {
+      "legacies": ["legacy_craftsman_family"],
+      "parentAlive": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 3
+        }
+      },
+      {
+        "kind": "berries",
+        "min": 200,
+        "max": 1000
+      }
+    ],
+    "tags": ["craft", "workshop"]
+  },
+  {
+    "id": "bs_hot_iron",
+    "text": "You grabbed a hot iron you had been told not to touch. Once.",
+    "ages": {
+      "min": 8,
+      "max": 14
+    },
+    "conditions": {
+      "legacies": ["legacy_craftsman_family"]
+    },
+    "effects": [
+      {
+        "kind": "scar",
+        "area": "arms",
+        "text": "a burn scar across one palm"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 1
+        }
+      }
+    ],
+    "tags": ["craft", "mischief"]
+  }
+]

@@ -1,4 +1,4 @@
-import { advance, applyAction, createWorld, Rng, type Action } from '../../src/core';
+import { advance, applyAction, createLife, Rng, type Action } from '../../src/core';
 import type { GameData } from '../../src/engine/data/schemas';
 import type { WorldState } from '../../src/engine/state';
 
@@ -9,12 +9,29 @@ import type { WorldState } from '../../src/engine/state';
  * two things happened: you changed how the world behaves on purpose (run `npm run golden:update`
  * and, if the persisted shape changed, bump SAVE_VERSION and add a migration), or you broke
  * determinism by accident (find out why; do not just update the file).
+ *
+ * Since Phase 1 it starts with character genesis (a fixed New Life: race, birthplace, family,
+ * 30 years of backstory), so a change to how characters are made shows up here too.
  */
 
 export const GOLDEN_SEED = 'golden-v1';
 
+export const GOLDEN_LIFE = {
+  seed: GOLDEN_SEED,
+  canonMode: 'canon',
+  difficulty: 'normal',
+  race: 'race_human',
+  birthplace: 'bp_east_blue_village',
+  legacy: 'legacy_noble_line',
+  focus: 'focus_fighter',
+  entryYear: 5,
+  entryAge: 30,
+  pronouns: 'she',
+} as const;
+
 export function playGoldenSession(data: GameData): WorldState {
-  const state = createWorld({ seed: GOLDEN_SEED, probe: true });
+  const { state } = createLife(data, GOLDEN_LIFE);
+  state.flags['dev.probe'] = true;
   const rng = Rng.root(GOLDEN_SEED);
   const act = (action: Action) => applyAction(state, data, action, { debug: true });
   const run = (months: number, policy: 'stop' | 'auto-random' = 'auto-random') =>
@@ -25,12 +42,14 @@ export function playGoldenSession(data: GameData): WorldState {
   act({ type: 'debug/forceEvent', eventId: 'evt_test_notice' });
   act({ type: 'debug/forceEvent', eventId: 'evt_test_crossroads' });
   run(6, 'stop'); // stops on the crossroads decision
-  act({ type: 'decision/resolve', decisionId: 1, choiceId: 'left' });
-  const [entityId] = Object.keys(state.entities);
-  if (!entityId) throw new Error('golden session lost its test entity');
+  const decision = state.pending.find((d) => d.eventId === 'evt_test_crossroads');
+  if (!decision) throw new Error('golden session expected the crossroads decision');
+  act({ type: 'decision/resolve', decisionId: decision.id, choiceId: 'left' });
+  const dummy = Object.values(state.entities).find((e) => e.flags['dev.fixture'] === true);
+  if (!dummy) throw new Error('golden session lost its test entity');
   act({
     type: 'debug/addModifier',
-    entityId,
+    entityId: dummy.id,
     stat: 'strength',
     value: 15,
     modKind: 'pct',

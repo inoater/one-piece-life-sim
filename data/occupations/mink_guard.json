@@ -1,0 +1,7 @@
+{
+  "id": "occ_mink_guard",
+  "name": "musketeer of the guard",
+  "places": ["bp_zou"],
+  "wealth": ["poor", "modest", "comfortable"],
+  "weight": 3
+}

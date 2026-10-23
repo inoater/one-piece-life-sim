@@ -1,0 +1,33 @@
+{
+  "id": "bp_fishman_island",
+  "name": "Fish-Man Island",
+  "shortName": "Fish-Man Island",
+  "home": "Fish-Man Island",
+  "bornIn": "on Fish-Man Island",
+  "region": "fishman_island",
+  "description": "The kingdom under the sea, ten thousand metres down, lit by the roots of the Sunny Tree. Beautiful, crowded, and not fond of humans.",
+  "opens": "Fish-Man Karate teachers",
+  "wealth": "medium",
+  "safety": "medium",
+  "races": ["race_fishman", "race_merfolk"],
+  "traitPool": ["trait_water_born"],
+  "namePool": "names_fishman",
+  "childhood": {
+    "endurance": 2,
+    "strength": 2,
+    "speed": 1
+  },
+  "legacyWeights": {
+    "legacy_marine_veteran": 0.1,
+    "legacy_noble_line": 0.6
+  },
+  "focusWeights": {
+    "focus_fighter": 1.5,
+    "focus_sailor": 1.5
+  },
+  "eventTags": {
+    "undersea": 4,
+    "karate": 3,
+    "prejudice": 2
+  }
+}

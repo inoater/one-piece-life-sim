@@ -1,0 +1,664 @@
+{
+  "sentence": "{a} {adjectives}{noun} with {face}, {skin}, {hair} and {eyes}{extras}.",
+  "ageNouns": {
+    "infant": { "he": "baby boy", "she": "baby girl", "they": "baby" },
+    "toddler": { "he": "little boy", "she": "little girl", "they": "toddler" },
+    "child": { "he": "boy", "she": "girl", "they": "child" },
+    "adolescent": { "he": "teenage boy", "she": "teenage girl", "they": "teenager" }
+  },
+  "childHeight": [
+    { "age": 0, "fraction": 0.29 },
+    { "age": 2, "fraction": 0.49 },
+    { "age": 6, "fraction": 0.66 },
+    { "age": 10, "fraction": 0.79 },
+    { "age": 14, "fraction": 0.93 },
+    { "age": 18, "fraction": 1 }
+  ],
+  "fields": [
+    {
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "id": "short", "label": "Short", "text": "short", "weight": 25 },
+        { "id": "average", "label": "Average", "text": "", "weight": 45 },
+        { "id": "tall", "label": "Tall", "text": "tall", "weight": 24 },
+        { "id": "towering", "label": "Towering", "text": "towering", "weight": 6 }
+      ]
+    },
+    {
+      "id": "build",
+      "label": "Build",
+      "options": [
+        { "id": "slight", "label": "Slight", "text": "slight", "weight": 16 },
+        { "id": "lean", "label": "Lean", "text": "lean", "weight": 20 },
+        { "id": "wiry", "label": "Wiry", "text": "wiry", "weight": 18 },
+        { "id": "stocky", "label": "Stocky", "text": "stocky", "weight": 16 },
+        { "id": "broad", "label": "Broad", "text": "broad-shouldered", "weight": 16 },
+        { "id": "heavyset", "label": "Heavyset", "text": "heavyset", "weight": 14 }
+      ]
+    },
+    {
+      "id": "skin",
+      "label": "Skin",
+      "options": [
+        {
+          "id": "pale",
+          "label": "Pale",
+          "text": "pale",
+          "weight": 10,
+          "notRaces": ["race_fishman", "race_mink"]
+        },
+        {
+          "id": "fair",
+          "label": "Fair",
+          "text": "fair",
+          "weight": 14,
+          "notRaces": ["race_fishman", "race_mink"]
+        },
+        {
+          "id": "olive",
+          "label": "Olive",
+          "text": "olive",
+          "weight": 14,
+          "notRaces": ["race_fishman", "race_mink"]
+        },
+        {
+          "id": "tan",
+          "label": "Tan",
+          "text": "tan",
+          "weight": 16,
+          "notRaces": ["race_fishman", "race_mink"]
+        },
+        {
+          "id": "golden",
+          "label": "Golden",
+          "text": "golden",
+          "weight": 10,
+          "notRaces": ["race_fishman", "race_mink"]
+        },
+        {
+          "id": "bronze",
+          "label": "Bronze",
+          "text": "bronze",
+          "weight": 12,
+          "notRaces": ["race_fishman", "race_mink"]
+        },
+        {
+          "id": "brown",
+          "label": "Brown",
+          "text": "brown",
+          "weight": 14,
+          "notRaces": ["race_fishman", "race_mink"]
+        },
+        {
+          "id": "deep_brown",
+          "label": "Deep brown",
+          "text": "deep brown",
+          "weight": 10,
+          "notRaces": ["race_fishman", "race_mink"]
+        },
+        {
+          "id": "pale_blue",
+          "label": "Pale blue",
+          "text": "pale blue",
+          "weight": 14,
+          "races": ["race_fishman"]
+        },
+        {
+          "id": "sea_green",
+          "label": "Sea-green",
+          "text": "sea-green",
+          "weight": 14,
+          "races": ["race_fishman"]
+        },
+        {
+          "id": "coral",
+          "label": "Coral red",
+          "text": "coral-red",
+          "weight": 10,
+          "races": ["race_fishman"]
+        },
+        {
+          "id": "slate",
+          "label": "Slate grey",
+          "text": "slate-grey",
+          "weight": 12,
+          "races": ["race_fishman"]
+        },
+        {
+          "id": "deep_blue",
+          "label": "Deep blue",
+          "text": "deep blue",
+          "weight": 10,
+          "races": ["race_fishman"]
+        },
+        {
+          "id": "sandy",
+          "label": "Sandy",
+          "text": "sandy",
+          "weight": 8,
+          "races": ["race_fishman"]
+        },
+        {
+          "id": "tawny",
+          "label": "Tawny",
+          "text": "tawny",
+          "weight": 16,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "snow_white",
+          "label": "Snow-white",
+          "text": "snow-white",
+          "weight": 8,
+          "races": ["race_mink"]
+        },
+        { "id": "grey_fur", "label": "Grey", "text": "grey", "weight": 12, "races": ["race_mink"] },
+        {
+          "id": "russet",
+          "label": "Russet",
+          "text": "russet",
+          "weight": 12,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "jet_black",
+          "label": "Jet-black",
+          "text": "jet-black",
+          "weight": 8,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "golden_fur",
+          "label": "Golden",
+          "text": "golden",
+          "weight": 10,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "spotted",
+          "label": "Spotted",
+          "text": "spotted",
+          "weight": 8,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "striped",
+          "label": "Striped",
+          "text": "striped",
+          "weight": 6,
+          "races": ["race_mink"]
+        }
+      ]
+    },
+    {
+      "id": "complexion",
+      "label": "Complexion",
+      "options": [
+        {
+          "id": "clear",
+          "label": "Clear",
+          "text": "clear",
+          "weight": 40,
+          "notRaces": ["race_mink"]
+        },
+        {
+          "id": "freckled",
+          "label": "Freckled",
+          "text": "freckled",
+          "weight": 14,
+          "notRaces": ["race_mink", "race_fishman"]
+        },
+        {
+          "id": "weathered",
+          "label": "Weathered",
+          "text": "weathered",
+          "weight": 14,
+          "minAge": 16,
+          "ageMult": { "from": 40, "mult": 3 },
+          "notRaces": ["race_mink"]
+        },
+        {
+          "id": "sunburnt",
+          "label": "Sunburnt",
+          "text": "sunburnt",
+          "weight": 10,
+          "notRaces": ["race_mink"]
+        },
+        {
+          "id": "pockmarked",
+          "label": "Pockmarked",
+          "text": "pockmarked",
+          "weight": 6,
+          "minAge": 6,
+          "notRaces": ["race_mink"]
+        },
+        {
+          "id": "glossy",
+          "label": "Glossy",
+          "text": "glossy",
+          "weight": 30,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "shaggy_coat",
+          "label": "Shaggy",
+          "text": "shaggy",
+          "weight": 20,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "patchy",
+          "label": "Patchy",
+          "text": "patchy",
+          "weight": 8,
+          "minAge": 6,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "sun_bleached",
+          "label": "Sun-bleached",
+          "text": "sun-bleached",
+          "weight": 10,
+          "races": ["race_mink"]
+        }
+      ]
+    },
+    {
+      "id": "hairColor",
+      "label": "Hair colour",
+      "options": [
+        { "id": "black", "label": "Black", "text": "black", "weight": 20 },
+        { "id": "dark_brown", "label": "Dark brown", "text": "dark brown", "weight": 16 },
+        { "id": "brown", "label": "Brown", "text": "brown", "weight": 14 },
+        { "id": "auburn", "label": "Auburn", "text": "auburn", "weight": 6 },
+        { "id": "blond", "label": "Blond", "text": "blond", "weight": 10 },
+        { "id": "red", "label": "Red", "text": "red", "weight": 5 },
+        {
+          "id": "grey",
+          "label": "Grey",
+          "text": "grey",
+          "weight": 1,
+          "ageMult": { "from": 45, "mult": 12 }
+        },
+        {
+          "id": "white",
+          "label": "White",
+          "text": "white",
+          "weight": 0.5,
+          "ageMult": { "from": 60, "mult": 30 }
+        },
+        { "id": "blue", "label": "Blue", "text": "blue", "weight": 1.5, "tags": ["rare"] },
+        { "id": "green", "label": "Green", "text": "green", "weight": 1.2, "tags": ["rare"] },
+        { "id": "pink", "label": "Pink", "text": "pink", "weight": 0.8, "tags": ["rare"] },
+        { "id": "purple", "label": "Purple", "text": "purple", "weight": 0.8, "tags": ["rare"] }
+      ]
+    },
+    {
+      "id": "hairStyle",
+      "label": "Hair style",
+      "options": [
+        { "id": "wispy", "label": "Wispy", "text": "wispy", "weight": 40, "maxAge": 2 },
+        { "id": "cropped", "label": "Cropped", "text": "cropped", "weight": 18 },
+        { "id": "shaggy", "label": "Shaggy", "text": "shaggy", "weight": 18, "minAge": 2 },
+        { "id": "braided", "label": "Braided", "text": "braided", "weight": 12, "minAge": 3 },
+        { "id": "topknot", "label": "Topknot", "text": "topknotted", "weight": 4, "minAge": 6 },
+        {
+          "id": "long",
+          "label": "Long and loose",
+          "text": "long, loose",
+          "weight": 16,
+          "minAge": 4
+        },
+        {
+          "id": "bald",
+          "label": "Bald",
+          "text": "a bald head",
+          "weight": 2,
+          "ageMult": { "from": 50, "mult": 6 },
+          "tags": ["nohair"]
+        }
+      ]
+    },
+    {
+      "id": "eyeColor",
+      "label": "Eye colour",
+      "options": [
+        { "id": "brown", "label": "Brown", "text": "brown", "weight": 25 },
+        { "id": "dark", "label": "Dark", "text": "dark", "weight": 18 },
+        { "id": "hazel", "label": "Hazel", "text": "hazel", "weight": 10 },
+        { "id": "amber", "label": "Amber", "text": "amber", "weight": 5 },
+        { "id": "green", "label": "Green", "text": "green", "weight": 7 },
+        { "id": "grey", "label": "Grey", "text": "grey", "weight": 8 },
+        { "id": "blue", "label": "Blue", "text": "blue", "weight": 10 },
+        { "id": "black", "label": "Black", "text": "black", "weight": 10 },
+        { "id": "violet", "label": "Violet", "text": "violet", "weight": 1, "tags": ["rare"] },
+        { "id": "red", "label": "Red", "text": "red", "weight": 0.8, "tags": ["rare"] }
+      ]
+    },
+    {
+      "id": "eyeShape",
+      "label": "Eye shape",
+      "options": [
+        { "id": "round", "label": "Round", "text": "round", "weight": 25 },
+        { "id": "narrow", "label": "Narrow", "text": "narrow", "weight": 25 },
+        { "id": "sharp", "label": "Sharp", "text": "sharp", "weight": 25 },
+        { "id": "droopy", "label": "Droopy", "text": "droopy", "weight": 25 }
+      ]
+    },
+    {
+      "id": "face",
+      "label": "Face",
+      "options": [
+        { "id": "round", "label": "Round", "text": "a round face", "weight": 25 },
+        { "id": "square", "label": "Square", "text": "a square face", "weight": 25 },
+        { "id": "angular", "label": "Angular", "text": "an angular face", "weight": 25 },
+        { "id": "long", "label": "Long", "text": "a long face", "weight": 25 }
+      ]
+    },
+    {
+      "id": "marks",
+      "label": "Marks",
+      "options": [
+        { "id": "none", "label": "None", "text": "", "weight": 55 },
+        {
+          "id": "scar_brow",
+          "label": "Scar on the brow",
+          "text": "a scar across the left brow",
+          "weight": 4,
+          "minAge": 6,
+          "tags": ["scar"]
+        },
+        {
+          "id": "scar_jaw",
+          "label": "Scar on the jaw",
+          "text": "a thin scar along the jaw",
+          "weight": 3,
+          "minAge": 6,
+          "tags": ["scar"]
+        },
+        {
+          "id": "burn_hand",
+          "label": "Burn scar",
+          "text": "a burn scar on the back of one hand",
+          "weight": 2,
+          "minAge": 3,
+          "tags": ["scar"]
+        },
+        {
+          "id": "tattoo_swallow",
+          "label": "Swallow tattoo",
+          "text": "a swallow tattooed on the forearm",
+          "weight": 2,
+          "minAge": 14,
+          "tags": ["tattoo"]
+        },
+        {
+          "id": "tattoo_anchor",
+          "label": "Anchor tattoo",
+          "text": "an anchor tattooed on the shoulder",
+          "weight": 2,
+          "minAge": 14,
+          "tags": ["tattoo"]
+        },
+        {
+          "id": "tattoo_wave",
+          "label": "Wave tattoo",
+          "text": "a wave tattoo running up one arm",
+          "weight": 1.5,
+          "minAge": 14,
+          "tags": ["tattoo"]
+        },
+        {
+          "id": "birthmark_neck",
+          "label": "Birthmark",
+          "text": "a birthmark on the neck",
+          "weight": 6
+        },
+        {
+          "id": "birthmark_cheek",
+          "label": "Birthmark on the cheek",
+          "text": "a wine-coloured birthmark on one cheek",
+          "weight": 3
+        },
+        {
+          "id": "missing_teeth",
+          "label": "Missing teeth",
+          "text": "two missing front teeth",
+          "weight": 3,
+          "minAge": 5
+        }
+      ]
+    },
+    {
+      "id": "feature",
+      "label": "Race feature",
+      "options": [
+        {
+          "id": "none",
+          "label": "None",
+          "text": "",
+          "weight": 1,
+          "races": ["race_human"]
+        },
+        {
+          "id": "shark",
+          "label": "Shark",
+          "text": "a shark's rows of serrated teeth",
+          "weight": 5,
+          "races": ["race_fishman"],
+          "tags": ["fishman"]
+        },
+        {
+          "id": "sawshark",
+          "label": "Sawshark",
+          "text": "a sawshark's long, toothed snout",
+          "weight": 2,
+          "races": ["race_fishman"],
+          "tags": ["fishman"]
+        },
+        {
+          "id": "octopus",
+          "label": "Octopus",
+          "text": "six arms, from an octopus bloodline",
+          "weight": 3,
+          "races": ["race_fishman"],
+          "tags": ["fishman"]
+        },
+        {
+          "id": "pufferfish",
+          "label": "Pufferfish",
+          "text": "spines that bristle in anger",
+          "weight": 2,
+          "races": ["race_fishman"],
+          "tags": ["fishman"]
+        },
+        {
+          "id": "manta",
+          "label": "Manta ray",
+          "text": "broad, ray-like fins along the arms",
+          "weight": 3,
+          "races": ["race_fishman"],
+          "tags": ["fishman"]
+        },
+        {
+          "id": "hammerhead",
+          "label": "Hammerhead",
+          "text": "a hammerhead's wide-set eyes",
+          "weight": 2,
+          "races": ["race_fishman"],
+          "tags": ["fishman"]
+        },
+        {
+          "id": "goldfish",
+          "label": "Goldfish",
+          "text": "the flowing fins of a goldfish",
+          "weight": 2,
+          "races": ["race_fishman"],
+          "tags": ["fishman"]
+        },
+        {
+          "id": "koi_tail",
+          "label": "Koi tail",
+          "text": "a koi-patterned tail",
+          "weight": 3,
+          "races": ["race_merfolk"]
+        },
+        {
+          "id": "silver_tail",
+          "label": "Silver tail",
+          "text": "a silver-scaled tail",
+          "weight": 4,
+          "races": ["race_merfolk"]
+        },
+        {
+          "id": "deep_tail",
+          "label": "Deep-blue tail",
+          "text": "a deep-blue tail",
+          "weight": 3,
+          "races": ["race_merfolk"]
+        },
+        {
+          "id": "coral_tail",
+          "label": "Coral tail",
+          "text": "a coral-pink tail",
+          "weight": 3,
+          "races": ["race_merfolk"]
+        },
+        {
+          "id": "eel_tail",
+          "label": "Eel tail",
+          "text": "a striped, eel-like tail",
+          "weight": 1,
+          "races": ["race_merfolk"]
+        },
+        {
+          "id": "rabbit",
+          "label": "Rabbit",
+          "text": "long rabbit ears",
+          "weight": 3,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "dog",
+          "label": "Dog",
+          "text": "a dog's keen nose and floppy ears",
+          "weight": 4,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "cat",
+          "label": "Cat",
+          "text": "a cat's ears and slitted pupils",
+          "weight": 4,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "jaguar",
+          "label": "Jaguar",
+          "text": "a jaguar's heavy jaw and whiskers",
+          "weight": 2,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "bear",
+          "label": "Bear",
+          "text": "a bear's round ears and heavy shoulders",
+          "weight": 3,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "fox",
+          "label": "Fox",
+          "text": "a fox's brush of a tail",
+          "weight": 3,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "sheep",
+          "label": "Sheep",
+          "text": "a sheep's curled horns",
+          "weight": 2,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "lion",
+          "label": "Lion",
+          "text": "a lion's ruff about the neck",
+          "weight": 2,
+          "races": ["race_mink"]
+        },
+        {
+          "id": "giant_brow",
+          "label": "Heavy brow",
+          "text": "a heavy giant's brow",
+          "weight": 5,
+          "races": ["race_giant"]
+        },
+        {
+          "id": "giant_horns",
+          "label": "Short horns",
+          "text": "a pair of short horns, a mark of the old Elbaf lines",
+          "weight": 2,
+          "races": ["race_giant"]
+        },
+        {
+          "id": "giant_jaw",
+          "label": "Prow jaw",
+          "text": "a jaw like a ship's prow",
+          "weight": 3,
+          "races": ["race_giant"]
+        },
+        {
+          "id": "fluffy_tail",
+          "label": "Fluffy tail",
+          "text": "a fluffy tail",
+          "weight": 4,
+          "races": ["race_tontatta"]
+        },
+        {
+          "id": "striped_tail",
+          "label": "Striped tail",
+          "text": "a short, striped tail",
+          "weight": 3,
+          "races": ["race_tontatta"]
+        },
+        {
+          "id": "round_nose",
+          "label": "Round nose",
+          "text": "a round, oversized nose and a tail",
+          "weight": 3,
+          "races": ["race_tontatta"]
+        },
+        {
+          "id": "feather_wings",
+          "label": "Feathered wings",
+          "text": "small feathered wings",
+          "weight": 5,
+          "races": ["race_skypiean"]
+        },
+        {
+          "id": "white_wings",
+          "label": "White wings",
+          "text": "neat white wings",
+          "weight": 3,
+          "races": ["race_skypiean"]
+        },
+        {
+          "id": "flecked_wings",
+          "label": "Flecked wings",
+          "text": "small grey-flecked wings",
+          "weight": 2,
+          "races": ["race_skypiean"]
+        },
+        {
+          "id": "lunarian",
+          "label": "Black wings and flame",
+          "text": "black wings and a small flame burning at the back",
+          "weight": 1,
+          "races": ["race_lunarian"]
+        }
+      ]
+    }
+  ]
+}

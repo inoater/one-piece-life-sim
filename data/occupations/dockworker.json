@@ -1,0 +1,12 @@
+{
+  "id": "occ_dockworker",
+  "name": "dockworker",
+  "places": [
+    "bp_west_blue_port",
+    "bp_grand_line_island",
+    "bp_marine_base_town",
+    "bp_new_world_island"
+  ],
+  "wealth": ["indebted", "destitute", "poor", "modest"],
+  "weight": 2
+}

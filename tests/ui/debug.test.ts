@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { mountDebug } from '../../src/ui/debug/panel';
+import { data } from '../helpers/data';
 import { button, mountUi, settle, text, type Mounted } from '../helpers/ui';
 
 let ui: Mounted;
@@ -76,12 +77,13 @@ describe('the panel itself', () => {
     expect(panel().hidden).toBe(true);
   });
 
-  it('has World, Entities and Log tabs that switch like proper tabs', async () => {
+  it('has World, Entities, Log and Genesis tabs that switch like proper tabs', async () => {
     await openPanel();
     expect([...panel().querySelectorAll('[role="tab"]')].map(text)).toEqual([
       'World',
       'Entities',
       'Log',
+      'Genesis',
     ]);
     expect(tab('World').getAttribute('aria-selected')).toBe('true');
     expect(section('entities').hidden).toBe(true);
@@ -106,7 +108,7 @@ describe('the panel itself', () => {
       new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, cancelable: true }),
     );
     await settle();
-    expect(tab('Log').getAttribute('aria-selected')).toBe('true');
+    expect(tab('Genesis').getAttribute('aria-selected')).toBe('true');
   });
 });
 
@@ -142,16 +144,13 @@ describe('World tab', () => {
 
   it('lists every event that can be forced, and forces the chosen one', async () => {
     const select = section('world').querySelector('select') as HTMLSelectElement;
-    expect([...select.options].map((o) => o.value)).toEqual([
-      'evt_test_aftermath',
-      'evt_test_crossroads',
-      'evt_test_notice',
-      'evt_test_secret',
-    ]);
-    expect(text(select.options[1])).toBe(
+    const values = [...select.options].map((o) => o.value);
+    expect(values).toEqual(Object.keys(data.events).sort());
+    const option = (id: string) => [...select.options].find((o) => o.value === id);
+    expect(text(option('evt_test_crossroads'))).toBe(
       'evt_test_crossroads: A test crossroads (personal, 2 choices)',
     );
-    expect(text(select.options[3])).toContain('secret');
+    expect(text(option('evt_test_secret'))).toContain('secret');
     select.value = 'evt_test_notice';
     await hit(section('world'), 'Force event');
     expect(ui.core.peekState().scheduled).toMatchObject([

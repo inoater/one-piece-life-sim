@@ -1,11 +1,13 @@
 import { createDial } from './components/dial';
 import { h, clear } from './dom';
 import type { App } from './app';
+import { formatInteger } from './format';
 import { openMenu } from './menu';
 import { isSideRoute, ROUTE_LABELS, ROUTES, type Route, type SideRoute } from './router';
 import { renderActions } from './screens/actions';
 import { renderCharacter } from './screens/character';
 import { renderFeed } from './screens/feed';
+import { createNewLife } from './screens/new-life';
 import { renderNews } from './screens/news';
 import { renderWorld } from './screens/world';
 import type { UiState } from './store';
@@ -85,6 +87,10 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     id: 'panel-side',
     'aria-label': 'Details',
   });
+  // New Life takes over the page between the masthead and the bottom edge; it is built once, so a
+  // half-made character survives a trip to another screen and back.
+  const newLife = createNewLife(app);
+  const newLifePage = h('div', { class: 'newlife-page', hidden: true }, newLife.el);
 
   // ---- Controls
   const nextButton = h('button', { class: 'button button--primary', type: 'button' }, 'Next month');
@@ -127,7 +133,17 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     h('div', { class: 'controls__meta' }, menuButton, debugButton),
   );
 
-  const shell = h('div', { class: 'shell' }, masthead, banner, nav, feedPanel, sidePanel, controls);
+  const shell = h(
+    'div',
+    { class: 'shell' },
+    masthead,
+    banner,
+    nav,
+    feedPanel,
+    sidePanel,
+    newLifePage,
+    controls,
+  );
   root.replaceChildren(shell);
 
   // ---- Wiring
@@ -198,6 +214,11 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       v.value.classList.toggle('is-empty', !player);
       v.value.title = player ? '' : 'Appears once a life has started';
     }
+    age.value.textContent = player ? String(player.age) : '\u2014';
+    if (player) age.value.title = player.stage;
+    location.value.textContent = player ? player.location : '\u2014';
+    berries.value.textContent = player ? formatInteger(player.berries) : '\u2014';
+    berries.value.classList.toggle('is-debt', (player?.berries ?? 0) < 0);
   }
 
   function renderBanner(state: UiState): void {
@@ -262,6 +283,11 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   }
 
   function render(state: UiState, previous: UiState | null): void {
+    const creating = state.route === 'new';
+    if (creating !== !newLifePage.hidden) {
+      newLifePage.hidden = !creating;
+      if (creating) newLife.show();
+    }
     shell.dataset['route'] = state.route;
     shell.dataset['side'] = effectiveSide(state);
     shell.dataset['phase'] = state.snapshot?.atPresent ? 'present' : 'live';

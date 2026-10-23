@@ -1,0 +1,24 @@
+{
+  "id": "focus_noble",
+  "name": "Noble",
+  "description": "Etiquette, fencing, languages and the art of being obeyed.",
+  "training": {
+    "charisma": 3,
+    "intellect": 2.5,
+    "willpower": 1,
+    "dexterity": 1
+  },
+  "eventTags": {
+    "court": 3,
+    "study": 1.5
+  },
+  "appearanceWeights": {
+    "tag:scar": 0.4,
+    "tag:tattoo": 0.2,
+    "marks.missing_teeth": 0.2
+  },
+  "savingsPerYear": {
+    "min": 3000,
+    "max": 10000
+  }
+}

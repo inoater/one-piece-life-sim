@@ -1,0 +1,43 @@
+{
+  "id": "evt_legacy_fisher_boat",
+  "type": "personal",
+  "title": "The family boat",
+  "text": "The boat needs a second pair of hands this season, and {legacy.parent} has asked for yours.",
+  "choices": [
+    {
+      "id": "join",
+      "label": "Take your place on the boat",
+      "text": "Early mornings, cold hands, honest work.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "fisher.crew",
+          "value": true
+        },
+        {
+          "kind": "log",
+          "text": "You take the oars. By the end of the season the nets come up full.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    },
+    {
+      "id": "refuse",
+      "label": "Say no",
+      "text": "The sea can wait; so can the family.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "fisher.crew",
+          "value": false
+        },
+        {
+          "kind": "log",
+          "text": "You say no, and {legacy.parent} rows out alone without a word.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    }
+  ],
+  "tags": ["legacy", "fishing", "personal"]
+}

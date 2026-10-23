@@ -1,0 +1,53 @@
+{
+  "id": "names_sky",
+  "given": {
+    "he": [
+      "Aero",
+      "Brisa",
+      "Cirro",
+      "Doon",
+      "Etho",
+      "Halo",
+      "Ilio",
+      "Kumo",
+      "Lumo",
+      "Nimbo",
+      "Orio",
+      "Pallo",
+      "Strato",
+      "Vento",
+      "Zephro"
+    ],
+    "she": [
+      "Aura",
+      "Breeza",
+      "Celesta",
+      "Fira",
+      "Hira",
+      "Lumina",
+      "Mistra",
+      "Nefa",
+      "Oria",
+      "Plume",
+      "Seraph",
+      "Stella",
+      "Vela",
+      "Zephyra"
+    ],
+    "any": ["Nube", "Lark"]
+  },
+  "family": [
+    "Altair",
+    "Cloudbank",
+    "Dialwright",
+    "Featherston",
+    "Haloway",
+    "Highrock",
+    "Milkyway",
+    "Nimbusa",
+    "Skydock",
+    "Sunward",
+    "Updraft",
+    "Whitecloud"
+  ]
+}

@@ -1,14 +1,28 @@
 import type { ZodType } from 'zod';
 import { hashValue } from '../canonical';
 import { didYouMean, formatPath, type DataIssue } from './issues';
-import { REF_EXTRACTORS, TARGET_LABEL } from './refs';
 import {
-  CalendarSchema,
+  appearanceRefs,
+  creationRefs,
+  REF_EXTRACTORS,
+  singletonTargets,
+  TARGET_HOME,
+  TARGET_LABEL,
+  type Ref,
+  type RefTarget,
+} from './refs';
+import {
+  COLLECTION_KINDS,
   COLLECTIONS,
   RESERVED_DIRS,
-  SettingsSchema,
+  SINGLETONS,
+  type Appearance,
+  type CharacterRules,
   type CollectionKind,
+  type Creation,
   type GameData,
+  type SingletonPath,
+  type Calendar,
 } from './schemas';
 
 /**
@@ -17,6 +31,11 @@ import {
  * It is a pure function of its input, so the same code runs in the browser (files bundled by
  * Vite), in Node tools (files read from disk) and in the build gate (a Vite plugin). Every
  * problem is reported, not just the first, and each names the file and the field.
+ *
+ * Three passes:
+ *  1. each file against its schema;
+ *  2. references between files (an id named in one file must exist in another);
+ *  3. coherence: facts that only hold for the data as a whole (every race can be born somewhere).
  */
 
 export interface RawFile {
@@ -39,11 +58,6 @@ export interface LoadResult {
   counts: Record<string, number>;
 }
 
-const SINGLETONS = {
-  'data/calendar.json': CalendarSchema,
-  'data/settings.json': SettingsSchema,
-} as const;
-
 const IGNORED = /(^|\/)(\.gitkeep|\.DS_Store|README\.md)$/i;
 
 function normalise(path: string): string {
@@ -57,11 +71,21 @@ interface Item {
   value: unknown;
 }
 
+interface Entry {
+  value: unknown;
+  file: string;
+  /** "[3]" for the fourth item of an array file, "" for a single-object file. */
+  field: string;
+}
+
 function fieldWithIndex(item: Item, field: string): string {
   const prefix = item.index === null ? '' : `[${item.index}]`;
   if (field === '(file)') return prefix === '' ? '(file)' : prefix;
   return `${prefix}${prefix !== '' && !field.startsWith('[') ? '.' : ''}${field}`;
 }
+
+const byKind = <T>(make: () => T): Record<CollectionKind, T> =>
+  Object.fromEntries(COLLECTION_KINDS.map((kind) => [kind, make()])) as Record<CollectionKind, T>;
 
 export function loadGameData(input: readonly RawFile[]): LoadResult {
   const issues: DataIssue[] = [];
@@ -83,24 +107,14 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
 
   const dataHash = hashValue(files.map((f) => [f.path, f.content ?? null]));
 
-  const singletons: Partial<Record<keyof typeof SINGLETONS, unknown>> = {};
-  const parsed: Record<
-    CollectionKind,
-    Map<string, { value: unknown; file: string; field: string }>
-  > = {
-    traits: new Map(),
-    weapons: new Map(),
-    locations: new Map(),
-    events: new Map(),
-  };
-  const counts: Record<string, number> = { traits: 0, weapons: 0, locations: 0, events: 0 };
+  const singletons: Partial<Record<SingletonPath, unknown>> = {};
+  const parsed = byKind(() => new Map<string, Entry>());
+  const counts = Object.fromEntries(COLLECTION_KINDS.map((kind) => [kind, 0])) as Record<
+    string,
+    number
+  >;
   /** Ids of items that exist but failed their own schema, so references to them are not reported twice. */
-  const invalidIds: Record<CollectionKind, Set<string>> = {
-    traits: new Set(),
-    weapons: new Set(),
-    locations: new Set(),
-    events: new Set(),
-  };
+  const invalidIds = byKind(() => new Set<string>());
 
   const validate = <T>(schema: ZodType<T>, item: Item): T | undefined => {
     const result = schema.safeParse(item.value);
@@ -118,6 +132,8 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     return undefined;
   };
 
+  const knownDirs = (): string => [...COLLECTION_KINDS, ...RESERVED_DIRS].join(', ');
+
   for (const file of files) {
     if (!file.path.startsWith('data/') || !file.path.endsWith('.json')) continue;
 
@@ -127,8 +143,8 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     }
 
     if (file.path in SINGLETONS) {
-      const key = file.path as keyof typeof SINGLETONS;
-      const value = validate(SINGLETONS[key] as ZodType<unknown>, {
+      const key = file.path as SingletonPath;
+      const value = validate(SINGLETONS[key].schema as ZodType<unknown>, {
         file: file.path,
         index: null,
         value: file.content,
@@ -144,7 +160,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
         file.path,
         '(file)',
         'Unrecognised data file',
-        'expected data/calendar.json, data/settings.json or data/<traits|weapons|locations|events>/<name>.json',
+        `expected ${Object.keys(SINGLETONS).join(', ')} or data/<folder>/<name>.json (folders: ${COLLECTION_KINDS.join(', ')})`,
       );
       continue;
     }
@@ -160,21 +176,18 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     }
 
     if (!(dir in COLLECTIONS)) {
-      const known = Object.keys(COLLECTIONS);
-      const guess = didYouMean(dir, known);
+      const guess = didYouMean(dir, COLLECTION_KINDS);
       error(
         file.path,
         '(file)',
         `Unknown data folder "data/${dir}/"`,
-        guess.length > 0
-          ? `did you mean "${guess[0]}"?`
-          : `known folders: ${[...known, ...RESERVED_DIRS].join(', ')}`,
+        guess.length > 0 ? `did you mean "${guess[0]}"?` : `known folders: ${knownDirs()}`,
       );
       continue;
     }
 
     const kind = dir as CollectionKind;
-    const { schema, prefix } = COLLECTIONS[kind];
+    const { schema, prefix, label } = COLLECTIONS[kind];
     const items: Item[] = Array.isArray(file.content)
       ? file.content.map((value, index) => ({ file: file.path, index, value }))
       : [{ file: file.path, index: null, value: file.content }];
@@ -193,7 +206,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
         error(
           item.file,
           fieldWithIndex(item, 'id'),
-          `Duplicate ${TARGET_LABEL[kind]} id "${value.id}"`,
+          `Duplicate ${label} id "${value.id}"`,
           `already defined in ${existing.file}`,
         );
         continue;
@@ -221,24 +234,153 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     }
   }
 
+  const calendar = singletons['data/calendar.json'] as Calendar | undefined;
+  const character = singletons['data/character.json'] as CharacterRules | undefined;
+  const creation = singletons['data/creation.json'] as Creation | undefined;
+  const appearance = singletons['data/appearance.json'] as Appearance | undefined;
+
+  // ---- Pass 2: references --------------------------------------------------------------------
+
+  const fromSingletons = singletonTargets({
+    ...(creation ? { creation } : {}),
+    ...(appearance ? { appearance } : {}),
+    ...(character ? { stageIds: character.stages.map((s) => s.id) } : {}),
+  });
+  /** Is the target's id list available? If its file is broken, its references are not checked. */
+  const has = (target: RefTarget, id: string): boolean | null => {
+    if (target in COLLECTIONS) {
+      const kind = target as CollectionKind;
+      return parsed[kind].has(id) || invalidIds[kind].has(id);
+    }
+    const known = fromSingletons[target];
+    return known ? known.has(id) : null;
+  };
+  const candidates = (target: RefTarget): Iterable<string> =>
+    target in COLLECTIONS
+      ? parsed[target as CollectionKind].keys()
+      : (fromSingletons[target] ?? new Set<string>());
+
+  const checkRefs = (file: string, prefix: string, refs: readonly Ref[]) => {
+    for (const ref of refs) {
+      if (has(ref.target, ref.id) !== false) continue;
+      const guess = didYouMean(ref.id, candidates(ref.target));
+      error(
+        file,
+        `${prefix}${prefix !== '' ? '.' : ''}${ref.field}`,
+        `Unknown ${TARGET_LABEL[ref.target]} "${ref.id}"`,
+        guess.length > 0
+          ? `did you mean ${guess.map((g) => `"${g}"`).join(' or ')}?`
+          : `no ${TARGET_LABEL[ref.target]} with that id exists in ${TARGET_HOME[ref.target]}`,
+      );
+    }
+  };
+
   // Cross-references: only meaningful for items that passed their own schema.
-  for (const kind of Object.keys(COLLECTIONS) as CollectionKind[]) {
+  for (const kind of COLLECTION_KINDS) {
     const extract = REF_EXTRACTORS[kind];
     if (!extract) continue;
     for (const [, entry] of parsed[kind]) {
-      for (const ref of extract(entry.value as never)) {
-        if (parsed[ref.target].has(ref.id) || invalidIds[ref.target].has(ref.id)) continue;
-        const guess = didYouMean(ref.id, parsed[ref.target].keys());
-        const index = /^\[(\d+)\]/.exec(entry.field)?.[0] ?? '';
+      const index = /^\[(\d+)\]/.exec(entry.field)?.[0] ?? '';
+      checkRefs(entry.file, index, extract(entry.value as never));
+    }
+  }
+  if (creation) checkRefs('data/creation.json', '', creationRefs(creation));
+  if (appearance) checkRefs('data/appearance.json', '', appearanceRefs(appearance));
+
+  // ---- Pass 3: coherence ---------------------------------------------------------------------
+
+  const fieldOf = (entry: Entry, field: string) =>
+    `${entry.field}${entry.field !== '' ? '.' : ''}${field}`;
+
+  for (const kind of [
+    'races',
+    'birthplaces',
+    'legacies',
+    'occupations',
+    'names',
+    'foci',
+  ] as const) {
+    if (parsed[kind].size === 0 && invalidIds[kind].size === 0) {
+      error(
+        `data/${kind}/`,
+        '(file)',
+        `Character creation needs at least one ${COLLECTIONS[kind].label}`,
+        `add a file to data/${kind}/`,
+      );
+    }
+  }
+
+  const birthplaceRaces = new Set<string>();
+  for (const [, entry] of parsed.birthplaces) {
+    for (const race of (entry.value as { races: string[] }).races) birthplaceRaces.add(race);
+  }
+  const heightOptions = appearance?.fields.find((f) => f.id === 'height')?.options ?? [];
+  for (const [id, entry] of parsed.races) {
+    const race = entry.value as { heights: Record<string, unknown> };
+    if (parsed.birthplaces.size > 0 && !birthplaceRaces.has(id)) {
+      error(
+        entry.file,
+        fieldOf(entry, 'id'),
+        `No birthplace lists "${id}", so this race can never be born`,
+        'add it to the "races" of at least one file in data/birthplaces/',
+      );
+    }
+    for (const option of heightOptions) {
+      if (!(option.id in race.heights)) {
         error(
           entry.file,
-          `${index}${index !== '' ? '.' : ''}${ref.field}`,
-          `Unknown ${TARGET_LABEL[ref.target]} "${ref.id}"`,
-          guess.length > 0
-            ? `did you mean ${guess.map((g) => `"${g}"`).join(' or ')}?`
-            : `no ${TARGET_LABEL[ref.target]} with that id exists in data/${ref.target}/`,
+          fieldOf(entry, 'heights'),
+          `Missing the "${option.id}" height class`,
+          'every race gives a centimetre range for each height option in data/appearance.json',
         );
       }
+    }
+    if (appearance) {
+      for (const field of appearance.fields) {
+        const usable = field.options.some(
+          (o) =>
+            o.weight > 0 &&
+            o.minAge === 0 &&
+            (o.races.length === 0 || o.races.includes(id)) &&
+            !o.notRaces.includes(id),
+        );
+        if (!usable) {
+          error(
+            'data/appearance.json',
+            `fields.${field.id}`,
+            `No option of "${field.id}" is available to "${id}" at birth`,
+            'every race needs at least one option per field with weight above 0 and no minimum age',
+          );
+        }
+      }
+    }
+  }
+
+  for (const [, entry] of parsed.traits) {
+    const trait = entry.value as { id: string; excludes: string[] };
+    if (trait.excludes.includes(trait.id)) {
+      error(entry.file, fieldOf(entry, 'excludes'), 'A trait cannot exclude itself');
+    }
+  }
+
+  if (creation && calendar) {
+    const presentYear = Math.floor(calendar.presentTick / 12);
+    const { entry, defaults } = creation;
+    if (entry.maxYear >= presentYear) {
+      error(
+        'data/creation.json',
+        'entry.maxYear',
+        `The last entry year (${entry.maxYear}) must come before the present (Year ${presentYear})`,
+      );
+    }
+    if (entry.minYear > entry.maxYear || entry.minAge > entry.maxAge) {
+      error('data/creation.json', 'entry', 'Each minimum must not be greater than its maximum');
+    }
+    if (defaults.entryYear < entry.minYear || defaults.entryYear > entry.maxYear) {
+      error('data/creation.json', 'defaults.entryYear', 'The default entry year is out of range');
+    }
+    if (defaults.entryAge < entry.minAge || defaults.entryAge > entry.maxAge) {
+      error('data/creation.json', 'defaults.entryAge', 'The default entry age is out of range');
     }
   }
 
@@ -249,19 +391,16 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     return out;
   };
 
-  const data: GameData | null =
-    ok &&
-    singletons['data/calendar.json'] !== undefined &&
-    singletons['data/settings.json'] !== undefined
-      ? ({
-          calendar: singletons['data/calendar.json'],
-          settings: singletons['data/settings.json'],
-          traits: toRecord('traits'),
-          weapons: toRecord('weapons'),
-          locations: toRecord('locations'),
-          events: toRecord('events'),
-        } as GameData)
-      : null;
+  let data: GameData | null = null;
+  const allSingletons = Object.keys(SINGLETONS).every((path) => path in singletons);
+  if (ok && allSingletons) {
+    const assembled: Record<string, unknown> = {};
+    for (const [path, { key }] of Object.entries(SINGLETONS)) {
+      assembled[key] = singletons[path as SingletonPath];
+    }
+    for (const kind of COLLECTION_KINDS) assembled[kind] = toRecord(kind);
+    data = assembled as unknown as GameData;
+  }
 
   return { ok, issues, data, dataHash, fileCount: files.length, counts };
 }

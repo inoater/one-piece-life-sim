@@ -1,0 +1,41 @@
+{
+  "id": "race_human",
+  "name": "Human",
+  "adjective": "human",
+  "noun": {
+    "he": "human",
+    "she": "human",
+    "they": "human"
+  },
+  "description": "The most numerous people of the seas. No race-wide strengths, and no limits either: they adapt to anything.",
+  "capMods": {},
+  "innateTraits": ["trait_adaptable"],
+  "anchors": {
+    "childEnds": 12,
+    "primeStarts": 20,
+    "elderStarts": 60
+  },
+  "lifespan": {
+    "min": 70,
+    "max": 90
+  },
+  "weight": 50,
+  "heights": {
+    "short": {
+      "min": 150,
+      "max": 164
+    },
+    "average": {
+      "min": 165,
+      "max": 179
+    },
+    "tall": {
+      "min": 180,
+      "max": 194
+    },
+    "towering": {
+      "min": 195,
+      "max": 240
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "bp_marine_base_town",
+  "name": "A Marine base town",
+  "shortName": "Marine base",
+  "home": "the base town",
+  "bornIn": "in a Marine base town",
+  "region": "paradise",
+  "description": "A town that grew up around a Marine base: drill at dawn, curfew at dusk, and a recruitment office on the main square.",
+  "opens": "The Marine recruit path",
+  "wealth": "medium",
+  "safety": "high",
+  "races": ["race_human"],
+  "traitPool": ["trait_disciplined", "trait_loyal"],
+  "namePool": "names_grand_line",
+  "childhood": {
+    "endurance": 2,
+    "strength": 1,
+    "willpower": 2,
+    "dexterity": 1
+  },
+  "legacyWeights": {
+    "legacy_marine_veteran": 5,
+    "legacy_pirate_parent": 0.4
+  },
+  "focusWeights": {
+    "focus_fighter": 2
+  },
+  "eventTags": {
+    "marines": 4,
+    "discipline": 2
+  }
+}

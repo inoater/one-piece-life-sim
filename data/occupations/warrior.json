@@ -1,0 +1,7 @@
+{
+  "id": "occ_warrior",
+  "name": "warrior of the hall",
+  "places": ["bp_elbaf_highlands"],
+  "wealth": ["poor", "modest", "comfortable"],
+  "weight": 3
+}

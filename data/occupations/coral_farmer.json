@@ -1,0 +1,7 @@
+{
+  "id": "occ_coral_farmer",
+  "name": "coral farmer",
+  "places": ["bp_fishman_island"],
+  "wealth": ["indebted", "destitute", "poor", "modest"],
+  "weight": 2
+}

@@ -1,0 +1,6 @@
+{
+  "id": "occ_shopkeeper",
+  "name": "shopkeeper",
+  "wealth": ["poor", "modest", "comfortable"],
+  "weight": 2
+}

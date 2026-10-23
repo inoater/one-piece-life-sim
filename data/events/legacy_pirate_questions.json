@@ -1,0 +1,67 @@
+{
+  "id": "evt_legacy_pirate_questions",
+  "type": "personal",
+  "title": "The Marine at the door",
+  "text": "A Marine officer knocks, asking where {legacy.parentName} has gone. The wanted poster in their hand has your family's name on it.",
+  "choices": [
+    {
+      "id": "truth",
+      "label": "Tell the truth",
+      "text": "You do not know, and you say so.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "legacy.pirate.answer",
+          "value": "truth"
+        },
+        {
+          "kind": "log",
+          "text": "The officer believes you, which somehow makes it worse.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    },
+    {
+      "id": "lie",
+      "label": "Send them the wrong way",
+      "text": "A false lead, given with a straight face.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "legacy.pirate.answer",
+          "value": "lie"
+        },
+        {
+          "kind": "log",
+          "text": "You send the Marines toward the wrong island and do not sleep that night.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    },
+    {
+      "id": "silent",
+      "label": "Shut the door",
+      "text": "Say nothing at all.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "legacy.pirate.answer",
+          "value": "silent"
+        },
+        {
+          "kind": "log",
+          "text": "You shut the door in the officer's face. They write something down.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "kind": "schedule",
+      "eventId": "evt_legacy_pirate_poster",
+      "afterMonths": 8
+    }
+  ],
+  "tags": ["legacy", "pirates", "personal"]
+}

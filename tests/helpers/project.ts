@@ -21,7 +21,12 @@ export function copyProject(): string {
     recursive: true,
     filter: (source) => !SKIP.has(relative(ROOT, source).split(sep)[0] ?? ''),
   });
-  symlinkSync(join(ROOT, 'node_modules'), join(dir, 'node_modules'), 'dir');
+  // A directory symlink needs administrator rights on Windows; a junction does the same job without them.
+  symlinkSync(
+    join(ROOT, 'node_modules'),
+    join(dir, 'node_modules'),
+    process.platform === 'win32' ? 'junction' : 'dir',
+  );
   return dir;
 }
 

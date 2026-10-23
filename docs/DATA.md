@@ -6,12 +6,17 @@ checked against a schema when the game starts, in `npm run validate`, in the pre
 
 ## Layout
 
-| Path                                                | Holds                                             | Status                                            |
-| --------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
-| `data/calendar.json`                                | `canonYearOffset`, `presentTick`, months, seasons | required                                          |
-| `data/settings.json`                                | tier cadence, save slots, skip lengths, UI tails  | required                                          |
-| `data/traits/`, `weapons/`, `locations/`, `events/` | one item per file, or an array of items           | schemas exist                                     |
-| `data/races/`, `canon/`, `fruits/`, `news/`         | _reserved_                                        | **files here are rejected until a schema exists** |
+| Path                                                 | Holds                                                           | Status                                            |
+| ---------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------- |
+| `data/calendar.json`                                 | `canonYearOffset`, `presentTick`, months, seasons               | required                                          |
+| `data/settings.json`                                 | tier cadence, save slots, skip lengths, UI tails                | required                                          |
+| `data/character.json`                                | caps, growth, talent tiers, life stages, derived                | required (Phase 1)                                |
+| `data/creation.json`                                 | entry limits, canon modes, difficulty, wealth, family, backfill | required (Phase 1)                                |
+| `data/appearance.json`                               | appearance fields, options, the sentence                        | required (Phase 1)                                |
+| `data/traits/`, `weapons/`, `locations/`, `events/`  | one item per file, or an array of items                         | schemas exist                                     |
+| `data/races/`, `birthplaces/`, `legacies/`           | character genesis                                               | schemas exist (Phase 1)                           |
+| `data/occupations/`, `names/`, `foci/`, `backstory/` | character genesis                                               | schemas exist (Phase 1)                           |
+| `data/canon/`, `fruits/`, `news/`                    | _reserved_                                                      | **files here are rejected until a schema exists** |
 
 A file may hold one object or an array of objects. Subfolders are fine. By convention a single-item file
 is named after its id without the prefix: `data/traits/test_brawler.json` defines `trait_test_brawler`
@@ -48,7 +53,12 @@ trait, island or follow-up event that exists (`conditions[].trait`, `conditions[
 ## Text templates
 
 Event text, log lines and news may contain `{variables}`: `{date}`, `{year}`, `{month}`, `{monthName}`,
-`{season}`. Write `{{` and `}}` for literal braces. A typo such as `{monthname}` is a validation error that
+`{season}`, and since Phase 1 `{player.name}`, `{player.givenName}`, `{player.familyName}`,
+`{player.race}`, `{player.home}`, `{legacy.parent}` ("your mother") and `{legacy.parentName}`.
+Backstory text has its own set: `{age}`, `{home}`, `{race}`, `{familyName}`, `{parent}`,
+`{parentName}`, `{sibling}`, `{other}`, `{monthName}`, `{season}`; the appearance sentence has
+`{a}`, `{adjectives}`, `{noun}`, `{face}`, `{skin}`, `{hair}`, `{eyes}`, `{extras}`. Write `{{` and `}}`
+for literal braces. A typo such as `{monthname}` is a validation error that
 names the file and field, not "undefined" in the middle of a story. New variables are added to
 `TEMPLATE_VARS` in `src/engine/template.ts`.
 
@@ -87,10 +97,32 @@ names the file and field, not "undefined" in the middle of a story. New variable
 - `afterMonths` counts from the month the effect is applied and must be at least 1, so a chain can never
   loop inside one tick. A secret event cannot have `news`.
 
+## Character genesis (Phase 1)
+
+How the files fit together, and the rules the loader enforces beyond each schema:
+
+- **Races** give cap modifiers (percent), racial traits, three life-stage anchors, a lifespan and a
+  centimetre range for each height class. Every race must be listed by at least one birthplace, and
+  give a range for every height option.
+- **Birthplaces** list the races born there, a trait pool, a name pool, and multipliers: on family
+  legacies, backstory foci, backstory event tags and appearance options. `home` is how a story names
+  it mid-sentence ("the village"); `bornIn` carries its preposition ("on an island in the New World").
+- **Legacies** (family hooks) give starting Berries, a wealth shift, a trait pool, the parent who
+  carries the legacy (or a guardian, for an orphan) and an event `chain` that fires at an age. Its
+  `pastText` has no age in it: the backstory adds "At sixteen, ".
+- **Backstory events** are written in the second person, past tense, as a full sentence. `ages` are
+  human-equivalent years (a giant's are converted). A text that uses `{other}` needs a
+  `relationship` (or `relationDies`) effect; `{parent}` needs `"parentAlive": true` or a
+  `parentDies` effect; `{sibling}` needs `"hasSibling": true`. The schema checks all three.
+- **Multiplier keys** for appearance are `"field.option"` (`"hairColor.white"`) or `"tag:name"`
+  (`"tag:scar"`); both are checked against `appearance.json`.
+- Every number is a design value to tune. `npm run genesis` and the Genesis debug tab show what
+  potential the data produces for each race.
+
 ## Dev fixtures
 
 Everything named `test_*` is a fixture for the debug panel and the tests (a test entity whose strength is
 `50 + 12 training + 8 Brawler + 4 Cutlass = 74`, a chain of events, a secret event). They contain no lore.
 They are bundled into the worker in every build but cannot fire in production, because forcing an event is a
-debug action the worker refuses. Delete them when real content makes them redundant, and update
+debug action the worker refuses. The test traits have `"weight": 0`, so character genesis never draws them. Delete them when real content makes them redundant, and update
 `src/systems/devtools.ts` and the tests that name them.

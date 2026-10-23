@@ -1,0 +1,35 @@
+{
+  "id": "legacy_craftsman_family",
+  "name": "Craftsman family",
+  "description": "A family with its own workshop, its own tools and its own way of doing things, passed from hand to hand.",
+  "weight": 1.2,
+  "berries": {
+    "min": 2000,
+    "max": 10000
+  },
+  "traitPool": ["trait_steady_hands", "trait_eye_for_detail"],
+  "parent": {
+    "role": "either",
+    "occupation": "occ_craftsman",
+    "title": "an artisan who runs the family workshop"
+  },
+  "childhood": {
+    "dexterity": 3,
+    "intellect": 1,
+    "strength": 1
+  },
+  "focusWeights": {
+    "focus_laborer": 2,
+    "focus_scholar": 1.5
+  },
+  "eventTags": {
+    "craft": 3,
+    "workshop": 3
+  },
+  "chain": {
+    "eventId": "evt_legacy_craftsman_apprentice",
+    "atAge": 14,
+    "pastText": "{parent} offered you a place at the workbench as an apprentice.",
+    "requiresParent": true
+  }
+}

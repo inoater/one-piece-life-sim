@@ -1,0 +1,46 @@
+{
+  "id": "race_tontatta",
+  "name": "Dwarf (Tontatta)",
+  "adjective": "dwarf",
+  "noun": {
+    "he": "dwarf",
+    "she": "dwarf",
+    "they": "dwarf"
+  },
+  "description": "Tiny, quick and astonishingly strong for their size, though no match for a human in raw strength. Hard to see, harder to catch, and famously trusting.",
+  "capMods": {
+    "speed": 30,
+    "dexterity": 20,
+    "strength": -40
+  },
+  "innateTraits": ["trait_tiny"],
+  "anchors": {
+    "childEnds": 10,
+    "primeStarts": 16,
+    "elderStarts": 55
+  },
+  "lifespan": {
+    "min": 60,
+    "max": 80
+  },
+  "weight": 5,
+  "namePool": "names_tontatta",
+  "heights": {
+    "short": {
+      "min": 15,
+      "max": 19
+    },
+    "average": {
+      "min": 20,
+      "max": 24
+    },
+    "tall": {
+      "min": 25,
+      "max": 30
+    },
+    "towering": {
+      "min": 31,
+      "max": 40
+    }
+  }
+}

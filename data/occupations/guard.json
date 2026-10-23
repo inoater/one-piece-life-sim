@@ -1,0 +1,6 @@
+{
+  "id": "occ_guard",
+  "name": "town guard",
+  "places": ["bp_west_blue_port", "bp_north_blue_town", "bp_grand_line_island"],
+  "wealth": ["poor", "modest", "comfortable"]
+}

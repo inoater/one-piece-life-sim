@@ -1,0 +1,134 @@
+[
+  {
+    "id": "trait_survivor",
+    "name": "Survivor",
+    "description": "Came through something that should have killed them.",
+    "category": "backstory",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 3,
+        "kind": "flat"
+      },
+      {
+        "stat": "durability",
+        "value": 2,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_street_fighter",
+    "name": "Street Fighter",
+    "description": "Learned to fight where there are no rules.",
+    "category": "backstory",
+    "statMods": [
+      {
+        "stat": "strength",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "durability",
+        "value": 2,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_bookworm",
+    "name": "Bookworm",
+    "description": "Spent more time with books than with people.",
+    "category": "backstory",
+    "statMods": [
+      {
+        "stat": "intellect",
+        "value": 3,
+        "kind": "flat"
+      },
+      {
+        "stat": "speed",
+        "value": -1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_seasoned_sailor",
+    "name": "Seasoned Sailor",
+    "description": "Has crossed open water more than once and knows a ship inside out.",
+    "category": "backstory",
+    "statMods": [
+      {
+        "stat": "endurance",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "perception",
+        "value": 1,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "sea_legs": true
+    }
+  },
+  {
+    "id": "trait_bereaved",
+    "name": "Bereaved",
+    "description": "Lost someone too early, and has carried it since.",
+    "category": "backstory",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "charisma",
+        "value": -1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_well_travelled",
+    "name": "Well-Travelled",
+    "description": "Has seen more islands than most people have heard of.",
+    "category": "backstory",
+    "statMods": [
+      {
+        "stat": "intellect",
+        "value": 1,
+        "kind": "flat"
+      },
+      {
+        "stat": "perception",
+        "value": 1,
+        "kind": "flat"
+      },
+      {
+        "stat": "charisma",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_wanted",
+    "name": "Wanted",
+    "description": "There is a poster somewhere with their face on it.",
+    "category": "backstory",
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": 1,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "infamy.wanted": true
+    }
+  }
+]

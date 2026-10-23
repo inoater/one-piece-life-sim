@@ -1,0 +1,36 @@
+{
+  "id": "legacy_orphan",
+  "name": "Orphan",
+  "description": "No parents anyone could name. Raised by an orphanage and whatever kindness was going.",
+  "weight": 0.8,
+  "berries": {
+    "min": 0,
+    "max": 500
+  },
+  "wealthFixed": "destitute",
+  "traitPool": ["trait_self_reliant", "trait_guarded"],
+  "guardian": {
+    "occupation": "occ_orphanage_keeper",
+    "title": "the keeper of an orphanage"
+  },
+  "childhood": {
+    "endurance": 2,
+    "perception": 2,
+    "willpower": 1,
+    "dexterity": 1
+  },
+  "focusWeights": {
+    "focus_criminal": 2,
+    "focus_laborer": 1.5
+  },
+  "eventTags": {
+    "hardship": 1.5,
+    "crime": 1.5,
+    "street": 2
+  },
+  "chain": {
+    "eventId": "evt_legacy_orphan_box",
+    "atAge": 14,
+    "pastText": "A stranger left a sealed box addressed to you. You still have not decided what to make of what was inside."
+  }
+}

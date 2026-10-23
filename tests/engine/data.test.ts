@@ -21,13 +21,25 @@ describe('the real data', () => {
     const result = loadGameData(rawFiles);
     expect(result.issues.filter((i) => i.severity === 'error')).toEqual([]);
     expect(result.ok).toBe(true);
-    expect(result.counts).toEqual({ traits: 2, weapons: 1, locations: 1, events: 4 });
-    expect(Object.keys(result.data?.events ?? {}).sort()).toEqual([
-      'evt_test_aftermath',
-      'evt_test_crossroads',
-      'evt_test_notice',
-      'evt_test_secret',
-    ]);
+    // Every item in every folder was loaded: counted independently from the files on disk.
+    const onDisk: Record<string, number> = {};
+    for (const file of rawFiles) {
+      const dir = /^data\/([^/]+)\//.exec(file.path)?.[1];
+      if (!dir || !file.path.endsWith('.json')) continue;
+      onDisk[dir] = (onDisk[dir] ?? 0) + (Array.isArray(file.content) ? file.content.length : 1);
+    }
+    expect(result.counts).toEqual(onDisk);
+    expect(Object.keys(result.data?.events ?? {})).toEqual(
+      expect.arrayContaining([
+        'evt_test_aftermath',
+        'evt_test_crossroads',
+        'evt_test_notice',
+        'evt_test_secret',
+      ]),
+    );
+    expect(Object.keys(result.data?.traits ?? {})).toEqual(
+      expect.arrayContaining(['trait_test_brawler', 'trait_test_quick']),
+    );
   });
 
   it('fills defaults from the schema', () => {
@@ -243,7 +255,7 @@ describe('whole-file problems', () => {
   });
 
   it('rejects content in folders that have no schema yet', () => {
-    for (const dir of ['races', 'canon', 'fruits', 'news']) {
+    for (const dir of ['canon', 'fruits', 'news']) {
       const files = clone();
       files.push({ path: `data/${dir}/thing.json`, content: { id: 'x' } });
       const issue = errors(files).find((i) => i.file === `data/${dir}/thing.json`);

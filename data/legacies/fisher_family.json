@@ -1,0 +1,40 @@
+{
+  "id": "legacy_fisher_family",
+  "name": "Fisher family",
+  "description": "A family that has fished the same waters for generations, with one small boat and a lot of mended nets.",
+  "weight": 1.2,
+  "berries": {
+    "min": 500,
+    "max": 4000
+  },
+  "traitPool": ["trait_net_hands", "trait_fishers_patience"],
+  "parent": {
+    "role": "either",
+    "occupation": "occ_fisher",
+    "title": "a fisher who owns a small boat"
+  },
+  "childhood": {
+    "endurance": 3,
+    "strength": 1,
+    "speed": 1,
+    "dexterity": 1
+  },
+  "focusWeights": {
+    "focus_sailor": 3,
+    "focus_laborer": 1.5
+  },
+  "eventTags": {
+    "sea": 2.5,
+    "fishing": 3
+  },
+  "appearanceWeights": {
+    "complexion.weathered": 1.5,
+    "complexion.sunburnt": 1.5
+  },
+  "chain": {
+    "eventId": "evt_legacy_fisher_boat",
+    "atAge": 13,
+    "pastText": "You became the second pair of hands on {parent}'s boat.",
+    "requiresParent": true
+  }
+}

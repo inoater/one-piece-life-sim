@@ -1,0 +1,45 @@
+{
+  "id": "race_skypiean",
+  "name": "Skypiean",
+  "adjective": "skypiean",
+  "noun": {
+    "he": "skypiean",
+    "she": "skypiean",
+    "they": "skypiean"
+  },
+  "description": "Winged people of the islands in the clouds. Their wings are too small to fly with, but many are born able to sense the voices of others: Mantra.",
+  "capMods": {
+    "perception": 20,
+    "dexterity": 10
+  },
+  "innateTraits": ["trait_mantra"],
+  "anchors": {
+    "childEnds": 12,
+    "primeStarts": 20,
+    "elderStarts": 65
+  },
+  "lifespan": {
+    "min": 70,
+    "max": 90
+  },
+  "weight": 6,
+  "namePool": "names_sky",
+  "heights": {
+    "short": {
+      "min": 148,
+      "max": 162
+    },
+    "average": {
+      "min": 163,
+      "max": 177
+    },
+    "tall": {
+      "min": 178,
+      "max": 192
+    },
+    "towering": {
+      "min": 193,
+      "max": 225
+    }
+  }
+}

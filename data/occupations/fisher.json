@@ -1,0 +1,14 @@
+{
+  "id": "occ_fisher",
+  "name": "fisher",
+  "places": [
+    "bp_east_blue_village",
+    "bp_grand_line_island",
+    "bp_south_blue_island",
+    "bp_fishman_island",
+    "bp_north_blue_town",
+    "bp_new_world_island"
+  ],
+  "wealth": ["indebted", "destitute", "poor", "modest"],
+  "weight": 3
+}

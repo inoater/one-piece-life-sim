@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { FlagValueSchema } from '../state';
+import { FlagValueSchema, PRONOUNS, SCAR_AREAS } from '../state';
 import { STAT_IDS } from '../stats';
-import { checkTemplate } from '../template';
+import { APPEARANCE_VARS, BACKSTORY_VARS, checkTemplate, templateVarsUsed } from '../template';
 
 /**
  * Schemas for the content files in /data (rule 1: data, not code).
@@ -19,13 +19,42 @@ const slug = (prefix: string) =>
     message: `must look like "${prefix}_snake_case_name" (lowercase letters, digits and underscores)`,
   });
 
-/** A string that may contain {variables}; checked against the template registry. */
-const template = z
+/** A string that may contain {variables}; checked against a template registry. */
+const templateOf = (known?: readonly string[]) =>
+  z
+    .string()
+    .min(1)
+    .superRefine((text, ctx) => {
+      for (const problem of checkTemplate(text, known))
+        ctx.addIssue({ code: 'custom', message: problem });
+    });
+
+/** Event, log and news text (rendered while the world runs). */
+const template = templateOf();
+/** Backstory text (rendered while a character's past is generated). */
+const backstoryTemplate = templateOf(BACKSTORY_VARS);
+
+/** A lowercase flag name such as "haki.observation". */
+const flagName = z
   .string()
-  .min(1)
-  .superRefine((text, ctx) => {
-    for (const problem of checkTemplate(text)) ctx.addIssue({ code: 'custom', message: problem });
-  });
+  .regex(/^[a-z0-9_.]+$/, { message: 'flag names use lowercase letters, digits, "_" and "."' });
+
+const statId = z.enum(STAT_IDS);
+/** stat -> number, for only the stats that are mentioned. */
+const statNumbers = z.partialRecord(statId, z.number()).default({});
+/** stat -> weight (0 or more), for only the stats that are mentioned. */
+const statWeights = z.partialRecord(statId, z.number().min(0)).default({});
+/** Anything -> multiplier: "how much more (or less) likely". */
+const multipliers = z.record(z.string().min(1), z.number().min(0)).default({});
+const range = (min = -Infinity) =>
+  z
+    .strictObject({ min: z.number().min(min), max: z.number().min(min) })
+    .refine((r) => r.min <= r.max, { message: 'min must not be greater than max' });
+const intRange = (min = -Infinity) =>
+  z
+    .strictObject({ min: z.number().int().min(min), max: z.number().int().min(min) })
+    .refine((r) => r.min <= r.max, { message: 'min must not be greater than max' });
+const nonEmptyText = z.string().min(1);
 
 const tags = z.array(z.string().min(1)).default([]);
 const monthIndex = z.number().int().min(1).max(12);
@@ -141,13 +170,39 @@ export const REGIONS = [
 // traits, weapons, locations
 // ---------------------------------------------------------------------------------------------
 
+/**
+ * Where a trait comes from. `racial` traits come with a race and do not use a trait slot; a new
+ * character draws one `innate` (their nature), one `birth` (from the birthplace's pool), one
+ * `family` (from the family legacy) and up to one `quirk`. `backstory` traits are earned.
+ */
+export const TRAIT_CATEGORIES = [
+  'racial',
+  'innate',
+  'birth',
+  'family',
+  'quirk',
+  'backstory',
+] as const;
+
 export const TraitSchema = z.strictObject({
   id: slug('trait'),
   name: z.string().min(1),
   description: z.string().min(1),
-  category: z.enum(['innate', 'birth', 'family', 'quirk']),
-  /** In this phase traits only change stats; full trait mechanics come later. */
+  category: z.enum(TRAIT_CATEGORIES),
+  /** Modifiers on current stats. Full trait mechanics arrive in Phase 4. */
   statMods: z.array(StatModDefSchema).default([]),
+  /** Percentage changes to a stat's hidden potential (its ceiling). */
+  potentialMods: z.array(z.strictObject({ stat: statId, pct: z.number() })).default([]),
+  /** Percentage added to every training gain ("Adaptable: +10% training gain"). */
+  trainingGainPct: z.number().default(0),
+  /** Flags set on the character: abilities later phases unlock ("haki.observation": 1). */
+  flags: z.record(flagName, FlagValueSchema).default({}),
+  /** Traits that cannot be held together with this one (Sturdy and Frail). Checked both ways. */
+  excludes: z.array(slug('trait')).default([]),
+  /** Backstory event tag -> weight multiplier ("hardship": 1.5 makes hard years likelier). */
+  eventWeights: multipliers,
+  /** Relative chance of being drawn from a pool. */
+  weight: z.number().min(0).default(1),
   tags,
 });
 export type Trait = z.infer<typeof TraitSchema>;
@@ -186,9 +241,7 @@ export const EffectSchema = z.discriminatedUnion('kind', [
   z.strictObject({ kind: z.literal('log'), text: template, tags }),
   z.strictObject({
     kind: z.literal('setFlag'),
-    flag: z
-      .string()
-      .regex(/^[a-z0-9_.]+$/, { message: 'flag names use lowercase letters, digits, "_" and "."' }),
+    flag: flagName,
     value: FlagValueSchema,
   }),
   z.strictObject({
@@ -253,26 +306,752 @@ export const EventSchema = z
 export type EventDef = z.infer<typeof EventSchema>;
 
 // ---------------------------------------------------------------------------------------------
+// Character genesis (Phase 1): races, birthplaces, family legacies, occupations, names, backstory
+// foci and backstory events. All numbers are design values to tune, not canon facts.
+// ---------------------------------------------------------------------------------------------
+
+const pronounNouns = z.strictObject({ he: nonEmptyText, she: nonEmptyText, they: nonEmptyText });
+
+export const RaceSchema = z.strictObject({
+  id: slug('race'),
+  name: nonEmptyText,
+  /** "fish-man" in "a fish-man boy". */
+  adjective: nonEmptyText,
+  /** The adult noun by pronoun: "merman", "mermaid", "merfolk". */
+  noun: pronounNouns,
+  description: nonEmptyText,
+  /** Percentage change to each stat's cap ("Str +30%"). Missing stats are +0%. */
+  capMods: statNumbers,
+  /** Racial traits every member is born with (category "racial"). */
+  innateTraits: z.array(slug('trait')).default([]),
+  /**
+   * Years at which childhood ends, prime starts and elder years start. Every other stage
+   * boundary is scaled from the human table in proportion (see src/systems/genesis/stages.ts).
+   */
+  anchors: z
+    .strictObject({
+      childEnds: z.number().int().min(1),
+      primeStarts: z.number().int().min(1),
+      elderStarts: z.number().int().min(1),
+    })
+    .refine((a) => a.childEnds < a.primeStarts && a.primeStarts < a.elderStarts, {
+      message: 'anchors must increase: childEnds < primeStarts < elderStarts',
+    }),
+  lifespan: intRange(1),
+  /** Rare races are only offered when world setup allows them. */
+  rare: z.boolean().default(false),
+  /** Relative chance when the race is rolled at random. */
+  weight: z.number().min(0).default(1),
+  /** Height class id (from appearance.json) -> range in centimetres. */
+  heights: z.record(z.string(), intRange(1)),
+  /** What covers the body in the appearance sentence: "skin", "fur". */
+  skinNoun: nonEmptyText.default('skin'),
+  /** Overrides the birthplace's name pool (Fish-Man names wherever a Fish-Man is born). */
+  namePool: slug('names').optional(),
+  /** Appearance weight multipliers: "hairColor.white", or "tag:rare" for every option tagged rare. */
+  appearanceWeights: multipliers,
+  tags,
+});
+export type Race = z.infer<typeof RaceSchema>;
+
+export const WEALTH_LEVELS = ['low', 'medium', 'high'] as const;
+export const SAFETY_LEVELS = ['very_low', 'low', 'medium', 'high'] as const;
+
+export const BirthplaceSchema = z.strictObject({
+  id: slug('bp'),
+  name: nonEmptyText,
+  /** For the header: "East Blue". */
+  shortName: nonEmptyText,
+  /** How a story names it mid-sentence, filling {home}: "the village", "Wano". */
+  home: nonEmptyText,
+  /** Where someone is born, with its preposition: "on an island in the New World". */
+  bornIn: nonEmptyText,
+  region: z.enum(REGIONS),
+  description: nonEmptyText,
+  /** What a start here opens up ("Fishing and farm jobs, a quiet start"). */
+  opens: nonEmptyText,
+  wealth: z.enum(WEALTH_LEVELS),
+  safety: z.enum(SAFETY_LEVELS),
+  /** Which races can be born here. Every race must have at least one birthplace. */
+  races: z.array(slug('race')).min(1),
+  /** The "birth" trait is drawn from here. */
+  traitPool: z.array(slug('trait')).min(1),
+  namePool: slug('names'),
+  /** Percentage change to potential ("the birthplace modifier"). */
+  potentialMods: statNumbers,
+  /** How fast children grow up here: hard places and good food both show. 1 is neutral. */
+  growthIntensity: z.number().min(0.5).max(1.5).default(1),
+  /** Which stats childhood play and chores train (weights). */
+  childhood: statWeights,
+  /** Family legacy id -> multiplier on its chance here. */
+  legacyWeights: multipliers,
+  /** Focus id -> multiplier, used when the backstory focus is Random. */
+  focusWeights: multipliers,
+  /** Backstory event tag -> multiplier ("sea": 2 near the sea). */
+  eventTags: multipliers,
+  appearanceWeights: multipliers,
+  /** Flags every character born here starts with ("wano.closed": leaving needs an event chain). */
+  flags: z.record(flagName, FlagValueSchema).default({}),
+  tags,
+});
+export type Birthplace = z.infer<typeof BirthplaceSchema>;
+
+export const LegacySchema = z
+  .strictObject({
+    id: slug('legacy'),
+    name: nonEmptyText,
+    description: nonEmptyText,
+    weight: z.number().min(0).default(1),
+    /** Starting Berries added on top of the wealth tier's. */
+    berries: intRange(),
+    /** Moves the family's wealth tier up or down from what the birthplace would give. */
+    wealthShift: z.number().int().min(-6).max(6).default(0),
+    /** Sets the wealth tier outright (an orphan starts with nothing, wherever they were born). */
+    wealthFixed: z.string().min(1).optional(),
+    traitPool: z.array(slug('trait')).min(1),
+    /** The parent who carries the legacy. Absent for an orphan, whose parents are unknown. */
+    parent: z
+      .strictObject({
+        role: z.enum(['mother', 'father', 'either']),
+        occupation: slug('occ'),
+        /** "present" at home, "absent" (away at sea, in hiding). */
+        status: z.enum(['present', 'absent']).default('present'),
+        /** Shown in the family list: "a retired Marine lieutenant". */
+        title: nonEmptyText,
+        flags: z.record(flagName, FlagValueSchema).default({}),
+        /** A bounty in Berries, set as the "bounty" flag on that parent. */
+        bounty: intRange(0).optional(),
+      })
+      .optional(),
+    /** For an orphan: who raised them. */
+    guardian: z.strictObject({ occupation: slug('occ'), title: nonEmptyText }).optional(),
+    childhood: statWeights,
+    focusWeights: multipliers,
+    eventTags: multipliers,
+    appearanceWeights: multipliers,
+    /**
+     * The event chain the legacy sets off. It is scheduled for the month the character reaches
+     * `atAge`; if that month is already in the past when the story starts, `pastText` joins the
+     * backstory instead.
+     */
+    chain: z
+      .strictObject({
+        eventId: slug('evt'),
+        atAge: z.number().int().min(1).max(120),
+        /** Written without an age: the backstory adds "At sixteen, " itself. */
+        pastText: backstoryTemplate,
+        /** The chain needs the legacy's parent alive (it is their boat, their workshop). */
+        requiresParent: z.boolean().default(false),
+      })
+      .optional(),
+    tags,
+  })
+  .superRefine((legacy, ctx) => {
+    if (!legacy.parent && !legacy.guardian) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['parent'],
+        message: 'a legacy needs a parent who carries it, or a guardian (for an orphan)',
+      });
+    }
+  });
+export type Legacy = z.infer<typeof LegacySchema>;
+
+export const OccupationSchema = z.strictObject({
+  id: slug('occ'),
+  name: nonEmptyText,
+  /** Birthplaces where this work exists. Empty means anywhere. */
+  places: z.array(slug('bp')).default([]),
+  /** Races who do this work. Empty means anyone. */
+  races: z.array(slug('race')).default([]),
+  /** Wealth tier ids this work fits. Empty means any. */
+  wealth: z.array(z.string().min(1)).default([]),
+  /** Only legacies and backstory events give this occupation; it is never rolled for a parent. */
+  special: z.boolean().default(false),
+  weight: z.number().min(0).default(1),
+  tags,
+});
+export type Occupation = z.infer<typeof OccupationSchema>;
+
+export const NamePoolSchema = z.strictObject({
+  id: slug('names'),
+  given: z.strictObject({
+    he: z.array(nonEmptyText).min(1),
+    she: z.array(nonEmptyText).min(1),
+    /** Names that suit anyone; drawn for every pronoun. */
+    any: z.array(nonEmptyText).default([]),
+  }),
+  family: z.array(nonEmptyText).min(1),
+  /** "family-first" writes Kurozumi Aki; "given-first" writes Aki Kurozumi. */
+  order: z.enum(['given-first', 'family-first']).default('given-first'),
+  tags,
+});
+export type NamePool = z.infer<typeof NamePoolSchema>;
+
+export const FocusSchema = z.strictObject({
+  id: slug('focus'),
+  name: nonEmptyText,
+  description: nonEmptyText,
+  /** How a year of this life's training is shared between stats. */
+  training: statWeights,
+  /** Backstory event tag -> multiplier. */
+  eventTags: multipliers,
+  appearanceWeights: multipliers,
+  /** What an adult with this focus puts aside each year, in Berries. */
+  savingsPerYear: intRange(0),
+  weight: z.number().min(0).default(1),
+  tags,
+});
+export type Focus = z.infer<typeof FocusSchema>;
+
+export const BIRTH_ORDERS = ['only', 'eldest', 'middle', 'youngest'] as const;
+
+export const RELATIONSHIP_ROLES = [
+  'mentor',
+  'friend',
+  'rival',
+  'sweetheart',
+  'guardian',
+  'benefactor',
+  'protege',
+] as const;
+
+export const BackstoryEffectSchema = z.discriminatedUnion('kind', [
+  /** Training on top of natural growth, with the usual diminishing returns. */
+  z.strictObject({ kind: z.literal('train'), stats: statNumbers }),
+  /** A permanent, named modifier ("Old knee injury": Speed -2). */
+  z.strictObject({
+    kind: z.literal('mod'),
+    stat: statId,
+    value: z.number(),
+    mod: z.enum(['flat', 'pct']).default('flat'),
+    source: nonEmptyText,
+  }),
+  z.strictObject({ kind: z.literal('trait'), trait: slug('trait') }),
+  /** A scar: written into the appearance and kept on the sheet. */
+  z.strictObject({ kind: z.literal('scar'), area: z.enum(SCAR_AREAS), text: nonEmptyText }),
+  z.strictObject({ kind: z.literal('berries'), min: z.number().int(), max: z.number().int() }),
+  /** Someone outside the family enters the character's life. Fills {other}. */
+  z.strictObject({
+    kind: z.literal('relationship'),
+    role: z.enum(RELATIONSHIP_ROLES),
+    occupation: slug('occ').optional(),
+    opinion: z.number().min(-100).max(100),
+    /** Their age relative to the character's, in years. */
+    ageOffset: intRange(),
+  }),
+  /** A living parent dies. Fills {parent}. */
+  z.strictObject({ kind: z.literal('parentDies'), cause: nonEmptyText }),
+  /** The most recent living person of this relationship dies (a spouse, an old mentor). Fills {other}. */
+  z.strictObject({
+    kind: z.literal('relationDies'),
+    role: z.enum(RELATIONSHIP_ROLES),
+    cause: nonEmptyText,
+  }),
+  z.strictObject({ kind: z.literal('flag'), flag: flagName, value: FlagValueSchema }),
+  /** The family's fortunes change by this many wealth tiers. */
+  z.strictObject({ kind: z.literal('wealth'), shift: z.number().int().min(-3).max(3) }),
+  /** A breakthrough: one stat's potential rises by min..max percent ("random" picks the stat). */
+  z.strictObject({
+    kind: z.literal('potential'),
+    stat: z.union([statId, z.literal('random')]),
+    min: z.number().min(0),
+    max: z.number().min(0),
+  }),
+]);
+export type BackstoryEffect = z.infer<typeof BackstoryEffectSchema>;
+
+export const BackstoryEventSchema = z
+  .strictObject({
+    id: slug('bs'),
+    /** A full sentence in the second person, past tense: "You won a footrace against the harbor kids." */
+    text: backstoryTemplate,
+    /**
+     * Ages (in human-equivalent years) at which this can happen. A Giant's real age is converted
+     * through the race's anchors, so "ages 6-11" means childhood for every race.
+     */
+    ages: intRange(0),
+    weight: z.number().min(0).default(1),
+    /** 0 = everyday, never in the paragraph; 3 = life-defining, always considered for it. */
+    notability: z.number().int().min(0).max(3).default(1),
+    /** Happens at most once per life. */
+    once: z.boolean().default(true),
+    /** For repeatable events: years before it can happen again. */
+    cooldownYears: z.number().int().min(0).default(0),
+    conditions: z
+      .strictObject({
+        races: z.array(slug('race')).default([]),
+        notRaces: z.array(slug('race')).default([]),
+        birthplaces: z.array(slug('bp')).default([]),
+        regions: z.array(z.enum(REGIONS)).default([]),
+        legacies: z.array(slug('legacy')).default([]),
+        foci: z.array(slug('focus')).default([]),
+        /** Wealth tier ids: at least / at most this well off. */
+        wealthMin: z.string().min(1).optional(),
+        wealthMax: z.string().min(1).optional(),
+        traits: z.array(slug('trait')).default([]),
+        notTraits: z.array(slug('trait')).default([]),
+        flags: z.record(flagName, FlagValueSchema).default({}),
+        notFlags: z.array(flagName).default([]),
+        parentAlive: z.boolean().optional(),
+        hasSibling: z.boolean().optional(),
+        birthOrders: z.array(z.enum(BIRTH_ORDERS)).default([]),
+        /** A living person of this relationship exists (for "relationDies"). */
+        hasRelation: z.enum(RELATIONSHIP_ROLES).optional(),
+      })
+      .default({
+        races: [],
+        notRaces: [],
+        birthplaces: [],
+        regions: [],
+        legacies: [],
+        foci: [],
+        traits: [],
+        notTraits: [],
+        flags: {},
+        notFlags: [],
+        birthOrders: [],
+      }),
+    effects: z.array(BackstoryEffectSchema).default([]),
+    tags,
+  })
+  .superRefine((event, ctx) => {
+    const used = templateVarsUsed(event.text);
+    const has = (kind: BackstoryEffect['kind']) => event.effects.some((e) => e.kind === kind);
+    if (used.includes('other') && !has('relationship') && !has('relationDies')) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['text'],
+        message:
+          '{other} names the person a "relationship" or "relationDies" effect involves; add one or drop it',
+      });
+    }
+    for (const [i, effect] of event.effects.entries()) {
+      if (effect.kind === 'relationDies' && event.conditions.hasRelation !== effect.role) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['effects', i, 'role'],
+          message: `a "relationDies" effect needs "hasRelation": "${effect.role}" in the conditions`,
+        });
+      }
+    }
+    if (used.includes('parent') || used.includes('parentName')) {
+      if (!has('parentDies') && event.conditions.parentAlive !== true) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['text'],
+          message:
+            '{parent} needs a living parent: add "parentAlive": true to the conditions, or a "parentDies" effect',
+        });
+      }
+    }
+    if (used.includes('sibling') && event.conditions.hasSibling !== true) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['text'],
+        message: '{sibling} needs "hasSibling": true in the conditions',
+      });
+    }
+    if (
+      event.effects.filter((e) => e.kind === 'relationship' || e.kind === 'relationDies').length > 1
+    ) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['effects'],
+        message: 'one relationship effect per backstory event (there is only one {other})',
+      });
+    }
+    if (has('parentDies') && event.conditions.parentAlive !== true) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['conditions', 'parentAlive'],
+        message: 'a "parentDies" effect needs "parentAlive": true in the conditions',
+      });
+    }
+  });
+export type BackstoryEvent = z.infer<typeof BackstoryEventSchema>;
+
+// ---------------------------------------------------------------------------------------------
+// character.json: growth, potential, talent, life stages and derived values
+// ---------------------------------------------------------------------------------------------
+
+const DerivedSchema = z.strictObject({
+  id: z.string().regex(/^[a-zA-Z]+$/),
+  name: nonEmptyText,
+  constant: z.number(),
+  terms: z
+    .array(
+      z.union([
+        z.strictObject({ stat: statId, factor: z.number() }),
+        z.strictObject({ stat: statId, divide: z.number().positive() }),
+      ]),
+    )
+    .min(1),
+  round: z.enum(['none', 'floor', 'round']).default('none'),
+  /** Shown under the value: "plus weapon, haki and fruit bonuses (later phases)". */
+  note: z.string().optional(),
+});
+export type DerivedDef = z.infer<typeof DerivedSchema>;
+
+export const StageSchema = z.strictObject({
+  id: z.string().regex(/^[a-z_]+$/),
+  name: nonEmptyText,
+  /** First year of this stage for a human. Other races are scaled through their anchors. */
+  fromAge: z.number().int().min(0),
+  /** Natural growth per year, as a fraction of the gap between current and the natural ceiling. */
+  growth: z.number().min(0).max(1),
+  /** Physical stats lose this fraction of their current value per year. */
+  physicalDecline: z.number().min(0).max(1).default(0),
+  mentalDecline: z.number().min(0).max(1).default(0),
+  /** Training efficiency (0 = cannot train). */
+  training: z.number().min(0),
+  /** Chance weights for 0, 1, 2 and 3 backstory events in a year of this stage. */
+  eventsPerYear: z.array(z.number().min(0)).length(4),
+});
+export type StageDef = z.infer<typeof StageSchema>;
+
+export const CharacterRulesSchema = z
+  .strictObject({
+    /** Every race cap is this, plus or minus the race's percentage. */
+    baseCap: z.number().positive(),
+    /** Natural growth alone lifts a stat toward this fraction of potential; training fills the rest. */
+    naturalCeiling: z.number().min(0.05).max(1),
+    /** A newborn starts at this fraction of potential. */
+    birthFraction: range(0),
+    /** The random(0.85-1.15) factor in Potential = race cap x birthplace x talent x random. */
+    potentialRoll: range(0),
+    /** Above this fraction of potential, training gains are multiplied by `factor`. */
+    softCap: z.strictObject({ above: z.number().min(0).max(1), factor: z.number().min(0).max(1) }),
+    /** Decimal places kept on generated stats. */
+    decimals: z.number().int().min(0).max(4),
+    physical: z.array(statId).min(1),
+    mental: z.array(statId).min(1),
+    /** Luck is rolled once and never trained. Hidden from the player. */
+    luck: z.strictObject({
+      mean: z.number(),
+      sd: z.number().min(0),
+      min: z.number(),
+      max: z.number(),
+    }),
+    talentTiers: z
+      .array(
+        z.strictObject({
+          id: z.string().regex(/^[a-z_]+$/),
+          name: nonEmptyText,
+          /** Percent chance; all tiers add up to 100. */
+          chance: z.number().min(0),
+          potentialMult: z.number().positive(),
+          /** Multiplies every training gain. */
+          growthMult: z.number().positive(),
+          /** What the player is told instead of the tier, before and after age 6. */
+          hints: z.strictObject({
+            young: z.array(nonEmptyText).min(1),
+            older: z.array(nonEmptyText).min(1),
+          }),
+        }),
+      )
+      .min(1),
+    /** The human ages the race anchors correspond to. */
+    humanAnchors: z.strictObject({
+      childEnds: z.number().int().min(1),
+      primeStarts: z.number().int().min(1),
+      elderStarts: z.number().int().min(1),
+    }),
+    stages: z.array(StageSchema).min(1),
+    derived: z.array(DerivedSchema).min(1),
+  })
+  .superRefine((rules, ctx) => {
+    const total = rules.talentTiers.reduce((sum, t) => sum + t.chance, 0);
+    if (Math.abs(total - 100) > 1e-9) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['talentTiers'],
+        message: `talent tier chances add up to ${total}, not 100`,
+      });
+    }
+    rules.stages.forEach((stage, i) => {
+      const previous = rules.stages[i - 1];
+      if (i === 0 && stage.fromAge !== 0) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['stages', 0, 'fromAge'],
+          message: 'the first stage must start at age 0',
+        });
+      }
+      if (previous && stage.fromAge <= previous.fromAge) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['stages', i, 'fromAge'],
+          message: 'stages must be in order of age',
+        });
+      }
+    });
+    for (const stat of rules.physical) {
+      if (rules.mental.includes(stat)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['mental'],
+          message: `${stat} cannot be both physical and mental`,
+        });
+      }
+    }
+  });
+export type CharacterRules = z.infer<typeof CharacterRulesSchema>;
+
+// ---------------------------------------------------------------------------------------------
+// creation.json: world setup, entry limits, wealth, families and the backfill pass
+// ---------------------------------------------------------------------------------------------
+
+const choiceList = z
+  .array(
+    z.strictObject({
+      id: z.string().regex(/^[a-z_]+$/),
+      name: nonEmptyText,
+      summary: nonEmptyText,
+    }),
+  )
+  .min(1);
+
+export const CreationSchema = z.strictObject({
+  entry: z.strictObject({
+    minYear: z.number().int().min(0),
+    maxYear: z.number().int().min(0),
+    minAge: z.number().int().min(0),
+    maxAge: z.number().int().min(0),
+    /** A backstory focus is chosen when entering older than this. */
+    focusAboveAge: z.number().int().min(0),
+    /** The focus shapes training from this (human-equivalent) age. */
+    focusFromAge: z.number().int().min(0),
+  }),
+  /** Canon, Probable or Random. Stored now; acted on by the canon layer in Phase 3. */
+  canonModes: choiceList,
+  difficulties: z
+    .array(
+      z.strictObject({
+        id: z.string().regex(/^[a-z_]+$/),
+        name: nonEmptyText,
+        summary: nonEmptyText,
+        berriesMult: z.number().min(0),
+        /** Multiplies the chance of backstory events tagged "hardship". */
+        hardshipMult: z.number().min(0),
+        potentialMult: z.number().positive(),
+        /** (inert) Phase 2 mortality and Phase 3 danger. */
+        mortalityMult: z.number().min(0).default(1),
+        dangerMult: z.number().min(0).default(1),
+      }),
+    )
+    .min(1),
+  defaults: z.strictObject({
+    canonMode: z.string().min(1),
+    difficulty: z.string().min(1),
+    entryYear: z.number().int(),
+    entryAge: z.number().int(),
+    pronouns: z.enum(PRONOUNS),
+  }),
+  /** Poorest first. Their order is their rank. */
+  wealthTiers: z
+    .array(
+      z.strictObject({
+        id: z.string().regex(/^[a-z_]+$/),
+        name: nonEmptyText,
+        berries: intRange(),
+        /** Multiplies natural growth: hunger stunts, plenty helps a little. */
+        growthIntensity: z.number().min(0.5).max(1.5),
+      }),
+    )
+    .min(2),
+  /** Wealth tier weights for a family born somewhere of low, medium or high wealth. */
+  wealthRolls: z.strictObject({
+    low: z.record(z.string(), z.number().min(0)),
+    medium: z.record(z.string(), z.number().min(0)),
+    high: z.record(z.string(), z.number().min(0)),
+  }),
+  /** Multiplier on "hardship" backstory events by birthplace safety. */
+  safetyHardship: z.strictObject({
+    very_low: z.number().min(0),
+    low: z.number().min(0),
+    medium: z.number().min(0),
+    high: z.number().min(0),
+  }),
+  siblings: z.strictObject({
+    /** Weights for 0, 1, 2, 3 and 4 siblings. */
+    count: z.array(z.number().min(0)).length(5),
+    /** Months between one child and the next. */
+    spacingMonths: intRange(9),
+  }),
+  /** A parent's age (human-equivalent years) when the character is born. */
+  parentAge: intRange(10),
+  birthOrder: z.record(
+    z.enum(BIRTH_ORDERS),
+    z.strictObject({
+      label: nonEmptyText,
+      berriesMult: z.number().min(0),
+      flags: z.record(flagName, FlagValueSchema).default({}),
+      /** Backstory event tag -> multiplier (an eldest child carries responsibility). */
+      eventTags: multipliers,
+    }),
+  ),
+  /** Training points a year of focused life is worth, before efficiency and diminishing returns. */
+  trainingPerYear: z.number().min(0),
+  /** Childhood play when neither birthplace nor legacy says otherwise. */
+  childhood: statWeights,
+  /** Chance per year that a parent dies of natural causes, from a human-equivalent age. */
+  parentMortality: z
+    .array(z.strictObject({ fromAge: z.number().int().min(0), chance: z.number().min(0).max(1) }))
+    .min(1),
+  /** How a parent's natural death is written; {parent} is "your mother" and so on. */
+  naturalDeath: z.array(backstoryTemplate).min(1),
+  /** Non-family relationships a new character can start with. */
+  maxRelationships: z.number().int().min(0),
+  /** How many backstory events the written paragraph may mention. */
+  paragraphEvents: z.number().int().min(0),
+  /** Adults start saving from this (human-equivalent) age. */
+  savingsFromAge: z.number().int().min(0),
+  /** A quirk is drawn with this chance (0 to 1). */
+  quirkChance: z.number().min(0).max(1),
+});
+export type Creation = z.infer<typeof CreationSchema>;
+
+// ---------------------------------------------------------------------------------------------
+// appearance.json: appearance fields, their options, and the sentence
+// ---------------------------------------------------------------------------------------------
+
+/** The fields the sentence is written from, in sheet order. Each must be defined exactly once. */
+export const APPEARANCE_FIELDS = [
+  'height',
+  'build',
+  'skin',
+  'complexion',
+  'hairColor',
+  'hairStyle',
+  'eyeColor',
+  'eyeShape',
+  'face',
+  'marks',
+  'feature',
+] as const;
+export type AppearanceField = (typeof APPEARANCE_FIELDS)[number];
+
+export const AppearanceOptionSchema = z.strictObject({
+  id: z.string().regex(/^[a-z0-9_]+$/),
+  /** Written into the sentence. May be empty for "none" options. */
+  text: z.string(),
+  /** Shown in the reroll list when `text` reads oddly alone. */
+  label: z.string().optional(),
+  weight: z.number().min(0).default(1),
+  /** Only these races may have it (empty: any race). */
+  races: z.array(slug('race')).default([]),
+  notRaces: z.array(slug('race')).default([]),
+  /** Not before this age, nor after `maxAge` (human-equivalent years). */
+  minAge: z.number().int().min(0).default(0),
+  maxAge: z.number().int().min(0).optional(),
+  /** From this age, the weight is multiplied (grey hair in later life). */
+  ageMult: z.strictObject({ from: z.number().int().min(0), mult: z.number().min(0) }).optional(),
+  tags,
+});
+export type AppearanceOption = z.infer<typeof AppearanceOptionSchema>;
+
+export const AppearanceSchema = z
+  .strictObject({
+    fields: z
+      .array(
+        z.strictObject({
+          id: z.enum(APPEARANCE_FIELDS),
+          label: nonEmptyText,
+          options: z.array(AppearanceOptionSchema).min(1),
+        }),
+      )
+      .length(APPEARANCE_FIELDS.length),
+    /**
+     * The sentence. Variables: {a} (a or an), {adjectives} ("wiry, tall"), {noun}, {face},
+     * {skin}, {hair}, {eyes}, {extras} (", with ..." or nothing).
+     */
+    sentence: templateOf(APPEARANCE_VARS),
+    /** Stage id -> nouns by pronoun ("baby girl"), used instead of the race's adult noun. */
+    ageNouns: z.record(z.string(), pronounNouns),
+    /**
+     * How tall a child is as a fraction of their adult height, by human-equivalent age. Values
+     * between the listed ages are interpolated; from the last age on, the fraction is 1.
+     */
+    childHeight: z
+      .array(z.strictObject({ age: z.number().min(0), fraction: z.number().min(0).max(1) }))
+      .min(1),
+  })
+  .superRefine((appearance, ctx) => {
+    const seen = new Set<string>();
+    appearance.fields.forEach((field, i) => {
+      if (seen.has(field.id)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['fields', i, 'id'],
+          message: `field "${field.id}" is defined twice`,
+        });
+      }
+      seen.add(field.id);
+      const ids = new Set<string>();
+      field.options.forEach((option, j) => {
+        if (ids.has(option.id)) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['fields', i, 'options', j, 'id'],
+            message: `option "${option.id}" appears twice in ${field.id}`,
+          });
+        }
+        ids.add(option.id);
+      });
+    });
+  });
+export type Appearance = z.infer<typeof AppearanceSchema>;
+
+// ---------------------------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------------------------
 
 /** Directories under /data that hold one or more items per file. */
 export const COLLECTIONS = {
-  traits: { schema: TraitSchema, prefix: 'trait' },
-  weapons: { schema: WeaponSchema, prefix: 'weapon' },
-  locations: { schema: LocationSchema, prefix: 'loc' },
-  events: { schema: EventSchema, prefix: 'evt' },
+  traits: { schema: TraitSchema, prefix: 'trait', label: 'trait' },
+  weapons: { schema: WeaponSchema, prefix: 'weapon', label: 'weapon' },
+  locations: { schema: LocationSchema, prefix: 'loc', label: 'location' },
+  events: { schema: EventSchema, prefix: 'evt', label: 'event' },
+  races: { schema: RaceSchema, prefix: 'race', label: 'race' },
+  birthplaces: { schema: BirthplaceSchema, prefix: 'bp', label: 'birthplace' },
+  legacies: { schema: LegacySchema, prefix: 'legacy', label: 'family legacy' },
+  occupations: { schema: OccupationSchema, prefix: 'occ', label: 'occupation' },
+  names: { schema: NamePoolSchema, prefix: 'names', label: 'name pool' },
+  foci: { schema: FocusSchema, prefix: 'focus', label: 'backstory focus' },
+  backstory: { schema: BackstoryEventSchema, prefix: 'bs', label: 'backstory event' },
 } as const;
 export type CollectionKind = keyof typeof COLLECTIONS;
+export const COLLECTION_KINDS = Object.keys(COLLECTIONS) as CollectionKind[];
+
+/** Single files at the top of /data. Every one is required. */
+export const SINGLETONS = {
+  'data/calendar.json': { key: 'calendar', schema: CalendarSchema },
+  'data/settings.json': { key: 'settings', schema: SettingsSchema },
+  'data/character.json': { key: 'character', schema: CharacterRulesSchema },
+  'data/creation.json': { key: 'creation', schema: CreationSchema },
+  'data/appearance.json': { key: 'appearance', schema: AppearanceSchema },
+} as const;
+export type SingletonPath = keyof typeof SINGLETONS;
 
 /** Directories that exist in the layout but have no schema yet; files placed there are rejected. */
-export const RESERVED_DIRS = ['races', 'canon', 'fruits', 'news'] as const;
+export const RESERVED_DIRS = ['canon', 'fruits', 'news'] as const;
 
 export interface GameData {
   calendar: Calendar;
   settings: Settings;
+  character: CharacterRules;
+  creation: Creation;
+  appearance: Appearance;
   traits: Readonly<Record<string, Trait>>;
   weapons: Readonly<Record<string, Weapon>>;
   locations: Readonly<Record<string, Location>>;
   events: Readonly<Record<string, EventDef>>;
+  races: Readonly<Record<string, Race>>;
+  birthplaces: Readonly<Record<string, Birthplace>>;
+  legacies: Readonly<Record<string, Legacy>>;
+  occupations: Readonly<Record<string, Occupation>>;
+  names: Readonly<Record<string, NamePool>>;
+  foci: Readonly<Record<string, Focus>>;
+  backstory: Readonly<Record<string, BackstoryEvent>>;
 }

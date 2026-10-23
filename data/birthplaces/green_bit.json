@@ -1,0 +1,32 @@
+{
+  "id": "bp_green_bit",
+  "name": "Green Bit (the Tontatta Kingdom)",
+  "shortName": "Green Bit",
+  "home": "Green Bit",
+  "bornIn": "in Green Bit, the Tontatta Kingdom",
+  "region": "new_world",
+  "description": "A tiny kingdom hidden under the roots of an island off Dressrosa, where the dwarves farm, forage and borrow things from the big folk.",
+  "opens": "Foraging, hidden tunnels and borrowed tools",
+  "wealth": "low",
+  "safety": "medium",
+  "races": ["race_tontatta"],
+  "traitPool": ["trait_hard_working", "trait_gullible"],
+  "namePool": "names_tontatta",
+  "childhood": {
+    "speed": 2,
+    "dexterity": 2,
+    "endurance": 1
+  },
+  "legacyWeights": {
+    "legacy_marine_veteran": 0,
+    "legacy_noble_line": 0.3
+  },
+  "focusWeights": {
+    "focus_laborer": 2,
+    "focus_criminal": 1.5
+  },
+  "eventTags": {
+    "tontatta": 4,
+    "forage": 2
+  }
+}

@@ -1,0 +1,244 @@
+[
+  {
+    "id": "trait_sturdy",
+    "name": "Sturdy",
+    "description": "Built to take a knock and get up again.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "durability",
+        "value": 4,
+        "kind": "flat"
+      },
+      {
+        "stat": "endurance",
+        "value": 2,
+        "kind": "flat"
+      }
+    ],
+    "excludes": ["trait_frail"]
+  },
+  {
+    "id": "trait_frail",
+    "name": "Frail",
+    "description": "Bruises easily and tires sooner than most.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "durability",
+        "value": -4,
+        "kind": "flat"
+      },
+      {
+        "stat": "endurance",
+        "value": -2,
+        "kind": "flat"
+      }
+    ],
+    "potentialMods": [
+      {
+        "stat": "durability",
+        "pct": -8
+      }
+    ],
+    "excludes": ["trait_sturdy"],
+    "eventWeights": {
+      "illness": 2
+    }
+  },
+  {
+    "id": "trait_quick_learner",
+    "name": "Quick Learner",
+    "description": "Picks things up fast: +15% to every training gain.",
+    "category": "innate",
+    "trainingGainPct": 15,
+    "excludes": ["trait_slow_starter"]
+  },
+  {
+    "id": "trait_slow_starter",
+    "name": "Slow Starter",
+    "description": "Learns slowly (-10% training gain), but nobody knows yet how far they will go (+5% potential).",
+    "category": "innate",
+    "trainingGainPct": -10,
+    "potentialMods": [
+      {
+        "stat": "strength",
+        "pct": 5
+      },
+      {
+        "stat": "speed",
+        "pct": 5
+      },
+      {
+        "stat": "endurance",
+        "pct": 5
+      },
+      {
+        "stat": "durability",
+        "pct": 5
+      },
+      {
+        "stat": "dexterity",
+        "pct": 5
+      },
+      {
+        "stat": "intellect",
+        "pct": 5
+      },
+      {
+        "stat": "willpower",
+        "pct": 5
+      },
+      {
+        "stat": "charisma",
+        "pct": 5
+      },
+      {
+        "stat": "perception",
+        "pct": 5
+      }
+    ],
+    "excludes": ["trait_quick_learner"]
+  },
+  {
+    "id": "trait_keen_eyed",
+    "name": "Keen-Eyed",
+    "description": "Notices what others miss.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": 4,
+        "kind": "flat"
+      }
+    ],
+    "potentialMods": [
+      {
+        "stat": "perception",
+        "pct": 5
+      }
+    ]
+  },
+  {
+    "id": "trait_lucky",
+    "name": "Lucky",
+    "description": "Things tend to work out. Nobody can say exactly how much.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "luck",
+        "value": 15,
+        "kind": "flat"
+      }
+    ],
+    "excludes": ["trait_unlucky"],
+    "eventWeights": {
+      "luck": 2,
+      "hardship": 0.8
+    }
+  },
+  {
+    "id": "trait_unlucky",
+    "name": "Unlucky",
+    "description": "If something can go wrong, it does, and usually nearby.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "luck",
+        "value": -15,
+        "kind": "flat"
+      }
+    ],
+    "excludes": ["trait_lucky"],
+    "eventWeights": {
+      "hardship": 1.4,
+      "luck": 0.5
+    }
+  },
+  {
+    "id": "trait_landlubber",
+    "name": "Landlubber",
+    "description": "The sea makes them sick and the deck never stops moving.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "endurance",
+        "value": -1,
+        "kind": "flat"
+      }
+    ],
+    "excludes": ["trait_sea_legs"],
+    "eventWeights": {
+      "sea": 0.6
+    }
+  },
+  {
+    "id": "trait_iron_lungs",
+    "name": "Iron Lungs",
+    "description": "Can run, swim or shout for longer than seems possible.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "endurance",
+        "value": 3,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_nimble",
+    "name": "Nimble",
+    "description": "Light on their feet and quick with their hands.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "speed",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "dexterity",
+        "value": 3,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_sharp_mind",
+    "name": "Sharp Mind",
+    "description": "Thinks fast and remembers everything.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "intellect",
+        "value": 4,
+        "kind": "flat"
+      }
+    ],
+    "potentialMods": [
+      {
+        "stat": "intellect",
+        "pct": 5
+      }
+    ]
+  },
+  {
+    "id": "trait_strong_willed",
+    "name": "Strong-Willed",
+    "description": "Does not bend, and certainly does not break.",
+    "category": "innate",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 4,
+        "kind": "flat"
+      }
+    ],
+    "potentialMods": [
+      {
+        "stat": "willpower",
+        "pct": 5
+      }
+    ]
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "id": "bp_west_blue_port",
+  "name": "A port city in the West Blue",
+  "shortName": "West Blue",
+  "home": "the port",
+  "bornIn": "in a port city in the West Blue",
+  "region": "west_blue",
+  "description": "A crowded harbour city where half the trade is legal and the other half pays better.",
+  "opens": "Trade and smuggling",
+  "wealth": "medium",
+  "safety": "medium",
+  "races": ["race_human"],
+  "traitPool": ["trait_street_smart", "trait_silver_tongued"],
+  "namePool": "names_west_blue",
+  "childhood": {
+    "charisma": 2,
+    "dexterity": 2,
+    "perception": 1,
+    "speed": 1
+  },
+  "legacyWeights": {
+    "legacy_noble_line": 1.5,
+    "legacy_craftsman_family": 1.5
+  },
+  "focusWeights": {
+    "focus_criminal": 2,
+    "focus_noble": 1.5,
+    "focus_scholar": 1.5
+  },
+  "eventTags": {
+    "port": 3,
+    "crime": 1.5,
+    "trade": 2
+  }
+}

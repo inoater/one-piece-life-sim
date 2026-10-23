@@ -1,0 +1,65 @@
+{
+  "id": "evt_legacy_orphan_box",
+  "type": "personal",
+  "title": "A box with your name on it",
+  "text": "A stranger leaves a sealed box at the orphanage, addressed to {player.givenName} in a hand nobody recognises.",
+  "choices": [
+    {
+      "id": "open",
+      "label": "Open it",
+      "text": "Whatever it is, it is yours.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "orphan.box",
+          "value": "opened"
+        },
+        {
+          "kind": "log",
+          "text": "Inside: a faded wanted poster, a compass that points nowhere useful, and a name you have never heard.",
+          "tags": ["personal", "legacy"]
+        },
+        {
+          "kind": "schedule",
+          "eventId": "evt_legacy_orphan_name",
+          "afterMonths": 12
+        }
+      ]
+    },
+    {
+      "id": "keep_sealed",
+      "label": "Keep it sealed",
+      "text": "Some things are better not known. Yet.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "orphan.box",
+          "value": "sealed"
+        },
+        {
+          "kind": "log",
+          "text": "You hide the box under a floorboard and try not to think about it.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    },
+    {
+      "id": "sell",
+      "label": "Sell it unopened",
+      "text": "A collector in the harbour buys strange things.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "orphan.box",
+          "value": "sold"
+        },
+        {
+          "kind": "log",
+          "text": "A collector pays well for the box and asks no questions. You wonder about it anyway.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    }
+  ],
+  "tags": ["legacy", "mystery", "personal"]
+}

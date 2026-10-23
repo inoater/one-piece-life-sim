@@ -1,0 +1,5 @@
+{
+  "id": "occ_teacher",
+  "name": "schoolteacher",
+  "wealth": ["poor", "modest", "comfortable"]
+}

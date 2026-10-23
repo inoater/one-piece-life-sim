@@ -8,11 +8,65 @@
  * names the file and field instead of printing "undefined" in the middle of a story.
  *
  * Adding a variable is one line here plus one line where templates are rendered.
- * `player.*` and `role.*` variables arrive with character creation and the event engine.
+ * `player.*` and `legacy.*` arrived with character creation (Phase 1); `role.*` arrives with the
+ * event engine (Phase 3).
+ *
+ * Three registries, because three kinds of text are filled from different facts:
+ *  - TEMPLATE_VARS: events, log lines and news, rendered while the world runs;
+ *  - BACKSTORY_VARS: backstory lines, rendered while a character's past is generated;
+ *  - APPEARANCE_VARS: the appearance sentence, assembled from the appearance fields.
  */
 
-export const TEMPLATE_VARS = ['date', 'year', 'month', 'monthName', 'season'] as const;
+export const TEMPLATE_VARS = [
+  'date',
+  'year',
+  'month',
+  'monthName',
+  'season',
+  'player.name',
+  'player.givenName',
+  'player.familyName',
+  'player.race',
+  'player.home',
+  'legacy.parent',
+  'legacy.parentName',
+] as const;
 export type TemplateVarName = (typeof TEMPLATE_VARS)[number];
+
+export const BACKSTORY_VARS = [
+  'age',
+  'home',
+  'race',
+  'familyName',
+  'parent',
+  'parentName',
+  'sibling',
+  'other',
+  'monthName',
+  'season',
+] as const;
+
+export const APPEARANCE_VARS = [
+  'a',
+  'adjectives',
+  'noun',
+  'face',
+  'skin',
+  'hair',
+  'eyes',
+  'extras',
+] as const;
+
+/** Every {variable} a template uses, in order of first use. Empty if the template does not parse. */
+export function templateVarsUsed(text: string): string[] {
+  const parsed = parseTemplate(text);
+  if (!parsed.ok) return [];
+  const names: string[] = [];
+  for (const token of parsed.tokens) {
+    if (token.type === 'var' && !names.includes(token.name)) names.push(token.name);
+  }
+  return names;
+}
 
 export type TemplateToken = { type: 'text'; text: string } | { type: 'var'; name: string };
 

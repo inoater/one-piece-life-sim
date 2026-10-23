@@ -1,0 +1,37 @@
+{
+  "id": "bp_sky_island",
+  "name": "A sky island",
+  "shortName": "Sky island",
+  "home": "the sky island",
+  "bornIn": "on a sky island",
+  "region": "sky",
+  "description": "An island of cloud floating ten thousand metres above the sea, where dials do the work and the sea below is a story.",
+  "opens": "Dials and Mantra training",
+  "wealth": "low",
+  "safety": "high",
+  "races": ["race_skypiean", "race_human"],
+  "traitPool": ["trait_sky_born"],
+  "namePool": "names_sky",
+  "childhood": {
+    "perception": 3,
+    "dexterity": 1,
+    "speed": 1
+  },
+  "potentialMods": {
+    "perception": 5
+  },
+  "legacyWeights": {
+    "legacy_craftsman_family": 2,
+    "legacy_pirate_parent": 0.2,
+    "legacy_marine_veteran": 0.1,
+    "legacy_fisher_family": 0.6
+  },
+  "focusWeights": {
+    "focus_scholar": 1.5,
+    "focus_laborer": 1.5
+  },
+  "eventTags": {
+    "sky": 4,
+    "dials": 3
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "evt_legacy_marine_letter",
+  "type": "personal",
+  "title": "A letter from the Marines",
+  "text": "A letter arrives under a Marine seal. The commander of {legacy.parent}'s old unit remembers the family, and offers you a recommendation to the Marines.",
+  "choices": [
+    {
+      "id": "keep",
+      "label": "Keep the letter",
+      "text": "A recruiter will take you seriously.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "marine.recommendation",
+          "value": true
+        },
+        {
+          "kind": "log",
+          "text": "You keep the letter folded in your coat. It feels heavier than paper should.",
+          "tags": ["personal", "legacy"]
+        },
+        {
+          "kind": "schedule",
+          "eventId": "evt_legacy_marine_recruiter",
+          "afterMonths": 6
+        }
+      ]
+    },
+    {
+      "id": "burn",
+      "label": "Burn it",
+      "text": "Whatever you become, you will choose it yourself.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "marine.recommendation",
+          "value": false
+        },
+        {
+          "kind": "log",
+          "text": "You burn the letter. Nobody in the family ever mentions it again.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    }
+  ],
+  "tags": ["legacy", "marines", "personal"]
+}

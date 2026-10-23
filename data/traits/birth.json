@@ -1,0 +1,351 @@
+[
+  {
+    "id": "trait_sea_legs",
+    "name": "Sea Legs",
+    "description": "Grew up on rolling decks; never seasick, always balanced.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "endurance",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "dexterity",
+        "value": 1,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "sea_legs": true
+    },
+    "excludes": ["trait_landlubber"],
+    "eventWeights": {
+      "sea": 1.5
+    }
+  },
+  {
+    "id": "trait_homesick",
+    "name": "Homesick",
+    "description": "Home is never far from their thoughts, wherever they go.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": -2,
+        "kind": "flat"
+      },
+      {
+        "stat": "charisma",
+        "value": 1,
+        "kind": "flat"
+      }
+    ],
+    "excludes": ["trait_restless"]
+  },
+  {
+    "id": "trait_street_smart",
+    "name": "Street-Smart",
+    "description": "Knows who to trust, who to pay and which alley to run down.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "charisma",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_silver_tongued",
+    "name": "Silver-Tongued",
+    "description": "Could talk a Marine into lending them a boat.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "charisma",
+        "value": 4,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_hardy",
+    "name": "Hardy",
+    "description": "Cold, hunger and hard work barely register.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "endurance",
+        "value": 3,
+        "kind": "flat"
+      },
+      {
+        "stat": "durability",
+        "value": 2,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_stoic",
+    "name": "Stoic",
+    "description": "Gives nothing away, good or bad.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 3,
+        "kind": "flat"
+      },
+      {
+        "stat": "charisma",
+        "value": -1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_wild",
+    "name": "Wild",
+    "description": "Grew up running, climbing and fighting more than sitting still.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "strength",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "speed",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "intellect",
+        "value": -1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_quick_fingered",
+    "name": "Quick-Fingered",
+    "description": "Hands faster than most eyes.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "dexterity",
+        "value": 4,
+        "kind": "flat"
+      }
+    ],
+    "eventWeights": {
+      "crime": 1.5
+    }
+  },
+  {
+    "id": "trait_weather_wary",
+    "name": "Weather-Wary",
+    "description": "Reads the Grand Line's lying skies better than most navigators.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "intellect",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_scarred",
+    "name": "Scarred",
+    "description": "Has the marks of a hard place on their skin, and the toughness that came with them.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "durability",
+        "value": 3,
+        "kind": "flat"
+      },
+      {
+        "stat": "charisma",
+        "value": -1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_disciplined",
+    "name": "Disciplined",
+    "description": "Raised by the drill and the clock: +5% training gain.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "endurance",
+        "value": 1,
+        "kind": "flat"
+      }
+    ],
+    "trainingGainPct": 5
+  },
+  {
+    "id": "trait_loyal",
+    "name": "Loyal",
+    "description": "Stands by their people, whatever it costs.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "charisma",
+        "value": 1,
+        "kind": "flat"
+      },
+      {
+        "stat": "willpower",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_sky_born",
+    "name": "Sky-Born",
+    "description": "Grew up among clouds and dials; the thin air sharpened every sense.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": 3,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "sky.born": true,
+      "unlock.dials": true
+    }
+  },
+  {
+    "id": "trait_water_born",
+    "name": "Water-Born",
+    "description": "Raised under the sea, as at home in a current as on a street.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "endurance",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "speed",
+        "value": 1,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "water.born": true
+    }
+  },
+  {
+    "id": "trait_honor_bound",
+    "name": "Honor-Bound",
+    "description": "Keeps their word as if their life depended on it. Sometimes it does.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 3,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "code.honor": true
+    }
+  },
+  {
+    "id": "trait_warrior_pride",
+    "name": "Warrior's Pride",
+    "description": "Raised on songs of giants who died well, and means to be sung about.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "strength",
+        "value": 3,
+        "kind": "flat"
+      },
+      {
+        "stat": "willpower",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_sure_footed",
+    "name": "Sure-Footed",
+    "description": "Grew up running along branches on the back of a walking elephant.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "speed",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "dexterity",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_hard_working",
+    "name": "Hard-Working",
+    "description": "Works from dawn to dusk and finds it strange that others do not.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "endurance",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "strength",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_gullible",
+    "name": "Gullible",
+    "description": "Believes what they are told, especially by anyone big and friendly.",
+    "category": "birth",
+    "statMods": [
+      {
+        "stat": "intellect",
+        "value": -2,
+        "kind": "flat"
+      },
+      {
+        "stat": "charisma",
+        "value": 2,
+        "kind": "flat"
+      }
+    ]
+  }
+]

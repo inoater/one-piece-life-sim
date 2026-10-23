@@ -1,0 +1,61 @@
+{
+  "id": "names_north_blue",
+  "given": {
+    "he": [
+      "Anders",
+      "Bjorn",
+      "Dieter",
+      "Erik",
+      "Friedrich",
+      "Gunnar",
+      "Hans",
+      "Ivar",
+      "Jens",
+      "Klaus",
+      "Lars",
+      "Magnus",
+      "Nils",
+      "Otto",
+      "Rolf",
+      "Sven",
+      "Ulf"
+    ],
+    "she": [
+      "Astrid",
+      "Brigitte",
+      "Dagny",
+      "Elke",
+      "Frida",
+      "Greta",
+      "Hilde",
+      "Ingrid",
+      "Karin",
+      "Liesel",
+      "Marta",
+      "Signe",
+      "Tove",
+      "Ulla"
+    ],
+    "any": ["Kai", "Robin"]
+  },
+  "family": [
+    "Albrecht",
+    "Bauer",
+    "Dahl",
+    "Eckhart",
+    "Falk",
+    "Grau",
+    "Halvorsen",
+    "Iversen",
+    "Jansen",
+    "Kessler",
+    "Lindqvist",
+    "Moller",
+    "Nordahl",
+    "Ostberg",
+    "Richter",
+    "Strand",
+    "Voss",
+    "Wendt"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "occ_farmer",
+  "name": "farmer",
+  "places": [
+    "bp_east_blue_village",
+    "bp_south_blue_island",
+    "bp_north_blue_town",
+    "bp_wano",
+    "bp_sky_island"
+  ],
+  "wealth": ["indebted", "destitute", "poor", "modest"],
+  "weight": 3
+}

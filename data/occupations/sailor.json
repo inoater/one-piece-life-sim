@@ -1,0 +1,12 @@
+{
+  "id": "occ_sailor",
+  "name": "sailor",
+  "places": [
+    "bp_east_blue_village",
+    "bp_west_blue_port",
+    "bp_grand_line_island",
+    "bp_new_world_island",
+    "bp_south_blue_island"
+  ],
+  "wealth": ["indebted", "destitute", "poor", "modest"]
+}

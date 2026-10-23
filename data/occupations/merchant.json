@@ -1,0 +1,13 @@
+{
+  "id": "occ_merchant",
+  "name": "merchant",
+  "places": [
+    "bp_west_blue_port",
+    "bp_grand_line_island",
+    "bp_wano",
+    "bp_fishman_island",
+    "bp_new_world_island"
+  ],
+  "wealth": ["modest", "comfortable", "wealthy", "rich"],
+  "weight": 2
+}

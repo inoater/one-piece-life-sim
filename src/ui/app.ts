@@ -21,6 +21,8 @@ export interface App {
   /** Send an action. Resolves true on success; failures are shown in the status line. */
   dispatch(action: unknown, success?: string): Promise<boolean>;
   newWorld(options: { seed?: string; probe?: boolean; fixtures?: boolean }): Promise<void>;
+  /** Start the life the New Life screens describe. Resolves true once the world holds it. */
+  startLife(options: unknown): Promise<boolean>;
   refresh(): Promise<void>;
   setOmniscient(on: boolean): Promise<void>;
   setDebugOpen(open: boolean): Promise<void>;
@@ -157,6 +159,22 @@ export function createApp(host: SimHost, store: Store<UiState>): App {
           status: { kind: 'info', text: `New world from seed "${snapshot.seed}".` },
         });
       });
+    },
+
+    async startLife(options) {
+      const done = await guarded('Starting a new life', async () => {
+        const { snapshot } = await host.call('genesis/start', { options, view: view() });
+        store.update({
+          snapshot,
+          notice: null,
+          status: {
+            kind: 'info',
+            text: `${snapshot.player?.name ?? 'Your'}'s story begins, ${snapshot.date.monthName}, Year ${snapshot.date.year}.`,
+          },
+        });
+        return true;
+      });
+      return done === true;
     },
 
     async refresh() {

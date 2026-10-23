@@ -1,0 +1,60 @@
+{
+  "id": "names_west_blue",
+  "given": {
+    "he": [
+      "Aldo",
+      "Bruno",
+      "Carlo",
+      "Dario",
+      "Enzo",
+      "Fabio",
+      "Gino",
+      "Leo",
+      "Marco",
+      "Nico",
+      "Paolo",
+      "Renzo",
+      "Sandro",
+      "Tito",
+      "Vito"
+    ],
+    "she": [
+      "Alba",
+      "Bianca",
+      "Carla",
+      "Donna",
+      "Elena",
+      "Flavia",
+      "Gemma",
+      "Lia",
+      "Marta",
+      "Nina",
+      "Paola",
+      "Rina",
+      "Sofia",
+      "Tessa",
+      "Vera"
+    ],
+    "any": ["Andrea", "Cesare", "Simone"]
+  },
+  "family": [
+    "Albini",
+    "Bellucci",
+    "Capra",
+    "Dorati",
+    "Ferro",
+    "Galli",
+    "Lombardi",
+    "Moretti",
+    "Neri",
+    "Orsini",
+    "Pace",
+    "Rossetti",
+    "Sarto",
+    "Testa",
+    "Valli",
+    "Zanetti",
+    "Corvino",
+    "Mancuso"
+  ]
+}

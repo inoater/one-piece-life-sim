@@ -1,0 +1,54 @@
+{
+  "id": "race_lunarian",
+  "name": "Lunarian",
+  "adjective": "lunarian",
+  "noun": {
+    "he": "lunarian",
+    "she": "lunarian",
+    "they": "lunarian"
+  },
+  "description": "A people thought to be extinct, said to have once lived atop the Red Line. Black wings, a flame at the back, and bodies that shrug off what would kill anyone else. A rare unlock.",
+  "capMods": {
+    "strength": 30,
+    "speed": 30,
+    "durability": 10
+  },
+  "innateTraits": ["trait_lunarian_flight", "trait_lunarian_flames"],
+  "anchors": {
+    "childEnds": 40,
+    "primeStarts": 80,
+    "elderStarts": 500
+  },
+  "lifespan": {
+    "min": 400,
+    "max": 800
+  },
+  "rare": true,
+  "weight": 1,
+  "namePool": "names_lunarian",
+  "appearanceWeights": {
+    "skin.deep_brown": 6,
+    "skin.brown": 3,
+    "skin.pale": 0.2,
+    "skin.fair": 0.2,
+    "hairColor.white": 40
+  },
+  "heights": {
+    "short": {
+      "min": 170,
+      "max": 200
+    },
+    "average": {
+      "min": 201,
+      "max": 260
+    },
+    "tall": {
+      "min": 261,
+      "max": 350
+    },
+    "towering": {
+      "min": 351,
+      "max": 500
+    }
+  }
+}

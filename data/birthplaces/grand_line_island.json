@@ -1,0 +1,35 @@
+{
+  "id": "bp_grand_line_island",
+  "name": "An island on the Grand Line",
+  "shortName": "Grand Line",
+  "home": "the island",
+  "bornIn": "on an island on the Grand Line",
+  "region": "paradise",
+  "description": "A port on the first half of the Grand Line, where the weather lies and every ship in harbour is either hunting pirates or flying their flag.",
+  "opens": "Heavy pirate and Marine traffic",
+  "wealth": "medium",
+  "safety": "low",
+  "races": ["race_human", "race_fishman", "race_lunarian"],
+  "traitPool": ["trait_weather_wary", "trait_sea_legs"],
+  "namePool": "names_grand_line",
+  "childhood": {
+    "perception": 2,
+    "endurance": 1,
+    "speed": 1,
+    "dexterity": 1
+  },
+  "legacyWeights": {
+    "legacy_pirate_parent": 2,
+    "legacy_marine_veteran": 1.3
+  },
+  "focusWeights": {
+    "focus_sailor": 2,
+    "focus_fighter": 1.5
+  },
+  "eventTags": {
+    "pirates": 3,
+    "marines": 2,
+    "weather": 3,
+    "sea": 1.5
+  }
+}

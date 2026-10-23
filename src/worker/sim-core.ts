@@ -11,7 +11,23 @@ import type { SaveStore } from '../engine/saves/store';
 import type { Entity, EventRecord, WorldState } from '../engine/state';
 import { describeBreakdown, statBreakdown, statLabel } from '../engine/stats';
 import { ENGINE_VERSION, SAVE_VERSION } from '../engine/version';
-import { ActionError, ActionSchema, advanceOptions, applyAction, createWorld } from '../core';
+import {
+  ActionError,
+  ActionSchema,
+  advanceOptions,
+  applyAction,
+  characterSheet,
+  createLife,
+  createWorld,
+  defaultOptions,
+  genesisStats,
+  GenesisError,
+  playerSummary,
+} from '../core';
+import { optionsFor } from '../systems/genesis/appearance';
+import { GenesisOptionsSchema, type GenesisOptions } from '../systems/genesis/options';
+import { ageAt } from '../systems/genesis/stages';
+import { entryWarnings } from '../systems/genesis/warnings';
 import type {
   AdvanceReport,
   Category,
@@ -20,6 +36,8 @@ import type {
   EntityView,
   EventListItem,
   FeedEntry,
+  GenesisPreview,
+  GenesisSetup,
   LoadInfo,
   LogQueryRequest,
   LogQueryResult,
@@ -137,6 +155,14 @@ export class SimCore {
       'saves/export': () => this.exportSave(),
       'saves/import': (req) => this.importSave(req),
       hash: () => ({ stateHash: hashValue(this.state), dataHash: this.deps.dataHash }),
+      'genesis/setup': () => this.genesisSetup(),
+      'genesis/preview': (req) => this.genesisPreview(req),
+      'genesis/start': (req) => this.genesisStart(req),
+      'debug/genesisStats': (req) => {
+        if (!this.deps.debug) throw new ActionError('Debug tools are disabled in this build');
+        const rolls = Math.min(20000, Math.max(1, Math.floor(req.rolls ?? 1000)));
+        return genesisStats(this.deps.data, req.raceId, rolls);
+      },
     };
   }
 
@@ -299,6 +325,163 @@ export class SimCore {
     return { snapshot: this.snapshot(req.view) };
   }
 
+  // ---- New Life (character genesis) --------------------------------------------------------
+
+  private genesisSetup(): GenesisSetup {
+    const { data } = this.deps;
+    const byId = <T extends { id: string }>(r: Readonly<Record<string, T>>) =>
+      Object.values(r).sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+    const traitNames = (ids: readonly string[]) => ids.map((id) => data.traits[id]?.name ?? id);
+    return {
+      races: byId(data.races).map((r) => ({
+        id: r.id,
+        name: r.name,
+        description: r.description,
+        rare: r.rare,
+        capMods: { ...r.capMods } as Record<string, number>,
+        anchors: { ...r.anchors },
+        lifespan: { ...r.lifespan },
+        traits: r.innateTraits.map((id) => ({
+          name: data.traits[id]?.name ?? id,
+          description: data.traits[id]?.description ?? '',
+        })),
+        birthplaces: byId(data.birthplaces)
+          .filter((b) => b.races.includes(r.id))
+          .map((b) => b.id),
+      })),
+      birthplaces: byId(data.birthplaces).map((b) => ({
+        id: b.id,
+        name: b.name,
+        shortName: b.shortName,
+        description: b.description,
+        opens: b.opens,
+        wealth: b.wealth,
+        safety: b.safety,
+        races: [...b.races],
+        traits: traitNames(b.traitPool),
+      })),
+      legacies: byId(data.legacies).map((l) => ({
+        id: l.id,
+        name: l.name,
+        description: l.description,
+        traits: traitNames(l.traitPool),
+      })),
+      foci: byId(data.foci).map((f) => ({ id: f.id, name: f.name, description: f.description })),
+      difficulties: data.creation.difficulties.map((d) => ({
+        id: d.id,
+        name: d.name,
+        summary: d.summary,
+      })),
+      canonModes: data.creation.canonModes.map((m) => ({
+        id: m.id,
+        name: m.name,
+        summary: m.summary,
+      })),
+      entry: { ...data.creation.entry },
+      defaults: defaultOptions(data, this.newSeed()),
+      presentYear: Math.floor(data.calendar.presentTick / 12),
+      canonYearOffset: data.calendar.canonYearOffset,
+      appearanceFields: data.appearance.fields.map((f) => ({ id: f.id, label: f.label })),
+      months: [...data.calendar.months],
+    };
+  }
+
+  /** Validate New Life options, filling a blank seed so a preview and its start agree. */
+  private genesisOptions(raw: unknown): GenesisOptions {
+    let input = raw;
+    if (raw !== null && typeof raw === 'object' && !Array.isArray(raw)) {
+      const record = raw as Record<string, unknown>;
+      const seed = typeof record['seed'] === 'string' ? record['seed'].trim() : '';
+      input = { ...record, seed: seed === '' ? this.newSeed() : seed };
+    }
+    const parsed = GenesisOptionsSchema.safeParse(input);
+    if (parsed.success) return parsed.data;
+    const first = parsed.error.issues[0];
+    throw new ActionError(
+      `Invalid New Life options: ${first ? `${first.path.join('.') || '(options)'}: ${first.message}` : 'unrecognised'}`,
+    );
+  }
+
+  private genesisPreview(req: Protocol['genesis/preview']['req']): GenesisPreview {
+    const { data } = this.deps;
+    const started = this.clock();
+    const options = this.genesisOptions(req.options);
+    try {
+      const life = createLife(data, options, { allowBlocked: true });
+      const { resolved, state, playerId } = life;
+      const pc = state.entities[playerId]?.character;
+      const date = dateOf(data.calendar, state.tick);
+      return {
+        options,
+        resolved: {
+          race: resolved.race.id,
+          birthplace: resolved.birthplace.id,
+          legacy: resolved.legacy.id,
+          focus: resolved.focus?.id ?? null,
+          random: resolved.random,
+        },
+        focusApplies: resolved.focus !== null,
+        warnings: life.warnings,
+        notes: life.notes,
+        sheet: characterSheet(data, state, playerId, { omniscient: req.view.omniscient }),
+        error: null,
+        canStart: !life.warnings.some((w) => w.level === 'error'),
+        appearance: data.appearance.fields.map((field) => ({
+          field: field.id,
+          label: field.label,
+          optionId: pc?.appearance[field.id] ?? '',
+          locked:
+            options.locks[field.id] !== undefined &&
+            options.locks[field.id] === pc?.appearance[field.id],
+          options: optionsFor({ data, race: resolved.race, age: options.entryAge }, field.id).map(
+            (o) => ({ id: o.id, label: o.label ?? o.text }),
+          ),
+        })),
+        entry: {
+          tick: state.tick,
+          label: formatDate(date),
+          canonYear: date.canonYear,
+          birthLabel: pc ? this.dateLabel(pc.birthTick) : '',
+          ageAtPresent: pc ? ageAt(pc.birthTick, data.calendar.presentTick) : 0,
+        },
+        ms: Math.max(0, this.clock() - started),
+      };
+    } catch (error) {
+      if (!(error instanceof GenesisError)) throw error;
+      const race = data.races[options.race];
+      return {
+        options,
+        resolved: null,
+        focusApplies: false,
+        warnings: race ? entryWarnings(data, race, options.entryYear, options.entryAge) : [],
+        notes: [],
+        sheet: null,
+        error: error.message,
+        canStart: false,
+        appearance: [],
+        entry: null,
+        ms: Math.max(0, this.clock() - started),
+      };
+    }
+  }
+
+  private async genesisStart(
+    req: Protocol['genesis/start']['req'],
+  ): Promise<Protocol['genesis/start']['res']> {
+    const options = this.genesisOptions(req.options);
+    let life;
+    try {
+      life = createLife(this.deps.data, options);
+    } catch (error) {
+      if (error instanceof GenesisError) throw new ActionError(error.message);
+      throw error;
+    }
+    this.adopt(life.state, null);
+    // A new life is saved at once, so closing the tab before the first month loses nothing.
+    await this.autosave();
+    return { snapshot: this.snapshot(req.view) };
+  }
+
   // ---- Saves --------------------------------------------------------------------------------
 
   private dateLabel(tick: number): string {
@@ -434,7 +617,10 @@ export class SimCore {
       atPresent: !state.openEnded && hasReachedPresent(cal, state.tick),
       openEnded: state.openEnded,
       seed: state.seed,
-      player: player ? { id: player.id, name: player.name } : null,
+      player: player ? playerSummary(data, state) : null,
+      sheet: state.playerId
+        ? characterSheet(data, state, state.playerId, { omniscient: view.omniscient })
+        : null,
       pending,
       feed,
       news,

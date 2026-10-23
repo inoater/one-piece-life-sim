@@ -1,0 +1,8 @@
+{
+  "id": "occ_marine",
+  "name": "Marine",
+  "places": ["bp_marine_base_town", "bp_grand_line_island"],
+  "races": ["race_human", "race_fishman"],
+  "wealth": ["poor", "modest", "comfortable"],
+  "weight": 3
+}

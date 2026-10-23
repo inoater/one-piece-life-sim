@@ -1,0 +1,7 @@
+{
+  "id": "occ_dial_crafter",
+  "name": "dial crafter",
+  "places": ["bp_sky_island"],
+  "wealth": ["poor", "modest", "comfortable"],
+  "weight": 2
+}

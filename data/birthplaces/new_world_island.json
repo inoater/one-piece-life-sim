@@ -1,0 +1,41 @@
+{
+  "id": "bp_new_world_island",
+  "name": "An island in the New World",
+  "shortName": "New World",
+  "home": "the island",
+  "bornIn": "on an island in the New World",
+  "region": "new_world",
+  "description": "An island in the second half of the Grand Line, under the flag of whichever Emperor's crew protects it this year. Children here learn to fight early or not at all.",
+  "opens": "A dangerous start; fighters grow fast",
+  "wealth": "low",
+  "safety": "very_low",
+  "races": ["race_human", "race_fishman", "race_mink", "race_giant", "race_lunarian"],
+  "traitPool": ["trait_hardy", "trait_scarred"],
+  "namePool": "names_grand_line",
+  "growthIntensity": 1.04,
+  "childhood": {
+    "strength": 2,
+    "durability": 2,
+    "willpower": 2
+  },
+  "potentialMods": {
+    "strength": 3,
+    "durability": 3,
+    "willpower": 3
+  },
+  "legacyWeights": {
+    "legacy_pirate_parent": 2.5,
+    "legacy_orphan": 1.6
+  },
+  "focusWeights": {
+    "focus_fighter": 3
+  },
+  "eventTags": {
+    "pirates": 3,
+    "war": 3,
+    "fight": 2
+  },
+  "appearanceWeights": {
+    "tag:scar": 2
+  }
+}

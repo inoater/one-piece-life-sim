@@ -1,0 +1,202 @@
+{
+  "baseCap": 100,
+  "naturalCeiling": 0.5,
+  "birthFraction": { "min": 0.03, "max": 0.06 },
+  "potentialRoll": { "min": 0.85, "max": 1.15 },
+  "softCap": { "above": 0.9, "factor": 0.1 },
+  "decimals": 1,
+  "physical": ["strength", "speed", "endurance", "durability", "dexterity"],
+  "mental": ["intellect", "willpower", "charisma", "perception"],
+  "luck": { "mean": 50, "sd": 12, "min": 1, "max": 99 },
+  "talentTiers": [
+    {
+      "id": "ordinary",
+      "name": "Ordinary",
+      "chance": 60,
+      "potentialMult": 1.0,
+      "growthMult": 1.0,
+      "hints": {
+        "young": [
+          "A healthy child, by every account.",
+          "The neighbours say you take after your family."
+        ],
+        "older": [
+          "Nobody has ever singled you out, for better or worse.",
+          "You have earned everything you have the slow way."
+        ]
+      }
+    },
+    {
+      "id": "gifted",
+      "name": "Gifted",
+      "chance": 25,
+      "potentialMult": 1.15,
+      "growthMult": 1.1,
+      "hints": {
+        "young": [
+          "The midwife said she had rarely felt a grip so strong.",
+          "You were walking before the other babies on your street."
+        ],
+        "older": [
+          "Your teachers whisper about you.",
+          "People notice how quickly you pick things up."
+        ]
+      }
+    },
+    {
+      "id": "prodigy",
+      "name": "Prodigy",
+      "chance": 10,
+      "potentialMult": 1.3,
+      "growthMult": 1.2,
+      "hints": {
+        "young": [
+          "Old folk stop in the street to watch you play.",
+          "Grown-ups keep asking how old you really are."
+        ],
+        "older": [
+          "Veterans stop what they are doing to watch you train.",
+          "Your teachers have started to run out of things to teach you."
+        ]
+      }
+    },
+    {
+      "id": "monster",
+      "name": "Monster",
+      "chance": 4,
+      "potentialMult": 1.5,
+      "growthMult": 1.3,
+      "hints": {
+        "young": [
+          "Other parents keep their children away from you once the games get rough.",
+          "You broke your cradle. Twice."
+        ],
+        "older": [
+          "People go quiet when they see what you can do.",
+          "Seasoned fighters measure themselves against you and do not like the answer."
+        ]
+      }
+    },
+    {
+      "id": "anomaly",
+      "name": "Anomaly",
+      "chance": 1,
+      "potentialMult": 1.8,
+      "growthMult": 1.5,
+      "hints": {
+        "young": [
+          "Animals and old sailors both stare at you as if they recognise something.",
+          "The village healer will not hold you for long, and will not say why."
+        ],
+        "older": [
+          "Something in you frightens the people who measure such things.",
+          "The rare few who know what to look for cannot take their eyes off you."
+        ]
+      }
+    }
+  ],
+  "humanAnchors": { "childEnds": 12, "primeStarts": 20, "elderStarts": 60 },
+  "stages": [
+    {
+      "id": "infant",
+      "name": "Infant",
+      "fromAge": 0,
+      "growth": 0.08,
+      "training": 0,
+      "eventsPerYear": [88, 12, 0, 0]
+    },
+    {
+      "id": "toddler",
+      "name": "Toddler",
+      "fromAge": 3,
+      "growth": 0.06,
+      "training": 0.2,
+      "eventsPerYear": [70, 26, 4, 0]
+    },
+    {
+      "id": "child",
+      "name": "Child",
+      "fromAge": 6,
+      "growth": 0.05,
+      "training": 0.6,
+      "eventsPerYear": [42, 42, 13, 3]
+    },
+    {
+      "id": "adolescent",
+      "name": "Adolescent",
+      "fromAge": 12,
+      "growth": 0.06,
+      "training": 1.0,
+      "eventsPerYear": [32, 43, 20, 5]
+    },
+    {
+      "id": "young_adult",
+      "name": "Young adult",
+      "fromAge": 18,
+      "growth": 0.03,
+      "training": 1.2,
+      "eventsPerYear": [40, 40, 15, 5]
+    },
+    {
+      "id": "prime",
+      "name": "Prime",
+      "fromAge": 30,
+      "growth": 0,
+      "training": 1.0,
+      "eventsPerYear": [55, 35, 8, 2]
+    },
+    {
+      "id": "mature",
+      "name": "Mature",
+      "fromAge": 50,
+      "growth": 0,
+      "physicalDecline": 0.01,
+      "training": 0.7,
+      "eventsPerYear": [60, 32, 7, 1]
+    },
+    {
+      "id": "elder",
+      "name": "Elder",
+      "fromAge": 65,
+      "growth": 0,
+      "physicalDecline": 0.03,
+      "mentalDecline": 0.005,
+      "training": 0.4,
+      "eventsPerYear": [65, 30, 5, 0]
+    }
+  ],
+  "derived": [
+    {
+      "id": "maxHealth",
+      "name": "Max Health",
+      "constant": 50,
+      "terms": [
+        { "stat": "durability", "factor": 1.2 },
+        { "stat": "endurance", "factor": 0.8 }
+      ],
+      "round": "round"
+    },
+    {
+      "id": "vigor",
+      "name": "Vigor per month",
+      "constant": 6,
+      "terms": [{ "stat": "endurance", "divide": 20 }],
+      "round": "floor"
+    },
+    {
+      "id": "combatPower",
+      "name": "Combat Power",
+      "constant": 0,
+      "terms": [
+        { "stat": "strength", "factor": 1 },
+        { "stat": "speed", "factor": 0.8 },
+        { "stat": "durability", "factor": 0.8 },
+        { "stat": "dexterity", "factor": 0.6 },
+        { "stat": "willpower", "factor": 0.5 },
+        { "stat": "perception", "factor": 0.4 }
+      ],
+      "round": "round",
+      "note": "Weapon, haki and Devil Fruit bonuses join this once those exist."
+    }
+  ]
+}

@@ -1,0 +1,485 @@
+[
+  {
+    "id": "bs_footrace",
+    "text": "You won a footrace against the harbour kids and never let them forget it.",
+    "ages": {
+      "min": 6,
+      "max": 10
+    },
+    "conditions": {
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "speed": 2
+        }
+      }
+    ],
+    "tags": ["social", "play"]
+  },
+  {
+    "id": "bs_bully",
+    "text": "You picked a fight with the biggest bully around and lost, badly. You fought again the next week and won.",
+    "ages": {
+      "min": 7,
+      "max": 11
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 2,
+          "durability": 2,
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["fight"]
+  },
+  {
+    "id": "bs_school",
+    "text": "You learned to read and write at the village school, and read everything you could find afterwards.",
+    "ages": {
+      "min": 6,
+      "max": 9
+    },
+    "conditions": {
+      "wealthMin": "poor"
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 3
+        }
+      }
+    ],
+    "tags": ["study"]
+  },
+  {
+    "id": "bs_no_school",
+    "text": "There was no money for school, so you learned your letters from shop signs and wanted posters.",
+    "ages": {
+      "min": 6,
+      "max": 10
+    },
+    "conditions": {
+      "wealthMax": "poor"
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 1,
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["hardship", "study"]
+  },
+  {
+    "id": "bs_best_friend",
+    "text": "You met {other}, who became your best friend before either of you could explain why.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "friend",
+        "opinion": 60,
+        "ageOffset": {
+          "min": 0,
+          "max": 1
+        }
+      }
+    ],
+    "tags": ["social"]
+  },
+  {
+    "id": "bs_rival",
+    "text": "{other} beat you at everything that year. You have not forgiven them yet.",
+    "ages": {
+      "min": 8,
+      "max": 11
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "rival",
+        "opinion": -30,
+        "ageOffset": {
+          "min": -1,
+          "max": 1
+        }
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["fight", "social"]
+  },
+  {
+    "id": "bs_stole_bread",
+    "text": "You stole bread from a market stall and got away with it. The second time, you did not.",
+    "ages": {
+      "min": 7,
+      "max": 11
+    },
+    "conditions": {
+      "wealthMax": "modest"
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 1,
+          "speed": 1
+        }
+      }
+    ],
+    "tags": ["crime", "hardship"]
+  },
+  {
+    "id": "bs_pirates_in_town",
+    "text": "Pirates came to {home} and drank the tavern dry. One of them showed you a trick with a coin that you have practised ever since.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "notability": 2,
+    "conditions": {
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 2
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "dream.sea",
+        "value": true
+      }
+    ],
+    "tags": ["pirates"]
+  },
+  {
+    "id": "bs_marines_march",
+    "text": "You watched Marines march through {home} in their white coats and decided, for a whole summer, to become one.",
+    "ages": {
+      "min": 6,
+      "max": 10
+    },
+    "conditions": {
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["marines"]
+  },
+  {
+    "id": "bs_lost_in_hills",
+    "text": "You got lost in the hills for two nights and found your own way home.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 2,
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["explore", "hardship"]
+  },
+  {
+    "id": "bs_broke_arm",
+    "text": "You broke your arm climbing a mast you had been told to stay away from.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "durability": 1
+        }
+      },
+      {
+        "kind": "scar",
+        "area": "arms",
+        "text": "a slight crook in one forearm where it set badly"
+      }
+    ],
+    "tags": ["hardship", "mischief"]
+  },
+  {
+    "id": "bs_old_sailor",
+    "text": "{other}, an old sailor who mended nets on the pier, taught you knots, stars and every curse in four languages.",
+    "ages": {
+      "min": 8,
+      "max": 11
+    },
+    "notability": 2,
+    "conditions": {
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "mentor",
+        "opinion": 50,
+        "ageOffset": {
+          "min": 40,
+          "max": 60
+        },
+        "occupation": "occ_old_sailor"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 1,
+          "dexterity": 1
+        }
+      }
+    ],
+    "tags": ["sea"]
+  },
+  {
+    "id": "bs_sick_parent",
+    "text": "{parent} fell sick for most of a year, and you learned to run the house.",
+    "ages": {
+      "min": 7,
+      "max": 11
+    },
+    "notability": 2,
+    "conditions": {
+      "parentAlive": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 1,
+          "willpower": 2
+        }
+      }
+    ],
+    "tags": ["hardship", "responsibility", "family"]
+  },
+  {
+    "id": "bs_sibling_fights",
+    "text": "You and {sibling} fought like cats all year, then stood together when it mattered.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "conditions": {
+      "hasSibling": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 1
+        }
+      }
+    ],
+    "tags": ["family", "social"]
+  },
+  {
+    "id": "bs_eldest_duty",
+    "text": "As the eldest, you were looking after {sibling} before you could properly look after yourself.",
+    "ages": {
+      "min": 7,
+      "max": 11
+    },
+    "conditions": {
+      "birthOrders": ["eldest"],
+      "hasSibling": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2
+        }
+      }
+    ],
+    "tags": ["responsibility", "family"]
+  },
+  {
+    "id": "bs_middle_overlooked",
+    "text": "Squeezed between the eldest and the youngest, you learned to get what you needed without asking.",
+    "ages": {
+      "min": 6,
+      "max": 13
+    },
+    "conditions": {
+      "birthOrders": ["middle"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "perception": 1,
+          "charisma": 1
+        }
+      }
+    ],
+    "tags": ["independence", "family"]
+  },
+  {
+    "id": "bs_youngest_mischief",
+    "text": "As the youngest, you got away with everything, and you made the most of it.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "conditions": {
+      "birthOrders": ["youngest"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 1,
+          "dexterity": 1
+        }
+      }
+    ],
+    "tags": ["mischief", "family"]
+  },
+  {
+    "id": "bs_only_child",
+    "text": "With no brothers or sisters, you made friends with whoever was around: sailors, cats, the wind.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "conditions": {
+      "birthOrders": ["only"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 1,
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["lonely"]
+  },
+  {
+    "id": "bs_spoiled",
+    "text": "You had a pony, a tutor and a room with a view of the sea, and thought everyone did.",
+    "ages": {
+      "min": 6,
+      "max": 12
+    },
+    "conditions": {
+      "wealthMin": "wealthy"
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 1,
+          "charisma": 1
+        }
+      }
+    ],
+    "tags": ["wealth"]
+  },
+  {
+    "id": "bs_working_child",
+    "text": "You worked before you could read, carrying water and hauling crates for a few Berries a day.",
+    "ages": {
+      "min": 8,
+      "max": 11
+    },
+    "conditions": {
+      "wealthMax": "poor"
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 2,
+          "strength": 1
+        }
+      }
+    ],
+    "tags": ["hardship", "work"]
+  },
+  {
+    "id": "bs_ruins",
+    "text": "You found the entrance to an old ruin, crawled inside, and copied down the strange writing on its walls.",
+    "ages": {
+      "min": 8,
+      "max": 17
+    },
+    "weight": 0.5,
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "ruins.seen",
+        "value": true
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 1,
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["explore"]
+  },
+  {
+    "id": "bs_child_everyday",
+    "text": "You spent the year on chores, errands and getting into trouble.",
+    "ages": {
+      "min": 6,
+      "max": 11
+    },
+    "weight": 0.6,
+    "notability": 0,
+    "once": false,
+    "cooldownYears": 2,
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 1
+        }
+      }
+    ],
+    "tags": ["everyday"]
+  }
+]

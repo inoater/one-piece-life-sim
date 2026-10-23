@@ -1,0 +1,59 @@
+{
+  "id": "names_south_blue",
+  "given": {
+    "he": [
+      "Alonso",
+      "Bento",
+      "Caio",
+      "Diego",
+      "Esteban",
+      "Fausto",
+      "Gael",
+      "Hugo",
+      "Iago",
+      "Joao",
+      "Lucio",
+      "Mateo",
+      "Nuno",
+      "Pablo",
+      "Rui",
+      "Tiago"
+    ],
+    "she": [
+      "Alma",
+      "Bela",
+      "Clara",
+      "Dalia",
+      "Estela",
+      "Flor",
+      "Graca",
+      "Ines",
+      "Julia",
+      "Luz",
+      "Marisol",
+      "Nadia",
+      "Paz",
+      "Rosa",
+      "Selva"
+    ],
+    "any": ["Ari", "Cruz"]
+  },
+  "family": [
+    "Almeida",
+    "Barros",
+    "Castro",
+    "Duarte",
+    "Esteves",
+    "Faria",
+    "Gama",
+    "Lobo",
+    "Medina",
+    "Navarro",
+    "Pires",
+    "Quintana",
+    "Rocha",
+    "Soto",
+    "Teles",
+    "Vidal"
+  ]
+}

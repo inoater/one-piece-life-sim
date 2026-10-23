@@ -1,0 +1,30 @@
+{
+  "id": "bp_elbaf_highlands",
+  "name": "The highlands of Elbaf",
+  "shortName": "Elbaf",
+  "home": "the highlands",
+  "bornIn": "in the highlands of Elbaf",
+  "region": "new_world",
+  "description": "The land of giants: forests the size of mountains, halls built for warriors, and songs about the ones who died well.",
+  "opens": "Warrior halls and giant-sized everything",
+  "wealth": "medium",
+  "safety": "low",
+  "races": ["race_giant"],
+  "traitPool": ["trait_warrior_pride"],
+  "namePool": "names_giant",
+  "childhood": {
+    "strength": 3,
+    "durability": 2,
+    "willpower": 1
+  },
+  "legacyWeights": {
+    "legacy_marine_veteran": 0.2
+  },
+  "focusWeights": {
+    "focus_fighter": 3
+  },
+  "eventTags": {
+    "elbaf": 4,
+    "warrior": 3
+  }
+}

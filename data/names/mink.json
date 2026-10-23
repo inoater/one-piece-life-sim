@@ -1,0 +1,55 @@
+{
+  "id": "names_mink",
+  "given": {
+    "he": [
+      "Bando",
+      "Corgo",
+      "Dingo",
+      "Fenrik",
+      "Gruff",
+      "Hollo",
+      "Jag",
+      "Kibbo",
+      "Lupo",
+      "Mungo",
+      "Ocelo",
+      "Pounce",
+      "Rufus",
+      "Tibbet",
+      "Woof"
+    ],
+    "she": [
+      "Bibi",
+      "Cocoa",
+      "Della",
+      "Fennie",
+      "Hazel",
+      "Juniper",
+      "Kitty",
+      "Lulu",
+      "Minty",
+      "Nutmeg",
+      "Pippa",
+      "Ruffle",
+      "Sorrel",
+      "Tansy",
+      "Willow"
+    ],
+    "any": ["Bramble", "Clover", "Pepper", "Ziggy"]
+  },
+  "family": [
+    "Barkmoor",
+    "Clawfield",
+    "Dewpaw",
+    "Fernwhisker",
+    "Grayfur",
+    "Hollowtail",
+    "Mossback",
+    "Nightfang",
+    "Quickfoot",
+    "Ridgehorn",
+    "Softpaw",
+    "Thornmane",
+    "Whitewhisker"
+  ]
+}

@@ -1,0 +1,550 @@
+[
+  {
+    "id": "bs_first_job",
+    "text": "You took your first paid work and gave most of the Berries to the family.",
+    "ages": {
+      "min": 12,
+      "max": 15
+    },
+    "conditions": {
+      "wealthMax": "modest"
+    },
+    "effects": [
+      {
+        "kind": "berries",
+        "min": 100,
+        "max": 400
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 1
+        }
+      }
+    ],
+    "tags": ["work"]
+  },
+  {
+    "id": "bs_heartbreak",
+    "text": "You fell hard for {other}. It did not end well, and it did not end quietly.",
+    "ages": {
+      "min": 14,
+      "max": 17
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "rival",
+        "opinion": -15,
+        "ageOffset": {
+          "min": -1,
+          "max": 2
+        }
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "charisma": 1
+        }
+      }
+    ],
+    "tags": ["social"]
+  },
+  {
+    "id": "bs_sweetheart",
+    "text": "You and {other} started walking home together, and then everywhere else together.",
+    "ages": {
+      "min": 14,
+      "max": 17
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "sweetheart",
+        "opinion": 70,
+        "ageOffset": {
+          "min": -1,
+          "max": 2
+        }
+      }
+    ],
+    "tags": ["social"]
+  },
+  {
+    "id": "bs_shipwreck",
+    "text": "You survived a shipwreck, clinging to a barrel for two days until a fishing boat found you.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "weight": 0.4,
+    "notability": 3,
+    "conditions": {
+      "notRaces": ["race_fishman", "race_merfolk"],
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "trait",
+        "trait": "trait_survivor"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 2,
+          "willpower": 2
+        }
+      },
+      {
+        "kind": "potential",
+        "stat": "random",
+        "min": 2,
+        "max": 5
+      }
+    ],
+    "tags": ["sea", "hardship"]
+  },
+  {
+    "id": "bs_hid_sibling",
+    "text": "Bandits raided {home}. You hid {sibling} in the cellar and kept them quiet until the shouting stopped.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "hasSibling": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2,
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["bandits", "hardship"]
+  },
+  {
+    "id": "bs_bandit_scar",
+    "text": "Bandits raided {home} and you got between one of them and your family. You have the scar to prove it.",
+    "ages": {
+      "min": 13,
+      "max": 17
+    },
+    "weight": 0.6,
+    "notability": 3,
+    "effects": [
+      {
+        "kind": "scar",
+        "area": "torso",
+        "text": "a long knife scar across the ribs"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "durability": 2,
+          "willpower": 2
+        }
+      }
+    ],
+    "tags": ["bandits", "fight", "hardship"]
+  },
+  {
+    "id": "bs_library",
+    "text": "You found an old library and read through half of it in a year.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "weight": 0.6,
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "trait",
+        "trait": "trait_bookworm"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 4
+        }
+      }
+    ],
+    "tags": ["study", "books"]
+  },
+  {
+    "id": "bs_ran_away",
+    "text": "You ran away from home and lasted three weeks before hunger walked you back.",
+    "ages": {
+      "min": 13,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "parentAlive": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 1,
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["independence", "hardship"]
+  },
+  {
+    "id": "bs_street_gang",
+    "text": "You ran with a street gang for a year. You learned to fight, to lie, and to leave before the Marines arrived.",
+    "ages": {
+      "min": 13,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "wealthMax": "modest"
+    },
+    "effects": [
+      {
+        "kind": "trait",
+        "trait": "trait_street_fighter"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 1,
+          "dexterity": 2,
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["crime", "street", "fight"]
+  },
+  {
+    "id": "bs_arrested",
+    "text": "You were caught smuggling and spent a month in a Marine cell. The guards remembered your face after that.",
+    "ages": {
+      "min": 14,
+      "max": 17
+    },
+    "weight": 0.6,
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "record.arrested",
+        "value": true
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2
+        }
+      }
+    ],
+    "tags": ["crime", "marines", "hardship"]
+  },
+  {
+    "id": "bs_smith_apprentice",
+    "text": "You were taken on as an apprentice by {other}, a blacksmith with no patience and no equal.",
+    "ages": {
+      "min": 12,
+      "max": 16
+    },
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "mentor",
+        "opinion": 40,
+        "ageOffset": {
+          "min": 20,
+          "max": 40
+        },
+        "occupation": "occ_smith"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 3,
+          "strength": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "skill.smithing",
+        "value": 1
+      }
+    ],
+    "tags": ["craft", "work"]
+  },
+  {
+    "id": "bs_cadets",
+    "text": "You trained with the Marine cadets every morning, unofficially, until they made it official.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "birthplaces": ["bp_marine_base_town", "bp_grand_line_island"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 2,
+          "strength": 2,
+          "willpower": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "marine.cadet",
+        "value": true
+      }
+    ],
+    "tags": ["marines", "discipline", "training"]
+  },
+  {
+    "id": "bs_first_voyage",
+    "text": "You crossed open sea for the first time, working your passage on a merchant ship.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 2,
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["sea", "voyage"]
+  },
+  {
+    "id": "bs_swordsman",
+    "text": "{other}, a wandering swordsman, stayed a season and let you carry their bags in exchange for lessons.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "weight": 0.6,
+    "notability": 3,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "mentor",
+        "opinion": 50,
+        "ageOffset": {
+          "min": 20,
+          "max": 45
+        },
+        "occupation": "occ_swordsman"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 3,
+          "speed": 1,
+          "willpower": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "skill.sword",
+        "value": 1
+      }
+    ],
+    "tags": ["fight", "training"]
+  },
+  {
+    "id": "bs_outbreak",
+    "text": "You assisted {other}, the doctor, through an outbreak, and learned more medicine in a month than most do in years.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "weight": 0.7,
+    "notability": 2,
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "mentor",
+        "opinion": 40,
+        "ageOffset": {
+          "min": 20,
+          "max": 50
+        },
+        "occupation": "occ_doctor"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 3,
+          "willpower": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "skill.medicine",
+        "value": 1
+      }
+    ],
+    "tags": ["study", "illness"]
+  },
+  {
+    "id": "bs_lost_at_sea",
+    "text": "{parent} went out on the water one morning and never came back.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "weight": 0.35,
+    "notability": 3,
+    "conditions": {
+      "parentAlive": true,
+      "regions": ["east_blue", "west_blue", "north_blue", "south_blue", "paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "parentDies",
+        "cause": "lost at sea"
+      },
+      {
+        "kind": "trait",
+        "trait": "trait_bereaved"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2
+        }
+      }
+    ],
+    "tags": ["sea", "hardship", "family"]
+  },
+  {
+    "id": "bs_tutors",
+    "text": "Your tutors drilled you in history, etiquette and fencing until you could do all three asleep.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "conditions": {
+      "wealthMin": "wealthy"
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 2,
+          "charisma": 2,
+          "dexterity": 1
+        }
+      }
+    ],
+    "tags": ["court", "study"]
+  },
+  {
+    "id": "bs_debt_collectors",
+    "text": "Debt collectors came to the house, and you watched {parent} beg.",
+    "ages": {
+      "min": 10,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "wealthMax": "indebted",
+      "parentAlive": true
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "family.debt_shame",
+        "value": true
+      }
+    ],
+    "tags": ["hardship", "family"]
+  },
+  {
+    "id": "bs_good_year",
+    "text": "{parent}'s trade had a lucky year, and the family moved into a better house.",
+    "ages": {
+      "min": 8,
+      "max": 17
+    },
+    "weight": 0.4,
+    "notability": 2,
+    "conditions": {
+      "parentAlive": true
+    },
+    "effects": [
+      {
+        "kind": "wealth",
+        "shift": 1
+      }
+    ],
+    "tags": ["luck", "family"]
+  },
+  {
+    "id": "bs_ruin",
+    "text": "A bad season ruined the family, and you went from comfortable to counting coins.",
+    "ages": {
+      "min": 8,
+      "max": 17
+    },
+    "weight": 0.4,
+    "notability": 2,
+    "conditions": {
+      "wealthMin": "modest"
+    },
+    "effects": [
+      {
+        "kind": "wealth",
+        "shift": -1
+      }
+    ],
+    "tags": ["hardship", "family"]
+  },
+  {
+    "id": "bs_tavern_brawl",
+    "text": "You started a tavern brawl over a spilled drink, and finished it with a broken nose.",
+    "ages": {
+      "min": 15,
+      "max": 30
+    },
+    "effects": [
+      {
+        "kind": "scar",
+        "area": "head",
+        "text": "a nose that has been broken at least once"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 1,
+          "durability": 1
+        }
+      }
+    ],
+    "tags": ["fight"]
+  }
+]

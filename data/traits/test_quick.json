@@ -3,6 +3,13 @@
   "name": "Quick",
   "description": "Dev fixture. Adds a percentage Speed bonus so the inspector shows how flat and percentage lines combine.",
   "category": "innate",
-  "statMods": [{ "stat": "speed", "value": 25, "kind": "pct" }],
-  "tags": ["dev"]
+  "statMods": [
+    {
+      "stat": "speed",
+      "value": 25,
+      "kind": "pct"
+    }
+  ],
+  "tags": ["dev"],
+  "weight": 0
 }

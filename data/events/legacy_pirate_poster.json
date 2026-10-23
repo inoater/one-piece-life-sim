@@ -1,0 +1,8 @@
+{
+  "id": "evt_legacy_pirate_poster",
+  "type": "personal",
+  "title": "A new poster",
+  "text": "A new wanted poster goes up in town. {legacy.parentName}'s bounty has gone up again, and people have started to look at you differently.",
+  "news": "The Marines have raised the bounty on the pirate {legacy.parentName}.",
+  "tags": ["legacy", "pirates", "personal"]
+}

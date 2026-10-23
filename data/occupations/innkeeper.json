@@ -1,0 +1,5 @@
+{
+  "id": "occ_innkeeper",
+  "name": "innkeeper",
+  "wealth": ["poor", "modest", "comfortable"]
+}

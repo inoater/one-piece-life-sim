@@ -1,8 +1,8 @@
 {
   "name": "one-piece-life-sim",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "One Piece Life Sim: a static-site life simulation. Phase 0: engine, saves and tools.",
+  "description": "One Piece Life Sim: a static-site life simulation. Phase 1: character genesis, on the Phase 0 engine.",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -16,6 +16,7 @@
     "validate": "tsx tools/validate-data.ts && tsx tools/canon-lint.ts",
     "lint:sim": "tsx tools/lint-sim.ts",
     "sim": "tsx tools/headless-sim.ts",
+    "genesis": "tsx tools/genesis.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "golden:update": "tsx tools/update-golden.ts",

@@ -1,0 +1,43 @@
+{
+  "id": "evt_legacy_craftsman_apprentice",
+  "type": "personal",
+  "title": "The workshop",
+  "text": "The workshop door is open, and {legacy.parent} is waiting: there is a place at the bench for you, as an apprentice, if you want it.",
+  "choices": [
+    {
+      "id": "accept",
+      "label": "Take the apprenticeship",
+      "text": "Learn the family trade, tool by tool.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "smith.apprentice",
+          "value": true
+        },
+        {
+          "kind": "log",
+          "text": "You tie on the apron. The tools are heavier than they looked.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    },
+    {
+      "id": "decline",
+      "label": "Decline",
+      "text": "The workshop is not your life.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "smith.apprentice",
+          "value": false
+        },
+        {
+          "kind": "log",
+          "text": "You turn the apprenticeship down. The bench stays empty.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    }
+  ],
+  "tags": ["legacy", "craft", "personal"]
+}

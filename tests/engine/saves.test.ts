@@ -322,12 +322,13 @@ describe('migrations', () => {
   });
 
   it('an old save loads through its migration end to end (checksum verified before, hash reported after)', async () => {
+    // Pretend the next version exists: a save made today is "old" to it.
     const w = worldWithHistory();
     const { bytes } = await serializeSave(w.state, { dataHash, label: 'old', now: 1 }, LIMITS);
     const migrations = {
-      1: (e: Record<string, unknown>) => ({
+      [SAVE_VERSION]: (e: Record<string, unknown>) => ({
         ...e,
-        saveVersion: 2,
+        saveVersion: SAVE_VERSION + 1,
         label: `${String(e['label'])} (migrated)`,
         state: {
           ...(e['state'] as object),
@@ -339,11 +340,11 @@ describe('migrations', () => {
       dataHash,
       limits: LIMITS,
       migrations,
-      targetVersion: 2,
+      targetVersion: SAVE_VERSION + 1,
     });
     expect(report).toMatchObject({
-      saveVersion: 2,
-      migratedFrom: 1,
+      saveVersion: SAVE_VERSION + 1,
+      migratedFrom: SAVE_VERSION,
       label: 'old (migrated)',
       hashMatches: false,
     });

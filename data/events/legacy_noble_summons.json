@@ -1,0 +1,43 @@
+{
+  "id": "evt_legacy_noble_summons",
+  "type": "personal",
+  "title": "Summoned by the house",
+  "text": "The elders of the {player.familyName} line summon you to swear yourself to the family's name and duties.",
+  "choices": [
+    {
+      "id": "swear",
+      "label": "Swear to the line",
+      "text": "Duty, money and expectations, for life.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "noble.sworn",
+          "value": true
+        },
+        {
+          "kind": "log",
+          "text": "You kneel, swear, and stand up as an heir of the {player.familyName} line.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    },
+    {
+      "id": "renounce",
+      "label": "Renounce the name",
+      "text": "Walk out of the hall, and leave the money behind.",
+      "effects": [
+        {
+          "kind": "setFlag",
+          "flag": "noble.renounced",
+          "value": true
+        },
+        {
+          "kind": "log",
+          "text": "You walk out of the hall. The family's money stays with the family.",
+          "tags": ["personal", "legacy"]
+        }
+      ]
+    }
+  ],
+  "tags": ["legacy", "court", "personal"]
+}

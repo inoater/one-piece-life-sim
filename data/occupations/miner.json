@@ -1,0 +1,7 @@
+{
+  "id": "occ_miner",
+  "name": "miner",
+  "places": ["bp_north_blue_town"],
+  "wealth": ["indebted", "destitute", "poor", "modest"],
+  "weight": 3
+}

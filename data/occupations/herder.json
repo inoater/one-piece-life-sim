@@ -1,0 +1,6 @@
+{
+  "id": "occ_herder",
+  "name": "herder",
+  "places": ["bp_zou", "bp_elbaf_highlands"],
+  "wealth": ["indebted", "destitute", "poor", "modest"]
+}

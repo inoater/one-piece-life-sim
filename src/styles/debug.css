@@ -270,4 +270,28 @@
     font-size: 0.75rem;
     overflow-wrap: anywhere;
   }
+  .debug__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-0);
+  }
+  .debug__table th,
+  .debug__table td {
+    padding: 2px var(--s-1);
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    font-variant-numeric: tabular-nums;
+  }
+  .debug__histogram {
+    width: 100%;
+    max-width: 22rem;
+    height: auto;
+  }
+  .debug__histogram rect {
+    fill: var(--tide);
+  }
+  .debug__histogram text {
+    fill: var(--mist);
+    font-size: 8px;
+  }
 }

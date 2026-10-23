@@ -6,6 +6,36 @@ import { PUBLIC_KNOWLEDGE, type EventRecord, type WorldState } from '../engine/s
 import { renderTemplate } from '../engine/template';
 
 /**
+ * Values for {player.*} and {legacy.*} in event text. A world with no player (a debug world, or
+ * one made before Phase 1) still renders: the variables fall back to neutral words.
+ */
+export function storyVars(state: WorldState, data: GameData): Record<string, string> {
+  const player = state.playerId ? state.entities[state.playerId] : undefined;
+  const c = player?.character;
+  const parentId = c?.family?.parentIds.find((id) => {
+    const parent = state.entities[id];
+    return parent !== undefined && typeof parent.flags['family.title'] === 'string';
+  });
+  const parent = parentId ? state.entities[parentId] : undefined;
+  const pronouns = parent?.character?.pronouns;
+  return {
+    'player.name': player?.name ?? 'someone',
+    'player.givenName': c?.givenName ?? player?.name ?? 'someone',
+    'player.familyName': c?.familyName || c?.givenName || player?.name || 'someone',
+    'player.race': c ? (data.races[c.race]?.name ?? c.race) : 'person',
+    'player.home': c ? (data.birthplaces[c.birthplace]?.home ?? 'home') : 'home',
+    'legacy.parent':
+      pronouns === 'he' ? 'your father' : pronouns === 'she' ? 'your mother' : 'your parent',
+    'legacy.parentName': parent?.name ?? 'your parent',
+  };
+}
+
+/** Event text starts a sentence even when its first word comes from a variable ("your father ..."). */
+function sentence(text: string): string {
+  return text.length === 0 ? text : text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/**
  * Step 5: roll events. Canon beats first, then random events.
  *
  * What exists in Phase 0 is the part everything else builds on:
@@ -52,14 +82,19 @@ interface EffectSite {
 }
 
 /** Effects available to events and choices: log, setFlag, schedule. Applied in order. */
-function applyEffects(state: WorldState, effects: readonly Effect[], site: EffectSite): void {
-  const vars = templateVarsFor(site.date);
+function applyEffects(
+  state: WorldState,
+  data: GameData,
+  effects: readonly Effect[],
+  site: EffectSite,
+): void {
+  const vars = { ...templateVarsFor(site.date), ...storyVars(state, data) };
   for (const effect of effects) {
     switch (effect.kind) {
       case 'log':
         appendLog(state, site.tick, {
           kind: 'effect',
-          summary: renderTemplate(effect.text, vars),
+          summary: sentence(renderTemplate(effect.text, vars)),
           tags: unique(['effect', ...effect.tags]),
           cause: site.cause,
           causeSeq: site.causeSeq,
@@ -86,6 +121,7 @@ export interface FireContext {
   tick: number;
   date: DateInfo;
   newsDrafts: NewsDraft[];
+  data: GameData;
 }
 
 export function fireEvent(
@@ -94,18 +130,18 @@ export function fireEvent(
   ctx: FireContext,
   causeSeq?: number,
 ): EventRecord {
-  const vars = templateVarsFor(ctx.date);
+  const vars = { ...templateVarsFor(ctx.date), ...storyVars(state, ctx.data) };
   const knownBy = def.visibility === 'public' ? [PUBLIC_KNOWLEDGE] : [];
   const record = appendLog(state, ctx.tick, {
     kind: 'event',
-    summary: renderTemplate(def.text, vars),
+    summary: sentence(renderTemplate(def.text, vars)),
     tags: unique(['event', def.type, ...def.tags]),
     cause: def.id,
     ...(causeSeq !== undefined ? { causeSeq } : {}),
     knownBy,
   });
 
-  applyEffects(state, def.effects, {
+  applyEffects(state, ctx.data, def.effects, {
     tick: ctx.tick,
     date: ctx.date,
     cause: def.id,
@@ -115,7 +151,7 @@ export function fireEvent(
 
   if (def.news !== undefined) {
     ctx.newsDrafts.push({
-      text: renderTemplate(def.news, vars),
+      text: sentence(renderTemplate(def.news, vars)),
       tags: unique(['news', ...def.tags]),
       sourceSeq: record.seq,
     });
@@ -183,7 +219,7 @@ export function resolveDecision(
     causeSeq: decision.recordSeq,
     knownBy,
   });
-  applyEffects(state, choice.effects, {
+  applyEffects(state, data, choice.effects, {
     tick: state.tick,
     date: dateOf(data.calendar, state.tick),
     cause: def.id,

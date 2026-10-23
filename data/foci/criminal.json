@@ -1,0 +1,23 @@
+{
+  "id": "focus_criminal",
+  "name": "Criminal",
+  "description": "Pockets, locks, smuggling runs and staying one street ahead.",
+  "training": {
+    "dexterity": 3,
+    "speed": 2,
+    "perception": 2,
+    "charisma": 1.5
+  },
+  "eventTags": {
+    "crime": 3,
+    "street": 2
+  },
+  "appearanceWeights": {
+    "tag:tattoo": 3,
+    "tag:scar": 1.5
+  },
+  "savingsPerYear": {
+    "min": 0,
+    "max": 6000
+  }
+}

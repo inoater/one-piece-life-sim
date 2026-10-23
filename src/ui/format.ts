@@ -28,6 +28,17 @@ export function formatPercent(fraction: number): string {
   return `${Math.round(fraction * 100)}%`;
 }
 
+/** 1234567 -> "1,234,567"; -500 -> "-500" (with a true minus sign). Independent of locale. */
+export function formatInteger(n: number): string {
+  const digits = String(Math.abs(Math.round(n)));
+  let out = '';
+  for (let i = 0; i < digits.length; i++) {
+    if (i > 0 && (digits.length - i) % 3 === 0) out += ',';
+    out += digits.charAt(i);
+  }
+  return n < 0 && out !== '0' ? `−${out}` : out;
+}
+
 /** A number for display: whole numbers plain, otherwise up to two decimals. */
 export function formatValue(n: number): string {
   return String(Number(n.toFixed(2)));

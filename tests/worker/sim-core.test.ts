@@ -686,12 +686,17 @@ describe('looking at the world', () => {
   it('lists the events that can be forced', async () => {
     const { core } = await started();
     const events = await core.handle('listEvents', {});
-    expect(events.map((e) => e.id)).toEqual([
-      'evt_test_aftermath',
-      'evt_test_crossroads',
-      'evt_test_notice',
-      'evt_test_secret',
-    ]);
+    const ids = events.map((e) => e.id);
+    expect(ids).toEqual([...ids].sort());
+    expect(ids).toEqual(
+      expect.arrayContaining([
+        'evt_legacy_marine_letter',
+        'evt_test_aftermath',
+        'evt_test_crossroads',
+        'evt_test_notice',
+        'evt_test_secret',
+      ]),
+    );
     expect(events.find((e) => e.id === 'evt_test_crossroads')).toMatchObject({
       choices: 2,
       type: 'personal',

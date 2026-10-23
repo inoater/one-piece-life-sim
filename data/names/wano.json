@@ -1,0 +1,58 @@
+{
+  "id": "names_wano",
+  "given": {
+    "he": [
+      "Daigo",
+      "Eiji",
+      "Genta",
+      "Hayato",
+      "Isamu",
+      "Jiro",
+      "Kenta",
+      "Masaru",
+      "Noboru",
+      "Ryota",
+      "Shinji",
+      "Takeru",
+      "Yoshiro",
+      "Goro",
+      "Tetsu"
+    ],
+    "she": [
+      "Aiko",
+      "Chiyo",
+      "Emi",
+      "Fumiko",
+      "Haru",
+      "Izumi",
+      "Kaede",
+      "Mai",
+      "Natsu",
+      "Rin",
+      "Sayo",
+      "Tama",
+      "Yuki",
+      "Ume",
+      "Kiku"
+    ],
+    "any": ["Akira", "Hikaru", "Makoto", "Ren"]
+  },
+  "family": [
+    "Akabane",
+    "Fujikawa",
+    "Hayashi",
+    "Ishida",
+    "Kagami",
+    "Kurogane",
+    "Matsuda",
+    "Mizuno",
+    "Nakaji",
+    "Okabe",
+    "Sakuma",
+    "Shirai",
+    "Takeda",
+    "Yamane",
+    "Uchida"
+  ],
+  "order": "family-first"
+}

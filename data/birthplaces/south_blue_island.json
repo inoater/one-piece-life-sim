@@ -1,0 +1,37 @@
+{
+  "id": "bp_south_blue_island",
+  "name": "An island in the South Blue",
+  "shortName": "South Blue",
+  "home": "the island",
+  "bornIn": "on an island in the South Blue",
+  "region": "south_blue",
+  "description": "A hot, lawless island of jungle and fishing camps, where the bandit gangs keep their own order.",
+  "opens": "Brawling and bandit gangs",
+  "wealth": "medium",
+  "safety": "low",
+  "races": ["race_human"],
+  "traitPool": ["trait_wild", "trait_quick_fingered"],
+  "namePool": "names_south_blue",
+  "childhood": {
+    "strength": 2,
+    "speed": 2,
+    "durability": 1
+  },
+  "legacyWeights": {
+    "legacy_pirate_parent": 1.5
+  },
+  "focusWeights": {
+    "focus_fighter": 2,
+    "focus_criminal": 2
+  },
+  "eventTags": {
+    "bandits": 3,
+    "fight": 1.5,
+    "jungle": 2
+  },
+  "appearanceWeights": {
+    "complexion.sunburnt": 2,
+    "skin.tan": 1.5,
+    "skin.brown": 1.5
+  }
+}

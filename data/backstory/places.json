@@ -1,0 +1,601 @@
+[
+  {
+    "id": "bs_east_quiet",
+    "text": "Nothing at all happened in {home} that year. You have never been so bored, before or since.",
+    "ages": {
+      "min": 8,
+      "max": 16
+    },
+    "conditions": {
+      "birthplaces": ["bp_east_blue_village"]
+    },
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "dream.leave",
+        "value": true
+      }
+    ],
+    "tags": ["quiet"]
+  },
+  {
+    "id": "bs_west_smugglers",
+    "text": "You ran messages for the harbour smugglers, who paid in Berries and never asked your name.",
+    "ages": {
+      "min": 10,
+      "max": 17
+    },
+    "conditions": {
+      "birthplaces": ["bp_west_blue_port"]
+    },
+    "effects": [
+      {
+        "kind": "berries",
+        "min": 300,
+        "max": 2000
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "speed": 1,
+          "perception": 1
+        }
+      }
+    ],
+    "tags": ["crime", "port"]
+  },
+  {
+    "id": "bs_north_mine",
+    "text": "You went down the mine young and came up stronger, quieter and coughing.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "birthplaces": ["bp_north_blue_town"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 3,
+          "endurance": 2
+        }
+      },
+      {
+        "kind": "mod",
+        "stat": "endurance",
+        "value": -1,
+        "source": "Mine dust in the lungs"
+      }
+    ],
+    "tags": ["mining", "work", "hardship"]
+  },
+  {
+    "id": "bs_north_winter",
+    "text": "The winter the harbour froze, you learned to skate, to fish through ice, and how cold a person can get.",
+    "ages": {
+      "min": 6,
+      "max": 14
+    },
+    "conditions": {
+      "birthplaces": ["bp_north_blue_town"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "endurance": 2
+        }
+      }
+    ],
+    "tags": ["cold"]
+  },
+  {
+    "id": "bs_south_jungle",
+    "text": "You spent a summer living wild in the jungle and came back brown, scratched and impossible to keep indoors.",
+    "ages": {
+      "min": 6,
+      "max": 14
+    },
+    "conditions": {
+      "birthplaces": ["bp_south_blue_island"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "speed": 2,
+          "strength": 1
+        }
+      }
+    ],
+    "tags": ["jungle", "explore"]
+  },
+  {
+    "id": "bs_south_bandits",
+    "text": "A bandit gang offered you a place. You still think about the answer you gave.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "birthplaces": ["bp_south_blue_island"]
+    },
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "bandits.offered",
+        "value": true
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 1
+        }
+      }
+    ],
+    "tags": ["bandits", "crime"]
+  },
+  {
+    "id": "bs_grand_line_weather",
+    "text": "It snowed in the morning and the sea boiled in the afternoon. You learned to read the sky like a book.",
+    "ages": {
+      "min": 6,
+      "max": 17
+    },
+    "conditions": {
+      "regions": ["paradise", "new_world"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "perception": 2,
+          "intellect": 1
+        }
+      }
+    ],
+    "tags": ["weather"]
+  },
+  {
+    "id": "bs_emperors_war",
+    "text": "Two Emperors' crews fought over {home}. When the smoke cleared, half the town was gone.",
+    "ages": {
+      "min": 8,
+      "max": 17
+    },
+    "weight": 0.6,
+    "notability": 3,
+    "conditions": {
+      "birthplaces": ["bp_new_world_island"]
+    },
+    "effects": [
+      {
+        "kind": "trait",
+        "trait": "trait_survivor"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 3,
+          "durability": 1
+        }
+      }
+    ],
+    "tags": ["war", "pirates", "hardship"]
+  },
+  {
+    "id": "bs_vice_admiral",
+    "text": "A Vice Admiral inspected the base, and you stood up straighter for a week.",
+    "ages": {
+      "min": 6,
+      "max": 12
+    },
+    "conditions": {
+      "birthplaces": ["bp_marine_base_town"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["marines"]
+  },
+  {
+    "id": "bs_first_dial",
+    "text": "You took apart your first dial and spent a month learning how to put it back together.",
+    "ages": {
+      "min": 8,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "birthplaces": ["bp_sky_island"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 2,
+          "intellect": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "skill.dials",
+        "value": 1
+      }
+    ],
+    "tags": ["dials", "sky"]
+  },
+  {
+    "id": "bs_mantra_wakes",
+    "text": "You heard the voices of a crowd before you saw them: your Mantra had woken.",
+    "ages": {
+      "min": 10,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "races": ["race_skypiean"]
+    },
+    "effects": [
+      {
+        "kind": "potential",
+        "stat": "perception",
+        "min": 2,
+        "max": 4
+      }
+    ],
+    "tags": ["sky"]
+  },
+  {
+    "id": "bs_sea_below",
+    "text": "You looked over the edge of the clouds at the Blue Sea below and could not stop wondering what was down there.",
+    "ages": {
+      "min": 8,
+      "max": 17
+    },
+    "conditions": {
+      "birthplaces": ["bp_sky_island"]
+    },
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "dream.blue_sea",
+        "value": true
+      }
+    ],
+    "tags": ["sky", "explore"]
+  },
+  {
+    "id": "bs_humans_look",
+    "text": "You saw humans up close for the first time, and learned how they look at your kind.",
+    "ages": {
+      "min": 8,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "races": ["race_fishman", "race_merfolk"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "prejudice.met",
+        "value": true
+      }
+    ],
+    "tags": ["prejudice"]
+  },
+  {
+    "id": "bs_karate_dojo",
+    "text": "You trained at a Fish-Man Karate dojo under {other}, who could break a rock without touching it.",
+    "ages": {
+      "min": 10,
+      "max": 17
+    },
+    "weight": 0.8,
+    "notability": 3,
+    "conditions": {
+      "races": ["race_fishman"],
+      "birthplaces": ["bp_fishman_island"]
+    },
+    "effects": [
+      {
+        "kind": "relationship",
+        "role": "mentor",
+        "opinion": 55,
+        "ageOffset": {
+          "min": 25,
+          "max": 60
+        },
+        "occupation": "occ_karate_master"
+      },
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 2,
+          "dexterity": 2
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "skill.fishman_karate",
+        "value": 1
+      }
+    ],
+    "tags": ["karate", "training"]
+  },
+  {
+    "id": "bs_bubble_walk",
+    "text": "You tried to walk on land with a float-bubble and fell flat in front of everyone.",
+    "ages": {
+      "min": 8,
+      "max": 14
+    },
+    "conditions": {
+      "races": ["race_merfolk"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 1
+        }
+      }
+    ],
+    "tags": ["undersea", "mischief"]
+  },
+  {
+    "id": "bs_samurai_house",
+    "text": "You were taken into a samurai household as a servant, and watched the sword drills from the corridor until someone handed you a wooden blade.",
+    "ages": {
+      "min": 10,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "birthplaces": ["bp_wano"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "dexterity": 3,
+          "willpower": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "skill.sword",
+        "value": 1
+      }
+    ],
+    "tags": ["samurai"]
+  },
+  {
+    "id": "bs_beyond_falls",
+    "text": "You asked a fisherman what lay beyond the waterfalls. He told you never to ask that again.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "conditions": {
+      "birthplaces": ["bp_wano"]
+    },
+    "effects": [
+      {
+        "kind": "flag",
+        "flag": "dream.leave_wano",
+        "value": true
+      }
+    ],
+    "tags": ["closed"]
+  },
+  {
+    "id": "bs_warrior_hall",
+    "text": "You were allowed into the warriors' hall for the first time, and sat silent through a night of songs about the dead.",
+    "ages": {
+      "min": 15,
+      "max": 45
+    },
+    "notability": 2,
+    "conditions": {
+      "birthplaces": ["bp_elbaf_highlands"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2,
+          "strength": 1
+        }
+      }
+    ],
+    "tags": ["warrior", "elbaf"]
+  },
+  {
+    "id": "bs_great_hunt",
+    "text": "You joined your first great hunt and brought down a beast the size of a house.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "notability": 3,
+    "conditions": {
+      "birthplaces": ["bp_elbaf_highlands"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 3,
+          "durability": 1
+        }
+      },
+      {
+        "kind": "scar",
+        "area": "arms",
+        "text": "claw scars across one forearm"
+      }
+    ],
+    "tags": ["warrior", "fight"]
+  },
+  {
+    "id": "bs_zou_guard",
+    "text": "You trained with the guard among the branches of the great forest: all Electro and bruises.",
+    "ages": {
+      "min": 10,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "birthplaces": ["bp_zou"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "speed": 2,
+          "dexterity": 1,
+          "strength": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "skill.electro",
+        "value": 1
+      }
+    ],
+    "tags": ["guard"]
+  },
+  {
+    "id": "bs_full_moon",
+    "text": "Under a full moon you looked up, and for a moment felt something enormous stir inside you.",
+    "ages": {
+      "min": 12,
+      "max": 17
+    },
+    "weight": 0.4,
+    "notability": 3,
+    "conditions": {
+      "races": ["race_mink"]
+    },
+    "effects": [
+      {
+        "kind": "potential",
+        "stat": "strength",
+        "min": 1,
+        "max": 3
+      },
+      {
+        "kind": "flag",
+        "flag": "sulong.glimpsed",
+        "value": true
+      }
+    ],
+    "tags": ["zou"]
+  },
+  {
+    "id": "bs_borrowing",
+    "text": "You went on your first borrowing raid into the human town and came back with a spoon, a button and a story.",
+    "ages": {
+      "min": 6,
+      "max": 17
+    },
+    "conditions": {
+      "birthplaces": ["bp_green_bit"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "speed": 2,
+          "dexterity": 2
+        }
+      }
+    ],
+    "tags": ["tontatta", "crime"]
+  },
+  {
+    "id": "bs_smiling_stranger",
+    "text": "A smiling stranger told you he was a hero, and you believed every word. It cost your village a harvest.",
+    "ages": {
+      "min": 8,
+      "max": 17
+    },
+    "notability": 2,
+    "conditions": {
+      "birthplaces": ["bp_green_bit"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "intellect": 1
+        }
+      }
+    ],
+    "tags": ["tontatta", "hardship"]
+  },
+  {
+    "id": "bs_giant_gear",
+    "text": "You outgrew another set of armour and had to wait a year for the smiths to forge the next.",
+    "ages": {
+      "min": 20,
+      "max": 40
+    },
+    "conditions": {
+      "races": ["race_giant"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "strength": 1
+        }
+      }
+    ],
+    "tags": ["warrior"]
+  },
+  {
+    "id": "bs_lunarian_hidden",
+    "text": "You learned early to hide your wings and your flame: people who saw them asked questions, and some of them wanted to sell the answer.",
+    "ages": {
+      "min": 6,
+      "max": 30
+    },
+    "notability": 3,
+    "conditions": {
+      "races": ["race_lunarian"]
+    },
+    "effects": [
+      {
+        "kind": "train",
+        "stats": {
+          "willpower": 2,
+          "perception": 1
+        }
+      },
+      {
+        "kind": "flag",
+        "flag": "lunarian.hidden",
+        "value": true
+      }
+    ],
+    "tags": ["hardship"]
+  }
+]

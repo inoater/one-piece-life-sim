@@ -1,0 +1,58 @@
+{
+  "id": "names_fishman",
+  "given": {
+    "he": [
+      "Arrow",
+      "Barra",
+      "Crag",
+      "Dory",
+      "Eddo",
+      "Finno",
+      "Gill",
+      "Hammer",
+      "Kelpo",
+      "Marlo",
+      "Narwo",
+      "Orca",
+      "Pike",
+      "Reefo",
+      "Skate",
+      "Tarpo",
+      "Wahoo"
+    ],
+    "she": [
+      "Ammonia",
+      "Brine",
+      "Coralie",
+      "Delphi",
+      "Echo",
+      "Fluke",
+      "Kelpie",
+      "Lagoona",
+      "Marina",
+      "Naiada",
+      "Perla",
+      "Scalla",
+      "Tidea",
+      "Undine",
+      "Wavelet"
+    ],
+    "any": ["Abyss", "Shoal", "Current"]
+  },
+  "family": [
+    "Deepwell",
+    "Fathom",
+    "Gullet",
+    "Kelpwood",
+    "Mantle",
+    "Nautilo",
+    "Pelagi",
+    "Riptide",
+    "Seafloor",
+    "Sounder",
+    "Tidewater",
+    "Trench",
+    "Undertow",
+    "Benthos"
+  ]
+}

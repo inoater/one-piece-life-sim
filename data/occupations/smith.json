@@ -1,0 +1,12 @@
+{
+  "id": "occ_smith",
+  "name": "blacksmith",
+  "places": [
+    "bp_north_blue_town",
+    "bp_west_blue_port",
+    "bp_wano",
+    "bp_marine_base_town",
+    "bp_elbaf_highlands"
+  ],
+  "wealth": ["poor", "modest", "comfortable"]
+}

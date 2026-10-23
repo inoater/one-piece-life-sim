@@ -1,0 +1,7 @@
+{
+  "id": "occ_woodcutter",
+  "name": "woodcutter",
+  "places": ["bp_elbaf_highlands", "bp_north_blue_town", "bp_zou"],
+  "wealth": ["indebted", "destitute", "poor", "modest"],
+  "weight": 2
+}

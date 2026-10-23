@@ -1,0 +1,48 @@
+{
+  "id": "race_giant",
+  "name": "Giant",
+  "adjective": "giant",
+  "noun": {
+    "he": "giant",
+    "she": "giant",
+    "they": "giant"
+  },
+  "description": "Enormous and long-lived, proud of their warriors. A giant is still a child at thirty and in their prime at sixty, and needs giant-sized gear, food and ships for all of it.",
+  "capMods": {
+    "strength": 60,
+    "durability": 50,
+    "endurance": 30,
+    "speed": -30,
+    "dexterity": -20
+  },
+  "innateTraits": ["trait_colossal_body"],
+  "anchors": {
+    "childEnds": 40,
+    "primeStarts": 60,
+    "elderStarts": 200
+  },
+  "lifespan": {
+    "min": 250,
+    "max": 300
+  },
+  "weight": 5,
+  "namePool": "names_giant",
+  "heights": {
+    "short": {
+      "min": 900,
+      "max": 1300
+    },
+    "average": {
+      "min": 1301,
+      "max": 1800
+    },
+    "tall": {
+      "min": 1801,
+      "max": 2400
+    },
+    "towering": {
+      "min": 2401,
+      "max": 3200
+    }
+  }
+}

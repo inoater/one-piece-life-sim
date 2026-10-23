@@ -1,0 +1,37 @@
+{
+  "id": "legacy_marine_veteran",
+  "name": "Marine veteran parent",
+  "description": "One parent served in the Marines and retired with a pension, a limp and a lot of stories. Some of the old unit still remember the family.",
+  "weight": 1,
+  "berries": {
+    "min": 2000,
+    "max": 12000
+  },
+  "traitPool": ["trait_drilled", "trait_sense_of_justice"],
+  "parent": {
+    "role": "either",
+    "occupation": "occ_retired_marine",
+    "title": "a retired Marine lieutenant",
+    "flags": {
+      "marine.rank": "lieutenant"
+    }
+  },
+  "childhood": {
+    "endurance": 2,
+    "strength": 2,
+    "willpower": 2
+  },
+  "focusWeights": {
+    "focus_fighter": 2,
+    "focus_sailor": 1.2
+  },
+  "eventTags": {
+    "marines": 2,
+    "discipline": 2
+  },
+  "chain": {
+    "eventId": "evt_legacy_marine_letter",
+    "atAge": 16,
+    "pastText": "A letter came from the commander of {parent}'s old unit, offering you a recommendation to the Marines."
+  }
+}

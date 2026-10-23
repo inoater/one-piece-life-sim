@@ -49,3 +49,7 @@ export { PIPELINE, PIPELINE_IDS } from './systems';
 export { applyAction, ActionSchema, ActionError, type Action } from './systems/actions';
 export { createWorld } from './engine/world';
 export { Rng } from './engine/rng';
+export { createLife, describeAppearance, type GenesisResult } from './systems/genesis/generate';
+export { GenesisError, defaultOptions, type GenesisOptions } from './systems/genesis/options';
+export { characterSheet, playerSummary, type CharacterSheet } from './systems/genesis/sheet';
+export { genesisStats, type GenesisStats } from './systems/genesis/stats-report';

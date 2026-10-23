@@ -1,0 +1,7 @@
+{
+  "id": "occ_tontatta_farmer",
+  "name": "flower farmer",
+  "places": ["bp_green_bit"],
+  "wealth": ["indebted", "destitute", "poor", "modest"],
+  "weight": 2
+}

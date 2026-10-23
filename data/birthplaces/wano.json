@@ -1,0 +1,42 @@
+{
+  "id": "bp_wano",
+  "name": "Wano Country",
+  "shortName": "Wano",
+  "home": "Wano",
+  "bornIn": "in Wano Country",
+  "region": "wano",
+  "description": "A closed country of samurai behind waterfalls and cliffs. Its people rarely leave, and its law does not let them.",
+  "opens": "A closed country: leaving needs a special event chain",
+  "wealth": "medium",
+  "safety": "medium",
+  "races": ["race_human", "race_mink"],
+  "traitPool": ["trait_honor_bound"],
+  "namePool": "names_wano",
+  "childhood": {
+    "dexterity": 2,
+    "willpower": 2,
+    "strength": 1
+  },
+  "legacyWeights": {
+    "legacy_marine_veteran": 0,
+    "legacy_pirate_parent": 0.2,
+    "legacy_noble_line": 1.5,
+    "legacy_craftsman_family": 1.5
+  },
+  "focusWeights": {
+    "focus_fighter": 2,
+    "focus_noble": 1
+  },
+  "eventTags": {
+    "wano": 4,
+    "samurai": 3,
+    "closed": 2
+  },
+  "appearanceWeights": {
+    "hairStyle.topknot": 6,
+    "skin.fair": 1.5
+  },
+  "flags": {
+    "wano.closed": true
+  }
+}

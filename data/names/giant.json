@@ -1,0 +1,48 @@
+{
+  "id": "names_giant",
+  "given": {
+    "he": [
+      "Arngrim",
+      "Bodvar",
+      "Dagfinn",
+      "Egil",
+      "Grimolf",
+      "Hallbjorn",
+      "Ingolf",
+      "Kjartan",
+      "Orvar",
+      "Sigvald",
+      "Thorgrim",
+      "Ulfar",
+      "Vemund"
+    ],
+    "she": [
+      "Alfhild",
+      "Bergdis",
+      "Gudrun",
+      "Hallveig",
+      "Ingunn",
+      "Jorunn",
+      "Ragnfrid",
+      "Sigrun",
+      "Thorgerd",
+      "Valdis",
+      "Yrsa"
+    ],
+    "any": ["Storm", "Rune"]
+  },
+  "family": [
+    "Axehall",
+    "Bjarnfell",
+    "Craghelm",
+    "Dunholt",
+    "Frosthammer",
+    "Greystone",
+    "Hornvald",
+    "Ironoak",
+    "Longbeard",
+    "Mountfell",
+    "Skarholm",
+    "Thundrok"
+  ]
+}

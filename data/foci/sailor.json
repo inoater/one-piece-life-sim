@@ -1,0 +1,24 @@
+{
+  "id": "focus_sailor",
+  "name": "Sailor",
+  "description": "Decks, rigging, weather and the open sea.",
+  "training": {
+    "endurance": 3,
+    "speed": 2,
+    "perception": 2,
+    "dexterity": 1.5,
+    "strength": 1,
+    "intellect": 1
+  },
+  "eventTags": {
+    "sea": 3,
+    "voyage": 2
+  },
+  "appearanceWeights": {
+    "tag:tattoo": 2
+  },
+  "savingsPerYear": {
+    "min": 1000,
+    "max": 3500
+  }
+}

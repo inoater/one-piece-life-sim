@@ -1,0 +1,176 @@
+{
+  "entry": {
+    "minYear": 0,
+    "maxYear": 38,
+    "minAge": 0,
+    "maxAge": 80,
+    "focusAboveAge": 12,
+    "focusFromAge": 12
+  },
+  "canonModes": [
+    {
+      "id": "canon",
+      "name": "Canon",
+      "summary": "Famous events happen on their dates whenever the people in them are alive and present. Only you can change them."
+    },
+    {
+      "id": "probable",
+      "name": "Probable",
+      "summary": "Famous events are very likely, but chance or you can derail them. A familiar world with real surprises."
+    },
+    {
+      "id": "random",
+      "name": "Random",
+      "summary": "The famous cast exists, but events happen only by ordinary chance. A fresh story with a known cast."
+    }
+  ],
+  "difficulties": [
+    {
+      "id": "easy",
+      "name": "Calm Seas",
+      "summary": "Twice the starting money, gentler pasts, slightly higher potential.",
+      "berriesMult": 2,
+      "hardshipMult": 0.5,
+      "potentialMult": 1.05,
+      "mortalityMult": 0.6,
+      "dangerMult": 0.7
+    },
+    {
+      "id": "normal",
+      "name": "Grand Line",
+      "summary": "The intended balance.",
+      "berriesMult": 1,
+      "hardshipMult": 1,
+      "potentialMult": 1,
+      "mortalityMult": 1,
+      "dangerMult": 1
+    },
+    {
+      "id": "hard",
+      "name": "New World",
+      "summary": "Less money, harder pasts, a deadlier world.",
+      "berriesMult": 0.6,
+      "hardshipMult": 1.5,
+      "potentialMult": 1,
+      "mortalityMult": 1.3,
+      "dangerMult": 1.3
+    },
+    {
+      "id": "brutal",
+      "name": "Calm Belt",
+      "summary": "Little money, cruel pasts, slightly lower potential. Few lives last.",
+      "berriesMult": 0.3,
+      "hardshipMult": 2.2,
+      "potentialMult": 0.95,
+      "mortalityMult": 1.7,
+      "dangerMult": 1.7
+    }
+  ],
+  "defaults": {
+    "canonMode": "canon",
+    "difficulty": "normal",
+    "entryYear": 14,
+    "entryAge": 16,
+    "pronouns": "they"
+  },
+  "wealthTiers": [
+    {
+      "id": "indebted",
+      "name": "In debt",
+      "berries": { "min": -80000, "max": -10000 },
+      "growthIntensity": 0.9
+    },
+    {
+      "id": "destitute",
+      "name": "Destitute",
+      "berries": { "min": 0, "max": 800 },
+      "growthIntensity": 0.85
+    },
+    {
+      "id": "poor",
+      "name": "Poor",
+      "berries": { "min": 500, "max": 4000 },
+      "growthIntensity": 0.93
+    },
+    {
+      "id": "modest",
+      "name": "Modest",
+      "berries": { "min": 3000, "max": 15000 },
+      "growthIntensity": 1
+    },
+    {
+      "id": "comfortable",
+      "name": "Comfortable",
+      "berries": { "min": 12000, "max": 50000 },
+      "growthIntensity": 1.03
+    },
+    {
+      "id": "wealthy",
+      "name": "Wealthy",
+      "berries": { "min": 50000, "max": 250000 },
+      "growthIntensity": 1.05
+    },
+    {
+      "id": "rich",
+      "name": "Rich",
+      "berries": { "min": 250000, "max": 1500000 },
+      "growthIntensity": 1.06
+    }
+  ],
+  "wealthRolls": {
+    "low": { "indebted": 8, "destitute": 18, "poor": 44, "modest": 24, "comfortable": 6 },
+    "medium": {
+      "indebted": 6,
+      "destitute": 6,
+      "poor": 24,
+      "modest": 40,
+      "comfortable": 18,
+      "wealthy": 5,
+      "rich": 1
+    },
+    "high": { "poor": 8, "modest": 30, "comfortable": 38, "wealthy": 18, "rich": 6 }
+  },
+  "safetyHardship": { "very_low": 2, "low": 1.4, "medium": 1, "high": 0.6 },
+  "siblings": { "count": [22, 32, 24, 14, 8], "spacingMonths": { "min": 14, "max": 48 } },
+  "parentAge": { "min": 17, "max": 42 },
+  "birthOrder": {
+    "only": { "label": "Only child", "berriesMult": 1.2, "eventTags": { "lonely": 2 } },
+    "eldest": {
+      "label": "Eldest",
+      "berriesMult": 1.1,
+      "flags": { "family.heir": true },
+      "eventTags": { "responsibility": 2.5 }
+    },
+    "middle": { "label": "Middle child", "berriesMult": 0.9, "eventTags": { "independence": 2.5 } },
+    "youngest": { "label": "Youngest", "berriesMult": 1, "eventTags": { "mischief": 2.5 } }
+  },
+  "trainingPerYear": 12,
+  "childhood": {
+    "speed": 2,
+    "endurance": 2,
+    "strength": 1,
+    "dexterity": 1,
+    "perception": 1,
+    "charisma": 1,
+    "intellect": 1
+  },
+  "parentMortality": [
+    { "fromAge": 0, "chance": 0.004 },
+    { "fromAge": 40, "chance": 0.008 },
+    { "fromAge": 55, "chance": 0.02 },
+    { "fromAge": 65, "chance": 0.05 },
+    { "fromAge": 75, "chance": 0.12 },
+    { "fromAge": 85, "chance": 0.3 },
+    { "fromAge": 95, "chance": 0.6 }
+  ],
+  "naturalDeath": [
+    "{parent} died after a long illness that no doctor for miles could name.",
+    "{parent} died in the night, quietly, worn out by years of work.",
+    "A winter fever took {parent}. Half of {home} came to the burial.",
+    "{parent} died with the family close by, and was buried facing the sea."
+  ],
+  "maxRelationships": 3,
+  "paragraphEvents": 4,
+  "savingsFromAge": 16,
+  "quirkChance": 0.55
+}

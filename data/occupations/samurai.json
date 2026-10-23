@@ -1,0 +1,7 @@
+{
+  "id": "occ_samurai",
+  "name": "samurai",
+  "places": ["bp_wano"],
+  "wealth": ["poor", "modest", "comfortable"],
+  "weight": 2
+}

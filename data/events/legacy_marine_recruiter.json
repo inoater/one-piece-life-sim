@@ -1,0 +1,7 @@
+{
+  "id": "evt_legacy_marine_recruiter",
+  "type": "personal",
+  "title": "The recruiter asks for you",
+  "text": "A Marine recruiter passing through asks after {player.givenName} by name. The letter has done its work: there is a place for you, if you want it.",
+  "tags": ["legacy", "marines", "personal"]
+}

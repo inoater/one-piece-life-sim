@@ -5,6 +5,7 @@ import { confirmButton } from './components/confirm-button';
 import { openModal, type ModalHandle } from './components/modal';
 import { h } from './dom';
 import { errorMessage, formatBytes, relativeTime, shortHash } from './format';
+import { navigate } from './router';
 import type { Status, Theme } from './store';
 
 /**
@@ -289,8 +290,36 @@ export function openMenu(app: App): ModalHandle {
     );
   }
 
+  function renderNewLife(): HTMLElement {
+    const playing = app.store.get().snapshot?.player;
+    return h(
+      'section',
+      { class: 'menu__section' },
+      h('h3', null, 'New life'),
+      h(
+        'p',
+        { class: 'muted' },
+        playing
+          ? `Start someone new. ${playing.name}'s life stays in your saves until you overwrite them.`
+          : 'Choose a race, a birthplace, a family and a year, and live from there.',
+      ),
+      h(
+        'button',
+        {
+          class: 'button',
+          type: 'button',
+          onclick: () => {
+            modal.close();
+            navigate('new');
+          },
+        },
+        'Start a new life',
+      ),
+    );
+  }
+
   function render(): void {
-    body.replaceChildren(renderSaves(), renderAppearance());
+    body.replaceChildren(renderNewLife(), renderSaves(), renderAppearance());
   }
 
   render();

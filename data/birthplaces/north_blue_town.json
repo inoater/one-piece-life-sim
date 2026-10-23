@@ -1,0 +1,42 @@
+{
+  "id": "bp_north_blue_town",
+  "name": "A town in the North Blue",
+  "shortName": "North Blue",
+  "home": "the town",
+  "bornIn": "in a mining town in the North Blue",
+  "region": "north_blue",
+  "description": "A cold mining town under grey skies. Work is hard, winters are long, and the mercenary companies always recruit.",
+  "opens": "Mining and mercenary work",
+  "wealth": "low",
+  "safety": "medium",
+  "races": ["race_human"],
+  "traitPool": ["trait_hardy", "trait_stoic"],
+  "namePool": "names_north_blue",
+  "growthIntensity": 0.98,
+  "childhood": {
+    "endurance": 3,
+    "strength": 2,
+    "willpower": 1
+  },
+  "potentialMods": {
+    "endurance": 3
+  },
+  "legacyWeights": {
+    "legacy_craftsman_family": 1.5
+  },
+  "focusWeights": {
+    "focus_laborer": 2,
+    "focus_fighter": 2
+  },
+  "eventTags": {
+    "cold": 3,
+    "mining": 3,
+    "mercenary": 2
+  },
+  "appearanceWeights": {
+    "skin.pale": 3,
+    "skin.fair": 2,
+    "hairColor.blond": 2,
+    "complexion.weathered": 1.5
+  }
+}

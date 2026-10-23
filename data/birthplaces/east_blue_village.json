@@ -1,0 +1,40 @@
+{
+  "id": "bp_east_blue_village",
+  "name": "A village on the East Blue",
+  "shortName": "East Blue",
+  "home": "the village",
+  "bornIn": "in a village on the East Blue",
+  "region": "east_blue",
+  "description": "A fishing village on the calmest of the four seas, where the biggest news of the year is usually the weather.",
+  "opens": "Fishing and farm jobs, a quiet start",
+  "wealth": "low",
+  "safety": "high",
+  "races": ["race_human"],
+  "traitPool": ["trait_sea_legs", "trait_sturdy", "trait_homesick"],
+  "namePool": "names_east_blue",
+  "childhood": {
+    "endurance": 2,
+    "strength": 2,
+    "speed": 1,
+    "dexterity": 1
+  },
+  "legacyWeights": {
+    "legacy_fisher_family": 3,
+    "legacy_noble_line": 0.3,
+    "legacy_pirate_parent": 0.6
+  },
+  "focusWeights": {
+    "focus_sailor": 2,
+    "focus_laborer": 2,
+    "focus_fighter": 1,
+    "focus_noble": 0.3
+  },
+  "eventTags": {
+    "sea": 2,
+    "farm": 2,
+    "quiet": 2
+  },
+  "appearanceWeights": {
+    "complexion.sunburnt": 1.5
+  }
+}

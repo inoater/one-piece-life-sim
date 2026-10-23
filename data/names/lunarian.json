@@ -1,0 +1,44 @@
+{
+  "id": "names_lunarian",
+  "given": {
+    "he": [
+      "Ashor",
+      "Calix",
+      "Dravon",
+      "Ember",
+      "Ignar",
+      "Kaelor",
+      "Malrec",
+      "Nyxar",
+      "Pyron",
+      "Solren",
+      "Tavrek",
+      "Vyrn"
+    ],
+    "she": [
+      "Aeryn",
+      "Cinder",
+      "Elara",
+      "Ignis",
+      "Lyra",
+      "Nyra",
+      "Phaedra",
+      "Seren",
+      "Solenne",
+      "Vesta",
+      "Ysolde"
+    ],
+    "any": ["Ash", "Nova"]
+  },
+  "family": [
+    "Ashfall",
+    "Blackwing",
+    "Cinderhold",
+    "Duskflame",
+    "Emberlyn",
+    "Flamewright",
+    "Nightspire",
+    "Redline",
+    "Starfall"
+  ]
+}

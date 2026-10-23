@@ -1,0 +1,47 @@
+{
+  "id": "race_fishman",
+  "name": "Fish-Man",
+  "adjective": "fish-man",
+  "noun": {
+    "he": "fish-man",
+    "she": "fish-woman",
+    "they": "fish-person"
+  },
+  "description": "People of the deep sea, born with the strength of their fish lineage. Ten times a human's strength, the old saying goes; it is an exaggeration, but not by as much as humans would like.",
+  "capMods": {
+    "strength": 30,
+    "endurance": 20,
+    "durability": 10,
+    "speed": -5
+  },
+  "innateTraits": ["trait_water_breathing", "trait_strong_swimmer", "trait_fishman_karate"],
+  "anchors": {
+    "childEnds": 14,
+    "primeStarts": 22,
+    "elderStarts": 70
+  },
+  "lifespan": {
+    "min": 80,
+    "max": 110
+  },
+  "weight": 10,
+  "namePool": "names_fishman",
+  "heights": {
+    "short": {
+      "min": 160,
+      "max": 185
+    },
+    "average": {
+      "min": 186,
+      "max": 220
+    },
+    "tall": {
+      "min": 221,
+      "max": 280
+    },
+    "towering": {
+      "min": 281,
+      "max": 420
+    }
+  }
+}

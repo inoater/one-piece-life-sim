@@ -1,0 +1,22 @@
+{
+  "id": "focus_scholar",
+  "name": "Scholar",
+  "description": "Books, charts, medicine and the long nights spent with them.",
+  "training": {
+    "intellect": 4,
+    "perception": 2,
+    "willpower": 1,
+    "charisma": 0.5
+  },
+  "eventTags": {
+    "study": 3,
+    "books": 2
+  },
+  "appearanceWeights": {
+    "tag:scar": 0.5
+  },
+  "savingsPerYear": {
+    "min": 1000,
+    "max": 4000
+  }
+}

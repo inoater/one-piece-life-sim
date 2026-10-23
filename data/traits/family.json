@@ -1,0 +1,215 @@
+[
+  {
+    "id": "trait_drilled",
+    "name": "Drilled",
+    "description": "A Marine parent's discipline, learned at the breakfast table.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "endurance",
+        "value": 2,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_sense_of_justice",
+    "name": "Sense of Justice",
+    "description": "Knows right from wrong and cannot keep quiet about it.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 3,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "code.justice": true
+    }
+  },
+  {
+    "id": "trait_pirates_blood",
+    "name": "Pirate's Blood",
+    "description": "The sea calls, the law chafes, and a little infamy runs in the family.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "charisma",
+        "value": 1,
+        "kind": "flat"
+      }
+    ],
+    "flags": {
+      "family.infamy": true
+    }
+  },
+  {
+    "id": "trait_restless",
+    "name": "Restless",
+    "description": "Cannot stay anywhere long without itching to leave.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "speed",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "willpower",
+        "value": -1,
+        "kind": "flat"
+      }
+    ],
+    "excludes": ["trait_homesick"]
+  },
+  {
+    "id": "trait_well_bred",
+    "name": "Well-Bred",
+    "description": "Tutors, manners and good food from the cradle.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "charisma",
+        "value": 3,
+        "kind": "flat"
+      },
+      {
+        "stat": "intellect",
+        "value": 2,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_entitled",
+    "name": "Entitled",
+    "description": "Has always been given what they wanted, and expects it still.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "charisma",
+        "value": 1,
+        "kind": "flat"
+      },
+      {
+        "stat": "willpower",
+        "value": -1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_self_reliant",
+    "name": "Self-Reliant",
+    "description": "Nobody ever looked after them, so they learned to do it themselves.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 3,
+        "kind": "flat"
+      },
+      {
+        "stat": "endurance",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_guarded",
+    "name": "Guarded",
+    "description": "Slow to trust and quick to notice a lie.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "charisma",
+        "value": -1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_net_hands",
+    "name": "Net-Hands",
+    "description": "Calloused, quick hands from years of mending nets and hauling lines.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "dexterity",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "endurance",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_fishers_patience",
+    "name": "Fisher's Patience",
+    "description": "Can wait all night for the right moment.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "perception",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_steady_hands",
+    "name": "Steady Hands",
+    "description": "Grew up at a workbench; their hands do not shake.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "dexterity",
+        "value": 3,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_eye_for_detail",
+    "name": "Eye for Detail",
+    "description": "Sees the flaw in the weld, the crack in the hull, the lie in the story.",
+    "category": "family",
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": 2,
+        "kind": "flat"
+      },
+      {
+        "stat": "intellect",
+        "value": 1,
+        "kind": "flat"
+      }
+    ]
+  }
+]

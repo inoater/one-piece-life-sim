@@ -1,0 +1,45 @@
+{
+  "id": "race_merfolk",
+  "name": "Merfolk",
+  "adjective": "merfolk",
+  "noun": {
+    "he": "merman",
+    "she": "mermaid",
+    "they": "merperson"
+  },
+  "description": "Fish below the waist and swift in the water, slow and awkward on land. Their tails split in two at thirty.",
+  "capMods": {
+    "speed": 15,
+    "strength": 10
+  },
+  "innateTraits": ["trait_water_breathing", "trait_mer_tail"],
+  "anchors": {
+    "childEnds": 14,
+    "primeStarts": 22,
+    "elderStarts": 70
+  },
+  "lifespan": {
+    "min": 80,
+    "max": 110
+  },
+  "weight": 6,
+  "namePool": "names_fishman",
+  "heights": {
+    "short": {
+      "min": 140,
+      "max": 160
+    },
+    "average": {
+      "min": 161,
+      "max": 185
+    },
+    "tall": {
+      "min": 186,
+      "max": 230
+    },
+    "towering": {
+      "min": 231,
+      "max": 600
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "focus_laborer",
+  "name": "Laborer",
+  "description": "Hauling, building, mining and the kind of work that builds a back.",
+  "training": {
+    "strength": 3,
+    "endurance": 3,
+    "durability": 2
+  },
+  "eventTags": {
+    "work": 3
+  },
+  "appearanceWeights": {
+    "tag:scar": 1.5
+  },
+  "savingsPerYear": {
+    "min": 1000,
+    "max": 3000
+  }
+}

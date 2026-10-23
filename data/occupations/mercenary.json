@@ -1,0 +1,6 @@
+{
+  "id": "occ_mercenary",
+  "name": "mercenary",
+  "places": ["bp_north_blue_town", "bp_new_world_island", "bp_south_blue_island"],
+  "wealth": ["poor", "modest", "comfortable"]
+}

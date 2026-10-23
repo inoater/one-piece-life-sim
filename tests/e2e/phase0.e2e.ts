@@ -66,7 +66,9 @@ async function open(
     if (m.type() === 'error' || m.type() === 'warning') problems.push(`${m.type()}: ${m.text()}`);
   });
   page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`));
-  await page.goto(url);
+  // A bare URL opens New Life when there is nothing to resume (Phase 1); these checks are about
+  // the empty world, so they open the chronicle directly.
+  await page.goto(`${url}#/feed`);
   await ready(page);
   return { context, page, problems };
 }
