@@ -1,0 +1,78 @@
+{
+  "id": "act_play",
+  "name": "Play",
+  "category": "social",
+  "description": "Games, races and make-believe with the other children.",
+  "minAge": 3,
+  "maxAge": 11,
+  "gains": {
+    "speed": 0.3,
+    "dexterity": 0.2,
+    "charisma": 0.2
+  },
+  "tags": ["childhood"],
+  "outcomes": [
+    {
+      "id": "footrace",
+      "text": "You won a footrace against the other children of {home}.",
+      "weight": 1.2,
+      "statWeights": {
+        "speed": 0.6
+      }
+    },
+    {
+      "id": "lost_race",
+      "text": "You lost every race this month, and swore that next month would be different.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "hide_seek",
+      "text": "You hid so well in a game of hide-and-seek that the others gave up and went home.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "perception": 0.2
+          }
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "scrape",
+      "text": "You fell out of a tree and scraped both knees.",
+      "weight": 0.4,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "minor",
+          "area": "legs",
+          "cause": "accident"
+        }
+      ]
+    },
+    {
+      "id": "best_friend",
+      "text": "{other} decided you were their best friend, and that was that.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "friend",
+          "opinion": 45,
+          "ageOffset": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      ]
+    }
+  ]
+}

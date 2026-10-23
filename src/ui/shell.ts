@@ -20,6 +20,7 @@ import { renderActions } from './screens/actions';
 import { renderCharacter } from './screens/character';
 import { renderFeed } from './screens/feed';
 import { createMapPage } from './screens/map';
+import { renderEnd } from './screens/end';
 import { createNewLife } from './screens/new-life';
 import { renderNews } from './screens/news';
 import { renderWorld } from './screens/world';
@@ -65,6 +66,26 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   const age = vital('Age');
   const location = vital('Location');
   const berries = vital('Berries');
+  // Health and Vigor: a number and a thin bar each (Phase 2).
+  const bar = (label: string) => {
+    const fill = h('span', { class: 'vital-bar__fill' });
+    const value = h('dd', { class: 'vital__value is-empty' }, '—');
+    const meter = h('span', { class: 'vital-bar', 'aria-hidden': 'true' }, fill);
+    return {
+      row: h(
+        'div',
+        { class: 'vital vital--bar' },
+        h('dt', { class: 'vital__label' }, label),
+        value,
+        meter,
+      ),
+      value,
+      fill,
+      meter,
+    };
+  };
+  const health = bar('Health');
+  const vigor = bar('Vigor');
   const masthead = h(
     'header',
     { class: 'masthead' },
@@ -74,7 +95,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       dial.el,
       h('div', { class: 'masthead__date' }, title, season),
     ),
-    h('dl', { class: 'vitals' }, age.row, location.row, berries.row),
+    h('dl', { class: 'vitals' }, age.row, health.row, vigor.row, location.row, berries.row),
   );
 
   // ---- Navigation
@@ -108,6 +129,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   const newLifePage = h('div', { class: 'newlife-page', hidden: true }, newLife.el);
   const mapPage = createMapPage(app);
   const mapPageEl = h('div', { class: 'map-page-slot', hidden: true }, mapPage.el);
+  const endPageEl = h('div', { class: 'end-page-slot', hidden: true });
 
   // ---- Controls
   const nextButton = h('button', { class: 'button button--primary', type: 'button' }, 'Next month');
@@ -198,6 +220,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     sidePanel,
     newLifePage,
     mapPageEl,
+    endPageEl,
     controls,
     toasts,
   );
@@ -300,7 +323,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     const side = effectiveSide(state);
     const screens: Record<SideRoute, () => HTMLElement> = {
       character: () => renderCharacter(state, app),
-      actions: () => renderActions(state),
+      actions: () => renderActions(state, app),
       world: () => renderWorld(state),
       news: () => renderNews(state),
     };
@@ -365,6 +388,47 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       location.value.textContent = '\u2014';
     }
     berries.value.classList.toggle('is-debt', (player?.berries ?? 0) < 0);
+
+    const life = s.life;
+    const bars: [typeof health, number, number, string][] = life
+      ? [
+          [
+            health,
+            life.health.current,
+            life.health.max,
+            life.health.current < life.health.max * 0.35 ? 'bad' : 'health',
+          ],
+          [
+            vigor,
+            life.vigor.planned,
+            life.vigor.pool,
+            life.vigor.planned > life.vigor.pool ? 'bad' : 'vigor',
+          ],
+        ]
+      : [];
+    for (const v of [health, vigor]) {
+      const entry = bars.find(([b]) => b === v);
+      v.value.classList.toggle('is-empty', !entry);
+      v.meter.hidden = !entry;
+      if (!entry) {
+        v.value.textContent = '—';
+        continue;
+      }
+      const [, now, max, tone] = entry;
+      v.value.textContent = `${now}/${max}`;
+      v.fill.style.width = `${Math.max(0, Math.min(100, max > 0 ? (now / max) * 100 : 0)).toFixed(1)}%`;
+      v.meter.dataset['tone'] = tone;
+    }
+    health.value.title = life
+      ? `${life.health.current} of ${life.health.max}${life.injuries.length > 0 ? `; hurt: ${life.injuries.map((i) => i.name).join(', ')}` : ''}${life.illnesses.length > 0 ? `; ill: ${life.illnesses.map((i) => i.name).join(', ')}` : ''}`
+      : 'Appears once a life has started';
+    vigor.value.title = life
+      ? `Vigor planned this month: ${life.vigor.planned} of ${life.vigor.pool}${life.exhausted ? ' (exhausted)' : ''}`
+      : 'Appears once a life has started';
+    health.row.dataset['alert'] = String(
+      Boolean(life && (life.injuries.length > 0 || life.illnesses.length > 0)),
+    );
+    vigor.row.dataset['alert'] = String(Boolean(life?.exhausted));
   }
 
   function renderBanner(state: UiState): void {
@@ -398,11 +462,13 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       ? 'The world is still loading'
       : busy
         ? 'Time is moving'
-        : s.atPresent
-          ? 'The present has arrived'
-          : waiting > 0
-            ? 'Choose how to respond to the decision first'
-            : null;
+        : s.life && !s.life.alive
+          ? 'This life has ended: choose who carries on'
+          : s.atPresent
+            ? 'The present has arrived'
+            : waiting > 0
+              ? 'Choose how to respond to the decision first'
+              : null;
 
     for (const button of [nextButton, skipButton, eventButton]) {
       button.disabled = blockedReason !== null;
@@ -424,7 +490,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     cancelButton.hidden = !(busy && busy.cancellable);
 
     debugButton?.setAttribute('aria-pressed', String(state.debugOpen));
-    for (const choice of feedPanel.querySelectorAll<HTMLButtonElement>('.choice'))
+    for (const choice of feedPanel.querySelectorAll<HTMLButtonElement>('.choice, .epilogue button'))
       choice.disabled = busy !== null;
   }
 
@@ -438,6 +504,21 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       void mapPage.show();
     if (mapping) mapLink.setAttribute('aria-current', 'page');
     else mapLink.removeAttribute('aria-current');
+    const ending = state.route === 'end';
+    if (ending !== !endPageEl.hidden) endPageEl.hidden = !ending;
+    if (
+      ending &&
+      (previous?.route !== 'end' ||
+        state.snapshot !== previous.snapshot ||
+        state.busy !== previous.busy)
+    ) {
+      endPageEl.replaceChildren(renderEnd(state, app));
+    }
+    // The moment the life being played ends, the recap opens.
+    const wasAlive = previous?.snapshot?.life?.alive;
+    if (wasAlive === true && state.snapshot?.life?.alive === false && state.route !== 'end') {
+      navigate('end');
+    }
     const creating = state.route === 'new';
     if (creating !== !newLifePage.hidden) {
       newLifePage.hidden = !creating;
@@ -523,6 +604,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       state.route !== previous?.route ||
       state.sideTab !== previous?.sideTab ||
       state.hostMode !== previous?.hostMode ||
+      // The planner's buttons are drawn disabled while time moves; draw them again when it stops.
+      (previous?.busy !== null && state.busy === null) ||
       !previous
     ) {
       renderSide(state);

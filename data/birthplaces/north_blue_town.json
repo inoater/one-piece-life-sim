@@ -39,6 +39,17 @@
     "hairColor.blond": 2,
     "complexion.weathered": 1.5
   },
+  "features": [
+    "coast",
+    "docks",
+    "mountains",
+    "cold",
+    "forest",
+    "school",
+    "smithy",
+    "market",
+    "doctor"
+  ],
   "map": {
     "x": 420,
     "y": 262

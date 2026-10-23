@@ -64,6 +64,17 @@ final page is the same either way (`src/ui/motion.ts`).
 | World map       | The Map page (`#/map`, key 6) and the Birthplace chooser                                                                                                          | `src/ui/map/`                 |
 | Keyboard        | N, S, E move time; 1 to 6 open sections; L new life; M menu; ? lists them                                                                                         | `shell.ts`                    |
 
+### The life loop (Phase 2)
+
+| Element       | What it does                                                                                              | Where                         |
+| ------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Health, Vigor | Two more figures in the masthead, each with a thin bar; squall when low or overspent, label red when hurt | `shell.ts`, `styles/life.css` |
+| The planner   | Numbered slots on a tide rule (squall when the slot will be skipped), an effort switch, locks in words    | `screens/actions.ts`          |
+| The recap     | A page, not a modal: the life on the left, the ways to carry on on the right, unavailable ones greyed     | `screens/end.ts`              |
+| The epilogue  | A ruled passage in the news colour at the foot of the chronicle; a death uses squall                      | `screens/feed.ts`             |
+
+No new colours: Vigor uses the world category's blue, Health the tide, trouble the squall.
+
 Scrollbars are thin and drawn in the page's colours everywhere (`src/styles/map.css`).
 
 ### The world map

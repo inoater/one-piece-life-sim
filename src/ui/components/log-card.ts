@@ -5,8 +5,9 @@ import { formatInteger, formatValue, plural } from '../format';
 /**
  * The log card: after time moves, a short entry in the ship's log saying what changed. Months
  * passed, a birthday, a new stage of life, stats that moved, money in or out, new lines in the
- * chronicle, a decision waiting. Worked out by comparing the snapshot before with the one after,
- * so it needs nothing from the simulation beyond what the page already has.
+ * chronicle, a decision waiting. Mostly worked out by comparing the snapshot before with the one
+ * after; since Phase 2 it also reads the life loop's month-end report (what the last month did to
+ * the body and the purse: injuries, illness, Vigor spent, wages and costs).
  */
 
 export interface LogCardSummary {
@@ -41,6 +42,28 @@ export function summarizeAdvance(before: Snapshot, after: Snapshot): LogCardSumm
         tone: diff > 0 ? 'good' : 'bad',
       });
     }
+  }
+  const report = after.life?.report;
+  if (report && after.life?.alive !== false) {
+    const last = months === 1 ? '' : ' last month';
+    if (report.vigor.pool > 0 || report.vigor.spent > 0) {
+      lines.push({
+        text: `Vigor ${report.vigor.spent} of ${report.vigor.pool} used${last}`,
+        tone: report.vigor.spent > report.vigor.pool ? 'bad' : 'plain',
+      });
+    }
+    if (months === 1 && (report.berries.income > 0 || report.berries.costs > 0)) {
+      lines.push({
+        text: `Earned ${formatInteger(report.berries.income)}, spent ${formatInteger(report.berries.costs)}`,
+        tone: 'plain',
+      });
+    }
+    for (const line of report.lines.filter((l) => l.tone !== 'plain').slice(0, 4)) {
+      lines.push({ text: line.text, tone: line.tone });
+    }
+  }
+  if (after.life && !after.life.alive && before.life?.alive) {
+    lines.push({ text: 'This life has ended', tone: 'alert' });
   }
   const beforeStats = new Map((before.sheet?.stats ?? []).map((s) => [s.id, s.total]));
   const moved = (after.sheet?.stats ?? [])

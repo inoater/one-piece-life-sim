@@ -1,0 +1,50 @@
+{
+  "id": "act_chores",
+  "name": "Do chores",
+  "category": "work",
+  "description": "Water, firewood, sweeping, mending. A household runs on them.",
+  "minAge": 5,
+  "maxAge": 17,
+  "physical": true,
+  "earn": {
+    "min": 0,
+    "max": 80
+  },
+  "gains": {
+    "endurance": 0.3,
+    "strength": 0.3
+  },
+  "tags": ["home"],
+  "outcomes": [
+    {
+      "id": "thankless",
+      "text": "You fetched water, chopped wood and swept the yard. Nobody thanked you.",
+      "weight": 2,
+      "quiet": true
+    },
+    {
+      "id": "coins",
+      "text": "{parent} gave you a few coins for a month of chores done without complaint.",
+      "requires": {
+        "parentAlive": true
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 20,
+          "max": 120
+        },
+        {
+          "kind": "opinion",
+          "target": "parent",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "id": "broken_plate",
+      "text": "You broke a plate and blamed it on the cat. The cat said nothing.",
+      "weight": 0.6
+    }
+  ]
+}

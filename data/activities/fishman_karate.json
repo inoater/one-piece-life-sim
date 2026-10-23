@@ -1,0 +1,44 @@
+{
+  "id": "act_fishman_karate",
+  "name": "Fish-Man Karate",
+  "category": "special",
+  "description": "Strikes that move the water inside the body, taught by masters on Fish-Man Island.",
+  "minAge": 10,
+  "physical": true,
+  "usesMentor": true,
+  "teacher": 1.1,
+  "requires": {
+    "flags": {
+      "unlock.fishman_karate": true
+    }
+  },
+  "gains": {
+    "strength": 0.6,
+    "dexterity": 0.5,
+    "durability": 0.3
+  },
+  "tags": ["fight", "training"],
+  "outcomes": [
+    {
+      "id": "forms",
+      "text": "You drilled the forms until the water in the bucket rippled when you struck beside it.",
+      "weight": 1.5,
+      "quiet": true
+    },
+    {
+      "id": "master",
+      "text": "{mentor} struck the sea beside you and the wave knocked you flat. Then they showed you how.",
+      "requires": {
+        "relation": "mentor"
+      },
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "strength": 0.3
+          }
+        }
+      ]
+    }
+  ]
+}

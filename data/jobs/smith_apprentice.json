@@ -1,0 +1,98 @@
+{
+  "id": "job_smith_apprentice",
+  "name": "Smith apprentice",
+  "description": "Bellows, hammer and quench, under a smith who rarely says well done.",
+  "minAge": 14,
+  "requires": {
+    "features": ["smithy"],
+    "stats": {
+      "dexterity": 20
+    }
+  },
+  "requirementText": "A smithy, Dexterity 20",
+  "income": {
+    "min": 1000,
+    "max": 2000
+  },
+  "gains": {
+    "dexterity": 0.4,
+    "strength": 0.3
+  },
+  "grants": {
+    "path.smith": true
+  },
+  "risk": {
+    "injury": 0.03,
+    "cause": "accident",
+    "areas": {
+      "arms": 1,
+      "eyes": 0.2
+    }
+  },
+  "outcomes": [
+    {
+      "id": "first_blade",
+      "text": "You forged a blade the smith did not throw back into the scrap pile.",
+      "weight": 0.5,
+      "requires": {
+        "notFlags": ["smith.first_blade"]
+      },
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.smithing",
+          "by": 2
+        },
+        {
+          "kind": "flag",
+          "flag": "smith.first_blade",
+          "value": true
+        },
+        {
+          "kind": "deed"
+        }
+      ]
+    },
+    {
+      "id": "bellows",
+      "text": "A month of working the bellows and fetching charcoal. The smith says that is how it starts.",
+      "weight": 3,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.smithing",
+          "by": 1
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "burn",
+      "text": "A spark caught your sleeve and your forearm both.",
+      "weight": 0.6,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "minor",
+          "area": "arms",
+          "cause": "accident"
+        }
+      ]
+    },
+    {
+      "id": "praise",
+      "text": "The smith turned your work over in the light for a long time, and said nothing bad about it.",
+      "statWeights": {
+        "dexterity": 0.8
+      },
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.smithing",
+          "by": 1
+        }
+      ]
+    }
+  ],
+  "tags": ["smithy", "work"]
+}

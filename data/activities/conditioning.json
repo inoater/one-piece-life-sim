@@ -1,0 +1,50 @@
+{
+  "id": "act_conditioning",
+  "name": "Conditioning",
+  "category": "train_body",
+  "description": "Taking hits on purpose, until they stop hurting so much.",
+  "minAge": 14,
+  "physical": true,
+  "gains": {
+    "durability": 0.8,
+    "willpower": 0.2,
+    "endurance": 0.2
+  },
+  "risk": {
+    "injury": 0.05,
+    "cause": "accident",
+    "areas": {
+      "torso": 2,
+      "arms": 1,
+      "head": 0.5
+    },
+    "severities": {
+      "minor": 85,
+      "serious": 15
+    }
+  },
+  "tags": ["training"],
+  "outcomes": [
+    {
+      "id": "logs",
+      "text": "You had a friend swing logs at you. It was as bad as it sounds.",
+      "weight": 1.2,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.2
+          }
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "stone",
+      "text": "You can take a punch now without blinking.",
+      "statWeights": {
+        "durability": 0.5
+      }
+    }
+  ]
+}

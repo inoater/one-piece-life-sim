@@ -15,7 +15,7 @@ describe('npm run validate (tools/validate-data.ts)', () => {
     const { status, output } = runTool('validate-data.ts', []);
     expect(status).toBe(0);
     expect(output).toMatch(
-      /Data is valid: \d+ files \(traits \d+, weapons \d+, locations \d+, events \d+, races \d+, birthplaces \d+, legacies \d+, occupations \d+, names \d+, foci \d+, backstory \d+\), data hash [0-9a-f]{12}/,
+      /Data is valid: \d+ files \(traits \d+, weapons \d+, locations \d+, events \d+, races \d+, birthplaces \d+, legacies \d+, occupations \d+, names \d+, foci \d+, backstory \d+, activities \d+, jobs \d+\), data hash [0-9a-f]{12}/,
     );
   });
 

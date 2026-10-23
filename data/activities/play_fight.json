@@ -1,0 +1,63 @@
+{
+  "id": "act_play_fight",
+  "name": "Play-fight",
+  "category": "train_body",
+  "description": "Sticks for swords, the yard for a battlefield.",
+  "minAge": 5,
+  "maxAge": 13,
+  "physical": true,
+  "gains": {
+    "strength": 0.3,
+    "durability": 0.3,
+    "speed": 0.2
+  },
+  "risk": {
+    "injury": 0.04,
+    "cause": "accident",
+    "severities": {
+      "minor": 1
+    }
+  },
+  "tags": ["childhood", "fight"],
+  "outcomes": [
+    {
+      "id": "stick_war",
+      "text": "You and the other children fought a war with sticks, and your side won.",
+      "weight": 1.2,
+      "statWeights": {
+        "strength": 0.5
+      }
+    },
+    {
+      "id": "knuckles",
+      "text": "You took a stick across the knuckles and did not cry. Much.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "pinned",
+      "text": "You pinned the biggest kid in the street. {other} wants a rematch.",
+      "weight": 0.5,
+      "statWeights": {
+        "strength": 0.6
+      },
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "rival",
+          "opinion": -10,
+          "ageOffset": {
+            "min": -1,
+            "max": 2
+          }
+        }
+      ]
+    }
+  ]
+}

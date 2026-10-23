@@ -29,8 +29,14 @@ describe('the masthead', () => {
   });
 
   it('holds age, location and Berries, marked as empty until a life has started', () => {
-    expect(qa('.vital__label').map(text)).toEqual(['Age', 'Location', 'Berries']);
-    expect(qa('.vital__value.is-empty')).toHaveLength(3);
+    expect(qa('.vital__label').map(text)).toEqual([
+      'Age',
+      'Health',
+      'Vigor',
+      'Location',
+      'Berries',
+    ]);
+    expect(qa('.vital__value.is-empty')).toHaveLength(5);
     expect(q('.vital__value')?.getAttribute('title')).toContain('Appears once a life has started');
   });
 
@@ -79,7 +85,7 @@ describe('navigation', () => {
   it('shows each screen', async () => {
     for (const [route, expected] of [
       ['character', 'No life yet'],
-      ['actions', 'Nothing to do yet'],
+      ['actions', 'Nobody to plan for'],
       ['news', 'No headlines yet'],
       ['world', 'This build'],
     ] as const) {
@@ -144,7 +150,9 @@ describe('the chronicle', () => {
 
   it('shows the present arriving', async () => {
     await ui.app.advance({ kind: 'months', count: 468 }, 'test');
-    expect(text(q('.feed__hint'))).toContain('The present has arrived (Year 39)');
+    expect(text(q('.epilogue__title'))).toBe('The present');
+    expect(text(q('.epilogue'))).toContain('Thirty-nine years after God Valley');
+    expect(text(q('.epilogue button'))).toBe('Sail on past the present');
     expect(q('.shell')?.getAttribute('data-phase')).toBe('present');
     expect(q('.dial')?.classList.contains('is-present')).toBe(true);
     expect(text(q('.masthead__title'))).toBe('January, Year 39');

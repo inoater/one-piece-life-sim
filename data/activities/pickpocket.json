@@ -1,0 +1,61 @@
+{
+  "id": "act_pickpocket",
+  "name": "Pick pockets",
+  "category": "crime",
+  "description": "Crowds, distraction and light fingers.",
+  "minAge": 10,
+  "physical": true,
+  "requires": {
+    "anyFeatures": ["market", "docks", "underworld"]
+  },
+  "earn": {
+    "min": 100,
+    "max": 1500
+  },
+  "infamy": 1,
+  "gains": {
+    "dexterity": 0.5,
+    "perception": 0.2,
+    "speed": 0.1
+  },
+  "risk": {
+    "arrest": 0.07,
+    "fine": {
+      "min": 200,
+      "max": 2000
+    },
+    "jailMonths": {
+      "min": 1,
+      "max": 3
+    }
+  },
+  "tags": ["crime"],
+  "outcomes": [
+    {
+      "id": "purse",
+      "text": "You lifted a purse in the market crowd and nobody so much as turned round.",
+      "weight": 1.5,
+      "statWeights": {
+        "dexterity": 0.6
+      }
+    },
+    {
+      "id": "close_call",
+      "text": "A hand closed on your wrist. You twisted free and ran.",
+      "weight": 0.8,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "speed": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "empty",
+      "text": "Empty pockets everywhere. Hard times for everyone.",
+      "quiet": true
+    }
+  ]
+}

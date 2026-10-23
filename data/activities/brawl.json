@@ -1,0 +1,53 @@
+{
+  "id": "act_brawl",
+  "name": "Start a brawl",
+  "category": "crime",
+  "description": "A tavern, a wrong look, and fists.",
+  "minAge": 13,
+  "physical": true,
+  "infamy": 1,
+  "gains": {
+    "strength": 0.5,
+    "durability": 0.4,
+    "willpower": 0.1
+  },
+  "risk": {
+    "injury": 0.15,
+    "cause": "violence",
+    "arrest": 0.03,
+    "fine": {
+      "min": 100,
+      "max": 800
+    },
+    "jailMonths": {
+      "min": 1,
+      "max": 1
+    }
+  },
+  "tags": ["crime", "fight"],
+  "outcomes": [
+    {
+      "id": "won",
+      "text": "You started a brawl in the tavern and were the last one standing.",
+      "statWeights": {
+        "strength": 0.6,
+        "durability": 0.4
+      },
+      "effects": [
+        {
+          "kind": "fame",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "thrown_out",
+      "text": "You were thrown out of the tavern, then out of the next one."
+    },
+    {
+      "id": "broken_up",
+      "text": "The fight was broken up before it was properly started.",
+      "weight": 0.8
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "act_cartography",
+  "name": "Practise cartography",
+  "category": "train_mind",
+  "description": "Measuring, sketching and inking maps of the island.",
+  "minAge": 14,
+  "requires": {
+    "anyFeatures": ["library", "docks"]
+  },
+  "gains": {
+    "intellect": 0.6,
+    "perception": 0.4,
+    "dexterity": 0.2
+  },
+  "tags": ["study"],
+  "outcomes": [
+    {
+      "id": "coastline",
+      "text": "You mapped the coastline of the island, cove by cove.",
+      "weight": 1.5,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.cartography",
+          "by": 1
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "error",
+      "text": "You found a mistake on the harbour master's map and had the sense not to say so loudly.",
+      "weight": 0.6,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.cartography",
+          "by": 1
+        }
+      ]
+    }
+  ]
+}

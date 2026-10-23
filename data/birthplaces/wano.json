@@ -36,6 +36,18 @@
     "hairStyle.topknot": 6,
     "skin.fair": 1.5
   },
+  "features": [
+    "coast",
+    "docks",
+    "mountains",
+    "farmland",
+    "forest",
+    "dojo",
+    "smithy",
+    "market",
+    "school",
+    "doctor"
+  ],
   "map": {
     "x": 853,
     "y": 642

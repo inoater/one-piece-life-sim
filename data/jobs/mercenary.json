@@ -1,0 +1,72 @@
+{
+  "id": "job_mercenary",
+  "name": "Mercenary",
+  "description": "Paid muscle: guards, escorts, and the occasional fight someone else started.",
+  "minAge": 18,
+  "requires": {
+    "combatPower": 250
+  },
+  "requirementText": "Combat Power 250",
+  "income": {
+    "min": 3000,
+    "max": 6000
+  },
+  "gains": {
+    "strength": 0.3,
+    "dexterity": 0.3,
+    "durability": 0.3
+  },
+  "risk": {
+    "injury": 0.09,
+    "cause": "violence"
+  },
+  "infamy": 0.5,
+  "outcomes": [
+    {
+      "id": "guard",
+      "text": "You guarded a merchant's warehouse for a month. Nobody tried anything.",
+      "weight": 3,
+      "quiet": true
+    },
+    {
+      "id": "brawl",
+      "text": "A job went bad and became a fight. You won it, mostly.",
+      "statWeights": {
+        "strength": 0.5
+      },
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "strength": 0.3,
+            "durability": 0.3
+          }
+        },
+        {
+          "kind": "fame",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "stiffed",
+      "text": "The man who hired you vanished on payday. You know his face now.",
+      "weight": 0.6
+    },
+    {
+      "id": "escort",
+      "text": "You escorted a nervous noble across the island and were tipped for your silence.",
+      "statWeights": {
+        "charisma": 0.4
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 500,
+          "max": 1500
+        }
+      ]
+    }
+  ],
+  "tags": ["fight", "work"]
+}

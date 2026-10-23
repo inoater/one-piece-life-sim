@@ -1,0 +1,24 @@
+{
+  "id": "act_sleep_in",
+  "name": "Rest",
+  "category": "rest",
+  "description": "Sleeping in, eating well and doing nothing much.",
+  "minAge": 2,
+  "restful": true,
+  "regen": 0.2,
+  "tags": ["rest"],
+  "outcomes": [
+    {
+      "id": "slept",
+      "text": "You slept late, ate well and let the month go by.",
+      "weight": 2,
+      "quiet": true
+    },
+    {
+      "id": "lazy",
+      "text": "Somebody called you lazy. You slept on it.",
+      "weight": 0.5,
+      "quiet": true
+    }
+  ]
+}

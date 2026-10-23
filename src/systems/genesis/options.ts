@@ -97,8 +97,19 @@ export function genesisRng(seed: string): Rng {
   return Rng.root(seed).fork('genesis');
 }
 
+const sortedCache = new WeakMap<object, readonly unknown[]>();
+
+/**
+ * The items of a data collection in id order. Game data never changes once loaded, so the sorted
+ * list is kept per collection (the life loop asks for it every month). Callers get a copy.
+ */
 export function sortedValues<T extends { id: string }>(record: Readonly<Record<string, T>>): T[] {
-  return Object.values(record).sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  let sorted = sortedCache.get(record) as readonly T[] | undefined;
+  if (!sorted) {
+    sorted = Object.values(record).sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+    sortedCache.set(record, sorted);
+  }
+  return [...sorted];
 }
 
 /** Races that may be picked under these options (rare races only when world setup allows them). */

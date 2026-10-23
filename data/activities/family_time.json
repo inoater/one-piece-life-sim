@@ -1,0 +1,94 @@
+{
+  "id": "act_family_time",
+  "name": "Family time",
+  "category": "social",
+  "description": "Meals together, chores together, long evenings together.",
+  "minAge": 2,
+  "gains": {
+    "charisma": 0.2,
+    "willpower": 0.1
+  },
+  "tags": ["relationship", "family"],
+  "outcomes": [
+    {
+      "id": "parent_time",
+      "text": "You spent the evenings with {parent}, who told you stories you had not heard before.",
+      "weight": 1.5,
+      "requires": {
+        "parentAlive": true
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "parent",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "id": "sibling_time",
+      "text": "You and {sibling} had a month of jokes nobody else understands.",
+      "weight": 1.2,
+      "requires": {
+        "hasSibling": true
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "sibling",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "id": "spouse_time",
+      "text": "You and {spouse} kept each other good company this month.",
+      "weight": 1.5,
+      "requires": {
+        "married": true
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "sweetheart",
+          "value": 5
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "expecting",
+      "text": "{spouse} took your hand and told you a child is on the way.",
+      "weight": 0.6,
+      "requires": {
+        "married": true
+      },
+      "effects": [
+        {
+          "kind": "conceive"
+        }
+      ]
+    },
+    {
+      "id": "child_time",
+      "text": "You taught {child} to tie a proper knot.",
+      "weight": 1.2,
+      "requires": {
+        "relation": "child"
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "child",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "id": "quiet_home",
+      "text": "A quiet month at home.",
+      "weight": 0.5,
+      "quiet": true
+    }
+  ]
+}

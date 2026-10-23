@@ -1,0 +1,76 @@
+{
+  "id": "job_street_thief",
+  "name": "Street thief",
+  "description": "Purses, pockets and market stalls. Quick hands, quicker feet.",
+  "minAge": 12,
+  "requires": {
+    "anyFeatures": ["market", "underworld"]
+  },
+  "requirementText": "A market or an underworld to work",
+  "income": {
+    "min": 0,
+    "max": 3000
+  },
+  "gains": {
+    "dexterity": 0.4,
+    "perception": 0.3,
+    "speed": 0.2
+  },
+  "risk": {
+    "injury": 0.03,
+    "cause": "violence",
+    "arrest": 0.06,
+    "fine": {
+      "min": 500,
+      "max": 3000
+    },
+    "jailMonths": {
+      "min": 1,
+      "max": 6
+    }
+  },
+  "infamy": 1,
+  "outcomes": [
+    {
+      "id": "fat_purse",
+      "text": "A drunk sailor's purse turned out to be fuller than his head.",
+      "weight": 1.5,
+      "statWeights": {
+        "dexterity": 0.6
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 500,
+          "max": 1500
+        }
+      ]
+    },
+    {
+      "id": "chased",
+      "text": "A stallholder chased you through three streets. You were faster, this time.",
+      "weight": 1.5,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "speed": 0.3
+          }
+        }
+      ]
+    },
+    {
+      "id": "fence",
+      "text": "The fence gave you half what the goods were worth, as usual.",
+      "weight": 2,
+      "quiet": true
+    },
+    {
+      "id": "lean",
+      "text": "A lean month. Everyone was watching their pockets.",
+      "weight": 1.5,
+      "quiet": true
+    }
+  ],
+  "tags": ["crime", "work"]
+}

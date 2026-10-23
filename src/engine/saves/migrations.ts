@@ -39,6 +39,13 @@ export const MIGRATIONS: Readonly<Record<number, Migration>> = {
     saveVersion: 2,
     state: { ...stateOf(envelope), config: { ...DEFAULT_WORLD_CONFIG } },
   }),
+  /**
+   * 2 -> 3 (Phase 2, the life loop): characters gain an optional `life` block (health, routine,
+   * job, debt). A version 2 world has no life loop yet, so nothing is added here: the life loop
+   * gives the player a fresh life block (full Health, empty routine) the first month it runs.
+   * Rules decide what "fresh" means, and migrations do not read game data.
+   */
+  2: (envelope) => ({ ...envelope, saveVersion: 3, state: { ...stateOf(envelope) } }),
 };
 
 export interface MigrationResult {

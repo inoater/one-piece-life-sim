@@ -1,0 +1,86 @@
+{
+  "id": "job_shop_apprentice",
+  "name": "Shop apprentice",
+  "description": "Sweeping, stocking, counting, and learning how a sale is made.",
+  "minAge": 12,
+  "requires": {
+    "features": ["market"],
+    "stats": {
+      "intellect": 15
+    }
+  },
+  "requirementText": "A market, Intellect 15",
+  "income": {
+    "min": 700,
+    "max": 1400
+  },
+  "gains": {
+    "charisma": 0.4,
+    "intellect": 0.2
+  },
+  "physical": false,
+  "outcomes": [
+    {
+      "id": "good_sale",
+      "text": "You talked a sailor into buying a coat he did not need, and the shopkeeper noticed.",
+      "weight": 1.5,
+      "statWeights": {
+        "charisma": 0.6
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 100,
+          "max": 300
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "text": "The shopkeeper let you keep the ledger this month. You found two mistakes, both in their favour.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "intellect": 0.3
+          }
+        }
+      ]
+    },
+    {
+      "id": "haggler",
+      "text": "An old woman haggled you down to nothing and left smiling. You learned something.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "charisma": 0.3
+          }
+        }
+      ]
+    },
+    {
+      "id": "regular",
+      "text": "{other}, a regular customer, has started asking for you by name.",
+      "weight": 0.8,
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "friend",
+          "opinion": 30,
+          "ageOffset": {
+            "min": -5,
+            "max": 30
+          }
+        }
+      ]
+    },
+    {
+      "id": "quiet",
+      "text": "A quiet month behind the counter.",
+      "weight": 2,
+      "quiet": true
+    }
+  ],
+  "tags": ["market", "work"]
+}

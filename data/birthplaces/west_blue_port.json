@@ -32,6 +32,17 @@
     "crime": 1.5,
     "trade": 2
   },
+  "features": [
+    "coast",
+    "docks",
+    "market",
+    "school",
+    "library",
+    "doctor",
+    "underworld",
+    "shipyard",
+    "smithy"
+  ],
   "map": {
     "x": 600,
     "y": 985

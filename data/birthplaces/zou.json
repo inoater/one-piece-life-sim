@@ -28,6 +28,7 @@
     "zou": 4,
     "guard": 2
   },
+  "features": ["jungle", "forest", "ruins", "dojo", "market", "school", "doctor"],
   "map": {
     "x": 665,
     "y": 733

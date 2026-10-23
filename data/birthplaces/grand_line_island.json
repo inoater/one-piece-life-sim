@@ -32,6 +32,7 @@
     "weather": 3,
     "sea": 1.5
   },
+  "features": ["coast", "docks", "forest", "ruins", "market", "doctor", "smithy", "underworld"],
   "map": {
     "x": 1560,
     "y": 700

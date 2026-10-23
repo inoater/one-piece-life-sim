@@ -1,0 +1,79 @@
+{
+  "id": "act_wander",
+  "name": "Wander the island",
+  "category": "explore",
+  "description": "Paths you have not walked, beaches you have not seen.",
+  "minAge": 6,
+  "gains": {
+    "perception": 0.5,
+    "speed": 0.2
+  },
+  "risk": {
+    "injury": 0.008,
+    "cause": "accident",
+    "severities": {
+      "minor": 1
+    }
+  },
+  "tags": ["explore"],
+  "outcomes": [
+    {
+      "id": "coins",
+      "text": "You found a few coins in the sand at the far end of the beach.",
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 30,
+          "max": 300
+        }
+      ]
+    },
+    {
+      "id": "view",
+      "text": "You climbed to the highest point of the island and saw how small {home} looks from up there.",
+      "weight": 1.2,
+      "quiet": true
+    },
+    {
+      "id": "fruit_rumour",
+      "text": "An old woman selling fruit by the road told you about a fruit that gives a person strange powers, and takes away the sea.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "rumour.fruit",
+          "by": 1
+        }
+      ]
+    },
+    {
+      "id": "stranger",
+      "text": "You met {other} on the road, who knew more about the world than anyone you had met.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "friend",
+          "opinion": 25,
+          "ageOffset": {
+            "min": 5,
+            "max": 30
+          }
+        }
+      ]
+    },
+    {
+      "id": "lost_path",
+      "text": "You got lost for a night in the woods and found your way home at dawn.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.2
+          }
+        }
+      ]
+    }
+  ]
+}

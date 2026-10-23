@@ -1,0 +1,53 @@
+{
+  "id": "act_forge",
+  "name": "Work at the forge",
+  "category": "special",
+  "description": "Your own hours at the anvil, making what you choose.",
+  "minAge": 14,
+  "physical": true,
+  "requires": {
+    "features": ["smithy"],
+    "flags": {
+      "path.smith": true
+    }
+  },
+  "gains": {
+    "dexterity": 0.6,
+    "strength": 0.4
+  },
+  "tags": ["smithy"],
+  "outcomes": [
+    {
+      "id": "tools",
+      "text": "You made a set of tools good enough to sell.",
+      "weight": 1.2,
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 300,
+          "max": 900
+        },
+        {
+          "kind": "count",
+          "flag": "skill.smithing",
+          "by": 1
+        }
+      ]
+    },
+    {
+      "id": "blade",
+      "text": "You forged a blade and gave it a name, quietly, when nobody was listening.",
+      "weight": 0.6,
+      "statWeights": {
+        "dexterity": 0.6
+      },
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.smithing",
+          "by": 2
+        }
+      ]
+    }
+  ]
+}

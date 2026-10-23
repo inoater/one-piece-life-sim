@@ -1,0 +1,63 @@
+{
+  "id": "act_learn_medicine",
+  "name": "Learn medicine",
+  "category": "train_mind",
+  "description": "Herbs, bandages and bones, under the local doctor.",
+  "minAge": 14,
+  "requires": {
+    "features": ["doctor"]
+  },
+  "usesMentor": true,
+  "gains": {
+    "intellect": 0.8,
+    "dexterity": 0.2
+  },
+  "tags": ["study", "medicine"],
+  "outcomes": [
+    {
+      "id": "lamp",
+      "text": "The doctor let you hold the lamp while they stitched a fisher's hand.",
+      "weight": 1.2,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.medicine",
+          "by": 1
+        }
+      ]
+    },
+    {
+      "id": "herbs",
+      "text": "You learned the names of forty herbs, and what twelve of them do.",
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.medicine",
+          "by": 1
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "first_patient",
+      "text": "You set a broken finger on your own, and it healed straight.",
+      "weight": 0.5,
+      "requires": {
+        "notFlags": ["medicine.first_patient"]
+      },
+      "statWeights": {
+        "intellect": 0.6
+      },
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.medicine",
+          "by": 2
+        },
+        {
+          "kind": "deed"
+        }
+      ]
+    }
+  ]
+}

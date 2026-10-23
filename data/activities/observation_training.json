@@ -1,0 +1,63 @@
+{
+  "id": "act_observation_training",
+  "name": "Listen for voices",
+  "category": "special",
+  "description": "Reaching for the sense you have felt at the edge of things. The plan calls it the first seed of Observation Haki; Phase 4 makes it grow.",
+  "minAge": 12,
+  "usesMentor": true,
+  "requires": {
+    "anyOf": [
+      {
+        "flags": {
+          "haki.seed.observation": 8
+        }
+      },
+      {
+        "flags": {
+          "haki.observation": 1
+        }
+      }
+    ]
+  },
+  "gains": {
+    "willpower": 0.5,
+    "perception": 0.6
+  },
+  "tags": ["spirit", "haki"],
+  "outcomes": [
+    {
+      "id": "stillness",
+      "text": "Blindfolded, you knew where your friend was standing three times out of five.",
+      "weight": 1.5,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "haki.observation.progress",
+          "by": 1
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "voices",
+      "text": "For a moment the whole island was full of voices nobody was speaking.",
+      "weight": 0.3,
+      "requires": {
+        "notFlags": ["haki.observation.voices"]
+      },
+      "statWeights": {
+        "perception": 0.6
+      },
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "haki.observation.progress",
+          "by": 3
+        },
+        {
+          "kind": "deed"
+        }
+      ]
+    }
+  ]
+}

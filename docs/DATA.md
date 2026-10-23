@@ -119,6 +119,35 @@ How the files fit together, and the rules the loader enforces beyond each schema
 - Every number is a design value to tune. `npm run genesis` and the Genesis debug tab show what
   potential the data produces for each race.
 
+## The life loop (Phase 2)
+
+- **`data/life.json`** holds every rule of a month: slots by stage, effort (Vigor, gain, pay, risk),
+  exhaustion, mentors and breakthroughs, Health regeneration, injury severities and areas (with their
+  names, scar and loss traits), illnesses, epidemics, the death-or-collapse chances at Health 0, the
+  mortality table, money, the doctor, children, fame's Legacy share, gang names, the continue options,
+  the epilogue and every line the loop writes.
+- **Activities** (`data/activities/`) have a category, ages (human-equivalent), requirements, training
+  gains, earnings or costs, risks and written **outcomes**. An outcome is a second-person, past-tense
+  sentence with a weight, optional `statWeights` (a strong character wins more fights), conditions and
+  effects. `"quiet": true` keeps an everyday outcome off the chronicle (it still shows on the month
+  card). A text that names `{parent}`, `{friend}`, `{spouse}` and so on must be guaranteed that person
+  by its conditions; the schema checks it, as it does for backstory text.
+- **Jobs** (`data/jobs/`) have a minimum age, requirements (`anyOf` for alternatives: Sea Legs or
+  Endurance 20), a wage range, side training, risks, flags they grant, an optional rank track, and
+  outcomes for a month of shifts.
+- **Requirements** read the home's `features` (each birthplace lists its coast, docks, school,
+  doctor...), races, flags (a number flag passes at or above the value; a flag not on the character
+  is looked for on the world, where legacy events put theirs), traits, stats, Combat Power, a job,
+  people (`relation`, `noRelation`, `married`), health and money.
+- **Effects** of outcomes, jobs and events: `train`, `berries`, `injury`, `illness`, `health`, `trait`,
+  `flag`, `count`, `fame`, `infamy`, `opinion`, `relationship`, `potential`, `marry`, `conceive`,
+  `joinGang`, `deed`, `arrest`, `schedule`. Events may use all of them in their choices (see
+  `data/events/debt_collector.json`).
+- Life text has its own variables (`LIFE_VARS` in `src/engine/template.ts`): the world's, plus `{age}`,
+  `{ageWords}`, `{home}`, `{other}`, `{job}`, `{amount}`, the people, `{injury}`, `{illness}`, `{stage}`,
+  `{title}`, `{cause}` and a few more.
+- Every number is a design value. `npm run lives` and the Life debug tab show what they add up to.
+
 ## Dev fixtures
 
 Everything named `test_*` is a fixture for the debug panel and the tests (a test entity whose strength is

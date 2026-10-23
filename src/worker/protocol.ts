@@ -10,8 +10,22 @@ import type { GenesisOptions } from '../systems/genesis/options';
 import type { CharacterSheet } from '../systems/genesis/sheet';
 import type { GenesisStats } from '../systems/genesis/stats-report';
 import type { EntryWarning } from '../systems/genesis/warnings';
+import type { ContinueOption, LifeRecap } from '../systems/life/death';
+import type { CurvePoint } from '../systems/life/training';
+import type { ActivityView, JobView, LifeView } from '../systems/life/view';
 
-export type { CharacterSheet, EntryWarning, GenesisOptions, GenesisStats };
+export type {
+  ActivityView,
+  CharacterSheet,
+  ContinueOption,
+  CurvePoint,
+  EntryWarning,
+  GenesisOptions,
+  GenesisStats,
+  JobView,
+  LifeRecap,
+  LifeView,
+};
 
 /**
  * What the page and the simulation say to each other (rule 7: the UI reads state and sends
@@ -81,7 +95,12 @@ export interface Snapshot {
     /** Where they are: the birthplace until travel exists (Phase 3). */
     location: string;
     berries: number;
+    alive: boolean;
   };
+  /** The life loop (Phase 2): health, routine, jobs, money; the recap once the life has ended. */
+  life: LifeView | null;
+  /** At the present, before open-ended play: the epilogue to show. */
+  epilogue: null | { title: string; text: string };
   /** The player's character sheet. Hidden facts are included only in omniscient views. */
   sheet: CharacterSheet | null;
   pending: DecisionView[];
@@ -344,6 +363,27 @@ export interface Protocol {
   'genesis/preview': { req: { options: unknown; view: ViewOptions }; res: GenesisPreview };
   'genesis/start': { req: { options: unknown; view: ViewOptions }; res: { snapshot: Snapshot } };
   'debug/genesisStats': { req: { raceId: string; rolls?: number }; res: GenesisStats };
+  'debug/trainingCurve': {
+    req: { potential: number; start: number; months: number; points: number };
+    res: { points: CurvePoint[]; softCap: number };
+  };
+  'debug/lives': { req: { raceId: string; lives: number; seed?: string }; res: LivesReport };
+}
+
+/** A handful of headless lives of one race, for the debug panel's lifespan chart. */
+export interface LivesReport {
+  race: string;
+  raceName: string;
+  lifespan: { min: number; max: number };
+  lives: {
+    seed: string;
+    age: number;
+    cause: string | null;
+    outcomes: number;
+    job: string | null;
+  }[];
+  mean: number;
+  ms: number;
 }
 
 export type Op = keyof Protocol;

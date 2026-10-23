@@ -1,0 +1,82 @@
+{
+  "id": "act_gang_time",
+  "name": "Run with your gang",
+  "category": "social",
+  "description": "Corners, cheap drink and other people's business.",
+  "minAge": 12,
+  "physical": true,
+  "requires": {
+    "flags": {
+      "gang.member": true
+    }
+  },
+  "infamy": 1,
+  "gains": {
+    "strength": 0.3,
+    "charisma": 0.3,
+    "speed": 0.2
+  },
+  "risk": {
+    "injury": 0.05,
+    "cause": "violence",
+    "arrest": 0.03,
+    "fine": {
+      "min": 200,
+      "max": 1500
+    },
+    "jailMonths": {
+      "min": 1,
+      "max": 3
+    }
+  },
+  "tags": ["crime", "relationship"],
+  "outcomes": [
+    {
+      "id": "turf",
+      "text": "Your gang fought another over a street corner. You held it.",
+      "statWeights": {
+        "strength": 0.5
+      },
+      "effects": [
+        {
+          "kind": "fame",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "shakedown",
+      "text": "You leaned on a shopkeeper who was behind on what they owed the gang.",
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 200,
+          "max": 1000
+        },
+        {
+          "kind": "infamy",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "loyalty",
+      "text": "You covered for {friend} when the Marines came asking.",
+      "requires": {
+        "relation": "friend"
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "friend",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "id": "idle",
+      "text": "A month of standing on corners looking dangerous.",
+      "quiet": true
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "act_infancy",
+  "name": "Grow",
+  "category": "rest",
+  "description": "An infant's months: sleeping, feeding, and noticing the world.",
+  "maxAge": 2,
+  "automatic": true,
+  "restful": true,
+  "gains": {
+    "perception": 0.2
+  },
+  "outcomes": [
+    {
+      "id": "sleeping",
+      "text": "You slept, fed, cried and grew.",
+      "weight": 6,
+      "quiet": true
+    },
+    {
+      "id": "first_word",
+      "text": "Your first word was a name. {parent} has not stopped telling people.",
+      "weight": 0.4,
+      "requires": {
+        "parentAlive": true,
+        "minAge": 1
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "parent",
+          "value": 5
+        }
+      ],
+      "tags": ["family"]
+    },
+    {
+      "id": "first_steps",
+      "text": "You took your first steps, straight into a table leg.",
+      "weight": 0.4,
+      "requires": {
+        "minAge": 1
+      }
+    },
+    {
+      "id": "tooth",
+      "text": "You cut your first tooth and made sure the whole house knew about it.",
+      "weight": 0.4
+    },
+    {
+      "id": "sea",
+      "text": "You stared at the sea for an hour without blinking. Nobody knows what you saw.",
+      "weight": 0.3,
+      "requires": {
+        "features": ["coast"]
+      },
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "perception": 0.3
+          }
+        }
+      ]
+    },
+    {
+      "id": "laugh",
+      "text": "You laughed for the first time, at nothing anyone else could see.",
+      "weight": 0.4
+    }
+  ],
+  "tags": ["childhood"]
+}

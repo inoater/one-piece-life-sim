@@ -1,0 +1,74 @@
+{
+  "id": "act_argue",
+  "name": "Pick a fight",
+  "category": "social",
+  "description": "Saying what you think, loudly, to someone who disagrees.",
+  "minAge": 6,
+  "gains": {
+    "willpower": 0.3
+  },
+  "tags": ["relationship"],
+  "outcomes": [
+    {
+      "id": "with_parent",
+      "text": "You and {parent} shouted at each other until the neighbours shut their windows.",
+      "requires": {
+        "parentAlive": true
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "parent",
+          "value": -10
+        }
+      ]
+    },
+    {
+      "id": "with_sibling",
+      "text": "You and {sibling} are not speaking.",
+      "requires": {
+        "hasSibling": true
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "sibling",
+          "value": -10
+        }
+      ]
+    },
+    {
+      "id": "new_rival",
+      "text": "You argued with {other} in front of half the market. Neither of you will forget it.",
+      "requires": {
+        "noRelation": "rival"
+      },
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "rival",
+          "opinion": -30,
+          "ageOffset": {
+            "min": -5,
+            "max": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "with_friend",
+      "text": "You fell out with {friend} over nothing much.",
+      "weight": 0.8,
+      "requires": {
+        "relation": "friend"
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "friend",
+          "value": -12
+        }
+      ]
+    }
+  ]
+}

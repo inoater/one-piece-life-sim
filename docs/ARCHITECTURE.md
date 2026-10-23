@@ -108,6 +108,30 @@ alone. The sheet the page shows (`systems/genesis/sheet.ts`) carries every stat'
 derived value's formula (rule 3), and includes potential, talent and Luck only in omniscient views
 (rule 4).
 
+## The life loop (Phase 2)
+
+`src/systems/life/` lives in two pipeline steps. Step 1 (`resolveActions`) runs the player's
+routine: each activity, up to the slots their stage allows, costs Vigor by effort, trains its stats
+through the training formula, may earn or cost Berries, draws one written outcome and rolls its
+risks; spending past the Vigor pool leaves the character exhausted. Step 7 (`aging`) is the passing
+of the month: natural growth and decline, birthdays and stages, illness and healing on schedule,
+money (cost of living, debt, interest, the collector), children and siblings born, relatives' deaths
+and, on each birthday, the yearly mortality roll. A world system in step 4 brings epidemics.
+
+Everything that changes a life goes through one effect function (`life/effects.ts`), shared by
+activity outcomes, job shifts and event choices, so a collector's beating and a sparring accident
+are the same injury. Locks (why an activity or a job cannot be done) come from one function that
+both the month and the planner call, so the page never offers what the month will refuse.
+
+When the player's character dies, `advance` stops with `ended` (an injected `halted` predicate, like
+`resolveDecision`) until the player chooses who to carry on as (`life/death.ts`). Carrying on gives
+the chosen person a full body made by character genesis for their age and home, keeps who they
+already were, applies the inheritance rules, and lets them know what the last life knew, so the
+chronicle reads on.
+
+`life/headless.ts` runs whole lives with an autopilot for the balancing tool (`npm run lives`,
+worker threads on every core) and the tests.
+
 ## Worker protocol
 
 `src/worker/protocol.ts` types every request and response (`boot`, `newWorld`, `advance`, `dispatch`,

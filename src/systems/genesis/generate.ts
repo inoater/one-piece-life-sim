@@ -13,6 +13,7 @@ import {
 import { makeStat, statValue, type StatId } from '../../engine/stats';
 import { createWorld } from '../../engine/world';
 import { scheduleEvent } from '../events';
+import { freshLife } from '../life/body';
 import { appearanceSentence, rollAdultHeight, rollAppearance } from './appearance';
 import { applyEvent, pickEvent, renderBackstory, writeParagraph } from './backstory';
 import {
@@ -540,6 +541,8 @@ export function createLife(
   if (focus) pc.focus = focus.id;
   finishStats(ctx);
   pc.backstory = writeParagraph(ctx, data);
+  // The life loop starts here (Phase 2): full Health, an empty routine.
+  pc.life = freshLife(data, player, entryTick);
 
   // ---- The chronicle: the past in order, then the first line of the story
   ctx.records.sort((a, b) => a.tick - b.tick);

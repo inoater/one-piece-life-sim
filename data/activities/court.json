@@ -1,0 +1,51 @@
+{
+  "id": "act_court",
+  "name": "Court someone",
+  "category": "social",
+  "description": "Looking for someone to love, and hoping they are looking too.",
+  "minAge": 16,
+  "requires": {
+    "noRelation": "sweetheart"
+  },
+  "gains": {
+    "charisma": 0.4
+  },
+  "tags": ["relationship", "romance"],
+  "outcomes": [
+    {
+      "id": "smitten",
+      "text": "You and {other} could not stop looking at each other across the festival fire.",
+      "statWeights": {
+        "charisma": 0.6
+      },
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "sweetheart",
+          "opinion": 55,
+          "ageOffset": {
+            "min": -4,
+            "max": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "turned_down",
+      "text": "You worked up the courage to ask. The answer was a kind no.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "awkward_dinner",
+      "text": "A dinner so awkward it will be a story one day, just not yet.",
+      "weight": 0.7
+    }
+  ]
+}

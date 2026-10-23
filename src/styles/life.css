@@ -1,0 +1,426 @@
+/*
+ * The life loop (Phase 2): Health and Vigor in the masthead, the Actions planner, the life recap
+ * after a death, and the epilogue at the present. Same register as the rest of the log: rules and
+ * type, not cards; tide for what is fine, squall for trouble. No new colours.
+ */
+
+@layer layout {
+  /* The life recap fills the space of the chronicle and the side panel, like the Map. */
+  .end-page-slot {
+    grid-row: 3 / 5;
+    grid-column: 1 / -1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--s-4);
+  }
+  .end-page-slot[hidden] {
+    display: none;
+  }
+  .shell[data-route='end'] .panel,
+  .shell[data-route='end'] .tabs,
+  .shell[data-route='end'] .year-rail {
+    display: none !important;
+  }
+  @media (min-width: 700px) {
+    .end-page-slot {
+      padding: var(--s-5) var(--s-6);
+    }
+  }
+}
+
+@layer components {
+  /* ---- Masthead bars ------------------------------------------------------------------- */
+  .vital--bar {
+    min-width: 4.5rem;
+  }
+  .vital-bar,
+  .meter {
+    position: relative;
+    display: block;
+    height: 4px;
+    margin-top: 2px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--rule);
+  }
+  .vital-bar[hidden] {
+    display: none;
+  }
+  .vital-bar__fill,
+  .meter__fill {
+    display: block;
+    height: 100%;
+    background: var(--tide);
+    transition: width 0.4s ease-out;
+  }
+  [data-tone='vigor'] > .vital-bar__fill,
+  [data-tone='vigor'] > .meter__fill {
+    background: var(--cat-world);
+  }
+  [data-tone='bad'] > .vital-bar__fill,
+  [data-tone='bad'] > .meter__fill {
+    background: var(--squall);
+  }
+  .vital[data-alert='true'] .vital__label {
+    color: var(--squall);
+  }
+  .meter {
+    height: 6px;
+    flex: 1 1 8rem;
+  }
+
+  /* ---- The planner --------------------------------------------------------------------- */
+  .planner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+  .planner__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+  .planner__section .side-screen__title {
+    margin: 0;
+  }
+  .planner__lead {
+    color: var(--mist);
+  }
+  .planner__vigor {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    font-size: var(--text-0);
+  }
+  .planner__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .planner__list {
+    padding-left: var(--s-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+  .planner__more > summary {
+    cursor: pointer;
+    padding: var(--s-1) 0;
+    font-weight: 600;
+  }
+  .planner__more[open] > summary {
+    margin-bottom: var(--s-2);
+  }
+
+  .routine {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+  .routine__slot {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: var(--s-2);
+    padding-left: var(--s-2);
+    border-left: 3px solid var(--tide);
+  }
+  .routine__slot[data-locked='true'] {
+    border-left-color: var(--squall);
+  }
+  .routine__number {
+    color: var(--mist);
+    font-family: var(--font-text);
+    font-size: var(--text-2);
+  }
+  .routine__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+  .routine__select {
+    width: 100%;
+    min-height: 2.25rem;
+    padding: var(--s-1) var(--s-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+  }
+  .routine__lock {
+    color: var(--squall);
+    font-size: var(--text-0);
+  }
+
+  .effort {
+    display: inline-flex;
+    align-self: flex-start;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .effort__option {
+    min-height: 2rem;
+    padding: 0 var(--s-3);
+    border: 0;
+    border-right: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--text-0);
+    cursor: pointer;
+  }
+  .effort__option:last-child {
+    border-right: 0;
+  }
+  .effort__option[aria-pressed='true'] {
+    background: var(--tide);
+    color: var(--tide-ink);
+  }
+  .effort__option:disabled {
+    cursor: default;
+    color: var(--mist);
+  }
+  .effort__option[aria-pressed='true']:disabled {
+    background: var(--tide-soft);
+    color: var(--ink);
+  }
+
+  .options {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding: var(--s-2) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .option__main {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .option__name {
+    font-weight: 600;
+  }
+  .option[data-locked='true'] .option__name,
+  .option[data-locked='true'] .option__text {
+    color: var(--mist);
+  }
+  .option__meta,
+  .option__text {
+    font-size: var(--text-0);
+  }
+  .option__meta {
+    color: var(--mist);
+  }
+  .option__lock {
+    color: var(--squall);
+    font-size: var(--text-0);
+  }
+  .option__tag {
+    flex: none;
+    color: var(--tide);
+    font-size: var(--text-0);
+    font-weight: 600;
+  }
+  .option .button {
+    flex: none;
+  }
+  .job-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    align-items: flex-start;
+  }
+
+  /* ---- The sheet's life section --------------------------------------------------------- */
+  .sheet__health {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+  }
+  .sheet__flag {
+    color: var(--squall);
+    font-size: var(--text-0);
+    font-weight: 600;
+  }
+  .sheet__deeds {
+    padding-left: var(--s-4);
+    font-size: var(--text-0);
+  }
+
+  /* ---- Epilogue and the end of a life in the chronicle ---------------------------------- */
+  .epilogue {
+    margin-top: var(--s-5);
+    padding: var(--s-4) 0 0 var(--s-4);
+    border-top: 1px solid var(--rule);
+    border-left: 3px solid var(--cat-news);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    align-items: flex-start;
+  }
+  .epilogue--death {
+    border-left-color: var(--squall);
+  }
+  .epilogue__title {
+    font-family: var(--font-text);
+    font-size: var(--text-3);
+  }
+  .epilogue__text {
+    font-family: var(--font-text);
+    font-size: var(--text-2);
+    line-height: 1.6;
+  }
+  .epilogue__facts {
+    padding-left: var(--s-4);
+    color: var(--mist);
+  }
+
+  /* ---- The recap ------------------------------------------------------------------------ */
+  .end-page {
+    max-width: 56rem;
+    margin-inline: auto;
+    display: grid;
+    gap: var(--s-6);
+  }
+  @media (min-width: 900px) {
+    .end-page {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      align-items: start;
+    }
+    .end-page__lineage {
+      grid-column: 1 / -1;
+    }
+  }
+  .recap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+  .recap__kicker {
+    color: var(--mist);
+    font-size: var(--text-0);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .recap__name {
+    font-family: var(--font-text);
+    font-size: var(--text-4);
+    line-height: 1.1;
+  }
+  .recap__dates {
+    font-family: var(--font-text);
+    font-size: var(--text-2);
+  }
+  .recap__heading {
+    margin-top: var(--s-3);
+    font-size: var(--text-1);
+  }
+  .recap__peaks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+  .recap__peak {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr) 3rem;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--text-0);
+  }
+  .recap__peak-bar {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--rule);
+    overflow: hidden;
+  }
+  .recap__peak-bar > span {
+    display: block;
+    height: 100%;
+    background: var(--tide);
+  }
+  .recap__peak-value {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .recap__deeds {
+    padding-left: var(--s-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    font-family: var(--font-text);
+  }
+  .recap__deed-date {
+    color: var(--mist);
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+  }
+
+  .end-page__continue {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+  .continues {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .continue {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    align-items: flex-start;
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .continue[data-available='false'] .continue__label,
+  .continue[data-available='false'] .continue__text {
+    color: var(--mist);
+  }
+  .continue__label {
+    font-size: var(--text-1);
+  }
+  .continue__text {
+    font-size: var(--text-0);
+  }
+  .continue__who {
+    font-family: var(--font-text);
+  }
+  .continue__reason {
+    color: var(--mist);
+    font-size: var(--text-0);
+    font-style: italic;
+  }
+  .continue__select {
+    max-width: 100%;
+    min-height: 2.25rem;
+    padding: var(--s-1) var(--s-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+  }
+
+  /* The masthead holds two more figures now: on a phone they share the row. */
+  @media (max-width: 699.98px) {
+    .vital--bar {
+      min-width: 0;
+    }
+  }
+}

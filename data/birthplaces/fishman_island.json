@@ -30,6 +30,7 @@
     "karate": 3,
     "prejudice": 2
   },
+  "features": ["deep_sea", "coast", "docks", "dojo", "market", "school", "doctor", "ruins"],
   "map": {
     "x": 59,
     "y": 670

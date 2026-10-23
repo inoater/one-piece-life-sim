@@ -1,0 +1,52 @@
+{
+  "id": "act_run_laps",
+  "name": "Run laps",
+  "category": "train_body",
+  "description": "Distance, every morning, whatever the weather.",
+  "minAge": 10,
+  "physical": true,
+  "gains": {
+    "speed": 0.8,
+    "endurance": 0.5
+  },
+  "risk": {
+    "injury": 0.012,
+    "cause": "accident",
+    "areas": {
+      "legs": 1
+    },
+    "severities": {
+      "minor": 9,
+      "serious": 1
+    }
+  },
+  "tags": ["training"],
+  "outcomes": [
+    {
+      "id": "morning_runs",
+      "text": "You ran the length of {home} and back every morning this month.",
+      "weight": 2,
+      "quiet": true
+    },
+    {
+      "id": "sick",
+      "text": "You ran until you were sick, and then ran again.",
+      "weight": 0.8,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.3
+          }
+        }
+      ]
+    },
+    {
+      "id": "best_time",
+      "text": "You beat your best time around the island by a long way.",
+      "statWeights": {
+        "speed": 0.5
+      }
+    }
+  ]
+}

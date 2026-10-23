@@ -1,0 +1,576 @@
+{
+  "slots": {
+    "infant": 0,
+    "toddler": 1,
+    "child": 1,
+    "adolescent": 2,
+    "young_adult": 3,
+    "prime": 3,
+    "mature": 3,
+    "elder": 3
+  },
+  "extraSlotFlag": "slots.extra",
+  "efforts": {
+    "light": {
+      "name": "Light",
+      "vigor": 1,
+      "gain": 0.6,
+      "pay": 0.7,
+      "risk": 0.6
+    },
+    "normal": {
+      "name": "Normal",
+      "vigor": 2,
+      "gain": 1.0,
+      "pay": 1.0,
+      "risk": 1.0
+    },
+    "hard": {
+      "name": "Hard",
+      "vigor": 3,
+      "gain": 1.5,
+      "pay": 1.25,
+      "risk": 1.6
+    }
+  },
+  "exhaustion": {
+    "statPct": -20,
+    "injuryChance": 0.15,
+    "restBelow": 0.5
+  },
+  "training": {
+    "mentor": 1.25,
+    "legendaryMentor": 1.5,
+    "breakthroughChance": 0.015,
+    "breakthroughPct": {
+      "min": 2,
+      "max": 5
+    },
+    "nearDeathBreakthrough": 0.35
+  },
+  "health": {
+    "regen": 0.12,
+    "unwellRegenMult": 0.4
+  },
+  "injuries": {
+    "severities": [
+      {
+        "id": "minor",
+        "name": "Minor",
+        "months": 1,
+        "statPct": -10,
+        "damage": 0.15,
+        "bedRest": false,
+        "weight": 70
+      },
+      {
+        "id": "serious",
+        "name": "Serious",
+        "months": 3,
+        "statPct": -20,
+        "damage": 0.35,
+        "bedRest": true,
+        "weight": 25,
+        "scarChance": 0.15
+      },
+      {
+        "id": "severe",
+        "name": "Severe",
+        "months": 12,
+        "statPct": -35,
+        "damage": 0.65,
+        "bedRest": true,
+        "weight": 5,
+        "scarChance": 0.7,
+        "lossChance": 0.18
+      }
+    ],
+    "areas": [
+      {
+        "id": "head",
+        "weight": 1,
+        "stats": ["intellect", "perception", "willpower"],
+        "names": {
+          "minor": ["a bump on the head", "a split eyebrow", "a ringing blow to the head"],
+          "serious": ["a concussion", "a deep cut across the scalp"],
+          "severe": ["a fractured skull", "a blow to the head that nearly killed you"]
+        },
+        "scarTrait": "trait_scar_head",
+        "scarText": ["a pale scar across the forehead", "a jagged scar along the hairline"]
+      },
+      {
+        "id": "torso",
+        "weight": 1.2,
+        "stats": ["endurance", "durability"],
+        "names": {
+          "minor": ["bruised ribs", "a pulled back", "a shallow cut along the side"],
+          "serious": ["a cracked rib", "a deep gash across the chest"],
+          "severe": ["broken ribs and a punctured lung", "a stab wound to the gut"]
+        },
+        "scarTrait": "trait_scar_torso",
+        "scarText": ["a long scar across the chest", "a puckered scar low on the side"]
+      },
+      {
+        "id": "arms",
+        "weight": 1.4,
+        "stats": ["strength", "dexterity"],
+        "names": {
+          "minor": ["a sprained wrist", "a cut hand", "a jammed finger"],
+          "serious": ["a broken arm", "a dislocated shoulder"],
+          "severe": ["a shattered arm", "a mangled hand"]
+        },
+        "scarTrait": "trait_scar_arms",
+        "lossTrait": "trait_lost_arm",
+        "scarText": ["a crooked scar along the forearm", "a burn scar across the back of one hand"]
+      },
+      {
+        "id": "legs",
+        "weight": 1.4,
+        "stats": ["speed", "endurance"],
+        "names": {
+          "minor": ["a twisted ankle", "a bruised knee", "a pulled muscle in the thigh"],
+          "serious": ["a broken leg", "a torn knee"],
+          "severe": ["a shattered leg", "a leg crushed under a falling load"]
+        },
+        "scarTrait": "trait_scar_legs",
+        "lossTrait": "trait_lost_leg",
+        "scarText": ["a ridged scar down one shin", "a knotted scar above the knee"]
+      },
+      {
+        "id": "eyes",
+        "weight": 0.5,
+        "stats": ["perception", "dexterity"],
+        "names": {
+          "minor": ["a scratched eye", "a swollen-shut eye"],
+          "serious": ["a badly cut eye", "an eye that would not stop bleeding"],
+          "severe": ["a ruined eye", "a blade across both eyes"]
+        },
+        "scarTrait": "trait_scar_eyes",
+        "lossTrait": "trait_lost_eye",
+        "scarText": ["a scar running down through one eyebrow", "a thin scar beside the left eye"]
+      }
+    ]
+  },
+  "illnesses": [
+    {
+      "id": "fever",
+      "name": "a fever",
+      "months": {
+        "min": 1,
+        "max": 2
+      },
+      "chance": 0.01,
+      "seasons": {
+        "winter": 2,
+        "autumn": 1.3
+      },
+      "stages": {
+        "infant": 2.5,
+        "toddler": 1.8,
+        "elder": 2
+      },
+      "statPct": -15,
+      "damage": 0.12
+    },
+    {
+      "id": "chest_cough",
+      "name": "a chest cough",
+      "months": {
+        "min": 1,
+        "max": 3
+      },
+      "chance": 0.007,
+      "seasons": {
+        "winter": 1.8,
+        "spring": 1.2
+      },
+      "stages": {
+        "infant": 1.5,
+        "elder": 2.4,
+        "mature": 1.3
+      },
+      "statPct": -10,
+      "damage": 0.08
+    },
+    {
+      "id": "bad_stomach",
+      "name": "a bad stomach",
+      "months": {
+        "min": 1,
+        "max": 1
+      },
+      "chance": 0.008,
+      "seasons": {
+        "summer": 1.8
+      },
+      "stages": {
+        "toddler": 1.5,
+        "child": 1.3
+      },
+      "statPct": -10,
+      "damage": 0.1
+    },
+    {
+      "id": "wasting_fever",
+      "name": "the wasting fever",
+      "months": {
+        "min": 2,
+        "max": 5
+      },
+      "chance": 0.0012,
+      "seasons": {},
+      "stages": {
+        "infant": 2,
+        "elder": 2.5
+      },
+      "statPct": -30,
+      "damage": 0.28
+    },
+    {
+      "id": "seasickness",
+      "name": "seasickness",
+      "months": {
+        "min": 1,
+        "max": 1
+      },
+      "chance": 0,
+      "seasons": {},
+      "stages": {},
+      "statPct": -10,
+      "damage": 0.02,
+      "atSea": true
+    },
+    {
+      "id": "scurvy",
+      "name": "scurvy",
+      "months": {
+        "min": 2,
+        "max": 6
+      },
+      "chance": 0,
+      "seasons": {},
+      "stages": {},
+      "statPct": -25,
+      "damage": 0.15,
+      "atSea": true
+    }
+  ],
+  "epidemic": {
+    "chance": 0.0015,
+    "months": {
+      "min": 3,
+      "max": 8
+    },
+    "illness": "wasting_fever",
+    "mult": 25,
+    "news": [
+      "The wasting fever has come to {player.home}. Doors are shut and the doctor sleeps in their clothes.",
+      "Sickness spreads through {player.home}: the wasting fever, the old people call it, and they remember the last time."
+    ]
+  },
+  "collapse": {
+    "accident": 0.3,
+    "violence": 0.5,
+    "illness": 0.4,
+    "exhaustion": 0.1,
+    "starvation": 0.45,
+    "execution": 1
+  },
+  "mortality": {
+    "referenceLifespan": 80,
+    "table": [
+      {
+        "at": 0,
+        "chance": 0.004
+      },
+      {
+        "at": 0.04,
+        "chance": 0.001
+      },
+      {
+        "at": 0.15,
+        "chance": 0.0003
+      },
+      {
+        "at": 0.4,
+        "chance": 0.0005
+      },
+      {
+        "at": 0.6,
+        "chance": 0.0015
+      },
+      {
+        "at": 0.75,
+        "chance": 0.005
+      },
+      {
+        "at": 0.85,
+        "chance": 0.014
+      },
+      {
+        "at": 0.95,
+        "chance": 0.038
+      },
+      {
+        "at": 1.05,
+        "chance": 0.1
+      },
+      {
+        "at": 1.15,
+        "chance": 0.24
+      },
+      {
+        "at": 1.25,
+        "chance": 0.5
+      },
+      {
+        "at": 1.4,
+        "chance": 0.95
+      }
+    ],
+    "safety": {
+      "very_low": 1.3,
+      "low": 1.12,
+      "medium": 1,
+      "high": 0.92
+    },
+    "lowHealth": {
+      "below": 0.35,
+      "mult": 2.5
+    },
+    "traits": {
+      "trait_frail": 1.3,
+      "trait_sturdy": 0.85,
+      "trait_hardy": 0.88,
+      "trait_iron_lungs": 0.92,
+      "trait_reckless": 1.15,
+      "trait_cautious": 0.9,
+      "trait_lucky": 0.9,
+      "trait_unlucky": 1.1,
+      "trait_lost_leg": 1.15,
+      "trait_lost_arm": 1.1
+    },
+    "causes": [
+      {
+        "id": "old_age",
+        "label": "old age",
+        "weights": [
+          {
+            "at": 0,
+            "weight": 0
+          },
+          {
+            "at": 0.6,
+            "weight": 0.2
+          },
+          {
+            "at": 0.85,
+            "weight": 3
+          },
+          {
+            "at": 1,
+            "weight": 8
+          }
+        ]
+      },
+      {
+        "id": "heart",
+        "label": "a failing heart",
+        "weights": [
+          {
+            "at": 0,
+            "weight": 0
+          },
+          {
+            "at": 0.4,
+            "weight": 0.4
+          },
+          {
+            "at": 0.8,
+            "weight": 2
+          },
+          {
+            "at": 1,
+            "weight": 2.5
+          }
+        ]
+      },
+      {
+        "id": "illness",
+        "label": "a sickness no doctor could name",
+        "weights": [
+          {
+            "at": 0,
+            "weight": 3
+          },
+          {
+            "at": 0.5,
+            "weight": 1.5
+          },
+          {
+            "at": 1,
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "id": "accident",
+        "label": "an accident",
+        "weights": [
+          {
+            "at": 0,
+            "weight": 1.2
+          },
+          {
+            "at": 0.4,
+            "weight": 1
+          },
+          {
+            "at": 1,
+            "weight": 0.5
+          }
+        ]
+      },
+      {
+        "id": "violence",
+        "label": "a knife in a dark street",
+        "bySafety": true,
+        "weights": [
+          {
+            "at": 0,
+            "weight": 0.2
+          },
+          {
+            "at": 0.2,
+            "weight": 1
+          },
+          {
+            "at": 0.5,
+            "weight": 0.5
+          },
+          {
+            "at": 1,
+            "weight": 0.1
+          }
+        ]
+      }
+    ]
+  },
+  "money": {
+    "livingCost": {
+      "low": 350,
+      "medium": 650,
+      "high": 1100
+    },
+    "independentAge": 18,
+    "interestPct": 3,
+    "interestFromAge": 16,
+    "collector": {
+      "above": 3000,
+      "everyMonths": 6,
+      "eventId": "evt_debt_collector"
+    },
+    "loans": [5000, 20000, 100000],
+    "loanFromAge": 16,
+    "maxDebt": 150000
+  },
+  "doctor": {
+    "cost": {
+      "none": 300,
+      "minor": 600,
+      "serious": 3000,
+      "severe": 12000
+    },
+    "intellect": {
+      "low": 50,
+      "medium": 65,
+      "high": 80
+    },
+    "months": 2
+  },
+  "family": {
+    "conceiveChance": 0.05,
+    "fertile": {
+      "min": 18,
+      "max": 44
+    },
+    "gestationMonths": 9,
+    "maxChildren": 6
+  },
+  "fame": {
+    "legacyPct": 50
+  },
+  "gangNames": [
+    "the Harbor Rats",
+    "the Saltwater Boys",
+    "the Red Gulls",
+    "the Bilge Dogs",
+    "the Ninth Pier",
+    "the Crooked Lanterns",
+    "the Gutter Kings",
+    "the Low Tide Crew"
+  ],
+  "continuation": [
+    {
+      "id": "heir",
+      "label": "Your child or heir",
+      "description": "Carry on as your eldest living child. Your Berries pass to them, and half your fame becomes their Legacy."
+    },
+    {
+      "id": "protege",
+      "label": "Your protégé",
+      "description": "Carry on as the one you taught. They inherit, as an heir would."
+    },
+    {
+      "id": "crewmate",
+      "label": "A crewmate",
+      "description": "Carry on as someone who sailed or ran with you. Your crew's command passes to them."
+    },
+    {
+      "id": "sibling",
+      "label": "A brother or sister",
+      "description": "Carry on as a living brother or sister, and inherit what you leave."
+    },
+    {
+      "id": "newborn",
+      "label": "A newborn, this month",
+      "description": "A stranger's child born at home the month you died. They inherit nothing, and owe nothing."
+    },
+    {
+      "id": "new",
+      "label": "A new game",
+      "description": "Leave this world behind and start a new life from the beginning."
+    }
+  ],
+  "epilogue": {
+    "title": "The present",
+    "text": "Thirty-nine years after God Valley, the story the world knows has caught up with yours. From here on nothing is written: the seas go on, and so can you. Random chance, not the old tales, decides what happens next."
+  },
+  "lines": {
+    "birthday": "You turned {ageWords}.",
+    "stage": "A new stage of life begins: {stage}.",
+    "injured": "You suffered {injury}.",
+    "healed": "You have recovered from {injury}.",
+    "scarred": "You have recovered from {injury}, but it left its mark: {title}.",
+    "lost": "You lived through {injury}, but nobody could save it: {title}.",
+    "ill": "You came down with {illness}.",
+    "recovered": "You have shaken off {illness}.",
+    "exhausted": "You pushed past your strength this month and are exhausted.",
+    "rested": "Rested at last, you feel like yourself again.",
+    "collapse": "You collapsed at the very edge of death, and somehow pulled through.",
+    "breakthrough": "Something gave way inside you: your {stat} has room to grow again.",
+    "livingCost": "Living costs: {amount} Berries.",
+    "interest": "Interest on your debt: {amount} Berries.",
+    "broke": "You could not pay your way this month, and your debt grows.",
+    "hired": "You took a job: {job}.",
+    "quit": "You left your job as {job}.",
+    "promoted": "After {months} months of service you are now {title}.",
+    "jailed": "You were locked up for {months} months.",
+    "released": "You walked out of the cell a free person.",
+    "childBorn": "Your child {child} was born.",
+    "siblingBorn": "{sibling} was born.",
+    "relativeDied": "{other} died of {cause}, aged {age}.",
+    "married": "You married {spouse}.",
+    "death": "{name} died of {cause}, aged {age}."
+  }
+}

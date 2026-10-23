@@ -1,0 +1,60 @@
+{
+  "id": "act_fish",
+  "name": "Fish for the pot",
+  "category": "work",
+  "description": "A line and a bucket off the rocks. Sell what you do not eat.",
+  "minAge": 8,
+  "requires": {
+    "anyFeatures": ["coast", "deep_sea", "clouds"]
+  },
+  "earn": {
+    "min": 100,
+    "max": 500
+  },
+  "gains": {
+    "endurance": 0.3,
+    "perception": 0.2,
+    "dexterity": 0.1
+  },
+  "tags": ["sea", "work"],
+  "outcomes": [
+    {
+      "id": "supper",
+      "text": "You caught enough to feed the family and sell the rest.",
+      "weight": 2,
+      "statWeights": {
+        "perception": 0.4
+      },
+      "quiet": true
+    },
+    {
+      "id": "big_one",
+      "text": "You landed a fish as long as your arm, and half {home} came to look at it.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 100,
+          "max": 300
+        },
+        {
+          "kind": "fame",
+          "value": 0.1
+        }
+      ]
+    },
+    {
+      "id": "nothing",
+      "text": "The fish were not biting. You sat in the sun and thought about things.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.1
+          }
+        }
+      ],
+      "quiet": true
+    }
+  ]
+}

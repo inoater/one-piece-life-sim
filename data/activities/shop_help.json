@@ -1,0 +1,48 @@
+{
+  "id": "act_shop_help",
+  "name": "Help in a shop",
+  "category": "work",
+  "description": "Stocking shelves and minding the counter for a shopkeeper.",
+  "minAge": 10,
+  "requires": {
+    "features": ["market"]
+  },
+  "earn": {
+    "min": 100,
+    "max": 450
+  },
+  "gains": {
+    "charisma": 0.4,
+    "intellect": 0.2
+  },
+  "tags": ["market", "work"],
+  "outcomes": [
+    {
+      "id": "counter",
+      "text": "You minded the counter and learned which customers lie about prices.",
+      "weight": 2,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "perception": 0.1
+          }
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "trusted",
+      "text": "The shopkeeper left you alone with the till for a whole afternoon.",
+      "weight": 0.8,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "charisma": 0.2
+          }
+        }
+      ]
+    }
+  ]
+}

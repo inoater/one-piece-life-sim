@@ -1,0 +1,79 @@
+{
+  "id": "job_fisher",
+  "name": "Fisher",
+  "description": "Out before dawn with the boats, back with whatever the sea gives.",
+  "minAge": 12,
+  "requires": {
+    "anyFeatures": ["coast", "clouds", "deep_sea"]
+  },
+  "requirementText": "A coast to fish from",
+  "income": {
+    "min": 800,
+    "max": 1500
+  },
+  "gains": {
+    "endurance": 0.4,
+    "perception": 0.15,
+    "dexterity": 0.1
+  },
+  "risk": {
+    "injury": 0.02,
+    "cause": "accident",
+    "areas": {
+      "arms": 1,
+      "legs": 1,
+      "torso": 1
+    }
+  },
+  "outcomes": [
+    {
+      "id": "good_catch",
+      "text": "The nets came up heavy, and for once the fishmonger paid what the catch was worth.",
+      "weight": 2,
+      "statWeights": {
+        "perception": 0.6
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 200,
+          "max": 500
+        }
+      ]
+    },
+    {
+      "id": "slow",
+      "text": "A slow month on the water: mending nets and waiting for fish that never came.",
+      "weight": 3,
+      "quiet": true
+    },
+    {
+      "id": "squall",
+      "text": "A squall caught the boats out past the point. You made it back soaked and shaking.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "endurance": 0.3,
+            "willpower": 0.3
+          }
+        }
+      ]
+    },
+    {
+      "id": "sea_legs",
+      "text": "Somewhere between the swells you stopped feeling the sea move under you: you have found your sea legs.",
+      "weight": 0.6,
+      "requires": {
+        "notFlags": ["sea_legs"]
+      },
+      "effects": [
+        {
+          "kind": "trait",
+          "trait": "trait_sea_legs"
+        }
+      ]
+    }
+  ],
+  "tags": ["sea", "work"]
+}

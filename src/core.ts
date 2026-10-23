@@ -9,6 +9,7 @@ import type { Rng } from './engine/rng';
 import type { WorldState } from './engine/state';
 import { runTick, runTickInPlace, type TickOutput } from './engine/tick';
 import { resolveDecision } from './systems/events';
+import { playerHasDied } from './systems/life';
 import { PIPELINE } from './systems';
 
 /**
@@ -31,7 +32,7 @@ export function tickInPlace(state: WorldState, data: GameData, rng: Rng): TickOu
 }
 
 export function advanceOptions(decisions: DecisionPolicy = 'stop'): AdvanceOptions {
-  return { pipeline: PIPELINE, decisions, resolveDecision };
+  return { pipeline: PIPELINE, decisions, resolveDecision, halted: playerHasDied };
 }
 
 /** Run a plan to its end (headless tools and tests). Mutates `state`. */

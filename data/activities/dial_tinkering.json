@@ -1,0 +1,34 @@
+{
+  "id": "act_dial_tinkering",
+  "name": "Tinker with dials",
+  "category": "special",
+  "description": "Shells that hold wind, light, sound and heat, and the craft of using them.",
+  "minAge": 10,
+  "requires": {
+    "flags": {
+      "unlock.dials": true
+    }
+  },
+  "gains": {
+    "intellect": 0.5,
+    "dexterity": 0.4
+  },
+  "tags": ["sky"],
+  "outcomes": [
+    {
+      "id": "flame_dial",
+      "text": "You got a flame dial to light on the first try."
+    },
+    {
+      "id": "breeze",
+      "text": "You rigged a breath dial to cool the house all summer.",
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 100,
+          "max": 400
+        }
+      ]
+    }
+  ]
+}

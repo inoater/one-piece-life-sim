@@ -27,6 +27,9 @@ import {
 import { optionsFor } from '../systems/genesis/appearance';
 import { GenesisOptionsSchema, type GenesisOptions } from '../systems/genesis/options';
 import { ageAt } from '../systems/genesis/stages';
+import { runHeadlessLife } from '../systems/life/headless';
+import { trainingCurve } from '../systems/life/training';
+import { lifeView } from '../systems/life/view';
 import { entryWarnings } from '../systems/genesis/warnings';
 import type {
   AdvanceReport,
@@ -41,6 +44,7 @@ import type {
   LoadInfo,
   LogQueryRequest,
   LogQueryResult,
+  LivesReport,
   LogView,
   Op,
   Protocol,
@@ -163,6 +167,15 @@ export class SimCore {
         const rolls = Math.min(20000, Math.max(1, Math.floor(req.rolls ?? 1000)));
         return genesisStats(this.deps.data, req.raceId, rolls);
       },
+      'debug/trainingCurve': (req) => {
+        if (!this.deps.debug) throw new ActionError('Debug tools are disabled in this build');
+        const months = Math.min(1200, Math.max(1, Math.floor(req.months)));
+        return {
+          points: trainingCurve(this.deps.data, { ...req, months }),
+          softCap: this.deps.data.character.softCap.above,
+        };
+      },
+      'debug/lives': (req) => this.debugLives(req),
     };
   }
 
@@ -484,6 +497,39 @@ export class SimCore {
     return { snapshot: this.snapshot(req.view) };
   }
 
+  private debugLives(req: Protocol['debug/lives']['req']): LivesReport {
+    if (!this.deps.debug) throw new ActionError('Debug tools are disabled in this build');
+    const { data } = this.deps;
+    const race = data.races[req.raceId];
+    if (!race) throw new ActionError(`There is no race "${req.raceId}"`);
+    const count = Math.min(200, Math.max(1, Math.floor(req.lives)));
+    const started = this.clock();
+    const base = req.seed?.trim() || 'debug-lives';
+    const options = advanceOptions('auto-random');
+    const lives = Array.from({ length: count }, (_, i) => {
+      const life = runHeadlessLife(
+        data,
+        { seed: `${base}-${race.id}-${i + 1}`, race: race.id },
+        options,
+      );
+      return {
+        seed: life.seed,
+        age: life.age,
+        cause: life.cause,
+        outcomes: life.outcomes.length,
+        job: life.job ? (data.jobs[life.job]?.name ?? life.job) : null,
+      };
+    });
+    return {
+      race: race.id,
+      raceName: race.name,
+      lifespan: { ...race.lifespan },
+      lives,
+      mean: lives.reduce((sum, l) => sum + l.age, 0) / lives.length,
+      ms: Math.max(0, this.clock() - started),
+    };
+  }
+
   // ---- Saves --------------------------------------------------------------------------------
 
   private dateLabel(tick: number): string {
@@ -623,6 +669,11 @@ export class SimCore {
       sheet: state.playerId
         ? characterSheet(data, state, state.playerId, { omniscient: view.omniscient })
         : null,
+      life: lifeView(state, data),
+      epilogue:
+        !state.openEnded && hasReachedPresent(cal, state.tick)
+          ? { title: data.life.epilogue.title, text: data.life.epilogue.text }
+          : null,
       pending,
       feed,
       news,

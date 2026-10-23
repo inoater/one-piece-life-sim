@@ -1,0 +1,60 @@
+{
+  "id": "act_befriend",
+  "name": "Make friends",
+  "category": "social",
+  "description": "Talking to people you do not know yet.",
+  "minAge": 4,
+  "gains": {
+    "charisma": 0.5
+  },
+  "tags": ["relationship"],
+  "outcomes": [
+    {
+      "id": "new_friend",
+      "text": "You fell in with {other}, and the two of you have been inseparable since.",
+      "weight": 1.2,
+      "statWeights": {
+        "charisma": 0.5
+      },
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "friend",
+          "opinion": 40,
+          "ageOffset": {
+            "min": -3,
+            "max": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "closer",
+      "text": "You spent the month with {friend}, and you are closer for it.",
+      "requires": {
+        "relation": "friend"
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "friend",
+          "value": 8
+        }
+      ]
+    },
+    {
+      "id": "awkward",
+      "text": "You tried to make friends and said all the wrong things.",
+      "weight": 0.8,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "charisma": 0.2
+          }
+        }
+      ],
+      "quiet": true
+    }
+  ]
+}

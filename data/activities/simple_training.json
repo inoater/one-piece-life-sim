@@ -1,0 +1,53 @@
+{
+  "id": "act_simple_training",
+  "name": "Run and climb",
+  "category": "train_body",
+  "description": "Running the paths and climbing whatever stands still.",
+  "minAge": 6,
+  "maxAge": 15,
+  "physical": true,
+  "gains": {
+    "speed": 0.4,
+    "endurance": 0.4,
+    "strength": 0.2
+  },
+  "risk": {
+    "injury": 0.015,
+    "cause": "accident",
+    "areas": {
+      "legs": 2,
+      "arms": 1
+    },
+    "severities": {
+      "minor": 1
+    }
+  },
+  "tags": ["childhood"],
+  "outcomes": [
+    {
+      "id": "hill",
+      "text": "You ran up the hill behind {home} every day until it stopped feeling like a hill."
+    },
+    {
+      "id": "wall",
+      "text": "You climbed the harbour wall that the older children said nobody could climb.",
+      "weight": 0.8,
+      "statWeights": {
+        "dexterity": 0.5
+      },
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "tired",
+      "text": "You ran yourself ragged and slept like a stone.",
+      "quiet": true
+    }
+  ]
+}

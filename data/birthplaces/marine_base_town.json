@@ -29,6 +29,18 @@
     "marines": 4,
     "discipline": 2
   },
+  "features": [
+    "coast",
+    "docks",
+    "marine_base",
+    "school",
+    "library",
+    "doctor",
+    "smithy",
+    "market",
+    "dojo",
+    "shipyard"
+  ],
   "map": {
     "x": 2140,
     "y": 700

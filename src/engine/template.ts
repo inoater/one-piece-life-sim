@@ -46,6 +46,39 @@ export const BACKSTORY_VARS = [
   'season',
 ] as const;
 
+/**
+ * Life-loop text (Phase 2): activity outcomes, job shifts and the lines the life loop writes. The
+ * world's variables plus the people, places and numbers of one month of a life. A variable that
+ * names a person ({parent}, {friend}) must be guaranteed by the outcome's conditions; the schema
+ * checks that, as it does for backstory text.
+ */
+export const LIFE_VARS = [
+  ...TEMPLATE_VARS,
+  'age',
+  'ageWords',
+  'home',
+  'other',
+  'job',
+  'amount',
+  'parent',
+  'sibling',
+  'friend',
+  'spouse',
+  'child',
+  'mentor',
+  'sweetheart',
+  'protege',
+  'injury',
+  'illness',
+  'stage',
+  'gang',
+  'title',
+  'cause',
+  'stat',
+  'months',
+  'name',
+] as const;
+
 export const APPEARANCE_VARS = [
   'a',
   'adjectives',

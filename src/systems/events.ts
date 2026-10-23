@@ -3,7 +3,11 @@ import type { GameData, Effect, EventDef } from '../engine/data/schemas';
 import { appendLog } from '../engine/log';
 import type { NewsDraft, TickStep } from '../engine/pipeline';
 import { PUBLIC_KNOWLEDGE, type EventRecord, type WorldState } from '../engine/state';
+import { Rng } from '../engine/rng';
 import { renderTemplate } from '../engine/template';
+import { ensureLife } from './life/body';
+import { applyLifeEffect } from './life/effects';
+import type { LifeEnv } from './life/env';
 
 /**
  * Values for {player.*} and {legacy.*} in event text. A world with no player (a debug world, or
@@ -81,7 +85,12 @@ interface EffectSite {
   knownBy: string[];
 }
 
-/** Effects available to events and choices: log, setFlag, schedule. Applied in order. */
+/**
+ * Effects available to events and choices: log, setFlag, schedule, and (since Phase 2) everything
+ * a month of life can do to the player (money, injuries, traits, opinions...), applied through the
+ * life loop. Applied in order. Life effects need someone alive to happen to; without a living
+ * player they are skipped. Their randomness is keyed to the record that caused them.
+ */
 function applyEffects(
   state: WorldState,
   data: GameData,
@@ -89,7 +98,7 @@ function applyEffects(
   site: EffectSite,
 ): void {
   const vars = { ...templateVarsFor(site.date), ...storyVars(state, data) };
-  for (const effect of effects) {
+  effects.forEach((effect, index) => {
     switch (effect.kind) {
       case 'log':
         appendLog(state, site.tick, {
@@ -113,8 +122,23 @@ function applyEffects(
           site.causeSeq,
         );
         break;
+      default: {
+        const p = ensureLife(state, data);
+        if (!p?.c.life) break;
+        const env: LifeEnv = {
+          state,
+          data,
+          tick: site.tick,
+          rng: Rng.root(state.seed).fork('eventEffect', site.causeSeq, index),
+          p,
+          life: p.c.life,
+          cause: site.cause,
+          causeSeq: site.causeSeq,
+        };
+        applyLifeEffect(env, effect, { cast: {} });
+      }
     }
-  }
+  });
 }
 
 export interface FireContext {

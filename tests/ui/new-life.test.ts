@@ -153,8 +153,16 @@ describe('New Life', () => {
     expect(q('.shell')?.getAttribute('data-route')).toBe('feed');
     expect(q('.newlife-page')?.hidden).toBe(true);
     const vitals = qa('.vital__value').map(text);
+    expect(qa('.vital__label').map(text)).toEqual([
+      'Age',
+      'Health',
+      'Vigor',
+      'Location',
+      'Berries',
+    ]);
     expect(vitals[0]).toBe('16');
-    expect(vitals[2]).toMatch(/^−?[\d,]+$/);
+    expect(vitals[1]).toMatch(/^\d+\/\d+$/); // full Health at the start
+    expect(vitals[4]).toMatch(/^−?[\d,]+$/);
     expect(text(q('.panel--feed'))).toContain('Age 0: You were born');
     expect(text(q('.panel--feed'))).toContain("Wren Tidewell's story begins");
     navigate('character');

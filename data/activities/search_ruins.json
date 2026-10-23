@@ -1,0 +1,70 @@
+{
+  "id": "act_search_ruins",
+  "name": "Search the ruins",
+  "category": "explore",
+  "description": "Old stones, older stories, and the chance of something left behind.",
+  "minAge": 12,
+  "physical": true,
+  "requires": {
+    "features": ["ruins"]
+  },
+  "gains": {
+    "perception": 0.4,
+    "intellect": 0.3
+  },
+  "tags": ["explore"],
+  "outcomes": [
+    {
+      "id": "old_coins",
+      "text": "Under a fallen arch you found a handful of coins from a kingdom that no longer exists.",
+      "weight": 0.6,
+      "statWeights": {
+        "perception": 0.6
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 300,
+          "max": 3000
+        }
+      ]
+    },
+    {
+      "id": "writing",
+      "text": "You found a stone covered in writing nobody on the island can read.",
+      "weight": 0.3,
+      "requires": {
+        "notFlags": ["rumour.history"]
+      },
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "rumour.history",
+          "by": 1
+        },
+        {
+          "kind": "deed"
+        }
+      ]
+    },
+    {
+      "id": "nothing",
+      "text": "Dust, broken pots, and a very large spider.",
+      "weight": 2,
+      "quiet": true
+    },
+    {
+      "id": "collapse",
+      "text": "A wall gave way as you passed. You were not quick enough.",
+      "weight": 0.4,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "roll",
+          "area": "roll",
+          "cause": "accident"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { advance, Rng } from '../../src/core';
 import { hashValue } from '../../src/engine/canonical';
 import { deserializeSave } from '../../src/engine/saves/manager';
 import { SAVE_VERSION } from '../../src/engine/version';
@@ -79,4 +80,13 @@ describe('golden saves: every old save version must keep loading', () => {
       }
     });
   }
+
+  it('world_v2.opsim, saved before the life loop, carries on living: the player gets a life', async () => {
+    const bytes = new Uint8Array(readFileSync(join(dir, 'world_v2.opsim')));
+    const { state } = await deserializeSave(bytes, { dataHash, limits: LIMITS });
+    const player = state.entities[state.playerId as string];
+    expect(player?.character?.life).toBeUndefined();
+    advance(state, data, Rng.root(state.seed), { kind: 'months', count: 3 }, 'auto-random');
+    expect(player?.character?.life?.health).toBeGreaterThan(0);
+  });
 });

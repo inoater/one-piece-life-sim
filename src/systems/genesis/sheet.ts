@@ -121,6 +121,20 @@ export interface CharacterSheet {
   focus: { id: string; name: string; description: string } | null;
   backstory: string;
   flags: Record<string, FlagValue>;
+  /** The life loop (Phase 2): body, work, reputation, money, deeds. Null before it starts. */
+  life: null | {
+    health: { current: number; max: number };
+    exhausted: boolean;
+    injuries: { name: string; severity: string; heals: string }[];
+    illnesses: { name: string; heals: string }[];
+    job: string | null;
+    married: boolean;
+    gang: string | null;
+    fame: number;
+    infamy: number;
+    debt: number;
+    deeds: { date: string; text: string }[];
+  };
 }
 
 export interface SheetOptions {
@@ -399,6 +413,38 @@ export function characterSheet(
         : null,
     backstory: c.backstory ?? '',
     flags: options.omniscient ? { ...entity.flags } : {},
+    life: lifeSection(data, entity, tick),
+  };
+}
+
+function lifeSection(data: GameData, entity: Entity, tick: number): CharacterSheet['life'] {
+  const life = entity.character?.life;
+  if (!life) return null;
+  const label = (t: number) => formatDate(dateOf(data.calendar, t));
+  const job = life.job ? data.jobs[life.job.id] : undefined;
+  const title = job?.ranks ? entity.flags[job.ranks.flag] : undefined;
+  const totals: Record<string, number> = {};
+  for (const [id, stat] of Object.entries(entity.stats)) totals[id] = statValue(stat, tick);
+  const maxDef = data.character.derived.find((d) => d.id === 'maxHealth');
+  return {
+    health: {
+      current: Math.round(life.health),
+      max: maxDef ? derive(maxDef, totals).value : Math.round(life.health),
+    },
+    exhausted: life.exhausted,
+    injuries: life.injuries
+      .filter((i) => i.healTick > tick)
+      .map((i) => ({ name: i.name, severity: i.severity, heals: label(i.healTick) })),
+    illnesses: life.illnesses
+      .filter((i) => i.healTick > tick)
+      .map((i) => ({ name: i.name, heals: label(i.healTick) })),
+    job: job ? `${job.name}${typeof title === 'string' ? ` (${title})` : ''}` : null,
+    married: entity.flags['married'] === true,
+    gang: life.gang,
+    fame: Math.round(totals['fame'] ?? 0),
+    infamy: Math.round(totals['infamy'] ?? 0),
+    debt: life.debt,
+    deeds: life.deeds.map((d) => ({ date: label(d.tick), text: d.text })),
   };
 }
 
@@ -413,12 +459,22 @@ export function playerSummary(
   stage: string;
   location: string;
   berries: number;
+  alive: boolean;
 } {
   if (!state.playerId) return null;
   const entity = state.entities[state.playerId];
   if (!entity) return null;
   const c = entity.character;
-  if (!c) return { id: entity.id, name: entity.name, age: 0, stage: '', location: '', berries: 0 };
+  if (!c)
+    return {
+      id: entity.id,
+      name: entity.name,
+      age: 0,
+      stage: '',
+      location: '',
+      berries: 0,
+      alive: true,
+    };
   const race = data.races[c.race];
   const age = Math.max(0, ageAt(c.birthTick, state.tick));
   return {
@@ -428,5 +484,6 @@ export function playerSummary(
     stage: race ? stageAt(data.character, race, age).stage.name : '',
     location: data.birthplaces[c.birthplace]?.shortName ?? c.birthplace,
     berries: c.berries,
+    alive: c.alive,
   };
 }

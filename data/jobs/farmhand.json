@@ -1,0 +1,75 @@
+{
+  "id": "job_farmhand",
+  "name": "Farmhand",
+  "description": "Digging, planting, hauling and harvest on someone else's land.",
+  "minAge": 10,
+  "requires": {
+    "anyFeatures": ["farmland", "jungle"]
+  },
+  "requirementText": "Farmland nearby",
+  "income": {
+    "min": 600,
+    "max": 1200
+  },
+  "gains": {
+    "strength": 0.4,
+    "endurance": 0.2
+  },
+  "risk": {
+    "injury": 0.015,
+    "cause": "accident",
+    "areas": {
+      "arms": 1,
+      "legs": 1
+    }
+  },
+  "outcomes": [
+    {
+      "id": "harvest",
+      "text": "You brought in the harvest with the rest of them, and ate well at the end of it.",
+      "weight": 2,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "endurance": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "mule",
+      "text": "A mule kicked you halfway across the yard. Everyone laughed except you.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "minor",
+          "area": "legs",
+          "cause": "accident"
+        }
+      ]
+    },
+    {
+      "id": "dull",
+      "text": "Weeding, digging, hauling water. Your back has opinions about farming.",
+      "weight": 3,
+      "quiet": true
+    },
+    {
+      "id": "bonus",
+      "text": "The farmer pressed a few extra Berries into your hand for a hard month.",
+      "statWeights": {
+        "endurance": 0.5
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 100,
+          "max": 300
+        }
+      ]
+    }
+  ],
+  "tags": ["farm", "work"]
+}

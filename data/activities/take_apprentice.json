@@ -1,0 +1,53 @@
+{
+  "id": "act_take_apprentice",
+  "name": "Take on an apprentice",
+  "category": "social",
+  "description": "Passing on what you know before you forget it.",
+  "minAge": 45,
+  "gains": {
+    "charisma": 0.3,
+    "intellect": 0.2
+  },
+  "tags": ["relationship", "mentoring"],
+  "outcomes": [
+    {
+      "id": "new_apprentice",
+      "text": "{other}, a youngster with more nerve than sense, asked to learn from you. You said yes.",
+      "requires": {
+        "noRelation": "protege"
+      },
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "protege",
+          "opinion": 40,
+          "ageOffset": {
+            "min": -45,
+            "max": -25
+          }
+        }
+      ]
+    },
+    {
+      "id": "teaching",
+      "text": "You spent the month teaching {protege}, who is better than you were at that age.",
+      "weight": 1.5,
+      "requires": {
+        "relation": "protege"
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "protege",
+          "value": 8
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "no_takers",
+      "text": "Nobody came. Young people want to learn from someone younger.",
+      "weight": 0.5
+    }
+  ]
+}

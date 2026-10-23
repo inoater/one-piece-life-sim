@@ -1,4 +1,5 @@
 import type {
+  Activity,
   Appearance,
   BackstoryEvent,
   Birthplace,
@@ -7,7 +8,12 @@ import type {
   Effect,
   EventDef,
   Focus,
+  Job,
   Legacy,
+  LifeEffect,
+  LifeRules,
+  Requires,
+  Risk,
   Occupation,
   Race,
   Trait,
@@ -36,7 +42,10 @@ export type RefTarget =
   | 'canonModes'
   | 'stages'
   | 'heightClasses'
-  | 'appearanceKeys';
+  | 'appearanceKeys'
+  | 'severities'
+  | 'illnesses'
+  | 'seasons';
 
 export interface Ref {
   /** Where the reference was written: the field path inside the file. */
@@ -64,6 +73,11 @@ export const TARGET_LABEL: Record<RefTarget, string> = {
   stages: 'life stage',
   heightClasses: 'height class',
   appearanceKeys: 'appearance option',
+  activities: 'activity',
+  jobs: 'job',
+  severities: 'injury severity',
+  illnesses: 'illness',
+  seasons: 'season',
 };
 
 /** Where an author fixes a missing id of this kind. */
@@ -85,6 +99,11 @@ export const TARGET_HOME: Record<RefTarget, string> = {
   stages: 'data/character.json (stages)',
   heightClasses: 'data/appearance.json (the height field)',
   appearanceKeys: 'data/appearance.json ("field.option" or "tag:name")',
+  activities: 'data/activities/',
+  jobs: 'data/jobs/',
+  severities: 'data/life.json (injuries.severities)',
+  illnesses: 'data/life.json (illnesses)',
+  seasons: 'data/calendar.json (seasons)',
 };
 
 const each = (target: RefTarget, ids: readonly string[], field: string): Ref[] =>
@@ -96,14 +115,72 @@ const keys = (target: RefTarget, record: Readonly<Record<string, unknown>>, fiel
 const one = (target: RefTarget, id: string | undefined, field: string): Ref[] =>
   id === undefined ? [] : [{ field, target, id }];
 
-function effectRefs(effects: readonly Effect[], base: string): Ref[] {
+function effectRefs(effects: readonly (Effect | LifeEffect)[], base: string): Ref[] {
   const refs: Ref[] = [];
   effects.forEach((effect, i) => {
-    if (effect.kind === 'schedule') {
-      refs.push({ field: `${base}[${i}].eventId`, target: 'events', id: effect.eventId });
+    const at = `${base}[${i}]`;
+    switch (effect.kind) {
+      case 'schedule':
+        refs.push({ field: `${at}.eventId`, target: 'events', id: effect.eventId });
+        break;
+      case 'trait':
+        refs.push({ field: `${at}.trait`, target: 'traits', id: effect.trait });
+        break;
+      case 'injury':
+        if (effect.severity !== 'roll')
+          refs.push({ field: `${at}.severity`, target: 'severities', id: effect.severity });
+        break;
+      case 'illness':
+        refs.push({ field: `${at}.illness`, target: 'illnesses', id: effect.illness });
+        break;
+      case 'relationship':
+        refs.push(...one('occupations', effect.occupation, `${at}.occupation`));
+        break;
     }
   });
   return refs;
+}
+
+function requiresRefs(req: Requires, base: string): Ref[] {
+  const refs: Ref[] = [
+    ...each('races', req.races, `${base}.races`),
+    ...each('races', req.notRaces, `${base}.notRaces`),
+    ...each('traits', req.anyTraits, `${base}.anyTraits`),
+    ...each('traits', req.notTraits, `${base}.notTraits`),
+  ];
+  req.anyOf.forEach((alt, i) => {
+    refs.push(
+      ...each('races', alt.races, `${base}.anyOf[${i}].races`),
+      ...each('races', alt.notRaces, `${base}.anyOf[${i}].notRaces`),
+      ...each('traits', alt.anyTraits, `${base}.anyOf[${i}].anyTraits`),
+      ...each('traits', alt.notTraits, `${base}.anyOf[${i}].notTraits`),
+    );
+  });
+  return refs;
+}
+
+function riskRefs(risk: Risk, base: string): Ref[] {
+  return keys('severities', risk.severities, `${base}.severities`);
+}
+
+function outcomeRefs(outcomes: Activity['outcomes'], base: string): Ref[] {
+  return outcomes.flatMap((o, i) => effectRefs(o.effects, `${base}[${i}].effects`));
+}
+
+function activityRefs(act: Activity): Ref[] {
+  return [
+    ...requiresRefs(act.requires, 'requires'),
+    ...riskRefs(act.risk, 'risk'),
+    ...outcomeRefs(act.outcomes, 'outcomes'),
+  ];
+}
+
+function jobRefs(job: Job): Ref[] {
+  return [
+    ...requiresRefs(job.requires, 'requires'),
+    ...riskRefs(job.risk, 'risk'),
+    ...outcomeRefs(job.outcomes, 'outcomes'),
+  ];
 }
 
 export function eventRefs(event: EventDef): Ref[] {
@@ -205,7 +282,26 @@ export const REF_EXTRACTORS: Partial<Record<CollectionKind, (item: never) => Ref
   occupations: occupationRefs as (item: never) => Ref[],
   foci: focusRefs as (item: never) => Ref[],
   backstory: backstoryRefs as (item: never) => Ref[],
+  activities: activityRefs as (item: never) => Ref[],
+  jobs: jobRefs as (item: never) => Ref[],
 };
+
+export function lifeRefs(life: LifeRules): Ref[] {
+  const refs: Ref[] = [
+    { field: 'money.collector.eventId', target: 'events', id: life.money.collector.eventId },
+    ...keys('traits', life.mortality.traits, 'mortality.traits'),
+    ...keys('stages', life.slots, 'slots'),
+  ];
+  life.injuries.areas.forEach((area, i) => {
+    refs.push({ field: `injuries.areas[${i}].scarTrait`, target: 'traits', id: area.scarTrait });
+    refs.push(...one('traits', area.lossTrait, `injuries.areas[${i}].lossTrait`));
+  });
+  life.illnesses.forEach((illness, i) => {
+    refs.push(...keys('seasons', illness.seasons, `illnesses[${i}].seasons`));
+    refs.push(...keys('stages', illness.stages, `illnesses[${i}].stages`));
+  });
+  return refs;
+}
 
 export function creationRefs(creation: Creation): Ref[] {
   return [
@@ -233,9 +329,16 @@ export function singletonTargets(singletons: {
   creation?: Creation;
   appearance?: Appearance;
   stageIds?: readonly string[];
+  life?: LifeRules;
+  seasonIds?: readonly string[];
 }): Partial<Record<RefTarget, Set<string>>> {
   const out: Partial<Record<RefTarget, Set<string>>> = {};
-  const { creation, appearance } = singletons;
+  const { creation, appearance, life } = singletons;
+  if (life) {
+    out.severities = new Set(life.injuries.severities.map((s) => s.id));
+    out.illnesses = new Set(life.illnesses.map((i) => i.id));
+  }
+  if (singletons.seasonIds) out.seasons = new Set(singletons.seasonIds);
   if (creation) {
     out.wealthTiers = new Set(creation.wealthTiers.map((t) => t.id));
     out.difficulties = new Set(creation.difficulties.map((d) => d.id));

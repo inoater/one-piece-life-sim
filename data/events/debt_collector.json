@@ -1,0 +1,72 @@
+{
+  "id": "evt_debt_collector",
+  "type": "personal",
+  "title": "The collector calls",
+  "text": "Two of the loan shark's people are waiting outside your door. They are polite about it, which is worse.",
+  "choices": [
+    {
+      "id": "work_off",
+      "label": "Work it off",
+      "text": "A month of unpaid labour on their boats.",
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 1500,
+          "max": 3000
+        },
+        {
+          "kind": "train",
+          "stats": {
+            "strength": 0.3,
+            "endurance": 0.3
+          }
+        },
+        {
+          "kind": "log",
+          "text": "You spent a month hauling for the loan shark's boats, and they knocked a little off what you owe.",
+          "tags": ["personal", "money"]
+        }
+      ]
+    },
+    {
+      "id": "plead",
+      "label": "Plead for time",
+      "text": "They will be back sooner.",
+      "effects": [
+        {
+          "kind": "log",
+          "text": "They gave you two months. They were very clear about the two months.",
+          "tags": ["personal", "money"]
+        },
+        {
+          "kind": "schedule",
+          "eventId": "evt_debt_collector",
+          "afterMonths": 2
+        }
+      ]
+    },
+    {
+      "id": "refuse",
+      "label": "Refuse",
+      "text": "It will hurt.",
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "serious",
+          "area": "roll",
+          "cause": "violence"
+        },
+        {
+          "kind": "infamy",
+          "value": 1
+        },
+        {
+          "kind": "log",
+          "text": "You told them where to go. They showed you where they thought you should go instead.",
+          "tags": ["personal", "money", "fight"]
+        }
+      ]
+    }
+  ],
+  "tags": ["money", "personal"]
+}

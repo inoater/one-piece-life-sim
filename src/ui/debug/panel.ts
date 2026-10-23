@@ -3,6 +3,7 @@ import { h, isTypingTarget } from '../dom';
 import type { UiState } from '../store';
 import { createEntitiesTab } from './entities-tab';
 import { createGenesisTab } from './genesis-tab';
+import { createLifeTab } from './life-tab';
 import { createLogTab } from './log-tab';
 import type { DebugTab } from './tab';
 import { createWorldTab } from './world-tab';
@@ -15,6 +16,7 @@ import { createWorldTab } from './world-tab';
  *   Entities  every entity, with each stat's full modifier stack
  *   Log       the event log, filterable by tick, entity, tag, kind and text
  *   Genesis   potential rolled 1,000 times per race against the cap table, as a histogram
+ *   Life      diminishing returns of training, lifespans of headless lives, hurt or end a life
  */
 
 interface TabDef {
@@ -30,6 +32,7 @@ export function mountDebug(root: HTMLElement, app: App): void {
     { id: 'entities', label: 'Entities', tab: createEntitiesTab(app) },
     { id: 'log', label: 'Log', tab: createLogTab(app) },
     { id: 'genesis', label: 'Genesis', tab: createGenesisTab(app) },
+    { id: 'life', label: 'Life', tab: createLifeTab(app) },
   ];
   let active = 0;
 

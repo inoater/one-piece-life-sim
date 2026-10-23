@@ -60,7 +60,7 @@ export function rollOccupation(ctx: GenesisCtx, rng: Rng): Occupation | undefine
 }
 
 /** One or two everyday traits (nature and quirks) for a family member or acquaintance. */
-function npcTraits(data: GameData, rng: Rng): string[] {
+export function npcTraits(data: GameData, rng: Rng): string[] {
   const pool = sortedValues(data.traits).filter(
     (t) => (t.category === 'innate' || t.category === 'quirk') && t.weight > 0,
   );
@@ -124,7 +124,7 @@ export function createNpc(ctx: GenesisCtx, rng: Rng, spec: NpcSpec): Entity {
   return entity;
 }
 
-const RECIPROCAL: Record<RelationKind, RelationKind> = {
+export const RECIPROCAL: Record<RelationKind, RelationKind> = {
   parent: 'child',
   child: 'parent',
   sibling: 'sibling',

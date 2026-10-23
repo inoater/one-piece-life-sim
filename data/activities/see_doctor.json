@@ -1,0 +1,27 @@
+{
+  "id": "act_see_doctor",
+  "name": "See a doctor",
+  "category": "rest",
+  "description": "Berries for skilled hands. Whether it helps depends on the doctor.",
+  "restful": true,
+  "oneOff": true,
+  "doctor": true,
+  "requires": {
+    "features": ["doctor"]
+  },
+  "tags": ["rest", "medicine"],
+  "outcomes": [
+    {
+      "id": "treated",
+      "text": "The doctor knew what they were doing. You will mend faster for it."
+    },
+    {
+      "id": "no_help",
+      "text": "The doctor took your money and shrugged. Nothing to be done but wait."
+    },
+    {
+      "id": "checkup",
+      "text": "The doctor looked you over and found nothing wrong."
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "act_study_charts",
+  "name": "Study sea charts",
+  "category": "train_mind",
+  "description": "Currents, reefs and the shapes of islands you have never seen.",
+  "minAge": 12,
+  "requires": {
+    "anyFeatures": ["docks", "library"]
+  },
+  "gains": {
+    "intellect": 0.7,
+    "perception": 0.2
+  },
+  "tags": ["study", "sea"],
+  "outcomes": [
+    {
+      "id": "currents",
+      "text": "You learned the currents around {home} until you could draw them in your sleep.",
+      "weight": 1.5,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.navigation",
+          "by": 1
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "old_chart",
+      "text": "An old sailor let you copy a chart of the waters beyond the Red Line.",
+      "weight": 0.6,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "skill.navigation",
+          "by": 2
+        },
+        {
+          "kind": "count",
+          "flag": "rumour.sea",
+          "by": 1
+        }
+      ]
+    }
+  ]
+}

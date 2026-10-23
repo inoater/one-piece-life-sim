@@ -32,9 +32,13 @@ export interface UiState {
   route: Route;
   /** The tab shown in the side panel on a wide screen while the route is "feed". */
   sideTab: SideRoute;
-  /** Which lines the chronicle shows. */
-  feedFilter: 'all' | Category;
+  /** Which lines the chronicle shows: a category, or a theme that cuts across them. */
+  feedFilter: FeedFilter;
 }
+
+/** Themes from the plan's life log: relationships, combat and money lines, whatever their category. */
+export const FEED_THEMES = ['relationship', 'combat', 'money'] as const;
+export type FeedFilter = 'all' | Category | (typeof FEED_THEMES)[number];
 
 export class Store<T extends object> {
   private listeners = new Set<(state: T, previous: T) => void>();

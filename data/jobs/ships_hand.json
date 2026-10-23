@@ -1,0 +1,98 @@
+{
+  "id": "job_ships_hand",
+  "name": "Ship's hand",
+  "description": "Rigging, scrubbing and hauling on coastal runs. The first step toward the open sea.",
+  "minAge": 15,
+  "requires": {
+    "features": ["docks"],
+    "anyOf": [
+      {
+        "flags": {
+          "sea_legs": true
+        }
+      },
+      {
+        "stats": {
+          "endurance": 20
+        }
+      }
+    ]
+  },
+  "requirementText": "Docks, and Sea Legs or Endurance 20",
+  "income": {
+    "min": 1500,
+    "max": 2500
+  },
+  "gains": {
+    "endurance": 0.3,
+    "dexterity": 0.3,
+    "speed": 0.1
+  },
+  "grants": {
+    "voyage.access": true
+  },
+  "risk": {
+    "injury": 0.03,
+    "cause": "accident",
+    "areas": {
+      "arms": 1,
+      "legs": 1,
+      "torso": 0.5
+    }
+  },
+  "outcomes": [
+    {
+      "id": "rigging",
+      "text": "You spent the month aloft in the rigging, until the yards felt like solid ground.",
+      "weight": 2,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "dexterity": 0.2
+          }
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "coastal_run",
+      "text": "A run along the coast and back. The captain says you have the makings of a sailor.",
+      "weight": 2,
+      "effects": [
+        {
+          "kind": "fame",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "rope_burn",
+      "text": "A line ran through your hands in a gust and took the skin with it.",
+      "weight": 0.6,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "minor",
+          "area": "arms",
+          "cause": "accident"
+        }
+      ]
+    },
+    {
+      "id": "sea_legs",
+      "text": "The deck stopped fighting you somewhere out past the headland: you have found your sea legs.",
+      "weight": 0.6,
+      "requires": {
+        "notFlags": ["sea_legs"]
+      },
+      "effects": [
+        {
+          "kind": "trait",
+          "trait": "trait_sea_legs"
+        }
+      ]
+    }
+  ],
+  "tags": ["sea", "work"]
+}

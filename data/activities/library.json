@@ -1,0 +1,56 @@
+{
+  "id": "act_library",
+  "name": "Study at the library",
+  "category": "train_mind",
+  "description": "Rows of books and a librarian who watches you like a hawk.",
+  "minAge": 10,
+  "requires": {
+    "features": ["library"]
+  },
+  "teacher": 1.15,
+  "gains": {
+    "intellect": 0.9,
+    "perception": 0.1
+  },
+  "tags": ["study"],
+  "outcomes": [
+    {
+      "id": "history",
+      "text": "You read histories of kingdoms that no longer exist.",
+      "weight": 1.2,
+      "quiet": true
+    },
+    {
+      "id": "librarian",
+      "text": "{other}, the librarian, started setting books aside for you.",
+      "weight": 0.5,
+      "requires": {
+        "noRelation": "mentor"
+      },
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "mentor",
+          "opinion": 30,
+          "ageOffset": {
+            "min": 20,
+            "max": 45
+          },
+          "occupation": "occ_scholar"
+        }
+      ]
+    },
+    {
+      "id": "forbidden",
+      "text": "You found a book with pages cut out of it, about a century nobody talks about.",
+      "weight": 0.3,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "rumour.history",
+          "by": 1
+        }
+      ]
+    }
+  ]
+}

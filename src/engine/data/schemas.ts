@@ -1,7 +1,13 @@
 import { z } from 'zod';
 import { FlagValueSchema, PRONOUNS, SCAR_AREAS } from '../state';
 import { STAT_IDS } from '../stats';
-import { APPEARANCE_VARS, BACKSTORY_VARS, checkTemplate, templateVarsUsed } from '../template';
+import {
+  APPEARANCE_VARS,
+  BACKSTORY_VARS,
+  checkTemplate,
+  LIFE_VARS,
+  templateVarsUsed,
+} from '../template';
 
 /**
  * Schemas for the content files in /data (rule 1: data, not code).
@@ -33,6 +39,8 @@ const templateOf = (known?: readonly string[]) =>
 const template = templateOf();
 /** Backstory text (rendered while a character's past is generated). */
 const backstoryTemplate = templateOf(BACKSTORY_VARS);
+/** Life-loop text: what happened this month, with the people and places involved (Phase 2). */
+const lifeTemplate = templateOf(LIFE_VARS);
 
 /** A lowercase flag name such as "haki.observation". */
 const flagName = z
@@ -182,6 +190,8 @@ export const TRAIT_CATEGORIES = [
   'family',
   'quirk',
   'backstory',
+  /** Left behind by a severe injury once it heals (Phase 2): a scar, a lost eye or limb. */
+  'scar',
 ] as const;
 
 export const TraitSchema = z.strictObject({
@@ -237,6 +247,103 @@ export const ConditionSchema = z.discriminatedUnion('kind', [
 ]);
 export type Condition = z.infer<typeof ConditionSchema>;
 
+/** How a body got hurt. Decides the death-or-collapse roll at Health 0 (data/life.json `collapse`). */
+export const HARM_CAUSES = [
+  'accident',
+  'violence',
+  'illness',
+  'exhaustion',
+  'starvation',
+  'execution',
+] as const;
+
+/** Who an opinion effect touches: one relationship role, or every member of the family. */
+export const OPINION_TARGETS = [
+  'family',
+  'parent',
+  'sibling',
+  'mentor',
+  'friend',
+  'rival',
+  'sweetheart',
+  'protege',
+  'child',
+  'guardian',
+] as const;
+
+/**
+ * What a month of life can do to the player (Phase 2). Shared by activity outcomes, job shifts and
+ * event effects, so a debt collector's beating and a sparring accident use the same machinery.
+ * Severity, area and illness ids are checked against data/life.json.
+ */
+const lifeEffectOptions = [
+  /** Extra training on top of the activity's own, with the usual diminishing returns. */
+  z.strictObject({ kind: z.literal('train'), stats: statNumbers }),
+  /** Money in (or out, with negative numbers). Fills {amount}. */
+  z.strictObject({ kind: z.literal('berries'), min: z.number().int(), max: z.number().int() }),
+  z.strictObject({
+    kind: z.literal('injury'),
+    /** A severity id from life.json, or "roll" to draw one by weight. */
+    severity: z.string().min(1).default('roll'),
+    /** An injury area, or "roll" to draw one by weight. */
+    area: z.union([z.enum(SCAR_AREAS), z.literal('roll')]).default('roll'),
+    cause: z.enum(HARM_CAUSES),
+  }),
+  z.strictObject({ kind: z.literal('illness'), illness: z.string().min(1) }),
+  /** Health up or down by this fraction of Max Health. */
+  z.strictObject({ kind: z.literal('health'), fraction: z.number().min(-1).max(1) }),
+  z.strictObject({ kind: z.literal('trait'), trait: slug('trait') }),
+  z.strictObject({ kind: z.literal('flag'), flag: flagName, value: FlagValueSchema }),
+  /** Adds to a numeric flag (counters such as "haki.seed.observation"). */
+  z.strictObject({ kind: z.literal('count'), flag: flagName, by: z.number() }),
+  z.strictObject({ kind: z.literal('fame'), value: z.number() }),
+  z.strictObject({ kind: z.literal('infamy'), value: z.number() }),
+  /** The player's opinion of someone they know changes. Fills {other} with that person. */
+  z.strictObject({
+    kind: z.literal('opinion'),
+    target: z.enum(OPINION_TARGETS),
+    value: z.number().min(-100).max(100),
+  }),
+  /** Someone new enters the character's life. Fills {other}. */
+  z.strictObject({
+    kind: z.literal('relationship'),
+    role: z.enum(['mentor', 'friend', 'rival', 'sweetheart', 'protege', 'benefactor'] as const),
+    occupation: slug('occ').optional(),
+    opinion: z.number().min(-100).max(100),
+    /** Their age relative to the character's, in years. */
+    ageOffset: intRange(),
+    /** Flags set on the new person ("mentor.legendary": true). */
+    flags: z.record(flagName, FlagValueSchema).default({}),
+  }),
+  /** A breakthrough: one stat's potential rises by min..max percent. */
+  z.strictObject({
+    kind: z.literal('potential'),
+    stat: z.union([statId, z.literal('random')]),
+    min: z.number().min(0),
+    max: z.number().min(0),
+  }),
+  /** Marry the sweetheart. */
+  z.strictObject({ kind: z.literal('marry') }),
+  /** A child is on the way (born after the gestation in life.json). */
+  z.strictObject({ kind: z.literal('conceive') }),
+  /** Join a gang: its name and a few members come with it. */
+  z.strictObject({ kind: z.literal('joinGang'), members: intRange(1) }),
+  /** A notable deed, kept for the life recap. The outcome's own sentence is the deed. */
+  z.strictObject({ kind: z.literal('deed') }),
+  /** Arrested: a fine if it can be paid, otherwise months in a cell (actions locked). */
+  z.strictObject({ kind: z.literal('arrest'), fine: intRange(0), months: intRange(0) }),
+] as const;
+
+export const LifeEffectSchema = z.discriminatedUnion('kind', [
+  ...lifeEffectOptions,
+  z.strictObject({
+    kind: z.literal('schedule'),
+    eventId: slug('evt'),
+    afterMonths: z.number().int().min(1).max(1200),
+  }),
+]);
+export type LifeEffect = z.infer<typeof LifeEffectSchema>;
+
 export const EffectSchema = z.discriminatedUnion('kind', [
   z.strictObject({ kind: z.literal('log'), text: template, tags }),
   z.strictObject({
@@ -250,6 +357,8 @@ export const EffectSchema = z.discriminatedUnion('kind', [
     /** Counted from the month the effect is applied. At least 1, so chains cannot loop in one tick. */
     afterMonths: z.number().int().min(1).max(1200),
   }),
+  // Phase 2: an event or a choice can also change the player's life directly.
+  ...lifeEffectOptions,
 ]);
 export type Effect = z.infer<typeof EffectSchema>;
 
@@ -355,6 +464,29 @@ export const RaceSchema = z.strictObject({
 export type Race = z.infer<typeof RaceSchema>;
 
 export const WEALTH_LEVELS = ['low', 'medium', 'high'] as const;
+
+/** Places and services a home can have. Activities and jobs name the ones they need. */
+export const PLACE_FEATURES = [
+  'coast',
+  'docks',
+  'farmland',
+  'forest',
+  'jungle',
+  'mountains',
+  'cold',
+  'ruins',
+  'school',
+  'library',
+  'doctor',
+  'dojo',
+  'market',
+  'smithy',
+  'shipyard',
+  'marine_base',
+  'underworld',
+  'clouds',
+  'deep_sea',
+] as const;
 export const SAFETY_LEVELS = ['very_low', 'low', 'medium', 'high'] as const;
 
 export const BirthplaceSchema = z.strictObject({
@@ -399,6 +531,8 @@ export const BirthplaceSchema = z.strictObject({
     .optional(),
   /** Flags every character born here starts with ("wano.closed": leaving needs an event chain). */
   flags: z.record(flagName, FlagValueSchema).default({}),
+  /** What there is to do here (Phase 2): activities and jobs that need a coast, a school, a doctor. */
+  features: z.array(z.enum(PLACE_FEATURES)).default([]),
   tags,
 });
 export type Birthplace = z.infer<typeof BirthplaceSchema>;
@@ -1011,6 +1145,566 @@ export const AppearanceSchema = z
 export type Appearance = z.infer<typeof AppearanceSchema>;
 
 // ---------------------------------------------------------------------------------------------
+// The life loop (Phase 2): activities, jobs, and life.json (slots, effort, health, money, death)
+// ---------------------------------------------------------------------------------------------
+
+export const ACTIVITY_CATEGORIES = [
+  'train_body',
+  'train_mind',
+  'train_spirit',
+  'work',
+  'social',
+  'explore',
+  'rest',
+  'crime',
+  'special',
+] as const;
+export type ActivityCategory = (typeof ACTIVITY_CATEGORIES)[number];
+
+const LIVING_ROLES = [
+  'parent',
+  'sibling',
+  'guardian',
+  'mentor',
+  'friend',
+  'rival',
+  'sweetheart',
+  'protege',
+  'child',
+] as const;
+
+const requiresShape = {
+  /** Every one of these must be at the character's home. */
+  features: z.array(z.enum(PLACE_FEATURES)).default([]),
+  /** At least one of these must be at home. */
+  anyFeatures: z.array(z.enum(PLACE_FEATURES)).default([]),
+  races: z.array(slug('race')).default([]),
+  notRaces: z.array(slug('race')).default([]),
+  /** Flags that must hold these values. A number flag passes when it is at least the value. */
+  flags: z.record(flagName, FlagValueSchema).default({}),
+  notFlags: z.array(flagName).default([]),
+  /** At least one of these traits. */
+  anyTraits: z.array(slug('trait')).default([]),
+  notTraits: z.array(slug('trait')).default([]),
+  /** Current stat values (totals, modifiers included) at least these. */
+  stats: statNumbers,
+  combatPower: z.number().min(0).optional(),
+  /** Holding a job (true), or not holding one (false). */
+  employed: z.boolean().optional(),
+  /** A living person of this relationship exists. */
+  relation: z.enum(LIVING_ROLES).optional(),
+  /** No living person of this relationship. */
+  noRelation: z.enum(LIVING_ROLES).optional(),
+  married: z.boolean().optional(),
+  /** Hurt or ill (true), or neither (false). */
+  unwell: z.boolean().optional(),
+  /** Berries in hand at least this. */
+  berries: z.number().optional(),
+} as const;
+
+/** Conditions on the character, their home, body, purse and people. All listed must hold. */
+export const RequiresSchema = z.strictObject({
+  ...requiresShape,
+  /** Alternatives: at least one of these must hold as well ("Sea Legs, or Endurance 20"). */
+  anyOf: z.array(z.strictObject(requiresShape)).default([]),
+});
+export type Requires = z.infer<typeof RequiresSchema>;
+const noRequirements = (): Requires => RequiresSchema.parse({});
+
+/** The chance of getting hurt (or arrested) doing something. Multiplied by the effort's risk. */
+export const RiskSchema = z.strictObject({
+  injury: z.number().min(0).max(1).default(0),
+  cause: z.enum(HARM_CAUSES).default('accident'),
+  /** Area -> weight. Missing areas are never hurt; empty means any area by life.json's weights. */
+  areas: z.partialRecord(z.enum(SCAR_AREAS), z.number().min(0)).default({}),
+  /** Severity id -> weight; empty means life.json's default weights. */
+  severities: multipliers,
+  arrest: z.number().min(0).max(1).default(0),
+  fine: intRange(0).optional(),
+  jailMonths: intRange(0).optional(),
+});
+export type Risk = z.infer<typeof RiskSchema>;
+
+/** Conditions on a single outcome, mostly about who is around to be written into it. */
+const OutcomeRequiresSchema = z.strictObject({
+  parentAlive: z.boolean().optional(),
+  hasSibling: z.boolean().optional(),
+  relation: z.enum(LIVING_ROLES).optional(),
+  noRelation: z.enum(LIVING_ROLES).optional(),
+  married: z.boolean().optional(),
+  /** Real-age bounds in human-equivalent years. */
+  minAge: z.number().int().min(0).optional(),
+  maxAge: z.number().int().min(0).optional(),
+  flags: z.record(flagName, FlagValueSchema).default({}),
+  notFlags: z.array(flagName).default([]),
+  features: z.array(z.enum(PLACE_FEATURES)).default([]),
+});
+
+/** A variable in outcome text and the condition that guarantees it names somebody. */
+const OUTCOME_PERSON_VARS: Record<string, (o: z.infer<typeof OutcomeRequiresSchema>) => boolean> = {
+  parent: (r) => r.parentAlive === true || r.relation === 'parent',
+  sibling: (r) => r.hasSibling === true || r.relation === 'sibling',
+  spouse: (r) => r.married === true,
+  friend: (r) => r.relation === 'friend',
+  mentor: (r) => r.relation === 'mentor',
+  child: (r) => r.relation === 'child',
+  sweetheart: (r) => r.relation === 'sweetheart',
+  protege: (r) => r.relation === 'protege',
+};
+
+export const OutcomeSchema = z
+  .strictObject({
+    id: z.string().regex(/^[a-z0-9_]+$/),
+    /** A full sentence in the second person, past tense: "You won a footrace against the harbor kids." */
+    text: lifeTemplate,
+    weight: z.number().min(0).default(1),
+    /** Stat -> how strongly a high value makes this outcome likelier (negative: less likely). */
+    statWeights: statNumbers,
+    requires: OutcomeRequiresSchema.default({ flags: {}, notFlags: [], features: [] }),
+    effects: z.array(LifeEffectSchema).default([]),
+    /** An everyday outcome: on the month-end card, but not written into the chronicle. */
+    quiet: z.boolean().default(false),
+    tags,
+  })
+  .superRefine((outcome, ctx) => {
+    const used = templateVarsUsed(outcome.text);
+    for (const [name, guaranteed] of Object.entries(OUTCOME_PERSON_VARS)) {
+      if (used.includes(name) && !guaranteed(outcome.requires)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['text'],
+          message: `{${name}} needs a condition that guarantees that person exists (for example "requires": { "relation": "${name === 'spouse' ? 'sweetheart' : name}"${name === 'spouse' ? ', "married": true' : ''} })`,
+        });
+      }
+    }
+    const meets = outcome.effects.filter(
+      (e) => e.kind === 'relationship' || e.kind === 'opinion',
+    ).length;
+    if (used.includes('other') && meets === 0) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['text'],
+        message: '{other} names the person a "relationship" or "opinion" effect involves; add one',
+      });
+    }
+    if (meets > 1) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['effects'],
+        message: 'one relationship or opinion effect per outcome (there is only one {other})',
+      });
+    }
+  });
+export type Outcome = z.infer<typeof OutcomeSchema>;
+
+function uniqueOutcomeIds(
+  outcomes: readonly { id: string }[],
+  ctx: z.RefinementCtx,
+  path: string,
+): void {
+  const seen = new Set<string>();
+  outcomes.forEach((o, i) => {
+    if (seen.has(o.id))
+      ctx.addIssue({
+        code: 'custom',
+        path: [path, i, 'id'],
+        message: `duplicate outcome id "${o.id}"`,
+      });
+    seen.add(o.id);
+  });
+}
+
+export const ActivitySchema = z
+  .strictObject({
+    id: slug('act'),
+    name: nonEmptyText,
+    category: z.enum(ACTIVITY_CATEGORIES),
+    description: nonEmptyText,
+    /** Human-equivalent ages (a giant's real age is converted). */
+    minAge: z.number().int().min(0).default(0),
+    maxAge: z.number().int().min(0).optional(),
+    requires: RequiresSchema.default(noRequirements),
+    /** Done once and then dropped from the routine (seeing a doctor), instead of every month. */
+    oneOff: z.boolean().default(false),
+    /** Happens by itself to those who have no activity slots yet (an infant's first months). */
+    automatic: z.boolean().default(false),
+    /** Rest restores Vigor instead of spending it, and clears exhaustion. */
+    restful: z.boolean().default(false),
+    /** Physical work: locked while on bed rest, in a cell or exhausted past the point of collapse. */
+    physical: z.boolean().default(false),
+    /** Vigor on top of what the effort costs. */
+    extraVigor: z.number().int().min(0).max(3).default(0),
+    /** Base training per month at Normal effort, before stage, potential, traits and teacher. */
+    gains: statNumbers,
+    /** A fixed teacher multiplier (a school is 1.2). */
+    teacher: z.number().min(0.5).max(2).default(1),
+    /** A living mentor multiplies the gains by life.json's mentor value. */
+    usesMentor: z.boolean().default(false),
+    /** Berries it costs each time. */
+    cost: intRange(0).optional(),
+    /** Berries it earns, scaled by the effort's pay. */
+    earn: intRange(0).optional(),
+    /** Pays the wage of the job held (the "Work a shift" activity). */
+    worksJob: z.boolean().default(false),
+    /** Medical care: Berries for a chance to heal faster, set by the local doctor's skill. */
+    doctor: z.boolean().default(false),
+    /** Extra fraction of Max Health recovered this month. */
+    regen: z.number().min(0).max(1).default(0),
+    /** Months taken off every injury's healing time (and an illness's). */
+    speedsHealing: z.number().int().min(0).max(6).default(0),
+    risk: RiskSchema.default(() => RiskSchema.parse({})),
+    fame: z.number().default(0),
+    infamy: z.number().default(0),
+    outcomes: z.array(OutcomeSchema).min(1),
+    tags,
+  })
+  .superRefine((act, ctx) => {
+    uniqueOutcomeIds(act.outcomes, ctx, 'outcomes');
+    if (act.maxAge !== undefined && act.maxAge < act.minAge) {
+      ctx.addIssue({ code: 'custom', path: ['maxAge'], message: 'maxAge is below minAge' });
+    }
+    if (act.worksJob && act.requires.employed !== true) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['requires', 'employed'],
+        message: 'an activity that works a job needs "employed": true in its requirements',
+      });
+    }
+  });
+export type Activity = z.infer<typeof ActivitySchema>;
+
+export const JobSchema = z
+  .strictObject({
+    id: slug('job'),
+    name: nonEmptyText,
+    description: nonEmptyText,
+    /** Human-equivalent age. */
+    minAge: z.number().int().min(0),
+    requires: RequiresSchema.default(noRequirements),
+    /** Shown beside the job: "Strength 20". Written by hand so it reads well. */
+    requirementText: z.string().default(''),
+    /** Berries per month of Normal shifts. */
+    income: intRange(0),
+    /** Training each shift gives on the side. */
+    gains: statNumbers,
+    risk: RiskSchema.default(() => RiskSchema.parse({})),
+    /** Bodily work: impossible on bed rest. A shop counter is not. */
+    physical: z.boolean().default(true),
+    fame: z.number().default(0),
+    infamy: z.number().default(0),
+    /** Flags set while the job is held (and kept: "path.smith" opens the smith's path). */
+    grants: z.record(flagName, FlagValueSchema).default({}),
+    /** A rank track: every `everyMonths` of service, the next title (Marine recruit to Seaman ...). */
+    ranks: z
+      .strictObject({
+        flag: flagName,
+        everyMonths: z.number().int().min(1),
+        titles: z.array(nonEmptyText).min(1),
+      })
+      .optional(),
+    /** What a shift can bring. One is drawn each month the job is worked. */
+    outcomes: z.array(OutcomeSchema).min(1),
+    tags,
+  })
+  .superRefine((job, ctx) => uniqueOutcomeIds(job.outcomes, ctx, 'outcomes'));
+export type Job = z.infer<typeof JobSchema>;
+
+const effortSchema = z.strictObject({
+  name: nonEmptyText,
+  /** Vigor this effort costs per activity. */
+  vigor: z.number().int().min(0).max(5),
+  /** Multiplies training gains. */
+  gain: z.number().min(0),
+  /** Multiplies earnings. */
+  pay: z.number().min(0),
+  /** Multiplies the chance of injury. */
+  risk: z.number().min(0),
+});
+
+const injuryNames = z.strictObject({
+  minor: z.array(nonEmptyText).min(1),
+  serious: z.array(nonEmptyText).min(1),
+  severe: z.array(nonEmptyText).min(1),
+});
+
+export const LifeRulesSchema = z
+  .strictObject({
+    /** Activity slots a month, by life stage id. */
+    slots: z.record(z.string(), z.number().int().min(0).max(6)),
+    /** A number flag that adds slots (set by traits or roles). */
+    extraSlotFlag: flagName,
+    efforts: z.strictObject({ light: effortSchema, normal: effortSchema, hard: effortSchema }),
+    exhaustion: z.strictObject({
+      /** Percentage applied to every stat while exhausted. */
+      statPct: z.number().max(0),
+      /** Chance per month of an injury while exhausted. */
+      injuryChance: z.number().min(0).max(1),
+      /** Exhaustion lifts after a month that spends at most this share of the Vigor pool. */
+      restBelow: z.number().min(0).max(1),
+    }),
+    training: z.strictObject({
+      /** Multiplier with a living mentor, and with a legendary one. */
+      mentor: z.number().min(1),
+      legendaryMentor: z.number().min(1),
+      /** Training at Hard effort while above the soft cap: chance of a breakthrough per stat. */
+      breakthroughChance: z.number().min(0).max(1),
+      /** A breakthrough raises one stat's potential by this many percent. */
+      breakthroughPct: range(0),
+      /** Chance that surviving Health 0 is a breakthrough. */
+      nearDeathBreakthrough: z.number().min(0).max(1),
+    }),
+    health: z.strictObject({
+      /** Share of Max Health recovered a month. */
+      regen: z.number().min(0).max(1),
+      /** Regeneration is multiplied by this while ill or on bed rest. */
+      unwellRegenMult: z.number().min(0).max(1),
+    }),
+    injuries: z.strictObject({
+      severities: z
+        .array(
+          z.strictObject({
+            id: z.enum(['minor', 'serious', 'severe']),
+            name: nonEmptyText,
+            months: z.number().int().min(1),
+            /** Percentage on the hurt area's stats while it heals. */
+            statPct: z.number().max(0),
+            /** Share of Max Health lost when it happens. */
+            damage: z.number().min(0).max(1),
+            /** Physical activities are locked while it heals. */
+            bedRest: z.boolean(),
+            weight: z.number().min(0),
+            /** Chance it leaves a scar trait, and a lost limb or eye, when it heals. */
+            scarChance: z.number().min(0).max(1).default(0),
+            lossChance: z.number().min(0).max(1).default(0),
+          }),
+        )
+        .length(3),
+      areas: z
+        .array(
+          z.strictObject({
+            id: z.enum(SCAR_AREAS),
+            weight: z.number().min(0),
+            /** Stats that suffer while it heals. */
+            stats: z.array(statId).min(1),
+            names: injuryNames,
+            scarTrait: slug('trait'),
+            /** The trait for losing it (an eye, an arm, a leg); none for head and torso. */
+            lossTrait: slug('trait').optional(),
+            /** How the scar is written on the appearance. */
+            scarText: z.array(nonEmptyText).min(1),
+          }),
+        )
+        .length(SCAR_AREAS.length),
+    }),
+    illnesses: z
+      .array(
+        z.strictObject({
+          id: z.string().regex(/^[a-z_]+$/),
+          name: nonEmptyText,
+          months: intRange(1),
+          /** Chance per month of catching it at home (0 for illnesses that need a cause). */
+          chance: z.number().min(0).max(1),
+          /** Season id -> multiplier. */
+          seasons: multipliers,
+          /** Life stage id -> multiplier (the very young and very old catch more). */
+          stages: multipliers,
+          /** Percentage on every physical stat while ill. */
+          statPct: z.number().max(0),
+          /** Share of Max Health lost each month while ill. */
+          damage: z.number().min(0).max(1),
+          /** Only caught at sea (Phase 3). */
+          atSea: z.boolean().default(false),
+        }),
+      )
+      .min(1),
+    epidemic: z.strictObject({
+      /** Chance per month that an epidemic reaches the character's home. */
+      chance: z.number().min(0).max(1),
+      months: intRange(1),
+      illness: z.string().min(1),
+      /** Multiplies that illness's chance while the epidemic lasts. */
+      mult: z.number().min(1),
+      news: z.array(template).min(1),
+    }),
+    /** At Health 0: chance of death (otherwise a collapse), by what caused it. */
+    collapse: z.strictObject({
+      accident: z.number().min(0).max(1),
+      violence: z.number().min(0).max(1),
+      illness: z.number().min(0).max(1),
+      exhaustion: z.number().min(0).max(1),
+      starvation: z.number().min(0).max(1),
+      execution: z.number().min(0).max(1),
+    }),
+    mortality: z.strictObject({
+      /**
+       * The life the table's years belong to. A race whose expected lifespan is three times this
+       * lives through each row three times as slowly: its yearly chance is the table's chance for
+       * a third of a year. Illness is paced the same way.
+       */
+      referenceLifespan: z.number().positive(),
+      /**
+       * Yearly chance of death by age as a share of the race's expected lifespan (the middle of its
+       * range): 1.0 is the expected lifespan. Interpolated between rows.
+       */
+      table: z
+        .array(z.strictObject({ at: z.number().min(0), chance: z.number().min(0).max(1) }))
+        .min(2),
+      /** By the home's safety. */
+      safety: z.strictObject({
+        very_low: z.number().min(0),
+        low: z.number().min(0),
+        medium: z.number().min(0),
+        high: z.number().min(0),
+      }),
+      /** Below this share of Max Health the chance is multiplied. */
+      lowHealth: z.strictObject({ below: z.number().min(0).max(1), mult: z.number().min(1) }),
+      /** Trait -> multiplier (Frail dies younger, Hardy older). */
+      traits: multipliers,
+      /** What the yearly roll says killed them, weighted by the same share of lifespan. */
+      causes: z
+        .array(
+          z.strictObject({
+            id: z.string().regex(/^[a-z_]+$/),
+            /** "old age", written into "died of old age". */
+            label: nonEmptyText,
+            weights: z
+              .array(z.strictObject({ at: z.number().min(0), weight: z.number().min(0) }))
+              .min(1),
+            /** Multiplied by the home's safety multiplier (violence is likelier where it is unsafe). */
+            bySafety: z.boolean().default(false),
+          }),
+        )
+        .min(1),
+    }),
+    money: z.strictObject({
+      /** Monthly cost of living for an adult, by the home's wealth level. */
+      livingCost: z.strictObject({
+        low: z.number().min(0),
+        medium: z.number().min(0),
+        high: z.number().min(0),
+      }),
+      /** Human-equivalent age from which the character pays their own way. */
+      independentAge: z.number().int().min(0),
+      /** Monthly interest on a negative balance, in percent. */
+      interestPct: z.number().min(0),
+      interestFromAge: z.number().int().min(0),
+      /** A collector calls when the debt is beyond this, at most every `everyMonths`. */
+      collector: z.strictObject({
+        above: z.number().min(0),
+        everyMonths: z.number().int().min(1),
+        eventId: slug('evt'),
+      }),
+      /** Loan sizes a loan shark offers. */
+      loans: z.array(z.number().int().min(1)).min(1),
+      loanFromAge: z.number().int().min(0),
+      /** A loan shark lends while the debt stays under this. */
+      maxDebt: z.number().min(0),
+    }),
+    doctor: z.strictObject({
+      /** Berries per visit, by the worst thing being treated. */
+      cost: z.strictObject({
+        none: z.number().int().min(0),
+        minor: z.number().int().min(0),
+        serious: z.number().int().min(0),
+        severe: z.number().int().min(0),
+      }),
+      /** The local doctor's Intellect, by the home's wealth level. */
+      intellect: z.strictObject({ low: z.number(), medium: z.number(), high: z.number() }),
+      /** Months off every injury's healing on success. */
+      months: z.number().int().min(1),
+    }),
+    family: z.strictObject({
+      /** Chance per month of time together, for a married couple, that a child is on the way. */
+      conceiveChance: z.number().min(0).max(1),
+      /** Human-equivalent ages. */
+      fertile: intRange(0),
+      gestationMonths: z.number().int().min(1),
+      maxChildren: z.number().int().min(0),
+    }),
+    fame: z.strictObject({
+      /** Share of fame that passes to an heir as Legacy, in percent. */
+      legacyPct: z.number().min(0).max(100),
+    }),
+    gangNames: z.array(nonEmptyText).min(1),
+    /** Shown on the death screen. */
+    continuation: z
+      .array(
+        z.strictObject({
+          id: z.enum(['heir', 'protege', 'crewmate', 'sibling', 'newborn', 'new']),
+          label: nonEmptyText,
+          description: nonEmptyText,
+        }),
+      )
+      .length(6),
+    epilogue: z.strictObject({ title: nonEmptyText, text: nonEmptyText }),
+    /** Log lines the life loop writes, by occasion. */
+    lines: z.strictObject({
+      birthday: lifeTemplate,
+      stage: lifeTemplate,
+      injured: lifeTemplate,
+      healed: lifeTemplate,
+      scarred: lifeTemplate,
+      lost: lifeTemplate,
+      ill: lifeTemplate,
+      recovered: lifeTemplate,
+      exhausted: lifeTemplate,
+      rested: lifeTemplate,
+      collapse: lifeTemplate,
+      breakthrough: lifeTemplate,
+      livingCost: lifeTemplate,
+      interest: lifeTemplate,
+      broke: lifeTemplate,
+      hired: lifeTemplate,
+      quit: lifeTemplate,
+      promoted: lifeTemplate,
+      jailed: lifeTemplate,
+      released: lifeTemplate,
+      childBorn: lifeTemplate,
+      siblingBorn: lifeTemplate,
+      relativeDied: lifeTemplate,
+      married: lifeTemplate,
+      death: lifeTemplate,
+    }),
+  })
+  .superRefine((rules, ctx) => {
+    const ids = rules.illnesses.map((i) => i.id);
+    if (!ids.includes(rules.epidemic.illness)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['epidemic', 'illness'],
+        message: `unknown illness "${rules.epidemic.illness}" (known: ${ids.join(', ')})`,
+      });
+    }
+    const sev = rules.injuries.severities.map((s) => s.id);
+    if (new Set(sev).size !== 3) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['injuries', 'severities'],
+        message: 'list minor, serious and severe once each',
+      });
+    }
+    const areas = rules.injuries.areas.map((a) => a.id);
+    if (new Set(areas).size !== SCAR_AREAS.length) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['injuries', 'areas'],
+        message: `list each area once: ${SCAR_AREAS.join(', ')}`,
+      });
+    }
+    rules.mortality.table.forEach((row, i) => {
+      const prev = rules.mortality.table[i - 1];
+      if (prev && row.at <= prev.at) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['mortality', 'table', i, 'at'],
+          message: 'rows must be in increasing order of "at"',
+        });
+      }
+    });
+  });
+export type LifeRules = z.infer<typeof LifeRulesSchema>;
+
+// ---------------------------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------------------------
 
@@ -1027,6 +1721,8 @@ export const COLLECTIONS = {
   names: { schema: NamePoolSchema, prefix: 'names', label: 'name pool' },
   foci: { schema: FocusSchema, prefix: 'focus', label: 'backstory focus' },
   backstory: { schema: BackstoryEventSchema, prefix: 'bs', label: 'backstory event' },
+  activities: { schema: ActivitySchema, prefix: 'act', label: 'activity' },
+  jobs: { schema: JobSchema, prefix: 'job', label: 'job' },
 } as const;
 export type CollectionKind = keyof typeof COLLECTIONS;
 export const COLLECTION_KINDS = Object.keys(COLLECTIONS) as CollectionKind[];
@@ -1038,6 +1734,7 @@ export const SINGLETONS = {
   'data/character.json': { key: 'character', schema: CharacterRulesSchema },
   'data/creation.json': { key: 'creation', schema: CreationSchema },
   'data/appearance.json': { key: 'appearance', schema: AppearanceSchema },
+  'data/life.json': { key: 'life', schema: LifeRulesSchema },
 } as const;
 export type SingletonPath = keyof typeof SINGLETONS;
 
@@ -1050,6 +1747,7 @@ export interface GameData {
   character: CharacterRules;
   creation: Creation;
   appearance: Appearance;
+  life: LifeRules;
   traits: Readonly<Record<string, Trait>>;
   weapons: Readonly<Record<string, Weapon>>;
   locations: Readonly<Record<string, Location>>;
@@ -1061,4 +1759,6 @@ export interface GameData {
   names: Readonly<Record<string, NamePool>>;
   foci: Readonly<Record<string, Focus>>;
   backstory: Readonly<Record<string, BackstoryEvent>>;
+  activities: Readonly<Record<string, Activity>>;
+  jobs: Readonly<Record<string, Job>>;
 }

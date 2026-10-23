@@ -1,0 +1,38 @@
+{
+  "id": "act_electro",
+  "name": "Practise Electro",
+  "category": "special",
+  "description": "Calling up the lightning in your fur, the way every Mink learns to.",
+  "minAge": 8,
+  "physical": true,
+  "requires": {
+    "flags": {
+      "unlock.electro": true
+    }
+  },
+  "gains": {
+    "speed": 0.5,
+    "dexterity": 0.3,
+    "willpower": 0.2
+  },
+  "tags": ["fight", "training"],
+  "outcomes": [
+    {
+      "id": "spark",
+      "text": "You lit a lamp with a fingertip. Your whole family cheered."
+    },
+    {
+      "id": "shock",
+      "text": "You shocked yourself so badly your fur stood up for a week.",
+      "weight": 0.6,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.2
+          }
+        }
+      ]
+    }
+  ]
+}

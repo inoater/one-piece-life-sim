@@ -11,7 +11,9 @@ import type { WorldState } from '../../src/engine/state';
  * determinism by accident (find out why; do not just update the file).
  *
  * Since Phase 1 it starts with character genesis (a fixed New Life: race, birthplace, family,
- * 30 years of backstory), so a change to how characters are made shows up here too.
+ * 30 years of backstory), so a change to how characters are made shows up here too. Since Phase 2
+ * the character lives: a job, a routine of three activities at mixed effort, and the months of
+ * training, outcomes, injuries, money and aging that follow.
  */
 
 export const GOLDEN_SEED = 'golden-v1';
@@ -38,6 +40,15 @@ export function playGoldenSession(data: GameData): WorldState {
     advance(state, data, rng, { kind: 'months', count: months }, policy);
 
   act({ type: 'debug/spawnTestEntity' });
+  act({ type: 'life/job', jobId: 'job_fisher' });
+  act({
+    type: 'life/routine',
+    routine: [
+      { activity: 'act_work_shift', effort: 'normal' },
+      { activity: 'act_spar', effort: 'hard' },
+      { activity: 'act_read', effort: 'light' },
+    ],
+  });
   run(12);
   act({ type: 'debug/forceEvent', eventId: 'evt_test_notice' });
   act({ type: 'debug/forceEvent', eventId: 'evt_test_crossroads' });

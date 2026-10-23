@@ -48,6 +48,17 @@ loads with a warning: the same seed on different data is a different world.
 Imports are untrusted input: the file size and the decompressed size are both capped (a tiny file that
 expands to gigabytes is rejected mid-stream), and unknown fields in the state are errors.
 
+## Version history
+
+| Version | Phase | What changed                                                                     |
+| ------- | ----- | -------------------------------------------------------------------------------- |
+| 1       | 0     | The first format                                                                 |
+| 2       | 1     | `state.config` (canon mode, difficulty); `character` on entities                 |
+| 3       | 2     | `character.life` (health, injuries, routine, job, debt, deeds); no data is moved |
+
+A version 2 world gains its life block the first month it is played (full Health, an empty
+routine): `world_v2.opsim` is loaded and lived for three months in `tests/engine/golden.test.ts`.
+
 ## Changing the saved shape
 
 1. Change `src/engine/state.ts` (or the envelope).

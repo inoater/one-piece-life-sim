@@ -74,6 +74,10 @@ export function describeAdvance(
       return moved === 0 ? `Already at the present (Year ${presentYear}).` : reachedPresent;
     case 'cancelled':
       return `Cancelled after ${plural(moved, 'month')}.`;
+    case 'ended':
+      return moved === 0
+        ? 'This life has ended. Choose who to continue as.'
+        : `This life ended after ${plural(moved, 'month')}.`;
   }
 }
 

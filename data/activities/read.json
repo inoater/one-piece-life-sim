@@ -1,0 +1,44 @@
+{
+  "id": "act_read",
+  "name": "Read",
+  "category": "train_mind",
+  "description": "Whatever books you can find, borrow or keep.",
+  "minAge": 7,
+  "gains": {
+    "intellect": 0.6,
+    "perception": 0.1
+  },
+  "tags": ["study"],
+  "outcomes": [
+    {
+      "id": "twice",
+      "text": "You read every book in the house, twice.",
+      "weight": 1.2,
+      "quiet": true
+    },
+    {
+      "id": "grand_line",
+      "text": "A book about the Grand Line kept you up for a week of nights.",
+      "weight": 0.8,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "rumour.sea",
+          "by": 1
+        }
+      ]
+    },
+    {
+      "id": "hard_book",
+      "text": "You fought your way through a book far too hard for you, and understood a third of it.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.2
+          }
+        }
+      ]
+    }
+  ]
+}

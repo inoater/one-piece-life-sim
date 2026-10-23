@@ -1,0 +1,79 @@
+{
+  "id": "job_dockworker",
+  "name": "Dockworker",
+  "description": "Loading and unloading ships, and hearing every rumour that sails in.",
+  "minAge": 14,
+  "requires": {
+    "features": ["docks"],
+    "stats": {
+      "strength": 20
+    }
+  },
+  "requirementText": "Docks, Strength 20",
+  "income": {
+    "min": 1200,
+    "max": 2200
+  },
+  "gains": {
+    "strength": 0.5,
+    "endurance": 0.2
+  },
+  "risk": {
+    "injury": 0.03,
+    "cause": "accident",
+    "areas": {
+      "arms": 1,
+      "legs": 1,
+      "torso": 1
+    }
+  },
+  "outcomes": [
+    {
+      "id": "contact",
+      "text": "{other}, a sailor waiting on a cargo, started buying you drinks after your shifts.",
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "friend",
+          "occupation": "occ_sailor",
+          "opinion": 35,
+          "ageOffset": {
+            "min": 3,
+            "max": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "crate",
+      "text": "A crate swung loose from the crane and missed your head by a hand's width.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "perception": 0.3,
+            "willpower": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "steady",
+      "text": "Ship in, ship out. The work is hard and the pay comes on time.",
+      "weight": 3,
+      "quiet": true
+    },
+    {
+      "id": "rumours",
+      "text": "Sailors on the docks talk about the Grand Line as if it were a place you could simply go.",
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "rumour.sea",
+          "by": 1
+        }
+      ]
+    }
+  ],
+  "tags": ["docks", "work"]
+}

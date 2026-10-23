@@ -1,0 +1,63 @@
+{
+  "id": "act_seek_mentor",
+  "name": "Look for a teacher",
+  "category": "social",
+  "description": "Asking the best people on the island to take you on.",
+  "minAge": 10,
+  "requires": {
+    "noRelation": "mentor"
+  },
+  "gains": {
+    "charisma": 0.2
+  },
+  "tags": ["relationship", "mentoring"],
+  "outcomes": [
+    {
+      "id": "found",
+      "text": "{other} agreed to teach you, after making you ask three times.",
+      "statWeights": {
+        "charisma": 0.4,
+        "willpower": 0.4
+      },
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "mentor",
+          "opinion": 30,
+          "ageOffset": {
+            "min": 15,
+            "max": 40
+          }
+        }
+      ]
+    },
+    {
+      "id": "legend",
+      "text": "An old wanderer called {other} watched you train for a week, then said they would teach you, for a while.",
+      "weight": 0.06,
+      "statWeights": {
+        "willpower": 0.5
+      },
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "mentor",
+          "opinion": 35,
+          "ageOffset": {
+            "min": 30,
+            "max": 55
+          },
+          "flags": {
+            "mentor.legendary": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "refused",
+      "text": "Nobody worth learning from will take you on yet.",
+      "weight": 1.2,
+      "quiet": true
+    }
+  ]
+}

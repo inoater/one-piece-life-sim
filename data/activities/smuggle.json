@@ -1,0 +1,70 @@
+{
+  "id": "act_smuggle",
+  "name": "Smuggle",
+  "category": "crime",
+  "description": "Untaxed goods in, questions out.",
+  "minAge": 15,
+  "physical": true,
+  "requires": {
+    "features": ["docks"]
+  },
+  "earn": {
+    "min": 1000,
+    "max": 5000
+  },
+  "infamy": 2,
+  "gains": {
+    "perception": 0.3,
+    "charisma": 0.2
+  },
+  "risk": {
+    "injury": 0.02,
+    "cause": "violence",
+    "arrest": 0.08,
+    "fine": {
+      "min": 2000,
+      "max": 10000
+    },
+    "jailMonths": {
+      "min": 3,
+      "max": 12
+    }
+  },
+  "tags": ["crime", "sea"],
+  "outcomes": [
+    {
+      "id": "run",
+      "text": "A night run with a hold full of untaxed rum. Nobody saw a thing.",
+      "weight": 1.5,
+      "statWeights": {
+        "perception": 0.4
+      }
+    },
+    {
+      "id": "double_cross",
+      "text": "Your buyer tried to cheat you. It got ugly.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "roll",
+          "area": "roll",
+          "cause": "violence"
+        }
+      ]
+    },
+    {
+      "id": "patrol",
+      "text": "A Marine patrol boat passed close enough to hear you breathing.",
+      "weight": 0.8,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.3
+          }
+        }
+      ]
+    }
+  ]
+}

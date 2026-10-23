@@ -1,0 +1,39 @@
+{
+  "id": "act_marksmanship",
+  "name": "Shooting practice",
+  "category": "train_body",
+  "description": "Bottles on a fence, then smaller bottles.",
+  "minAge": 14,
+  "physical": true,
+  "cost": {
+    "min": 60,
+    "max": 150
+  },
+  "gains": {
+    "dexterity": 0.7,
+    "perception": 0.4
+  },
+  "tags": ["training"],
+  "outcomes": [
+    {
+      "id": "bottles",
+      "text": "You shot every bottle off the fence, eventually.",
+      "weight": 1.5,
+      "quiet": true
+    },
+    {
+      "id": "bullseye",
+      "text": "Three shots, one hole. Even you did not believe it.",
+      "weight": 0.5,
+      "statWeights": {
+        "dexterity": 0.6,
+        "perception": 0.6
+      }
+    },
+    {
+      "id": "powder",
+      "text": "Bad powder: the shot went nowhere and your ears rang for a day.",
+      "weight": 0.5
+    }
+  ]
+}

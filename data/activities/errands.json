@@ -1,0 +1,59 @@
+{
+  "id": "act_errands",
+  "name": "Run errands",
+  "category": "work",
+  "description": "Messages, parcels and shopping for the neighbours, a few coins at a time.",
+  "minAge": 8,
+  "maxAge": 15,
+  "earn": {
+    "min": 100,
+    "max": 350
+  },
+  "gains": {
+    "charisma": 0.15,
+    "speed": 0.15
+  },
+  "tags": ["work"],
+  "outcomes": [
+    {
+      "id": "messages",
+      "text": "You carried messages up and down {home} and knew everyone's business by the end of it.",
+      "weight": 1.5,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "perception": 0.1
+          }
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "tip",
+      "text": "A merchant tipped you well for a parcel delivered fast.",
+      "statWeights": {
+        "speed": 0.5
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 50,
+          "max": 200
+        }
+      ]
+    },
+    {
+      "id": "dropped",
+      "text": "You dropped a basket of eggs and paid for them out of your own pocket.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "berries",
+          "min": -80,
+          "max": -30
+        }
+      ]
+    }
+  ]
+}

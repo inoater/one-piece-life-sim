@@ -2,9 +2,28 @@ import { z } from 'zod';
 import type { GameData } from '../engine/data/schemas';
 import { appendLog } from '../engine/log';
 import type { SideEffect, TickContext, TickStep } from '../engine/pipeline';
-import { FlagValueSchema, type QueuedAction, type WorldState } from '../engine/state';
+import {
+  EFFORTS,
+  FlagValueSchema,
+  SCAR_AREAS,
+  SEVERITIES,
+  type QueuedAction,
+  type WorldState,
+} from '../engine/state';
 import { addDebugModifier, spawnTestEntity } from './devtools';
 import { resolveDecision, scheduleEvent } from './events';
+import { livePlayerRoutine } from './life';
+import {
+  carryOn,
+  chooseJob,
+  debugInjure,
+  debugKill,
+  enterOpenEnded,
+  payDebt,
+  setRoutine,
+  takeLoan,
+} from './life/commands';
+import { CONTINUE_MODES } from './life/death';
 
 /**
  * Actions: the only way the UI changes the world (rule 7: it reads state and sends actions).
@@ -42,6 +61,31 @@ export const ActionSchema = z.discriminatedUnion('type', [
     source: z.string().max(60).optional(),
   }),
   z.strictObject({ type: z.literal('debug/setOpenEnded'), value: z.boolean() }),
+  // ---- The life loop (Phase 2)
+  z.strictObject({
+    type: z.literal('life/routine'),
+    routine: z
+      .array(z.strictObject({ activity: z.string().min(1), effort: z.enum(EFFORTS) }))
+      .max(6),
+  }),
+  z.strictObject({ type: z.literal('life/job'), jobId: z.string().min(1).nullable() }),
+  z.strictObject({ type: z.literal('life/borrow'), amount: z.number().int().min(1) }),
+  z.strictObject({ type: z.literal('life/repay'), amount: z.number().int().min(1) }),
+  z.strictObject({
+    type: z.literal('life/continue'),
+    mode: z.enum(CONTINUE_MODES),
+    targetId: z.string().min(1).optional(),
+  }),
+  z.strictObject({ type: z.literal('life/openEnded') }),
+  z.strictObject({
+    type: z.literal('debug/injure'),
+    severity: z.enum(SEVERITIES),
+    area: z.union([z.enum(SCAR_AREAS), z.literal('roll')]).default('roll'),
+  }),
+  z.strictObject({
+    type: z.literal('debug/kill'),
+    cause: z.string().min(1).max(80).default('a debug command'),
+  }),
 ]);
 export type Action = z.infer<typeof ActionSchema>;
 
@@ -119,6 +163,24 @@ export function applyAction(
       }
       break;
 
+    case 'life/routine':
+    case 'life/job':
+    case 'life/borrow':
+    case 'life/repay':
+    case 'life/continue':
+    case 'life/openEnded':
+    case 'debug/injure':
+    case 'debug/kill':
+      try {
+        applyLifeAction(state, data, action);
+      } catch (error) {
+        if (error instanceof ActionError) throw error;
+        throw new ActionError(error instanceof Error ? error.message : String(error));
+      }
+      // A plan, a job, a loan: what the player decided survives closing the tab, like a decision.
+      if (action.type.startsWith('life/')) effects.push({ kind: 'autosave' });
+      break;
+
     case 'debug/setOpenEnded':
       state.openEnded = action.value;
       appendLog(state, state.tick, {
@@ -132,20 +194,71 @@ export function applyAction(
   return { effects };
 }
 
+type LifeAction = Extract<
+  Action,
+  {
+    type:
+      | 'life/routine'
+      | 'life/job'
+      | 'life/borrow'
+      | 'life/repay'
+      | 'life/continue'
+      | 'life/openEnded'
+      | 'debug/injure'
+      | 'debug/kill';
+  }
+>;
+
+function applyLifeAction(state: WorldState, data: GameData, action: LifeAction): void {
+  switch (action.type) {
+    case 'life/routine':
+      setRoutine(state, data, action.routine);
+      break;
+    case 'life/job':
+      chooseJob(state, data, action.jobId);
+      break;
+    case 'life/borrow':
+      takeLoan(state, data, action.amount);
+      break;
+    case 'life/repay':
+      payDebt(state, data, action.amount);
+      break;
+    case 'life/continue':
+      carryOn(state, data, action.mode, action.targetId);
+      break;
+    case 'life/openEnded':
+      enterOpenEnded(state, data);
+      break;
+    case 'debug/injure':
+      debugInjure(state, data, action.severity, action.area);
+      break;
+    case 'debug/kill':
+      debugKill(state, data, action.cause);
+      break;
+  }
+}
+
 export type QueuedActionHandler = (
   state: WorldState,
   ctx: TickContext,
   action: QueuedAction,
 ) => void;
 
-/** Step 1: resolve the player's chosen actions, in the order they were queued. */
+/**
+ * Step 1: resolve the player's chosen actions: one-off queued actions in the order they were
+ * queued, then the month's routine (`routine`, the life loop's activities since Phase 2).
+ */
 export function createResolveActionsStep(
   handlers: Readonly<Record<string, QueuedActionHandler>>,
+  routine?: (state: WorldState, ctx: TickContext) => void,
 ): TickStep {
   return {
     id: 'resolveActions',
     run(state, ctx) {
-      if (state.queue.length === 0) return;
+      if (state.queue.length === 0) {
+        routine?.(state, ctx);
+        return;
+      }
       const queued = state.queue;
       state.queue = [];
       for (const action of queued) {
@@ -161,8 +274,9 @@ export function createResolveActionsStep(
         }
         handler(state, ctx, action);
       }
+      routine?.(state, ctx);
     },
   };
 }
 
-export const resolveActions = createResolveActionsStep({});
+export const resolveActions = createResolveActionsStep({}, livePlayerRoutine);

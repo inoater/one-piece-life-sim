@@ -1,0 +1,44 @@
+{
+  "id": "act_explore_home",
+  "name": "Explore the house",
+  "category": "explore",
+  "description": "Cupboards, the yard, under the porch: the whole world, as far as you know.",
+  "minAge": 2,
+  "maxAge": 7,
+  "gains": {
+    "perception": 0.3,
+    "intellect": 0.2
+  },
+  "tags": ["childhood"],
+  "outcomes": [
+    {
+      "id": "sweets",
+      "text": "You found the jar of sweets everyone thought was well hidden.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "perception": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "crab",
+      "text": "You met your first crab under the porch, and the crab won."
+    },
+    {
+      "id": "old_things",
+      "text": "You climbed into the loft and found {parent}'s old things: a coat, a knife, a letter you could not read yet.",
+      "weight": 0.7,
+      "requires": {
+        "parentAlive": true
+      }
+    },
+    {
+      "id": "lost",
+      "text": "You wandered off and had half of {home} out looking for you before supper.",
+      "weight": 0.5
+    }
+  ]
+}

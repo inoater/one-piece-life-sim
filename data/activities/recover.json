@@ -1,0 +1,25 @@
+{
+  "id": "act_recover",
+  "name": "Recover",
+  "category": "rest",
+  "description": "Bed rest and patience while the body mends.",
+  "requires": {
+    "unwell": true
+  },
+  "restful": true,
+  "regen": 0.3,
+  "speedsHealing": 1,
+  "tags": ["rest"],
+  "outcomes": [
+    {
+      "id": "bed_rest",
+      "text": "You stayed in bed and let your body do its slow work.",
+      "weight": 2,
+      "quiet": true
+    },
+    {
+      "id": "visitors",
+      "text": "Visitors brought soup and gossip. Both helped."
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "act_sweetheart_time",
+  "name": "Time with your sweetheart",
+  "category": "social",
+  "description": "Long walks, short arguments, plans.",
+  "minAge": 14,
+  "requires": {
+    "relation": "sweetheart"
+  },
+  "gains": {
+    "charisma": 0.3,
+    "willpower": 0.1
+  },
+  "tags": ["relationship", "romance"],
+  "outcomes": [
+    {
+      "id": "walks",
+      "text": "Long walks along the shore with {sweetheart}.",
+      "weight": 1.5,
+      "requires": {
+        "relation": "sweetheart"
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "sweetheart",
+          "value": 8
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "proposal",
+      "text": "You asked {sweetheart} to marry you, and the answer was yes.",
+      "weight": 0.5,
+      "requires": {
+        "relation": "sweetheart",
+        "married": false,
+        "minAge": 18
+      },
+      "effects": [
+        {
+          "kind": "marry"
+        },
+        {
+          "kind": "deed"
+        }
+      ]
+    },
+    {
+      "id": "quarrel",
+      "text": "You and {sweetheart} quarrelled about the future.",
+      "weight": 0.6,
+      "requires": {
+        "relation": "sweetheart"
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "sweetheart",
+          "value": -8
+        }
+      ]
+    },
+    {
+      "id": "child_coming",
+      "text": "{spouse} told you, grinning, that a child is on the way.",
+      "weight": 0.6,
+      "requires": {
+        "relation": "sweetheart",
+        "married": true
+      },
+      "effects": [
+        {
+          "kind": "conceive"
+        }
+      ]
+    }
+  ]
+}

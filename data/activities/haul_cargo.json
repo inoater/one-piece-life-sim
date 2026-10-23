@@ -1,0 +1,64 @@
+{
+  "id": "act_haul_cargo",
+  "name": "Haul cargo",
+  "category": "train_body",
+  "description": "Sacks, crates and barrels, carried for a few Berries.",
+  "minAge": 12,
+  "physical": true,
+  "requires": {
+    "anyFeatures": ["docks", "market", "farmland"]
+  },
+  "earn": {
+    "min": 100,
+    "max": 300
+  },
+  "gains": {
+    "strength": 0.8,
+    "endurance": 0.4
+  },
+  "risk": {
+    "injury": 0.015,
+    "cause": "accident",
+    "areas": {
+      "torso": 1,
+      "arms": 1,
+      "legs": 1
+    }
+  },
+  "tags": ["training", "work"],
+  "outcomes": [
+    {
+      "id": "crates",
+      "text": "You hauled crates until your arms shook, and were paid by the crate.",
+      "weight": 2,
+      "quiet": true
+    },
+    {
+      "id": "record",
+      "text": "You carried two sacks at once the whole length of the quay. People stopped to watch.",
+      "weight": 0.8,
+      "statWeights": {
+        "strength": 0.7
+      },
+      "effects": [
+        {
+          "kind": "fame",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "strain",
+      "text": "You lifted something you should not have, and your back told you so.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "minor",
+          "area": "torso",
+          "cause": "accident"
+        }
+      ]
+    }
+  ]
+}

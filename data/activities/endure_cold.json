@@ -1,0 +1,45 @@
+{
+  "id": "act_endure_cold",
+  "name": "Endure the cold",
+  "category": "train_spirit",
+  "description": "Cold water, cold nights, and refusing to shiver.",
+  "minAge": 12,
+  "physical": true,
+  "gains": {
+    "willpower": 0.7,
+    "endurance": 0.4,
+    "durability": 0.2
+  },
+  "tags": ["spirit"],
+  "outcomes": [
+    {
+      "id": "plunge",
+      "text": "You plunged into the sea every morning before dawn.",
+      "weight": 1.5,
+      "quiet": true
+    },
+    {
+      "id": "fever",
+      "text": "You pushed it too far and came down with a fever.",
+      "weight": 0.4,
+      "effects": [
+        {
+          "kind": "illness",
+          "illness": "fever"
+        }
+      ]
+    },
+    {
+      "id": "numb",
+      "text": "Your hands stopped feeling the cold some time in the second week.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "endurance": 0.2
+          }
+        }
+      ]
+    }
+  ]
+}

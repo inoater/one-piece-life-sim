@@ -1,0 +1,65 @@
+{
+  "id": "act_swim",
+  "name": "Swim",
+  "category": "train_body",
+  "description": "Long swims in open water, against the current.",
+  "minAge": 8,
+  "physical": true,
+  "requires": {
+    "anyFeatures": ["coast", "deep_sea", "clouds"]
+  },
+  "gains": {
+    "endurance": 0.7,
+    "speed": 0.3,
+    "durability": 0.2
+  },
+  "risk": {
+    "injury": 0.012,
+    "cause": "accident",
+    "areas": {
+      "torso": 1,
+      "legs": 1
+    }
+  },
+  "tags": ["training", "sea"],
+  "outcomes": [
+    {
+      "id": "bay",
+      "text": "You swam across the bay and back without stopping.",
+      "weight": 1.5,
+      "statWeights": {
+        "endurance": 0.5
+      }
+    },
+    {
+      "id": "current",
+      "text": "A current dragged you out past the rocks. You fought your way back in, barely.",
+      "weight": 0.6,
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.3
+          }
+        }
+      ]
+    },
+    {
+      "id": "dive",
+      "text": "You dived for shells off the reef and came up with a coin purse someone had lost.",
+      "weight": 0.4,
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 50,
+          "max": 400
+        }
+      ]
+    },
+    {
+      "id": "cold_water",
+      "text": "The water was cold enough to stop your heart. You went in anyway, every day.",
+      "quiet": true
+    }
+  ]
+}

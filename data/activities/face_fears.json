@@ -1,0 +1,58 @@
+{
+  "id": "act_face_fears",
+  "name": "Face your fears",
+  "category": "train_spirit",
+  "description": "The cliff, the dark, the dog. One at a time.",
+  "minAge": 12,
+  "gains": {
+    "willpower": 1.0,
+    "charisma": 0.1
+  },
+  "risk": {
+    "injury": 0.02,
+    "cause": "accident",
+    "areas": {
+      "legs": 1,
+      "arms": 1
+    }
+  },
+  "tags": ["spirit"],
+  "outcomes": [
+    {
+      "id": "cliff",
+      "text": "You climbed down the sea cliff at night, alone, because you were afraid to.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "dexterity": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "ruins",
+      "text": "You slept a night in the ruins everyone says are haunted. Nothing happened, mostly."
+    },
+    {
+      "id": "stare",
+      "text": "You stared down the biggest dog on the island until it looked away.",
+      "weight": 0.5,
+      "statWeights": {
+        "willpower": 0.7
+      },
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "haki.seed.conqueror",
+          "by": 1
+        }
+      ]
+    },
+    {
+      "id": "fled",
+      "text": "You lost your nerve and ran. You will try again.",
+      "weight": 0.7
+    }
+  ]
+}

@@ -10,7 +10,8 @@ import { runTickInPlace } from './tick';
  *
  * Every plan stops early when an event needs a decision, so a skip can never run past a choice
  * the player has to make. Plans also stop at the present (tick `presentTick`) unless the world is
- * open-ended, which is how the Phase 2 epilogue will hand over to free play.
+ * open-ended, which is how the Phase 2 epilogue hands over to free play, and stop for good when
+ * the player's character dies (`halted`), until they choose who to continue as.
  *
  * `advanceBatch` does a bounded chunk of work and says whether it is finished. The host calls it
  * in a loop and yields to the event loop between chunks so a long run never freezes the page and
@@ -19,7 +20,8 @@ import { runTickInPlace } from './tick';
 
 export type AdvancePlan = { kind: 'months'; count: number } | { kind: 'untilEvent' };
 
-export type StopReason = 'completed' | 'decision' | 'event' | 'present';
+/** `ended`: the world has nobody left to play (the player died); see `AdvanceOptions.halted`. */
+export type StopReason = 'completed' | 'decision' | 'event' | 'present' | 'ended';
 
 /**
  * What to do when an event needs a decision:
@@ -38,6 +40,11 @@ export interface AdvanceOptions {
     decisionId: number,
     choiceId: string,
   ) => void;
+  /**
+   * True when time must not move at all until the player acts (their character has died and they
+   * must choose who to continue as). Injected for the same reason as `resolveDecision`.
+   */
+  halted?: (state: WorldState) => boolean;
 }
 
 /** Progress through a plan. Mutated by `advanceBatch`; pass the same cursor to continue. */
@@ -102,6 +109,7 @@ export function advanceBatch(
       if (options.decisions === 'stop') return { ticksRun, stop: 'decision', effects };
       for (const decision of [...state.pending]) autoResolve(state, data, rng, decision, options);
     }
+    if (options.halted?.(state)) return { ticksRun, stop: 'ended', effects };
     if (cursor.remaining <= 0) return { ticksRun, stop: 'completed', effects };
     if (!state.openEnded && state.tick >= data.calendar.presentTick) {
       return { ticksRun, stop: 'present', effects };
@@ -116,6 +124,7 @@ export function advanceBatch(
     if (state.pending.length > 0 && options.decisions === 'stop') {
       return { ticksRun, stop: 'decision', effects };
     }
+    if (options.halted?.(state)) return { ticksRun, stop: 'ended', effects };
     if (plan.kind === 'untilEvent' && sawVisibleEvent(state, logLengthBefore)) {
       return { ticksRun, stop: 'event', effects };
     }

@@ -1,0 +1,90 @@
+{
+  "id": "job_bounty_hunter",
+  "name": "Bounty hunter",
+  "description": "Wanted posters, long waits and short fights. Paid only when you bring someone in.",
+  "minAge": 18,
+  "requires": {
+    "combatPower": 300
+  },
+  "requirementText": "Combat Power 300",
+  "income": {
+    "min": 0,
+    "max": 3000
+  },
+  "gains": {
+    "strength": 0.3,
+    "speed": 0.2,
+    "perception": 0.3,
+    "dexterity": 0.2
+  },
+  "risk": {
+    "injury": 0.1,
+    "cause": "violence"
+  },
+  "fame": 0.5,
+  "outcomes": [
+    {
+      "id": "caught",
+      "text": "You dragged a small-time pirate into the Marine office and collected the bounty on his head.",
+      "weight": 2,
+      "statWeights": {
+        "strength": 0.5,
+        "perception": 0.5
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 2000,
+          "max": 8000
+        },
+        {
+          "kind": "fame",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "cold_trail",
+      "text": "You spent the month chasing a rumour that led nowhere.",
+      "weight": 3,
+      "quiet": true
+    },
+    {
+      "id": "big_catch",
+      "text": "You brought in a wanted pirate the Marines had chased for years. The whole island heard.",
+      "weight": 0.3,
+      "statWeights": {
+        "strength": 0.8,
+        "speed": 0.5
+      },
+      "effects": [
+        {
+          "kind": "berries",
+          "min": 8000,
+          "max": 17000
+        },
+        {
+          "kind": "fame",
+          "value": 6
+        },
+        {
+          "kind": "deed"
+        }
+      ]
+    },
+    {
+      "id": "ambush",
+      "text": "Your quarry had friends. You got away, not in one piece.",
+      "weight": 0.8,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "roll",
+          "area": "roll",
+          "cause": "violence"
+        }
+      ]
+    }
+  ],
+  "tags": ["fight", "work", "bounty"]
+}

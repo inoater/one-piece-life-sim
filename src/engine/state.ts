@@ -22,6 +22,8 @@ import { ID_FORMAT_HINT, isEntityId } from './ids';
  *    player's chosen actions awaiting step 1 of the next tick.
  *  - `config` (save version 2): canon mode and difficulty, chosen once at world setup.
  *  - `character` on entities (save version 2): race, birth, family, appearance, hidden potential.
+ *  - `character.life` (save version 3): health, injuries, routine, job, debt and the recap's
+ *    memory, for the person being played.
  */
 
 export const ENTITY_TYPES = [
@@ -118,6 +120,104 @@ export const FamilySchema = z.strictObject({
 });
 export type Family = z.infer<typeof FamilySchema>;
 
+export const SEVERITIES = ['minor', 'serious', 'severe'] as const;
+export const EFFORTS = ['light', 'normal', 'hard'] as const;
+export type Effort = (typeof EFFORTS)[number];
+
+export const InjurySchema = z.strictObject({
+  area: z.enum(SCAR_AREAS),
+  severity: z.enum(SEVERITIES),
+  /** "a cracked rib" */
+  name: z.string().min(1),
+  /** What did it: accident, violence, ... (decides the roll at Health 0). */
+  cause: z.string().min(1),
+  tick: z.number().int(),
+  /** Healed at the start of this month. */
+  healTick: z.number().int(),
+});
+export type Injury = z.infer<typeof InjurySchema>;
+
+export const IllnessSchema = z.strictObject({
+  /** An illness id from data/life.json. */
+  id: z.string().min(1),
+  name: z.string().min(1),
+  tick: z.number().int(),
+  healTick: z.number().int(),
+});
+export type Illness = z.infer<typeof IllnessSchema>;
+
+export const RoutineSlotSchema = z.strictObject({
+  /** An activity id from data/activities. */
+  activity: z.string().min(1),
+  effort: z.enum(EFFORTS),
+});
+export type RoutineSlot = z.infer<typeof RoutineSlotSchema>;
+
+/** One line of the month-end card. */
+export const ReportLineSchema = z.strictObject({
+  text: z.string(),
+  tone: z.enum(['good', 'bad', 'plain', 'alert']),
+});
+
+/**
+ * What the last month added up to, for the month-end card: what was done, Vigor used against the
+ * pool, money in and out. Everything in it is also in the log; this is the summary of one month.
+ */
+export const MonthReportSchema = z.strictObject({
+  tick: z.number().int(),
+  done: z.array(
+    z.strictObject({
+      activity: z.string(),
+      effort: z.enum(EFFORTS),
+      outcome: z.string(),
+      /** "act_spar#won": which outcome of what. */
+      id: z.string(),
+    }),
+  ),
+  vigor: z.strictObject({ pool: z.number(), spent: z.number() }),
+  berries: z.strictObject({ income: z.number(), costs: z.number() }),
+  lines: z.array(ReportLineSchema),
+});
+export type MonthReport = z.infer<typeof MonthReportSchema>;
+
+/**
+ * The life loop's state for the person being played (Phase 2, save version 3): body, routine,
+ * work, money troubles, and what the death screen will want to remember.
+ */
+export const LifeSchema = z.strictObject({
+  /** Current Health; Max Health is derived from Durability and Endurance. */
+  health: z.number(),
+  /** Set by spending past the Vigor pool; lifts after a restful month. */
+  exhausted: z.boolean(),
+  injuries: z.array(InjurySchema),
+  illnesses: z.array(IllnessSchema),
+  /** The activities planned for each month. Repeats until changed; one-off activities drop out. */
+  routine: z.array(RoutineSlotSchema),
+  job: z
+    .strictObject({ id: z.string().min(1), sinceTick: z.number().int(), months: z.number().int() })
+    .nullable(),
+  /** Owed to a loan shark, in Berries. Cash (`berries`) that falls below zero becomes debt. */
+  debt: z.number(),
+  /** In a cell until this tick (exclusive): activities are locked. */
+  jailedUntil: z.number().int().nullable(),
+  /** The last month a debt collector called. */
+  collectorTick: z.number().int().nullable(),
+  /** The gang the character runs with, if any. */
+  gang: z.string().nullable(),
+  /** Children on the way: born at these ticks. */
+  expecting: z.array(z.number().int()),
+  /** The highest value each stat reached (for the life recap). */
+  peak: z.record(z.string(), z.number()),
+  /** Notable deeds, for the life recap. */
+  deeds: z.array(z.strictObject({ tick: z.number().int(), text: z.string() })),
+  /** Which life in a line of lives this is (1 for the first). */
+  generation: z.number().int().min(1),
+  /** The character played before this one, when the player continued as someone. */
+  predecessorId: z.string().optional(),
+  report: MonthReportSchema.nullable(),
+});
+export type LifeData = z.infer<typeof LifeSchema>;
+
 /**
  * What makes an entity a person. Present on every `character` entity created from Phase 1 on.
  *
@@ -157,6 +257,8 @@ export const CharacterSchema = z.strictObject({
       potential: z.record(z.string(), StatSchema),
     })
     .optional(),
+  /** The life loop (save version 3): present on the person being played, and on past players. */
+  life: LifeSchema.optional(),
 });
 export type CharacterData = z.infer<typeof CharacterSchema>;
 

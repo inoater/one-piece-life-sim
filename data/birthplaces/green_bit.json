@@ -29,6 +29,7 @@
     "tontatta": 4,
     "forage": 2
   },
+  "features": ["forest", "jungle", "farmland", "ruins", "market"],
   "map": {
     "x": 235,
     "y": 679

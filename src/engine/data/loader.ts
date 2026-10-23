@@ -4,6 +4,7 @@ import { didYouMean, formatPath, type DataIssue } from './issues';
 import {
   appearanceRefs,
   creationRefs,
+  lifeRefs,
   REF_EXTRACTORS,
   singletonTargets,
   TARGET_HOME,
@@ -21,6 +22,7 @@ import {
   type CollectionKind,
   type Creation,
   type GameData,
+  type LifeRules,
   type SingletonPath,
   type Calendar,
 } from './schemas';
@@ -238,6 +240,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   const character = singletons['data/character.json'] as CharacterRules | undefined;
   const creation = singletons['data/creation.json'] as Creation | undefined;
   const appearance = singletons['data/appearance.json'] as Appearance | undefined;
+  const life = singletons['data/life.json'] as LifeRules | undefined;
 
   // ---- Pass 2: references --------------------------------------------------------------------
 
@@ -245,6 +248,8 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     ...(creation ? { creation } : {}),
     ...(appearance ? { appearance } : {}),
     ...(character ? { stageIds: character.stages.map((s) => s.id) } : {}),
+    ...(life ? { life } : {}),
+    ...(calendar ? { seasonIds: calendar.seasons.map((s) => s.id) } : {}),
   });
   /** Is the target's id list available? If its file is broken, its references are not checked. */
   const has = (target: RefTarget, id: string): boolean | null => {
@@ -286,6 +291,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   }
   if (creation) checkRefs('data/creation.json', '', creationRefs(creation));
   if (appearance) checkRefs('data/appearance.json', '', appearanceRefs(appearance));
+  if (life) checkRefs('data/life.json', '', lifeRefs(life));
 
   // ---- Pass 3: coherence ---------------------------------------------------------------------
 
@@ -353,6 +359,29 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
           );
         }
       }
+    }
+  }
+
+  if (life && character) {
+    for (const stage of character.stages) {
+      if (!(stage.id in life.slots)) {
+        error(
+          'data/life.json',
+          `slots.${stage.id}`,
+          `No slot count for the "${stage.id}" life stage`,
+          'give every stage in data/character.json a number of activity slots',
+        );
+      }
+    }
+  }
+  for (const kind of ['activities', 'jobs'] as const) {
+    if (parsed[kind].size === 0 && invalidIds[kind].size === 0) {
+      error(
+        `data/${kind}/`,
+        '(file)',
+        `The life loop needs at least one ${COLLECTIONS[kind].label}`,
+        `add a file to data/${kind}/`,
+      );
     }
   }
 

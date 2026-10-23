@@ -1,0 +1,58 @@
+{
+  "id": "act_climb",
+  "name": "Climb",
+  "category": "explore",
+  "description": "Cliffs, trees, rocks and the occasional wall.",
+  "minAge": 8,
+  "physical": true,
+  "requires": {
+    "anyFeatures": ["mountains", "forest", "jungle", "ruins", "coast"]
+  },
+  "gains": {
+    "strength": 0.4,
+    "dexterity": 0.3,
+    "speed": 0.2
+  },
+  "risk": {
+    "injury": 0.03,
+    "cause": "accident",
+    "areas": {
+      "legs": 2,
+      "arms": 2,
+      "head": 0.5
+    },
+    "severities": {
+      "minor": 70,
+      "serious": 25,
+      "severe": 5
+    }
+  },
+  "tags": ["explore"],
+  "outcomes": [
+    {
+      "id": "summit",
+      "text": "You reached a ledge nobody you know has ever stood on.",
+      "statWeights": {
+        "dexterity": 0.5,
+        "strength": 0.4
+      }
+    },
+    {
+      "id": "nest",
+      "text": "You climbed to a seabird's nest and came down with an egg and a bitten finger."
+    },
+    {
+      "id": "fall",
+      "text": "A handhold broke away. You fell.",
+      "weight": 0.4,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "roll",
+          "area": "legs",
+          "cause": "accident"
+        }
+      ]
+    }
+  ]
+}

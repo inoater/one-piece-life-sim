@@ -1,0 +1,44 @@
+{
+  "id": "act_join_gang",
+  "name": "Join a gang",
+  "category": "social",
+  "description": "There is always a gang. They are always looking for someone.",
+  "minAge": 12,
+  "oneOff": true,
+  "requires": {
+    "anyFeatures": ["docks", "market", "underworld"],
+    "notFlags": ["gang.member"]
+  },
+  "infamy": 1,
+  "tags": ["crime", "relationship"],
+  "outcomes": [
+    {
+      "id": "joined",
+      "text": "You were jumped in behind the fish market. You are one of them now.",
+      "weight": 1.5,
+      "statWeights": {
+        "strength": 0.4,
+        "charisma": 0.4
+      },
+      "effects": [
+        {
+          "kind": "joinGang",
+          "members": {
+            "min": 2,
+            "max": 4
+          }
+        },
+        {
+          "kind": "injury",
+          "severity": "minor",
+          "area": "roll",
+          "cause": "violence"
+        }
+      ]
+    },
+    {
+      "id": "laughed_off",
+      "text": "They laughed you off the corner. Come back when you are bigger."
+    }
+  ]
+}

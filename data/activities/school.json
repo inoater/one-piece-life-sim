@@ -1,0 +1,77 @@
+{
+  "id": "act_school",
+  "name": "Go to school",
+  "category": "train_mind",
+  "description": "Letters, sums and the long walk there and back.",
+  "minAge": 6,
+  "maxAge": 17,
+  "requires": {
+    "features": ["school"]
+  },
+  "teacher": 1.2,
+  "gains": {
+    "intellect": 0.8,
+    "charisma": 0.2,
+    "perception": 0.1
+  },
+  "tags": ["school"],
+  "outcomes": [
+    {
+      "id": "top_of_class",
+      "text": "You came top of the class in sums, to everyone's surprise including yours.",
+      "statWeights": {
+        "intellect": 0.7
+      }
+    },
+    {
+      "id": "dozing",
+      "text": "You were caught dozing at your desk and stood in the corner for an hour.",
+      "quiet": true
+    },
+    {
+      "id": "praised",
+      "text": "The teacher read your essay aloud to the class.",
+      "weight": 0.8,
+      "statWeights": {
+        "intellect": 0.4
+      },
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "charisma": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "schoolyard",
+      "text": "A bigger child picked a fight in the schoolyard. You both got sent home.",
+      "weight": 0.4,
+      "effects": [
+        {
+          "kind": "injury",
+          "severity": "minor",
+          "area": "roll",
+          "cause": "violence"
+        }
+      ]
+    },
+    {
+      "id": "desk_mate",
+      "text": "{other}, your desk mate, started sharing lunch with you.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "friend",
+          "opinion": 35,
+          "ageOffset": {
+            "min": -1,
+            "max": 1
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "act_blade_drills",
+  "name": "Blade drills",
+  "category": "train_body",
+  "description": "Cuts, guards and footwork with a wooden blade, a thousand times over.",
+  "minAge": 12,
+  "physical": true,
+  "usesMentor": true,
+  "gains": {
+    "dexterity": 0.9,
+    "strength": 0.3
+  },
+  "risk": {
+    "injury": 0.02,
+    "cause": "accident",
+    "areas": {
+      "arms": 1
+    },
+    "severities": {
+      "minor": 9,
+      "serious": 1
+    }
+  },
+  "tags": ["training", "blade"],
+  "outcomes": [
+    {
+      "id": "thousand_cuts",
+      "text": "A thousand cuts a day, every day. Your hands have stopped blistering.",
+      "weight": 2,
+      "quiet": true
+    },
+    {
+      "id": "clean_cut",
+      "text": "You cut a hanging rope clean through with a blunt practice blade.",
+      "weight": 0.6,
+      "statWeights": {
+        "dexterity": 0.8
+      }
+    },
+    {
+      "id": "mentor_blade",
+      "text": "{mentor} showed you a guard you had never seen before.",
+      "requires": {
+        "relation": "mentor"
+      },
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "dexterity": 0.3
+          }
+        }
+      ]
+    }
+  ]
+}

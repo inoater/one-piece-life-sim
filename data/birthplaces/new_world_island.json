@@ -38,6 +38,7 @@
   "appearanceWeights": {
     "tag:scar": 2
   },
+  "features": ["coast", "docks", "jungle", "ruins", "market", "smithy", "underworld"],
   "map": {
     "x": 560,
     "y": 690

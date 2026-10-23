@@ -1,0 +1,49 @@
+{
+  "id": "act_meditate",
+  "name": "Meditate",
+  "category": "train_spirit",
+  "description": "Sitting still with your eyes closed, which is harder than it sounds.",
+  "minAge": 10,
+  "gains": {
+    "willpower": 0.8,
+    "perception": 0.3
+  },
+  "tags": ["spirit"],
+  "outcomes": [
+    {
+      "id": "quiet",
+      "text": "You sat still until the world went quiet around you.",
+      "weight": 2,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "haki.seed.observation",
+          "by": 1
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "gulls",
+      "text": "For a moment you knew where every gull on the roof was, without looking. Then it was gone.",
+      "weight": 0.3,
+      "statWeights": {
+        "perception": 0.6,
+        "willpower": 0.6
+      },
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "haki.seed.observation",
+          "by": 3
+        }
+      ]
+    },
+    {
+      "id": "restless",
+      "text": "You could not sit still for a minute all month.",
+      "weight": 0.8,
+      "quiet": true
+    }
+  ]
+}

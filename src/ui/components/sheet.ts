@@ -58,6 +58,58 @@ function personLine(p: SheetPerson): HTMLElement {
   );
 }
 
+/** Health, work, reputation and deeds: the life as it is being lived (Phase 2). */
+function lifeBlock(life: NonNullable<CharacterSheet['life']>): HTMLElement {
+  const pct =
+    life.health.max > 0 ? Math.min(100, (life.health.current / life.health.max) * 100) : 0;
+  const ailments = [
+    ...life.injuries.map((i) => `${i.name} (${i.severity}, heals ${i.heals})`),
+    ...life.illnesses.map((i) => `${i.name} (over by ${i.heals})`),
+  ];
+  const facts: [string, string][] = [
+    ['Work', life.job ?? 'None'],
+    ['Fame', formatValue(life.fame)],
+    ['Infamy', formatValue(life.infamy)],
+  ];
+  if (life.married) facts.push(['Married', 'Yes']);
+  if (life.gang) facts.push(['Runs with', life.gang]);
+  return section(
+    'Life',
+    h(
+      'div',
+      { class: 'sheet__health' },
+      h('span', null, `Health ${life.health.current} of ${life.health.max}`),
+      h(
+        'span',
+        { class: 'meter', dataset: { tone: pct < 35 ? 'bad' : 'health' }, 'aria-hidden': 'true' },
+        h('span', { class: 'meter__fill', style: `width: ${pct.toFixed(1)}%` }),
+      ),
+      life.exhausted ? h('span', { class: 'sheet__flag' }, 'Exhausted') : null,
+    ),
+    ailments.length > 0
+      ? h(
+          'ul',
+          { class: 'scars' },
+          ailments.map((a) => h('li', null, a)),
+        )
+      : null,
+    h(
+      'dl',
+      { class: 'derived' },
+      facts.map(([label, value]) =>
+        h('div', { class: 'derived__row' }, h('dt', null, label), h('dd', null, value)),
+      ),
+    ),
+    life.deeds.length > 0
+      ? h(
+          'ol',
+          { class: 'sheet__deeds' },
+          life.deeds.slice(-5).map((d) => h('li', null, `${d.date}: ${d.text}`)),
+        )
+      : null,
+  );
+}
+
 export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions): SheetHandle {
   const cleanups: (() => void)[] = [];
   const { tick, compact = false, previous = null, place = 'sheet' } = options;
@@ -268,6 +320,7 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
           ),
         )
       : null,
+    sheet.life && !compact ? lifeBlock(sheet.life) : null,
     section(
       'Berries',
       h(
@@ -275,6 +328,7 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
         { class: 'sheet__berries', dataset: { debt: String(sheet.berries < 0) } },
         formatInteger(sheet.berries),
         sheet.berries < 0 ? ' (in debt)' : '',
+        sheet.life && sheet.life.debt > 0 ? `, and ${formatInteger(sheet.life.debt)} owed` : '',
       ),
     ),
     sheet.backstory

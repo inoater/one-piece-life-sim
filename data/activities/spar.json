@@ -1,0 +1,111 @@
+{
+  "id": "act_spar",
+  "name": "Spar",
+  "category": "train_body",
+  "description": "Real fights with rules, against whoever will stand across from you.",
+  "minAge": 12,
+  "physical": true,
+  "usesMentor": true,
+  "gains": {
+    "strength": 0.8,
+    "dexterity": 0.4,
+    "durability": 0.3
+  },
+  "risk": {
+    "injury": 0.05,
+    "cause": "violence",
+    "severities": {
+      "minor": 85,
+      "serious": 14,
+      "severe": 1
+    }
+  },
+  "tags": ["training", "fight"],
+  "outcomes": [
+    {
+      "id": "won",
+      "text": "You won more bouts than you lost this month.",
+      "weight": 1.2,
+      "statWeights": {
+        "strength": 0.5,
+        "speed": 0.3
+      },
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.1
+          }
+        }
+      ]
+    },
+    {
+      "id": "lost",
+      "text": "You lost bout after bout, and learned something from each of them.",
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "durability": 0.2
+          }
+        }
+      ],
+      "quiet": true
+    },
+    {
+      "id": "footwork",
+      "text": "{mentor} watched you spar and corrected your footwork without a word.",
+      "requires": {
+        "relation": "mentor"
+      },
+      "effects": [
+        {
+          "kind": "train",
+          "stats": {
+            "speed": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "rival",
+      "text": "{other} beat you in front of everyone and has not stopped talking about it.",
+      "weight": 0.4,
+      "requires": {
+        "noRelation": "rival"
+      },
+      "effects": [
+        {
+          "kind": "relationship",
+          "role": "rival",
+          "opinion": -20,
+          "ageOffset": {
+            "min": -2,
+            "max": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "old_rival",
+      "text": "You finally beat your rival in a fair bout.",
+      "weight": 0.4,
+      "requires": {
+        "relation": "rival"
+      },
+      "effects": [
+        {
+          "kind": "opinion",
+          "target": "rival",
+          "value": 10
+        },
+        {
+          "kind": "train",
+          "stats": {
+            "willpower": 0.2
+          }
+        }
+      ]
+    }
+  ]
+}

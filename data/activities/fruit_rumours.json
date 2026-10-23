@@ -1,0 +1,49 @@
+{
+  "id": "act_fruit_rumours",
+  "name": "Chase Devil Fruit rumours",
+  "category": "special",
+  "description": "Strange fruits that grant strange powers. Every port has a story; Phase 4 decides which are true.",
+  "minAge": 16,
+  "requires": {
+    "flags": {
+      "rumour.fruit": 2
+    }
+  },
+  "gains": {
+    "perception": 0.3,
+    "charisma": 0.1
+  },
+  "tags": ["fruit"],
+  "outcomes": [
+    {
+      "id": "dead_end",
+      "text": "The fruit, it turns out, was eaten by a goat years ago. Probably.",
+      "weight": 1.5,
+      "quiet": true
+    },
+    {
+      "id": "painted_melon",
+      "text": "You paid good money for a mysterious fruit. It was a painted melon.",
+      "weight": 0.7,
+      "effects": [
+        {
+          "kind": "berries",
+          "min": -800,
+          "max": -200
+        }
+      ]
+    },
+    {
+      "id": "closer",
+      "text": "A merchant swore he had seen a swirled fruit in a noble's collection on another island.",
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "rumour.fruit",
+          "by": 1
+        }
+      ]
+    }
+  ]
+}

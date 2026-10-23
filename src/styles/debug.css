@@ -294,4 +294,32 @@
     fill: var(--mist);
     font-size: 8px;
   }
+  .debug__histogram .debug__band {
+    fill: var(--tide-soft);
+  }
+  .debug__curve {
+    width: 100%;
+    max-width: 22rem;
+    height: auto;
+  }
+  .debug__curve path {
+    fill: none;
+    stroke-width: 1.5;
+  }
+  .debug__curve-value {
+    stroke: var(--tide);
+  }
+  .debug__curve-gain {
+    stroke: var(--squall);
+    stroke-dasharray: 3 2;
+  }
+  .debug__curve-cap,
+  .debug__curve-soft {
+    stroke: var(--rule-strong);
+    stroke-dasharray: 2 3;
+  }
+  .debug__curve text {
+    fill: var(--mist);
+    font-size: 8px;
+  }
 }

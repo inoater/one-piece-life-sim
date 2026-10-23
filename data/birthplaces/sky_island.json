@@ -34,6 +34,7 @@
     "sky": 4,
     "dials": 3
   },
+  "features": ["clouds", "forest", "ruins", "school", "market", "doctor"],
   "map": {
     "x": 1782,
     "y": 616

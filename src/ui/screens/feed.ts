@@ -1,7 +1,8 @@
 import type { Category, DecisionView, FeedEntry } from '../../worker/protocol';
 import type { App } from '../app';
 import { h, srOnly } from '../dom';
-import type { UiState } from '../store';
+import { formatInteger } from '../format';
+import { FEED_THEMES, type FeedFilter, type UiState } from '../store';
 
 /**
  * The chronicle: what has happened, oldest at the top, newest at the bottom, grouped by month.
@@ -16,6 +17,36 @@ export const CATEGORY_LABEL: Record<Category, string> = {
   news: 'News',
   system: 'System',
 };
+
+const FILTER_LABEL: Record<FeedFilter, string> = {
+  all: 'All',
+  ...CATEGORY_LABEL,
+  relationship: 'Relationships',
+  combat: 'Combat',
+  money: 'Money',
+};
+
+/** Whether a line belongs under a filter chip: its category, or (for themes) one of its tags. */
+export function matchesFeedFilter(entry: FeedEntry, filter: FeedFilter): boolean {
+  if (filter === 'all') return true;
+  if ((FEED_THEMES as readonly string[]).includes(filter)) return entry.tags.includes(filter);
+  return entry.category === filter;
+}
+
+/**
+ * "Age 7 · March, Year 12": the plan's life log reads by age first. Lines from the backstory
+ * already begin "Age 7:", so a month made only of those keeps its plain date.
+ */
+function monthLabel(
+  label: string,
+  tick: number,
+  birthTick: number | null,
+  entries: readonly FeedEntry[],
+): string {
+  if (birthTick === null || tick < birthTick) return label;
+  if (entries.every((e) => /^Age \d+:/.test(e.summary))) return label;
+  return `Age ${Math.floor((tick - birthTick) / 12)} · ${label}`;
+}
 
 function groupByMonth(
   entries: readonly FeedEntry[],
@@ -80,33 +111,100 @@ function renderDecision(
   );
 }
 
-const FILTERS: ('all' | Category)[] = ['all', 'personal', 'family', 'world', 'news', 'system'];
+const FILTERS: FeedFilter[] = [
+  'all',
+  'personal',
+  'family',
+  'relationship',
+  'combat',
+  'money',
+  'world',
+  'news',
+  'system',
+];
 
 /** Chips that narrow the chronicle to one kind of line, with how many of each there are. */
 function renderFilters(state: UiState, entries: readonly FeedEntry[], app: App): HTMLElement {
-  const counts = new Map<string, number>();
-  for (const e of entries) counts.set(e.category, (counts.get(e.category) ?? 0) + 1);
+  const counts = new Map<FeedFilter, number>();
+  for (const f of FILTERS) counts.set(f, entries.filter((e) => matchesFeedFilter(e, f)).length);
   return h(
     'div',
     { class: 'feed-filters', role: 'group', 'aria-label': 'Show in the chronicle' },
-    FILTERS.filter((f) => f === 'all' || (counts.get(f) ?? 0) > 0).map((f) =>
-      h(
-        'button',
-        {
-          class: 'chip',
-          type: 'button',
-          dataset: { filter: f },
-          'aria-pressed': String(state.feedFilter === f),
-          onclick: () => app.store.update({ feedFilter: state.feedFilter === f ? 'all' : f }),
-        },
-        f === 'all' ? 'All' : CATEGORY_LABEL[f],
+    FILTERS.filter((f) => f === 'all' || (counts.get(f) ?? 0) > 0 || state.feedFilter === f).map(
+      (f) =>
         h(
-          'span',
-          { class: 'chip__count' },
-          String(f === 'all' ? entries.length : (counts.get(f) ?? 0)),
+          'button',
+          {
+            class: 'chip',
+            type: 'button',
+            dataset: { filter: f },
+            'aria-pressed': String(state.feedFilter === f),
+            onclick: () => app.store.update({ feedFilter: state.feedFilter === f ? 'all' : f }),
+          },
+          FILTER_LABEL[f],
+          h('span', { class: 'chip__count' }, String(counts.get(f) ?? 0)),
         ),
+    ),
+  );
+}
+
+/** At the present: the epilogue, the world in a few lines, and the way on into open-ended play. */
+function renderEpilogue(state: UiState, app: App): HTMLElement | null {
+  const s = state.snapshot;
+  if (!s?.epilogue) return null;
+  const life = s.life;
+  return h(
+    'section',
+    { class: 'epilogue', 'aria-labelledby': 'epilogue-title' },
+    h('h3', { class: 'epilogue__title', id: 'epilogue-title' }, s.epilogue.title),
+    h('p', { class: 'epilogue__text' }, s.epilogue.text),
+    h(
+      'ul',
+      { class: 'epilogue__facts' },
+      h('li', null, `Year ${s.date.year} (${s.date.canonYear} on the old calendar).`),
+      life
+        ? h(
+            'li',
+            null,
+            life.alive
+              ? `${life.name} is ${life.age}${life.job ? `, working as ${life.job.name.toLowerCase()}` : ''}, with fame ${life.fame} and ${formatInteger(life.money.berries)} Berries.`
+              : `${life.name} did not live to see it.`,
+          )
+        : null,
+      h(
+        'li',
+        null,
+        `${s.counts.entities} people and things in the world; ${s.counts.log} moments recorded; ${s.counts.news} headlines.`,
       ),
     ),
+    h(
+      'button',
+      {
+        class: 'button button--primary',
+        type: 'button',
+        disabled: state.busy !== null,
+        onclick: () =>
+          void app.dispatch({ type: 'life/openEnded' }, 'Open-ended play: the seas go on.'),
+      },
+      'Sail on past the present',
+    ),
+  );
+}
+
+function renderEnded(state: UiState): HTMLElement | null {
+  const life = state.snapshot?.life;
+  if (!life || life.alive) return null;
+  const cause = life.recap?.cause ? ` of ${life.recap.cause}` : '';
+  return h(
+    'section',
+    { class: 'epilogue epilogue--death', 'aria-label': 'This life has ended' },
+    h('h3', { class: 'epilogue__title' }, `${life.name}, ${life.recap?.age ?? life.age}`),
+    h(
+      'p',
+      { class: 'epilogue__text' },
+      `Died ${life.recap?.died ?? ''}${cause}. Time stands still until someone carries on.`,
+    ),
+    h('a', { class: 'button button--primary', href: '#/end' }, 'Read the recap and carry on'),
   );
 }
 
@@ -125,14 +223,18 @@ export function renderFeed(
     return h('div', { class: 'feed' }, h('p', { class: 'muted' }, 'Loading the world...'));
 
   const filter = state.feedFilter;
-  const visible =
-    filter === 'all' ? snapshot.feed : snapshot.feed.filter((e) => e.category === filter);
+  const visible = snapshot.feed.filter((e) => matchesFeedFilter(e, filter));
+  const birthTick = snapshot.sheet?.born.tick ?? null;
   let freshIndex = 0;
   const months = groupByMonth(visible).map((group) =>
     h(
       'li',
       { class: 'month', dataset: { tick: String(group.tick) } },
-      h('h3', { class: 'month__title' }, group.label),
+      h(
+        'h3',
+        { class: 'month__title' },
+        monthLabel(group.label, group.tick, birthTick, group.entries),
+      ),
       h(
         'ul',
         { class: 'month__lines' },
@@ -153,7 +255,7 @@ export function renderFeed(
     snapshot.feed.length > 1 ? renderFilters(state, snapshot.feed, app) : null,
     h('ol', { class: 'chronicle', role: 'log', 'aria-label': 'Chronicle' }, months),
     filter !== 'all' && visible.length === 0
-      ? h('p', { class: 'feed__hint' }, `No ${CATEGORY_LABEL[filter].toLowerCase()} lines yet.`)
+      ? h('p', { class: 'feed__hint' }, `No ${FILTER_LABEL[filter].toLowerCase()} lines yet.`)
       : null,
     snapshot.pending.map((d) =>
       renderDecision(d, state.busy !== null, !shown.has(d.recordSeq), app),
@@ -165,12 +267,7 @@ export function renderFeed(
           'Nothing has happened yet. Press Next month to start the clock at Year 0.',
         )
       : null,
-    snapshot.atPresent
-      ? h(
-          'p',
-          { class: 'feed__hint' },
-          `The present has arrived (Year ${Math.floor(snapshot.presentTick / 12)}). The epilogue and open-ended play come in Phase 2.`,
-        )
-      : null,
+    renderEnded(state),
+    renderEpilogue(state, app),
   );
 }

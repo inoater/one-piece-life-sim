@@ -1,0 +1,19 @@
+{
+  "id": "act_work_shift",
+  "name": "Work a shift",
+  "category": "work",
+  "description": "A month at your job: the wage, the work and whatever the work brings.",
+  "minAge": 10,
+  "requires": {
+    "employed": true
+  },
+  "worksJob": true,
+  "tags": ["work"],
+  "outcomes": [
+    {
+      "id": "worked",
+      "text": "You worked your shifts as {job}.",
+      "quiet": true
+    }
+  ]
+}
