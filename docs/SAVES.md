@@ -1,0 +1,69 @@
+# Saves
+
+## What is stored
+
+Three rotating autosave slots (`auto-1` to `auto-3`), ten manual slots (`manual-1` to `manual-10`), in
+IndexedDB, plus export and import of single `.opsim` files. Slot counts, the import size limit and the
+autosave cadence come from `data/settings.json`. If IndexedDB is unavailable (some private modes) the game
+falls back to memory and says so in the Menu.
+
+An autosave happens at the end of any time skip that ran at least one month, and after answering a decision.
+A skip of 100 months makes **one** autosave, not 100. Autosaves go to an empty slot first, then overwrite the
+oldest. A failed autosave never interrupts play; it is reported in the world panel.
+
+## The `.opsim` file
+
+```
+bytes 0-4   "OPSIM"             magic
+byte  5     1                   container version
+bytes 6-    gzip( UTF-8 JSON )  made with the browser's CompressionStream
+```
+
+The JSON is an _envelope_:
+
+| Field                   | Meaning                                                              |
+| ----------------------- | -------------------------------------------------------------------- |
+| `format`                | `"opsim"`                                                            |
+| `saveVersion`           | version of the saved shape; every bump needs a migration             |
+| `engineVersion`         | informational                                                        |
+| `dataHash`              | fingerprint of the game content the world was made with              |
+| `seed`, `tick`, `label` | shown in the slot list without opening the state                     |
+| `createdAt`             | wall-clock milliseconds; metadata only, never part of the state hash |
+| `integrity.stateHash`   | canonical hash of `state`, verified on load                          |
+| `state`                 | the world state (see `src/engine/state.ts`)                          |
+
+No RNG state is saved: randomness is derived from the seed and the tick (see ARCHITECTURE).
+
+## Loading, step by step
+
+decode container, parse JSON, **verify the checksum against the state exactly as written**, migrate to the
+current version, validate against the schema, report. Every step fails with a typed `SaveError` the UI can
+explain: `not-opsim`, `unsupported-container`, `too-large`, `corrupt`, `checksum`, `invalid`, `version`,
+`slot`. A failed load changes nothing.
+
+The load report says whether the loaded state hashes to what was stored (`hashMatches`, false after a
+migration, by design) and whether the game content has changed since (`dataHashMatches`). A content change
+loads with a warning: the same seed on different data is a different world.
+
+Imports are untrusted input: the file size and the decompressed size are both capped (a tiny file that
+expands to gigabytes is rejected mid-stream), and unknown fields in the state are errors.
+
+## Changing the saved shape
+
+1. Change `src/engine/state.ts` (or the envelope).
+2. Raise `SAVE_VERSION` in `src/engine/version.ts`.
+3. Add `MIGRATIONS[oldVersion]` in `src/engine/saves/migrations.ts`: it receives and returns the whole
+   envelope, and must return `saveVersion: oldVersion + 1`.
+4. Run `npm run golden:update`.
+
+`tests/engine/saves.test.ts` fails if any version below the current one has no migration. The `world_v1.opsim`
+fixture in `tests/fixtures/golden/` is never regenerated, so it proves old files still load after every
+bump; `golden:update` writes only the fixture for the current version.
+
+## The golden session
+
+`tools/lib/golden-session.ts` is a fixed scripted play session (spawn, force events, decide, add a modifier,
+run 223 months). Its final state hash is recorded in `tests/fixtures/golden/golden.json` and replayed in
+`tests/engine/golden.test.ts`. If the replay hash changes, either behaviour changed on purpose (run
+`npm run golden:update`, and bump the save version if the shape changed) or determinism broke by accident
+(find out why; do not just update the file). Expect to update it whenever a phase adds systems.

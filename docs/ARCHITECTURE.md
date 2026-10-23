@@ -1,0 +1,120 @@
+# Architecture
+
+## Layers
+
+Dependencies point inward only. `tools/lib/source-lint.ts` checks this on every run of `npm run lint:sim`
+and in the test suite.
+
+```
+  ui  ──►  (types and four tiny pure helpers only)
+   │
+   ▼  messages (structured clone)
+ worker  ──►  core  ──►  systems  ──►  engine
+ (SimCore, protocol)    (game rules)    (infrastructure)
+```
+
+| Layer     | May import                                                                                          | Holds                                                                     |
+| --------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `engine`  | `engine`, `zod`                                                                                     | clock, RNG, tick runner, stats, log, data loader, saves. No game rules.   |
+| `systems` | `engine`, `systems`, `zod`                                                                          | the eight pipeline steps, events, decisions, actions, dev fixtures        |
+| `core.ts` | engine, systems                                                                                     | `tick(state, data, rng) -> state` and `advance`                           |
+| `worker`  | all of the above                                                                                    | `SimCore` (one world, queries, saves), the protocol, the Web Worker entry |
+| `ui`      | `ui`; **types** from anywhere; `worker/protocol`, `worker/sim-error`, `engine/hash`, `engine/stats` | screens and the shell                                                     |
+
+The UI reaches the simulation through one interface, `SimHost` (`src/ui/host.ts`), with two
+implementations: `WorkerSimHost` (normal) and `InlineSimHost` (same engine on the main thread, used when a
+Web Worker cannot start, and by tests). Both hand back structured clones, so the page never holds a live
+reference into the simulation.
+
+## The tick
+
+`tick(state, data, rng)` is pure: it clones the state, runs the pipeline, returns the new state. A tick
+processes the month `state.tick` and then advances the clock, so 468 ticks from Year 0 process Years 0 to 38
+and leave the clock on tick 468 (the first month of the present).
+
+| #   | Step             | Phase 0 behaviour                                                                              |
+| --- | ---------------- | ---------------------------------------------------------------------------------------------- |
+| 1   | `resolveActions` | Runs queued player actions through a handler table (empty until Phase 2)                       |
+| 2   | `advanceVoyages` | Registered, does nothing (Phase 3)                                                             |
+| 3   | `npcDecisions`   | Cadence and tier filtering in place (Tier 1 every tick, Tier 2 every third); no behaviours yet |
+| 4   | `updateWorld`    | A list of world systems; today only the dev entropy probe                                      |
+| 5   | `rollEvents`     | Fires scheduled and forced events; effects; chains; pending decisions                          |
+| 6   | `compileNews`    | Turns the news that events raised into news items                                              |
+| 7   | `aging`          | Removes expired modifiers (births, deaths and birthdays arrive in Phase 2)                     |
+| 8   | `autosave`       | **Requests** a save by returning an effect; never writes anything itself                       |
+
+A system is a `TickStep { id, run(state, ctx) }`. Adding one is one line in `src/systems/index.ts`. Steps
+mutate the draft they are given; `runTick` clones first, `runTickInPlace` does not (the host uses it for
+bulk advances to avoid copying every month). A test proves both give identical hashes.
+
+### Time controls
+
+`advanceBatch` runs a bounded number of ticks and reports why it stopped: `completed`, `decision`, `event`
+or `present`. Every plan stops on a decision, so a skip cannot run past a choice the player must make.
+`SimCore.advance` calls it in chunks, yielding to the event loop between them, so a 468-month run never
+freezes the page and can be cancelled. The result never depends on how the work was chunked (tested).
+
+A skip is all-or-nothing, like an action. Systems mutate the state in place, so one that throws in the
+middle of a month would leave a half-ticked world. `SimCore.advance` therefore takes one checkpoint
+(`structuredClone`) per skip request, not per month, and restores it on any error: the world, the
+scheduled events and the autosaves are exactly as they were before the click, and the page's snapshot
+still agrees with the worker. A cancelled skip is not an error and keeps the months it finished. The
+price is one state copy per click, the same trade `dispatch` makes (see Performance).
+
+## Determinism
+
+1. **Keyed random streams** (`src/engine/rng.ts`). `Rng.root(seed).fork('tick', t).fork(stepId)` derives a
+   stream from a _path_, not from how much was drawn before. Forking does not consume the parent. Therefore
+   a new system cannot disturb existing ones, the player choosing differently cannot disturb what the rest of
+   the world rolls, and a save needs only the seed. Core generator: sfc32 seeded from a 128-bit hash of the
+   path, cross-checked against an independent reference implementation.
+2. **No approximated maths in simulation code.** `Math.sin/cos/exp/log/pow`, `**` and friends are allowed to
+   differ between JavaScript engines. `src/engine/dmath.ts` provides deterministic `dexp`, `dlog`, `dpow` and
+   `ipow` built only from exactly-specified operations. The lint forbids the rest in `src/engine`,
+   `src/systems` and `src/core.ts`, together with `Math.random`, `Date`, `performance`, `crypto` and every
+   DOM or timer API.
+3. **State is plain JSON, hashed canonically** (`canonical.ts`): sorted keys, and anything that would
+   silently change meaning when saved (NaN, `undefined` in arrays, Map, Date, class instances) throws with
+   the path. Never rely on object key order in logic; use `entityIds(state)`, which is sorted.
+4. **Time comes from the tick.** Wall-clock time appears only in save metadata and in host pacing.
+
+The entropy probe (`dev.probe` flag) exists because an empty world consumes no randomness, which would make
+"same seed, same hash" pass even with a broken RNG. With the probe on, every tick draws numbers and folds them
+into the state, so the determinism tests are meaningful. A test confirms they fail when one stream is tampered with.
+
+## State
+
+`src/engine/state.ts` is the single source of truth: a Zod schema, with types inferred from it, validated on
+every load. Highlights: entities in a plain object keyed by id; a stat is `{ base, mods[] }` with
+`final = (base + flats) x (1 + percentages / 100)`; log records carry `cause` and `causeSeq` so "why did this
+happen?" can be walked back (`explainChain`); every record and entity carries `knownBy` (rule 4).
+
+Fields beyond the plan's list, and why: `tier` (rule 5 needs it), `counters` (stable ids), `openEnded`
+(Phase 2 epilogue), `scheduled`/`pending`/`queue` (event scheduler, decisions, queued actions), `seq`,
+`cause`, `causeSeq`, `knownBy` on log records.
+
+## Worker protocol
+
+`src/worker/protocol.ts` types every request and response (`boot`, `newWorld`, `advance`, `dispatch`,
+`inspect`, `listEntities`, `queryLog`, `saves/*`, ...). Requests run one at a time inside `SimCore`; only
+`cancel` jumps the queue. Actions are applied to a clone and swapped in only on success, so a failing action
+(even one that fails halfway) leaves the world untouched. The UI never receives the whole state, only a
+`Snapshot` projection (header facts, the last 300 visible log lines, counts), which keeps messages small
+when the world has thousands of entities.
+
+## Performance
+
+468 months with no NPCs take 4 to 8 ms in a cold process (the target was under 2 seconds). 1,000 worlds
+take about 1.4 seconds. Today `runTick` copies the state with `structuredClone`; with ~2,200 entities
+that will matter for _pure_ ticks but not for bulk runs, which mutate in place. If profiling later says
+otherwise, only the cloning line changes: systems already mutate a draft, so swapping in structural sharing
+(Immer or Mutative) needs no system code to change. The per-skip checkpoint in `SimCore.advance` is a
+second copy of the same kind, taken once per click; measure it again when a world holds thousands of
+entities, and if it shows up, replace it with the same structural sharing.
+
+## Build
+
+Vite 8. `vite build` runs `tools/validate-data.ts` as a subprocess from a small plugin, so the build gate is
+literally the same program as `npm run validate`. `--mode preview` embeds the worker as a blob and
+`tools/inline-html.ts` folds the result into one HTML file. In production builds `__DEBUG_PANEL__` is
+`false`, the debug panel is never imported, and the worker refuses `debug/*` actions.

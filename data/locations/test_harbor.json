@@ -1,0 +1,7 @@
+{
+  "id": "loc_test_harbor",
+  "name": "Test Harbor",
+  "region": "east_blue",
+  "description": "Dev fixture island. Exists so events can name a place and the cross-reference check has a target.",
+  "tags": ["dev"]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "evt_test_notice",
+  "type": "world",
+  "title": "Test notice",
+  "text": "A test notice is posted in {monthName}, Year {year}. Nothing depends on it.",
+  "trigger": "manual",
+  "news": "Test notice posted ({date}).",
+  "tags": ["dev", "world"]
+}

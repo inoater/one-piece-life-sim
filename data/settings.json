@@ -1,0 +1,12 @@
+{
+  "tiers": { "tier1Every": 1, "tier2Every": 3 },
+  "saves": {
+    "autosaveSlots": 3,
+    "manualSlots": 10,
+    "autosaveEveryTicks": 1,
+    "maxImportBytes": 67108864,
+    "maxDecompressedBytes": 268435456
+  },
+  "time": { "shortSkipMonths": 3, "untilEventCap": 468 },
+  "host": { "feedTail": 300, "newsTail": 100 }
+}

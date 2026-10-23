@@ -1,0 +1,9 @@
+{
+  "id": "evt_test_aftermath",
+  "type": "local",
+  "title": "Test aftermath",
+  "text": "The consequences of the crossroads reach you in {monthName}. This follow-up was scheduled by a choice.",
+  "trigger": "manual",
+  "news": "A test crossroads has a follow-up ({date}).",
+  "tags": ["dev", "family"]
+}

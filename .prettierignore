@@ -1,0 +1,7 @@
+node_modules
+dist
+dist-preview
+package-lock.json
+src/assets
+tests/fixtures/golden
+*.opsim

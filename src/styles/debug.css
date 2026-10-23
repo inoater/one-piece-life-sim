@@ -1,0 +1,273 @@
+@layer debug {
+  /*
+   * The developer panel. Deliberately a different register from the game: denser, monospaced for
+   * ids and hashes, so it is never mistaken for part of the story. Compiled out of production.
+   */
+  .debug {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    width: min(34rem, 100vw);
+    padding-top: env(safe-area-inset-top, 0px);
+    border-left: 1px solid var(--rule-strong);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    font-size: var(--text-0);
+  }
+
+  /* On a wide screen the game moves over instead of being covered, so both can be used at once. */
+  @media (min-width: 1100px) {
+    :root.has-debug .shell {
+      margin-right: min(34rem, 100vw);
+    }
+    .debug {
+      box-shadow: none;
+    }
+  }
+
+  .debug__header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-4);
+    border-bottom: 1px solid var(--rule);
+  }
+  .debug__title {
+    font-size: var(--text-1);
+    font-weight: 700;
+  }
+  .debug__hint {
+    flex: 1;
+    color: var(--mist);
+  }
+  .debug__tabs {
+    display: flex;
+    border-bottom: 1px solid var(--rule);
+  }
+  .debug__tab {
+    padding: var(--s-2) var(--s-4);
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--mist);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .debug__tab[aria-selected='true'] {
+    border-bottom-color: var(--tide);
+    color: var(--ink);
+  }
+  .debug__body {
+    flex: 1;
+    min-height: 0;
+    padding: var(--s-4);
+    overflow-y: auto;
+  }
+
+  .debug__section-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+  .debug__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .debug__section h3 {
+    font-size: var(--text-1);
+    font-weight: 700;
+  }
+  .debug__section h4,
+  .debug__inspector h4 {
+    margin-top: var(--s-3);
+    color: var(--mist);
+    font-size: var(--text-0);
+    font-weight: 600;
+  }
+
+  .debug__row {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: var(--s-2);
+    align-items: center;
+  }
+  .debug__label {
+    color: var(--mist);
+  }
+  .debug__cell {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+  .debug__value {
+    font-family: var(--font-mono);
+    overflow-wrap: anywhere;
+  }
+  .debug__inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .debug__input {
+    flex: 1 1 8rem;
+    min-width: 0;
+    min-height: 1.875rem;
+    padding: 0 var(--s-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+  }
+  .debug__input--short {
+    flex: 0 1 5.5rem;
+  }
+  .debug__check {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    cursor: pointer;
+  }
+  .debug__check input {
+    accent-color: var(--tide);
+  }
+  .debug__note {
+    color: var(--mist);
+  }
+  .debug__note[data-kind='ok'] {
+    color: var(--tide);
+  }
+  .debug__note[data-kind='bad'] {
+    color: var(--squall);
+    font-weight: 600;
+  }
+  .debug__error {
+    color: var(--squall);
+  }
+  .debug__meta {
+    color: var(--mist);
+  }
+
+  .debug__list {
+    display: flex;
+    flex-direction: column;
+    max-height: 11rem;
+    overflow: auto;
+    list-style: none;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+  .debug__pick {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 var(--s-2);
+    width: 100%;
+    padding: var(--s-1) var(--s-3);
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+  }
+  .debug__pick[aria-pressed='true'] {
+    background: var(--tide-soft);
+  }
+  .debug__pick .debug__note {
+    grid-column: 1 / -1;
+  }
+  .debug__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    align-items: flex-start;
+  }
+  .debug__kv {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    list-style: none;
+    overflow-wrap: anywhere;
+  }
+
+  .inspector__name {
+    font-family: var(--font-text);
+    font-size: var(--text-2);
+    font-weight: 650;
+  }
+  .stat {
+    padding: var(--s-2) 0;
+    border-top: 1px solid var(--rule);
+  }
+  .stat__summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    cursor: pointer;
+  }
+  .stat__label {
+    font-weight: 600;
+  }
+  .stat__total {
+    font-family: var(--font-text);
+    font-size: var(--text-2);
+    font-variant-numeric: tabular-nums;
+    border-bottom: 1px dotted var(--mist);
+    cursor: help;
+  }
+  .stat__description {
+    margin: var(--s-1) 0;
+    color: var(--mist);
+    font-family: var(--font-mono);
+    overflow-wrap: anywhere;
+  }
+
+  .logrows {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+  }
+  .logrow {
+    padding: var(--s-2) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .logrow[data-known='false'] {
+    padding-left: var(--s-2);
+    border-left: 3px dashed var(--rule-strong);
+  }
+  .logrow__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-2);
+  }
+  .logrow__date {
+    color: var(--mist);
+  }
+  .logrow__kind {
+    color: var(--tide);
+    font-weight: 600;
+  }
+  .logrow__flag {
+    color: var(--squall);
+    font-style: italic;
+  }
+  .logrow__summary {
+    font-family: var(--font-text);
+    font-size: var(--text-1);
+  }
+  .logrow__meta {
+    color: var(--mist);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    overflow-wrap: anywhere;
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "id": "weapon_test_cutlass",
+  "name": "Cutlass",
+  "description": "Dev fixture weapon.",
+  "statMods": [{ "stat": "strength", "value": 4, "kind": "flat" }],
+  "tags": ["dev"]
+}

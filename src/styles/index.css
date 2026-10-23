@@ -1,0 +1,9 @@
+/* Cascade layers keep specificity predictable: later layers win, so a component never needs
+   !important to beat a reset, and debug styling can never leak into the game's own screens. */
+@layer reset, tokens, base, layout, components, debug;
+
+@import './tokens.css';
+@import './base.css';
+@import './layout.css';
+@import './components.css';
+@import './debug.css';

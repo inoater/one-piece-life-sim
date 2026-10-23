@@ -1,0 +1,24 @@
+{
+  "canonYearOffset": 1484,
+  "presentTick": 468,
+  "months": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ],
+  "seasons": [
+    { "id": "winter", "name": "Winter", "months": [12, 1, 2] },
+    { "id": "spring", "name": "Spring", "months": [3, 4, 5] },
+    { "id": "summer", "name": "Summer", "months": [6, 7, 8] },
+    { "id": "autumn", "name": "Autumn", "months": [9, 10, 11] }
+  ]
+}

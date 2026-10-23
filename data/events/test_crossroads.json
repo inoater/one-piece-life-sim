@@ -1,0 +1,33 @@
+{
+  "id": "evt_test_crossroads",
+  "type": "personal",
+  "title": "A test crossroads",
+  "text": "Two paths open in {monthName}. This event needs a decision, so time-skipping stops here.",
+  "trigger": "manual",
+  "conditions": [
+    { "kind": "hasTrait", "trait": "trait_test_brawler" },
+    { "kind": "atLocation", "location": "loc_test_harbor" }
+  ],
+  "choices": [
+    {
+      "id": "left",
+      "label": "Take the left path",
+      "text": "Quiet, and a little longer.",
+      "effects": [
+        { "kind": "setFlag", "flag": "dev.crossroads", "value": "left" },
+        { "kind": "log", "text": "The left path was quiet.", "tags": ["dev", "personal"] },
+        { "kind": "schedule", "eventId": "evt_test_aftermath", "afterMonths": 2 }
+      ]
+    },
+    {
+      "id": "right",
+      "label": "Take the right path",
+      "text": "Shorter, but you will hear about it.",
+      "effects": [
+        { "kind": "setFlag", "flag": "dev.crossroads", "value": "right" },
+        { "kind": "log", "text": "The right path was short.", "tags": ["dev", "personal"] }
+      ]
+    }
+  ],
+  "tags": ["dev", "personal"]
+}

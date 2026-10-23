@@ -1,0 +1,44 @@
+{
+  "name": "one-piece-life-sim",
+  "version": "0.1.0",
+  "private": true,
+  "description": "One Piece Life Sim: a static-site life simulation. Phase 0: engine, saves and tools.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:preview": "vite build --mode preview && tsx tools/inline-html.ts",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "validate": "tsx tools/validate-data.ts && tsx tools/canon-lint.ts",
+    "lint:sim": "tsx tools/lint-sim.ts",
+    "sim": "tsx tools/headless-sim.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "golden:update": "tsx tools/update-golden.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run typecheck && npm run validate && npm run lint:sim && npm run test && npm run format:check",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "e2e": "npm run build:preview && vitest run --config vitest.e2e.config.ts"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "fake-indexeddb": "^6.2.5",
+    "happy-dom": "^21.0.1",
+    "oxc-parser": "^0.154.0",
+    "playwright-core": "^1.56.0",
+    "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4"
+  }
+}

@@ -1,0 +1,4 @@
+#!/bin/sh
+# The same data check as the build gate and CI: every JSON file against its schema, and every
+# reference between files. Install once with `npm install` (it points git at this folder).
+exec npm run validate --silent

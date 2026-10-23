@@ -1,0 +1,8 @@
+{
+  "id": "trait_test_brawler",
+  "name": "Brawler",
+  "description": "Dev fixture. Adds flat Strength so the modifier stack in the debug inspector has a trait line.",
+  "category": "quirk",
+  "statMods": [{ "stat": "strength", "value": 8, "kind": "flat" }],
+  "tags": ["dev"]
+}

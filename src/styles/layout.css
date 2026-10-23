@@ -1,0 +1,193 @@
+@layer layout {
+  /*
+   * One column by default (phones): masthead, section tabs, one panel at a time, controls.
+   * From 700px the chronicle and the side panel sit side by side and the tabs only switch the
+   * side panel, so "Feed" is not a tab there.
+   */
+  .shell {
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    background: var(--ground);
+  }
+
+  .masthead {
+    grid-row: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-6);
+    padding: var(--s-3) var(--s-4);
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead__clock {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+  .masthead__title {
+    font-family: var(--font-text);
+    font-size: var(--text-3);
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+  }
+  .masthead__season {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+
+  .vitals {
+    display: flex;
+    gap: var(--s-5);
+  }
+  .vital {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 3.5rem;
+  }
+  .vital__label {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .vital__value {
+    font-family: var(--font-text);
+    font-size: var(--text-2);
+    line-height: 1.2;
+  }
+  .vital__value.is-empty {
+    color: var(--mist);
+    cursor: help;
+  }
+
+  .banner-slot {
+    grid-row: 2;
+  }
+
+  .tabs {
+    grid-row: 3;
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--rule);
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .panel {
+    grid-row: 4;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .panel--feed {
+    padding: var(--s-4);
+  }
+  .panel--side {
+    padding: var(--s-4);
+    background: var(--ground);
+  }
+
+  /* On a phone only the active section shows. */
+  .shell[data-route='feed'] .panel--side,
+  .shell:not([data-route='feed']) .panel--feed {
+    display: none;
+  }
+
+  .controls {
+    grid-row: 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-4);
+    padding: var(--s-3) var(--s-4);
+    border-top: 1px solid var(--rule);
+    background: var(--surface);
+  }
+  .controls__time {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    flex: 1 1 auto;
+  }
+  .controls__time .button {
+    flex: 1 1 auto;
+  }
+  .controls__readout {
+    order: 3;
+    flex: 1 0 100%;
+    min-width: 0;
+  }
+  .controls__meta {
+    display: flex;
+    gap: var(--s-1);
+    margin-left: auto;
+  }
+
+  @media (min-width: 700px) {
+    .shell {
+      grid-template-columns: minmax(0, 1fr) minmax(20rem, var(--side-width));
+      grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    }
+    .masthead,
+    .banner-slot,
+    .controls {
+      grid-column: 1 / -1;
+    }
+    .tabs {
+      grid-column: 2;
+      grid-row: 3;
+      border-left: 1px solid var(--rule);
+    }
+    .tab--feed {
+      display: none;
+    }
+    .panel--feed {
+      grid-column: 1;
+      grid-row: 3 / 5;
+      padding: var(--s-5) var(--s-6);
+      display: block !important;
+    }
+    .panel--side {
+      grid-column: 2;
+      grid-row: 4;
+      border-left: 1px solid var(--rule);
+      padding: var(--s-5);
+      display: block !important;
+    }
+    .controls {
+      flex-wrap: nowrap;
+    }
+    .controls__time {
+      flex: 0 0 auto;
+    }
+    .controls__time .button {
+      flex: 0 0 auto;
+    }
+    .controls__readout {
+      order: 0;
+      flex: 1 1 auto;
+    }
+  }
+
+  @media (max-width: 699.98px) {
+    .vitals {
+      width: 100%;
+      justify-content: space-between;
+      gap: var(--s-3);
+      padding-top: var(--s-2);
+      border-top: 1px solid var(--rule);
+    }
+    .vital {
+      min-width: 0;
+    }
+    .masthead {
+      gap: var(--s-2);
+    }
+  }
+}
