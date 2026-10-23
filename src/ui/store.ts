@@ -1,4 +1,4 @@
-import type { SerializedError, Snapshot } from '../worker/protocol';
+import type { Category, SerializedError, Snapshot } from '../worker/protocol';
 import type { Route, SideRoute } from './router';
 
 /** UI state: the latest snapshot from the simulation plus things only the page cares about. */
@@ -32,6 +32,8 @@ export interface UiState {
   route: Route;
   /** The tab shown in the side panel on a wide screen while the route is "feed". */
   sideTab: SideRoute;
+  /** Which lines the chronicle shows. */
+  feedFilter: 'all' | Category;
 }
 
 export class Store<T extends object> {
@@ -69,5 +71,6 @@ export function createUiStore(route: Route, theme: Theme): Store<UiState> {
     theme,
     route,
     sideTab: 'character',
+    feedFilter: 'all',
   });
 }

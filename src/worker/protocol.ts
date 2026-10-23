@@ -229,8 +229,10 @@ export interface GenesisSetup {
     opens: string;
     wealth: string;
     safety: string;
+    region: string;
     races: string[];
     traits: string[];
+    map: { x: number; y: number } | null;
   }[];
   legacies: { id: string; name: string; description: string; traits: string[] }[];
   foci: { id: string; name: string; description: string }[];

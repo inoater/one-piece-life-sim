@@ -28,5 +28,9 @@
   "eventTags": {
     "marines": 4,
     "discipline": 2
+  },
+  "map": {
+    "x": 2140,
+    "y": 700
   }
 }

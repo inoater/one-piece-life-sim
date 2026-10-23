@@ -1,0 +1,443 @@
+/*
+ * Scrollbars, the year rail, and the world map.
+ *
+ * Scrollbars everywhere are thin and drawn in the page's own colours. The chronicle's is replaced
+ * by the year rail, which is a scrollbar marked in years. The map keeps the supplied artwork's own
+ * palette (a chart is a chart, in daylight or by lamplight); only its frame, pins and notes follow
+ * the theme.
+ */
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule-strong) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: var(--rule-strong) padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--mist) padding-box;
+  }
+}
+
+@layer layout {
+  /*
+   * The year rail shares the chronicle's grid cell, along its right edge. The panels are placed
+   * explicitly too: an auto-placed panel would otherwise be pushed into a second column by the rail.
+   */
+  @media (max-width: 699.98px) {
+    .panel--feed,
+    .panel--side {
+      grid-column: 1;
+    }
+  }
+  .year-rail {
+    grid-row: 4;
+    grid-column: 1;
+    justify-self: end;
+    z-index: 3;
+  }
+  .shell:not([data-route='feed']) .year-rail {
+    display: none;
+  }
+  .shell:has(.year-rail:not([hidden])) .panel--feed {
+    scrollbar-width: none;
+    padding-right: calc(var(--s-4) + 2.75rem);
+  }
+  .shell:has(.year-rail:not([hidden])) .panel--feed::-webkit-scrollbar {
+    display: none;
+  }
+  @media (min-width: 700px) {
+    .year-rail {
+      grid-row: 3 / 5;
+      display: flex !important;
+    }
+    .year-rail[hidden] {
+      display: none !important;
+    }
+    .shell:has(.year-rail:not([hidden])) .panel--feed {
+      padding-right: calc(var(--s-6) + 2rem);
+    }
+  }
+  .shell[data-route='new'] .year-rail,
+  .shell[data-route='map'] .year-rail {
+    display: none !important;
+  }
+
+  /* The Map page fills the space of the chronicle and the side panel; time can still move. */
+  .map-page-slot {
+    grid-row: 4;
+    grid-column: 1 / -1;
+    min-height: 0;
+    display: flex;
+  }
+  .map-page-slot[hidden] {
+    display: none;
+  }
+  .shell[data-route='map'] .panel {
+    display: none !important;
+  }
+  @media (min-width: 700px) {
+    .shell[data-route='map'] .tabs {
+      grid-column: 1 / -1;
+      border-left: 0;
+    }
+    .shell[data-route='map'] .tab--feed {
+      display: block;
+    }
+  }
+}
+
+@layer components {
+  /* ---- The year rail ------------------------------------------------------------------- */
+  .year-rail {
+    position: relative;
+    display: flex;
+    width: 2.75rem;
+    height: 100%;
+    margin: var(--s-2) var(--s-1);
+    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+    outline: none;
+  }
+  .year-rail:focus-visible .year-rail__track {
+    outline: 2px solid var(--tide);
+    outline-offset: 2px;
+  }
+  .year-rail__track {
+    position: absolute;
+    inset: 0 auto 0 50%;
+    width: 2px;
+    margin-left: -1px;
+    border-radius: 2px;
+    background: var(--rule);
+  }
+  .year-rail__marks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .year-rail__year,
+  .year-rail__tick,
+  .year-rail__dot {
+    position: absolute;
+    left: 50%;
+  }
+  .year-rail__year {
+    transform: translate(-50%, -50%);
+    padding: 0 3px;
+    border-radius: 4px;
+    background: var(--ground);
+    color: var(--mist);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.3;
+  }
+  .year-rail__tick {
+    width: 8px;
+    height: 1px;
+    margin-left: -4px;
+    background: var(--rule-strong);
+  }
+  .year-rail__dot {
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 6px;
+    border-radius: 50%;
+    background: var(--cat, var(--cat-system));
+  }
+  .year-rail__dot[data-category='personal'] {
+    --cat: var(--cat-personal);
+  }
+  .year-rail__dot[data-category='family'] {
+    --cat: var(--cat-family);
+    margin-left: -12px;
+  }
+  .year-rail__dot[data-category='news'] {
+    --cat: var(--cat-news);
+  }
+  .year-rail__thumb {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1.375rem;
+    margin-left: -0.6875rem;
+    border: 2px solid var(--tide);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--tide) 16%, transparent);
+    pointer-events: none;
+    transition: background-color 0.15s;
+  }
+  .year-rail:hover .year-rail__thumb,
+  .year-rail.is-dragging .year-rail__thumb {
+    background: color-mix(in srgb, var(--tide) 30%, transparent);
+  }
+  .year-rail__tip {
+    position: absolute;
+    right: calc(100% + 6px);
+    transform: translateY(-50%);
+    padding: 2px var(--s-2);
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--ground);
+    font-size: var(--text-0);
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* ---- The world map widget ------------------------------------------------------------ */
+  .world-map {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-lg);
+    background: #437f9d;
+  }
+  .world-map--chooser {
+    height: clamp(16rem, 44vh, 26rem);
+  }
+  .world-map--page {
+    flex: 1;
+    min-height: 0;
+    border-radius: 0;
+    border-width: 1px 0 0;
+  }
+  .atlas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+  }
+  .atlas.is-dragging {
+    cursor: grabbing;
+  }
+  .atlas:focus-visible {
+    outline: 3px solid var(--tide);
+    outline-offset: -3px;
+  }
+  .atlas__label {
+    font-family: var(--font-text), Georgia, serif;
+    paint-order: stroke fill;
+    stroke: #fff;
+    stroke-width: 2.4px;
+    stroke-linejoin: round;
+    fill: #111;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+  .atlas__label--det {
+    display: none;
+    stroke-width: 1.6px;
+  }
+  .atlas.is-zoomed .atlas__label--det {
+    display: inline;
+  }
+  .atlas__highlight-shadow {
+    fill: none;
+    stroke: #3a2a00;
+    stroke-width: 5.5;
+    vector-effect: non-scaling-stroke;
+    stroke-linejoin: round;
+  }
+  .atlas__highlight {
+    fill: rgb(255 230 120 / 0.38);
+    stroke: #ffe27a;
+    stroke-width: 2.6;
+    vector-effect: non-scaling-stroke;
+    stroke-linejoin: round;
+  }
+
+  .atlas-pin {
+    cursor: pointer;
+    outline: none;
+  }
+  .atlas-pin__halo {
+    fill: transparent;
+    stroke: transparent;
+    stroke-width: 2;
+    transition:
+      fill 0.15s,
+      stroke 0.15s;
+  }
+  .atlas-pin__mark {
+    fill: #fff6c8;
+    stroke: #10232c;
+    stroke-width: 2;
+  }
+  .atlas-pin__label {
+    display: none;
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 700;
+    paint-order: stroke fill;
+    stroke: #10232c;
+    stroke-width: 3.5px;
+    stroke-linejoin: round;
+    fill: #ffffff;
+    pointer-events: none;
+  }
+  .atlas-pin[data-labelled='true'] .atlas-pin__label,
+  .atlas-pin:hover .atlas-pin__label,
+  .atlas-pin:focus-visible .atlas-pin__label {
+    display: inline;
+  }
+  .atlas-pin:hover .atlas-pin__halo,
+  .atlas-pin:focus-visible .atlas-pin__halo {
+    fill: rgb(255 246 200 / 0.3);
+    stroke: #fff6c8;
+  }
+  .atlas-pin[data-kind='chosen'] .atlas-pin__mark,
+  .atlas-pin[data-kind='rolled'] .atlas-pin__mark {
+    fill: #f3c93a;
+  }
+  .atlas-pin[data-kind='chosen'] .atlas-pin__halo {
+    fill: rgb(243 201 58 / 0.3);
+    stroke: #f3c93a;
+  }
+  .atlas-pin[data-kind='rolled'] .atlas-pin__halo {
+    stroke: #f3c93a;
+    stroke-dasharray: 4 3;
+  }
+  .atlas-pin[data-kind='closed'] {
+    cursor: not-allowed;
+  }
+  .atlas-pin[data-kind='closed'] .atlas-pin__mark {
+    fill: rgb(16 35 44 / 0.55);
+    stroke: rgb(255 255 255 / 0.65);
+    stroke-width: 1.5;
+  }
+  .atlas-pin[data-kind='home'] {
+    cursor: default;
+  }
+  .atlas-pin[data-kind='home'] .atlas-pin__mark {
+    fill: #f3c93a;
+    stroke: #3a2a00;
+    stroke-width: 1.6;
+  }
+
+  .atlas-controls {
+    position: absolute;
+    right: var(--s-3);
+    bottom: var(--s-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+  .atlas-controls__button {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .atlas-controls__button:hover {
+    border-color: var(--tide);
+  }
+  .atlas-info {
+    position: absolute;
+    left: var(--s-3);
+    bottom: var(--s-3);
+    width: min(22rem, calc(100% - 4.5rem));
+    max-height: 62%;
+    overflow: auto;
+    padding: var(--s-3) var(--s-4) var(--s-4);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    animation: rise 0.2s ease both;
+  }
+  .atlas-info__name {
+    margin-right: 2rem;
+    font-family: var(--font-text);
+    font-size: var(--text-3);
+    font-weight: 650;
+    line-height: 1.15;
+  }
+  .atlas-info__where {
+    margin: 2px 0 var(--s-2);
+    color: var(--mist);
+    font-style: italic;
+  }
+  .atlas-info__text {
+    margin-bottom: var(--s-2);
+    font-family: var(--font-text);
+    line-height: 1.55;
+  }
+  .atlas-info__text:empty {
+    display: none;
+  }
+  .atlas-info__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+  }
+  .atlas-info__close {
+    position: absolute;
+    top: var(--s-1);
+    right: var(--s-1);
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--mist);
+    font-size: var(--text-3);
+    cursor: pointer;
+  }
+  .atlas-info__close:hover {
+    background: var(--tide-soft);
+    color: var(--ink);
+  }
+
+  /* ---- The Map page -------------------------------------------------------------------- */
+  .map-page {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .map-page__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-1) var(--s-4);
+    padding: var(--s-3) var(--s-4);
+  }
+  .map-page__title {
+    font-family: var(--font-text);
+    font-size: var(--text-3);
+    font-weight: 650;
+  }
+  .map-page__hint {
+    flex: 1 1 18rem;
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .map-page__map {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+}

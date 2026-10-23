@@ -36,6 +36,10 @@
     "hairStyle.topknot": 6,
     "skin.fair": 1.5
   },
+  "map": {
+    "x": 853,
+    "y": 642
+  },
   "flags": {
     "wano.closed": true
   }

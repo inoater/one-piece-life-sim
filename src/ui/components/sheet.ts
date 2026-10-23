@@ -2,7 +2,10 @@ import type { CharacterSheet, StatView } from '../../worker/protocol';
 import type { SheetPerson, SheetStat } from '../../systems/genesis/sheet';
 import { h, type Child } from '../dom';
 import { formatInteger, formatValue } from '../format';
+import { prefersReducedMotion } from '../motion';
 import { attachBreakdownTooltip, statBreakdownTable } from './breakdown';
+import { renderPoster } from './poster';
+import { renderStatChart } from './stat-chart';
 
 /**
  * The character sheet as text, used twice: the live preview beside every New Life screen, and
@@ -20,6 +23,13 @@ export interface SheetRenderOptions {
   tick: number;
   /** The preview beside New Life: shorter family list, no flags. */
   compact?: boolean;
+  /**
+   * The sheet shown before this one in the same place. Stats that changed get a chip ("+0.6") and
+   * their bars grow from the old value; the compass morphs from the old shape.
+   */
+  previous?: CharacterSheet | null;
+  /** Where the sheet is shown ("preview", "character"): keeps each place's compass animation apart. */
+  place?: string;
 }
 
 function section(title: string, ...children: (Child | readonly Child[])[]): HTMLElement {
@@ -50,7 +60,10 @@ function personLine(p: SheetPerson): HTMLElement {
 
 export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions): SheetHandle {
   const cleanups: (() => void)[] = [];
-  const { tick, compact = false } = options;
+  const { tick, compact = false, previous = null, place = 'sheet' } = options;
+  const before = new Map((previous?.stats ?? []).map((s) => [s.id, s.total]));
+  const animate = previous !== null && !prefersReducedMotion();
+  const grow: { fill: HTMLElement; to: string }[] = [];
 
   const scale = Math.max(
     100,
@@ -68,14 +81,25 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
     );
     cleanups.push(attachBreakdownTooltip(total, () => statBreakdownTable(stat as StatView, tick)));
     const pct = (n: number) => `${Math.max(0, Math.min(100, (n / scale) * 100)).toFixed(1)}%`;
+    const was = before.get(stat.id);
+    const delta = was === undefined ? 0 : stat.total - was;
+    const changed = Math.abs(delta) >= 0.05;
+    const fill = h('span', {
+      class: 'stat-row__fill',
+      style: `width: ${pct(animate && was !== undefined ? was : stat.total)}`,
+    });
+    if (animate && was !== undefined && changed) grow.push({ fill, to: pct(stat.total) });
     return h(
       'li',
-      { class: 'stat-row', dataset: { stat: stat.id, hidden: String(stat.hidden) } },
+      {
+        class: `stat-row${changed ? ' is-changed' : ''}`,
+        dataset: { stat: stat.id, hidden: String(stat.hidden) },
+      },
       h('span', { class: 'stat-row__label' }, stat.label),
       h(
         'span',
         { class: 'stat-row__bar', 'aria-hidden': 'true' },
-        h('span', { class: 'stat-row__fill', style: `width: ${pct(stat.total)}` }),
+        fill,
         stat.potential
           ? h('span', {
               class: 'stat-row__potential',
@@ -85,13 +109,19 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
           : null,
       ),
       total,
-      stat.potential
+      changed
         ? h(
             'span',
-            { class: 'stat-row__cap', title: stat.potential.description },
-            `/ ${formatValue(stat.potential.total)}`,
+            { class: 'stat-row__delta', dataset: { sign: delta > 0 ? 'up' : 'down' } },
+            `${delta > 0 ? '+' : '\u2212'}${formatValue(Math.abs(delta))}`,
           )
-        : null,
+        : stat.potential
+          ? h(
+              'span',
+              { class: 'stat-row__cap', title: stat.potential.description },
+              `/ ${formatValue(stat.potential.total)}`,
+            )
+          : null,
     );
   };
 
@@ -105,6 +135,7 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
     h(
       'header',
       { class: 'sheet__header' },
+      renderPoster(sheet, { compact }),
       h('h3', { class: 'sheet__name' }, sheet.name),
       h(
         'p',
@@ -125,7 +156,12 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
 
     section(
       'Stats',
-      h('ul', { class: 'stat-rows' }, sheet.stats.map(statRow)),
+      h(
+        'div',
+        { class: 'sheet__stats' },
+        renderStatChart(sheet.stats, place),
+        h('ul', { class: 'stat-rows' }, sheet.stats.map(statRow)),
+      ),
       sheet.stats.some((s) => s.id === 'luck')
         ? null
         : h(
@@ -245,6 +281,17 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
       ? section('Backstory', h('p', { class: 'sheet__backstory' }, sheet.backstory))
       : null,
   );
+
+  // Bars that changed start at their old width and grow (or shrink) to the new one.
+  if (grow.length > 0 && typeof window.requestAnimationFrame === 'function') {
+    window.requestAnimationFrame(() =>
+      window.requestAnimationFrame(() => {
+        for (const { fill, to } of grow) fill.style.width = to;
+      }),
+    );
+  } else {
+    for (const { fill, to } of grow) fill.style.width = to;
+  }
 
   return {
     el,

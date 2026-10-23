@@ -38,5 +38,9 @@
     "skin.fair": 2,
     "hairColor.blond": 2,
     "complexion.weathered": 1.5
+  },
+  "map": {
+    "x": 420,
+    "y": 262
   }
 }

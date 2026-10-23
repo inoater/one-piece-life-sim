@@ -1,12 +1,25 @@
 import { createDial } from './components/dial';
-import { h, clear } from './dom';
+import { renderLogCard, summarizeAdvance } from './components/log-card';
+import { createYearRail } from './components/year-rail';
+import { openModal } from './components/modal';
+import { h, clear, isTypingTarget } from './dom';
+import { countTo, flash, resetCount } from './motion';
 import type { App } from './app';
 import { formatInteger } from './format';
 import { openMenu } from './menu';
-import { isSideRoute, ROUTE_LABELS, ROUTES, type Route, type SideRoute } from './router';
+import {
+  isPageRoute,
+  isSideRoute,
+  navigate,
+  ROUTE_LABELS,
+  ROUTES,
+  type Route,
+  type SideRoute,
+} from './router';
 import { renderActions } from './screens/actions';
 import { renderCharacter } from './screens/character';
 import { renderFeed } from './screens/feed';
+import { createMapPage } from './screens/map';
 import { createNewLife } from './screens/new-life';
 import { renderNews } from './screens/news';
 import { renderWorld } from './screens/world';
@@ -72,7 +85,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       h('a', { class: `tab tab--${route}`, href: `#/${route}` }, ROUTE_LABELS[route]),
     );
   }
-  const nav = h('nav', { class: 'tabs', 'aria-label': 'Sections' }, [...links.values()]);
+  const mapLink = h('a', { class: 'tab tab--map', href: '#/map' }, ROUTE_LABELS.map);
+  const nav = h('nav', { class: 'tabs', 'aria-label': 'Sections' }, [...links.values(), mapLink]);
 
   // ---- Panels
   const banner = h('div', { class: 'banner-slot' });
@@ -82,6 +96,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     id: 'panel-feed',
     'aria-label': 'Chronicle',
   });
+  const rail = createYearRail(feedPanel);
   const sidePanel = h('aside', {
     class: 'panel panel--side',
     id: 'panel-side',
@@ -91,6 +106,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   // half-made character survives a trip to another screen and back.
   const newLife = createNewLife(app);
   const newLifePage = h('div', { class: 'newlife-page', hidden: true }, newLife.el);
+  const mapPage = createMapPage(app);
+  const mapPageEl = h('div', { class: 'map-page-slot', hidden: true }, mapPage.el);
 
   // ---- Controls
   const nextButton = h('button', { class: 'button button--primary', type: 'button' }, 'Next month');
@@ -109,9 +126,28 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   );
   const menuButton = h(
     'button',
-    { class: 'button button--quiet', type: 'button', 'aria-haspopup': 'dialog' },
+    {
+      class: 'button button--quiet',
+      type: 'button',
+      'aria-haspopup': 'dialog',
+      'aria-keyshortcuts': 'M',
+    },
     'Menu',
   );
+  const keysButton = h(
+    'button',
+    {
+      class: 'button button--quiet controls__keys',
+      type: 'button',
+      'aria-haspopup': 'dialog',
+      'aria-keyshortcuts': 'Shift+?',
+      title: 'Keyboard shortcuts',
+    },
+    'Keys',
+  );
+  nextButton.setAttribute('aria-keyshortcuts', 'N');
+  skipButton.setAttribute('aria-keyshortcuts', 'S');
+  eventButton.setAttribute('aria-keyshortcuts', 'E');
   const debugButton = __DEBUG_PANEL__
     ? h(
         'button',
@@ -130,8 +166,26 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       eventButton,
     ),
     h('div', { class: 'controls__readout' }, status, progressWrap),
-    h('div', { class: 'controls__meta' }, menuButton, debugButton),
+    h('div', { class: 'controls__meta' }, keysButton, menuButton, debugButton),
   );
+
+  // After time moves, a short log card says what changed; the newest replaces the last.
+  const toasts = h('div', { class: 'toasts', 'aria-live': 'polite' });
+  let toastTimer: ReturnType<typeof setTimeout> | undefined;
+  const dismissToast = () => {
+    clearTimeout(toastTimer);
+    toasts.replaceChildren();
+  };
+
+  // "Back to the latest" when the chronicle has been scrolled up; it counts what arrived since.
+  const jumpCount = h('span', { class: 'feed-jump__count' });
+  const jumpButton = h(
+    'button',
+    { class: 'feed-jump', type: 'button', hidden: true },
+    'Latest entries ',
+    jumpCount,
+  );
+  let unseen = 0;
 
   const shell = h(
     'div',
@@ -140,9 +194,12 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     banner,
     nav,
     feedPanel,
+    rail.el,
     sidePanel,
     newLifePage,
+    mapPageEl,
     controls,
+    toasts,
   );
   root.replaceChildren(shell);
 
@@ -161,6 +218,72 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   );
   cancelButton.addEventListener('click', () => app.cancel());
   menuButton.addEventListener('click', () => openMenu(app));
+  keysButton.addEventListener('click', () => openShortcuts());
+  jumpButton.addEventListener('click', () => {
+    feedPanel.scrollTo({ top: feedPanel.scrollHeight, behavior: 'smooth' });
+  });
+  feedPanel.addEventListener('scroll', () => {
+    rail.sync();
+    if (atBottom(feedPanel)) {
+      unseen = 0;
+      jumpButton.hidden = true;
+    } else {
+      jumpButton.hidden = false;
+    }
+    jumpCount.textContent = unseen > 0 ? `(${unseen} new)` : '';
+  });
+
+  // ---- Keyboard: the time controls and the sections, without reaching for the mouse
+  const SHORTCUTS: { keys: string; does: string }[] = [
+    { keys: 'N', does: 'Next month' },
+    { keys: 'S', does: 'Skip a few months' },
+    { keys: 'E', does: 'Skip to the next event' },
+    { keys: '1 to 6', does: 'Feed, Character, Actions, World, News, Map' },
+    { keys: 'L', does: 'Start a new life' },
+    { keys: 'M', does: 'Menu: saves and appearance' },
+    { keys: '?', does: 'This list' },
+    ...(__DEBUG_PANEL__ ? [{ keys: '`', does: 'Debug panel' }] : []),
+  ];
+  function openShortcuts(): void {
+    if (document.querySelector('.modal-backdrop')) return;
+    openModal({
+      title: 'Keyboard shortcuts',
+      className: 'modal--keys',
+      body: h(
+        'dl',
+        { class: 'keys' },
+        SHORTCUTS.map((s) =>
+          h(
+            'div',
+            { class: 'keys__row' },
+            h('dt', null, h('kbd', null, s.keys)),
+            h('dd', null, s.does),
+          ),
+        ),
+      ),
+    });
+  }
+  const onKey = (event: KeyboardEvent) => {
+    if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (isTypingTarget(event.target) || document.querySelector('.modal-backdrop')) return;
+    const state = store.get();
+    if (state.route === 'new') return;
+    const press = (button: HTMLButtonElement) => {
+      if (!button.disabled) button.click();
+    };
+    const key = event.key.toLowerCase();
+    const sections: Route[] = ['feed', 'character', 'actions', 'world', 'news', 'map'];
+    if (key === 'n') press(nextButton);
+    else if (key === 's') press(skipButton);
+    else if (key === 'e') press(eventButton);
+    else if (key === 'm') menuButton.click();
+    else if (key === 'l') navigate('new');
+    else if (key === '?' || (key === '/' && event.shiftKey)) openShortcuts();
+    else if (/^[1-6]$/.test(key)) navigate(sections[Number(key) - 1] as Route);
+    else return;
+    event.preventDefault();
+  };
+  document.addEventListener('keydown', onKey);
   debugButton?.addEventListener('click', () => void app.setDebugOpen(!store.get().debugOpen));
 
   // After a decision is answered its button disappears, so keyboard focus is handed to "Next month"
@@ -186,7 +309,13 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   }
 
   function renderNav(state: UiState): void {
-    const current: Route = isWide() && !isSideRoute(state.route) ? state.sideTab : state.route;
+    // On the Map page only the Map link is current (it is set where the page is shown).
+    const current: Route | null =
+      state.route === 'map'
+        ? null
+        : isWide() && !isSideRoute(state.route)
+          ? state.sideTab
+          : state.route;
     for (const [route, link] of links) {
       if (route === current) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
@@ -203,6 +332,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     if (!s) return;
     title.textContent = `${s.date.monthName}, Year ${s.date.year}`;
     season.textContent = s.date.seasonName;
+    shell.dataset['season'] = s.date.seasonId;
     dial.update({
       month: s.date.month,
       year: s.date.year,
@@ -214,10 +344,26 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       v.value.classList.toggle('is-empty', !player);
       v.value.title = player ? '' : 'Appears once a life has started';
     }
-    age.value.textContent = player ? String(player.age) : '\u2014';
-    if (player) age.value.title = player.stage;
-    location.value.textContent = player ? player.location : '\u2014';
-    berries.value.textContent = player ? formatInteger(player.berries) : '\u2014';
+    if (player) {
+      const before = Number(age.value.dataset['value'] ?? player.age);
+      countTo(age.value, player.age, String);
+      if (player.age > before) flash(age.value);
+      age.value.dataset['value'] = String(player.age);
+      age.value.title = player.stage;
+      location.value.textContent = player.location;
+      const had = Number(berries.value.dataset['value'] ?? player.berries);
+      countTo(berries.value, player.berries, formatInteger);
+      if (player.berries !== had)
+        flash(berries.value, player.berries > had ? 'is-gain' : 'is-loss');
+      berries.value.dataset['value'] = String(player.berries);
+    } else {
+      for (const v of [age, berries]) {
+        resetCount(v.value);
+        delete v.value.dataset['value'];
+        v.value.textContent = '\u2014';
+      }
+      location.value.textContent = '\u2014';
+    }
     berries.value.classList.toggle('is-debt', (player?.berries ?? 0) < 0);
   }
 
@@ -283,6 +429,15 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   }
 
   function render(state: UiState, previous: UiState | null): void {
+    const mapping = state.route === 'map';
+    if (mapping !== !mapPageEl.hidden) mapPageEl.hidden = !mapping;
+    if (
+      mapping &&
+      (previous?.route !== 'map' || state.snapshot?.sheet !== previous.snapshot?.sheet)
+    )
+      void mapPage.show();
+    if (mapping) mapLink.setAttribute('aria-current', 'page');
+    else mapLink.removeAttribute('aria-current');
     const creating = state.route === 'new';
     if (creating !== !newLifePage.hidden) {
       newLifePage.hidden = !creating;
@@ -292,6 +447,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     shell.dataset['side'] = effectiveSide(state);
     shell.dataset['phase'] = state.snapshot?.atPresent ? 'present' : 'live';
     shell.dataset['tick'] = String(state.snapshot?.tick ?? '');
+    shell.dataset['busy'] = String(state.busy !== null);
 
     renderHeader(state);
     renderNav(state);
@@ -299,10 +455,45 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     renderControls(state);
 
     const snapshotChanged = state.snapshot !== previous?.snapshot;
-    if (snapshotChanged || state.omniscient !== previous?.omniscient || !previous) {
+    if (
+      snapshotChanged ||
+      state.omniscient !== previous?.omniscient ||
+      state.feedFilter !== previous?.feedFilter ||
+      !previous
+    ) {
       const stick = !previous || atBottom(feedPanel);
-      feedPanel.replaceChildren(renderFeed(state, app));
-      if (stick) feedPanel.scrollTop = feedPanel.scrollHeight;
+      // Lines newer than the last ones drawn ink in; a new world or a load just appears.
+      const sameWorld =
+        previous?.snapshot && state.snapshot && previous.snapshot.seed === state.snapshot.seed;
+      const lastSeq = previous?.snapshot?.feed[previous.snapshot.feed.length - 1]?.seq;
+      const seenSeq = sameWorld && lastSeq !== undefined ? lastSeq : Infinity;
+      const focusedFilter = (document.activeElement as HTMLElement | null)?.dataset?.['filter'];
+      feedPanel.replaceChildren(renderFeed(state, app, { seenSeq }), jumpButton);
+      if (focusedFilter) {
+        feedPanel.querySelector<HTMLElement>(`[data-filter="${focusedFilter}"]`)?.focus();
+      }
+      const arrived = state.snapshot?.feed.filter((e) => e.seq > seenSeq).length ?? 0;
+      if (stick) {
+        feedPanel.scrollTop = feedPanel.scrollHeight;
+        unseen = 0;
+        jumpButton.hidden = true;
+      } else if (arrived > 0) {
+        unseen += arrived;
+        jumpButton.hidden = false;
+      }
+      jumpCount.textContent = unseen > 0 ? `(${unseen} new)` : '';
+      rail.refresh({ birthTick: state.snapshot?.sheet?.born.tick ?? null });
+      const summary =
+        previous?.snapshot && state.snapshot && snapshotChanged && previous.busy !== null
+          ? summarizeAdvance(previous.snapshot, state.snapshot)
+          : null;
+      if (summary) {
+        clearTimeout(toastTimer);
+        toasts.replaceChildren(renderLogCard(summary, dismissToast));
+        toastTimer = setTimeout(dismissToast, 7000);
+      } else if (state.snapshot?.seed !== previous?.snapshot?.seed) {
+        dismissToast();
+      }
       if (
         previous &&
         (previous.snapshot?.pending.length ?? 0) > 0 &&
@@ -310,6 +501,18 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       ) {
         focusNextWhenReady = true;
       }
+    }
+    // A phone shows one section at a time: the chronicle may just have become visible.
+    if (previous && state.route !== previous.route) {
+      rail.refresh({ birthTick: state.snapshot?.sheet?.born.tick ?? null });
+    }
+    // Coming back from New Life or the Map: the chronicle was laid out while hidden, so put it at
+    // the latest line.
+    if (previous && isPageRoute(previous.route) && !isPageRoute(state.route)) {
+      feedPanel.scrollTop = feedPanel.scrollHeight;
+      rail.refresh({ birthTick: state.snapshot?.sheet?.born.tick ?? null });
+      unseen = 0;
+      jumpButton.hidden = true;
     }
     if (focusNextWhenReady && !nextButton.disabled) {
       focusNextWhenReady = false;
@@ -334,6 +537,9 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   return {
     destroy() {
       unsubscribe();
+      document.removeEventListener('keydown', onKey);
+      rail.destroy();
+      clearTimeout(toastTimer);
       mq?.removeEventListener?.('change', onWidthChange);
       clear(root);
     },

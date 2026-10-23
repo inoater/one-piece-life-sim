@@ -357,7 +357,9 @@ export class SimCore {
         opens: b.opens,
         wealth: b.wealth,
         safety: b.safety,
+        region: b.region,
         races: [...b.races],
+        map: b.map ? { ...b.map } : null,
         traits: traitNames(b.traitPool),
       })),
       legacies: byId(data.legacies).map((l) => ({

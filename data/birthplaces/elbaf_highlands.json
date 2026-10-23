@@ -26,5 +26,9 @@
   "eventTags": {
     "elbaf": 4,
     "warrior": 3
+  },
+  "map": {
+    "x": 975,
+    "y": 643
   }
 }

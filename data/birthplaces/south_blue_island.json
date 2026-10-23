@@ -33,5 +33,9 @@
     "complexion.sunburnt": 2,
     "skin.tan": 1.5,
     "skin.brown": 1.5
+  },
+  "map": {
+    "x": 1885,
+    "y": 1060
   }
 }

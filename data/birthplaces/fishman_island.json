@@ -29,5 +29,9 @@
     "undersea": 4,
     "karate": 3,
     "prejudice": 2
+  },
+  "map": {
+    "x": 59,
+    "y": 670
   }
 }

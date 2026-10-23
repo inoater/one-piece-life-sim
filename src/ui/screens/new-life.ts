@@ -1,7 +1,10 @@
-import type { GenesisPreview, GenesisSetup } from '../../worker/protocol';
+import type { CharacterSheet, GenesisPreview, GenesisSetup } from '../../worker/protocol';
 import type { App } from '../app';
 import { confirmButton } from '../components/confirm-button';
+import { renderCapBars } from '../components/cap-bars';
+import type { WorldMap } from '../map/world-map';
 import { renderSheet, type SheetHandle } from '../components/sheet';
+import { flash } from '../motion';
 import { h, type Child } from '../dom';
 import { errorMessage, formatInteger } from '../format';
 import { navigate } from '../router';
@@ -108,6 +111,8 @@ interface Card {
   title: string;
   summary?: string;
   details?: string;
+  /** A small picture beside the text (the race's cap bars). */
+  extra?: Node;
   disabled?: boolean;
   disabledReason?: string;
 }
@@ -147,6 +152,7 @@ function radioCards(
           h('span', { class: 'card__title' }, card.title),
           card.summary ? h('span', { class: 'card__summary' }, card.summary) : null,
           card.details ? h('span', { class: 'card__details' }, card.details) : null,
+          card.extra ?? null,
           card.disabled && card.disabledReason
             ? h('span', { class: 'card__details' }, card.disabledReason)
             : null,
@@ -182,6 +188,24 @@ export function createNewLife(app: App): NewLifeScreen {
   let sequence = 0;
   let timer: ReturnType<typeof setTimeout> | undefined;
   let sheet: SheetHandle | null = null;
+  // The world map on the Birthplace screen is built once and kept, with its zoom, between visits.
+  let worldMap: WorldMap | null = null;
+  let onMapPick: (id: string) => void = () => {};
+  // The map's drawing and data load only when the Birthplace screen first needs them.
+  const birthMap = async (pick: (id: string) => void): Promise<WorldMap> => {
+    onMapPick = pick;
+    if (!worldMap) {
+      const { createWorldMap } = await import('../map/world-map');
+      worldMap ??= createWorldMap({
+        label: 'World map of birthplaces',
+        className: 'world-map--chooser',
+        onPin: (id) => onMapPick(id),
+      });
+    }
+    return worldMap;
+  };
+  /** The sheet in the preview pane now, so the next one can show what a choice changed. */
+  let shownSheet: CharacterSheet | null = null;
   let stepUpdate: ((p: GenesisPreview | null) => void) | null = null;
 
   const heading = h('h2', { class: 'newlife__title', tabindex: '-1' }, 'New Life');
@@ -233,6 +257,10 @@ export function createNewLife(app: App): NewLifeScreen {
     renderStep();
     heading.focus();
   };
+  form.addEventListener('click', (event) => {
+    const dice = (event.target as Element | null)?.closest?.('.reroll');
+    if (dice) flash(dice, 'is-rolling');
+  });
   backButton.addEventListener('click', () => {
     const i = stepIndex();
     if (i > 0) go((STEPS[i - 1] as (typeof STEPS)[number]).id);
@@ -360,7 +388,13 @@ export function createNewLife(app: App): NewLifeScreen {
       mini.textContent = '';
       return;
     }
-    sheet = renderSheet(preview.sheet, { tick: preview.entry?.tick ?? 0, compact: true });
+    sheet = renderSheet(preview.sheet, {
+      tick: preview.entry?.tick ?? 0,
+      compact: true,
+      previous: shownSheet,
+      place: 'preview',
+    });
+    shownSheet = preview.sheet;
     previewBody.replaceChildren(sheet.el);
     const s = preview.sheet;
     mini.replaceChildren(
@@ -500,7 +534,7 @@ export function createNewLife(app: App): NewLifeScreen {
     const reroll = h(
       'button',
       {
-        class: 'button button--tiny',
+        class: 'button button--tiny reroll',
         type: 'button',
         onclick: () => change((x) => (x.rolls.race += 1)),
       },
@@ -513,6 +547,7 @@ export function createNewLife(app: App): NewLifeScreen {
         title: r.name,
         summary: capText(r.capMods),
         details: `Child until ${r.anchors.childEnds}, prime from ${r.anchors.primeStarts}, elder from ${r.anchors.elderStarts}; lives ${r.lifespan.min}–${r.lifespan.max} years. ${r.traits.map((t) => t.name).join(', ')}.`,
+        extra: renderCapBars(r.capMods),
         disabled: r.rare && !d.rareRaces,
         disabledReason: 'A rare unlock: allow rare races on the World screen.',
       })),
@@ -535,8 +570,10 @@ export function createNewLife(app: App): NewLifeScreen {
       update(p: GenesisPreview | null) {
         const isRandom = draft?.race === RANDOM;
         reroll.hidden = !isRandom;
-        rolled.textContent =
+        const text =
           isRandom && p?.resolved ? `Rolled: ${resolvedName(s.races, p.resolved.race)}.` : '';
+        if (text !== rolled.textContent && text !== '') flash(rolled);
+        rolled.textContent = text;
       },
     };
   }
@@ -550,15 +587,63 @@ export function createNewLife(app: App): NewLifeScreen {
     const reroll = h(
       'button',
       {
-        class: 'button button--tiny',
+        class: 'button button--tiny reroll',
         type: 'button',
         onclick: () => change((x) => (x.rolls.birthplace += 1)),
       },
       'Reroll birthplace',
     );
+    const chart = h('div', { class: 'chart-box' });
+    const pickPlace = (v: string) =>
+      change((x) => {
+        // A birthplace only fits some races: pin the race that was rolled, so it cannot change under it.
+        if (x.race === RANDOM && preview?.resolved) x.race = preview.resolved.race;
+        x.birthplace = v;
+      }, true);
+    const drawChart = (next: GenesisPreview | null) => {
+      const openIds = new Set(race ? race.birthplaces : s.birthplaces.map((b) => b.id));
+      const chosen = draft?.birthplace ?? RANDOM;
+      const rolled = chosen === RANDOM ? (next?.resolved?.birthplace ?? null) : null;
+      if (!chart.firstChild) chart.append(h('p', { class: 'muted' }, 'Unrolling the chart…'));
+      void birthMap(pickPlace).then((map) => {
+        if (!chart.isConnected) return;
+        map.setPins(
+          s.birthplaces
+            .filter((b) => b.map)
+            .map((b) => {
+              const open = openIds.has(b.id);
+              const kind =
+                chosen === b.id ? 'chosen' : rolled === b.id ? 'rolled' : open ? 'open' : 'closed';
+              return {
+                id: b.id,
+                x: b.map?.x ?? 0,
+                y: b.map?.y ?? 0,
+                label: b.shortName,
+                kind,
+                labelled: kind === 'chosen' || kind === 'rolled',
+                title: open
+                  ? `${b.name}${kind === 'chosen' ? ' (chosen)' : kind === 'rolled' ? ' (rolled)' : ''}`
+                  : `${b.name}: closed to a ${race?.name ?? 'this race'}`,
+              };
+            }),
+        );
+        if (map.el.parentElement !== chart) {
+          chart.replaceChildren(
+            map.el,
+            h(
+              'p',
+              { class: 'field__hint' },
+              'Drag and zoom the map; pick a pin or a card. Grey pins are closed to your race.',
+            ),
+          );
+          requestAnimationFrame(() => map.measure());
+        }
+      });
+    };
     const el = h(
       'div',
       { class: 'step' },
+      chart,
       h('p', { class: 'step__random' }, rolled, ' ', reroll),
       radioCards(
         race ? `Birthplace for a ${race.name}` : 'Birthplace',
@@ -592,10 +677,13 @@ export function createNewLife(app: App): NewLifeScreen {
       update(next: GenesisPreview | null) {
         const isRandom = draft?.birthplace === RANDOM;
         reroll.hidden = !isRandom;
-        rolled.textContent =
+        const text =
           isRandom && next?.resolved
             ? `Rolled: ${resolvedName(s.birthplaces, next.resolved.birthplace)}.`
             : '';
+        if (text !== rolled.textContent && text !== '') flash(rolled);
+        rolled.textContent = text;
+        drawChart(next);
       },
     };
   }
@@ -666,7 +754,7 @@ export function createNewLife(app: App): NewLifeScreen {
         h(
           'button',
           {
-            class: 'button button--tiny',
+            class: 'button button--tiny reroll',
             type: 'button',
             onclick: () => change((x) => (x.rolls.family += 1)),
           },
@@ -853,7 +941,7 @@ export function createNewLife(app: App): NewLifeScreen {
             h(
               'button',
               {
-                class: 'button button--tiny',
+                class: 'button button--tiny reroll',
                 type: 'button',
                 onclick: () => change((x) => (x.rolls.backstory += 1)),
               },
@@ -933,7 +1021,7 @@ export function createNewLife(app: App): NewLifeScreen {
             const reroll = h(
               'button',
               {
-                class: 'button button--tiny',
+                class: 'button button--tiny reroll',
                 type: 'button',
                 disabled: row.locked,
                 title: row.locked ? 'Unlock it to reroll' : '',
@@ -1057,6 +1145,7 @@ export function createNewLife(app: App): NewLifeScreen {
     );
     stepUpdate = built.update;
     built.update(preview);
+    flash(form, 'is-entering');
   }
 
   async function load(): Promise<void> {

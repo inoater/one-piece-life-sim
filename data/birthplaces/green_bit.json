@@ -28,5 +28,9 @@
   "eventTags": {
     "tontatta": 4,
     "forage": 2
+  },
+  "map": {
+    "x": 235,
+    "y": 679
   }
 }

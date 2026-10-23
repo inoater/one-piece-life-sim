@@ -52,6 +52,7 @@ export function renderWorld(state: UiState): HTMLElement {
     ]),
 
     h('h2', { class: 'side-screen__title' }, 'The world'),
+    h('p', null, h('a', { class: 'button', href: '#/map' }, 'Open the world map')),
     facts([
       ['Seed', [h('code', null, s.seed), ' ', copyButton(s.seed)]],
       ['Entities', s.counts.entities === 0 ? 'none yet' : breakdown(s.counts.byType)],

@@ -1,0 +1,4 @@
+# Keep LF line endings in the working tree on every platform (Prettier and the tools expect them).
+* text=auto eol=lf
+*.opsim binary
+*.woff2 binary

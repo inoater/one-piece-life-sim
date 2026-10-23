@@ -390,6 +390,13 @@ export const BirthplaceSchema = z.strictObject({
   /** Backstory event tag -> multiplier ("sea": 2 near the sea). */
   eventTags: multipliers,
   appearanceWeights: multipliers,
+  /**
+   * Where it is on the world map (the Map page and the Birthplace screen): map units, x 0-2576
+   * west to east, y 0-1288 north to south. Presentation only; Phase 3's travel graph is separate.
+   */
+  map: z
+    .strictObject({ x: z.number().min(0).max(2576), y: z.number().min(0).max(1288) })
+    .optional(),
   /** Flags every character born here starts with ("wano.closed": leaving needs an event chain). */
   flags: z.record(flagName, FlagValueSchema).default({}),
   tags,

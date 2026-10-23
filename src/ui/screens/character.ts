@@ -1,3 +1,4 @@
+import type { CharacterSheet } from '../../worker/protocol';
 import type { App } from '../app';
 import { renderSheet, type SheetHandle } from '../components/sheet';
 import { h } from '../dom';
@@ -9,13 +10,20 @@ import type { UiState } from '../store';
  */
 
 let current: SheetHandle | null = null;
+/** The sheet last shown, so the next one can show what changed (same person only). */
+let lastSheet: CharacterSheet | null = null;
 
 export function renderCharacter(state: UiState, app: App): HTMLElement {
   current?.destroy();
   current = null;
   const snapshot = state.snapshot;
   if (snapshot?.sheet) {
-    current = renderSheet(snapshot.sheet, { tick: snapshot.tick });
+    const previous =
+      lastSheet?.id === snapshot.sheet.id && lastSheet.name === snapshot.sheet.name
+        ? lastSheet
+        : null;
+    current = renderSheet(snapshot.sheet, { tick: snapshot.tick, previous, place: 'character' });
+    lastSheet = snapshot.sheet;
     return h('div', { class: 'side-screen side-screen--sheet' }, current.el);
   }
   return h(

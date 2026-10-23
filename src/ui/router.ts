@@ -6,7 +6,7 @@
 /** The sections, each a tab. */
 export const ROUTES = ['feed', 'character', 'actions', 'world', 'news'] as const;
 /** Full-page screens that are not tabs: New Life. */
-export const PAGE_ROUTES = ['new'] as const;
+export const PAGE_ROUTES = ['new', 'map'] as const;
 export type TabRoute = (typeof ROUTES)[number];
 export type Route = TabRoute | (typeof PAGE_ROUTES)[number];
 /** The routes that live in the side panel on a wide screen (the feed is always visible there). */
@@ -20,6 +20,7 @@ export const ROUTE_LABELS: Record<Route, string> = {
   world: 'World',
   news: 'News',
   new: 'New Life',
+  map: 'Map',
 };
 
 export function parseHash(hash: string): Route {

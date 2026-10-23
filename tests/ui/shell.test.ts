@@ -44,13 +44,14 @@ describe('the masthead', () => {
 });
 
 describe('navigation', () => {
-  it('has the five sections as real links, and Back-friendly hash URLs', () => {
+  it('has the five sections and the map as real links, and Back-friendly hash URLs', () => {
     expect(qa('.tabs a').map((a) => [text(a), a.getAttribute('href')])).toEqual([
       ['Feed', '#/feed'],
       ['Character', '#/character'],
       ['Actions', '#/actions'],
       ['World', '#/world'],
       ['News', '#/news'],
+      ['Map', '#/map'],
     ]);
   });
 
