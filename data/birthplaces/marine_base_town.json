@@ -41,6 +41,7 @@
     "dojo",
     "shipyard"
   ],
+  "location": "loc_marine_base_town",
   "map": {
     "x": 2140,
     "y": 700

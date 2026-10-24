@@ -264,9 +264,10 @@
     "illness": "wasting_fever",
     "mult": 25,
     "news": [
-      "The wasting fever has come to {player.home}. Doors are shut and the doctor sleeps in their clothes.",
-      "Sickness spreads through {player.home}: the wasting fever, the old people call it, and they remember the last time."
-    ]
+      "The wasting fever has come to {place}. Doors are shut and the doctor sleeps in their clothes.",
+      "Sickness spreads through {place}: the wasting fever, the old people call it, and they remember the last time."
+    ],
+    "spread": 0.08
   },
   "collapse": {
     "accident": 0.3,

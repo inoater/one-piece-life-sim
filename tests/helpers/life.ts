@@ -40,9 +40,12 @@ export const LIFE_DEFAULTS: GenesisOptionsInput = {
 export function startLife(
   over: Partial<GenesisOptionsInput> = {},
   data: GameData = realData,
+  quiet = true,
 ): TestLife {
   const options = { ...LIFE_DEFAULTS, ...over } as GenesisOptionsInput;
-  const { state } = createLife(data, options, { allowBlocked: true });
+  // The life loop's tests need no Tier 2 crowd (Phase 3), and no random events unless they ask.
+  const { state } = createLife(data, options, { allowBlocked: true, population: 'none' });
+  if (quiet) state.flags['dev.quiet'] = true;
   const rng = Rng.root(options.seed);
   const t: TestLife = {
     state,

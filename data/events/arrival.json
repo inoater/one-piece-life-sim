@@ -1,0 +1,125 @@
+[
+  {
+    "id": "evt_arrival_customs",
+    "type": "local",
+    "title": "Harbour inspection",
+    "text": "Marines met the boat at the quay in {place} and wanted to know who you were and why you had come.",
+    "trigger": "arrival",
+    "weight": 3,
+    "cooldown": 6,
+    "conditions": [{ "kind": "feature", "features": ["marine_base"] }],
+    "weightMods": [
+      { "when": [{ "kind": "flagAtLeast", "flag": "bounty", "value": 1 }], "mult": 4 }
+    ],
+    "choices": [
+      {
+        "id": "answer",
+        "label": "Answer their questions",
+        "check": {
+          "stat": "charisma",
+          "difficulty": 35,
+          "success": {
+            "text": "The sergeant stamped your name in a ledger and let you through.",
+            "effects": []
+          },
+          "failure": {
+            "text": "The sergeant did not believe a word of it, and you spent a night in the cells while they checked.",
+            "effects": [
+              {
+                "kind": "arrest",
+                "fine": { "min": 1000, "max": 5000 },
+                "months": { "min": 1, "max": 1 }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "slip",
+        "label": "Slip away in the crowd",
+        "check": {
+          "stat": "speed",
+          "difficulty": 45,
+          "success": {
+            "text": "You were three streets away before anyone noticed you were gone.",
+            "effects": [{ "kind": "infamy", "value": 1 }]
+          },
+          "failure": {
+            "text": "They caught you at the end of the quay.",
+            "effects": [
+              {
+                "kind": "arrest",
+                "fine": { "min": 3000, "max": 9000 },
+                "months": { "min": 1, "max": 3 }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["arrival", "marine"]
+  },
+  {
+    "id": "evt_arrival_heavens_gate",
+    "type": "local",
+    "title": "Heaven's Gate",
+    "text": "At the gate to the sky island, an old woman with wings and a camera asked for a toll of a billion extol each, or nothing at all, as you liked.",
+    "trigger": "arrival",
+    "weight": 100,
+    "cooldown": 1,
+    "conditions": [{ "kind": "atLocation", "location": "loc_skypiea" }],
+    "choices": [
+      {
+        "id": "pay",
+        "label": "Pay the toll",
+        "requires": [{ "kind": "berries", "min": 10000 }],
+        "effects": [{ "kind": "berries", "min": -10000, "max": -10000 }]
+      },
+      {
+        "id": "skip",
+        "label": "Go in without paying",
+        "effects": [
+          { "kind": "flag", "flag": "sky.illegal", "value": true },
+          {
+            "kind": "log",
+            "text": "She took your picture anyway. In Skypiea, that is a warrant.",
+            "tags": ["arrival", "sky"]
+          }
+        ]
+      }
+    ],
+    "tags": ["arrival", "sky"]
+  },
+  {
+    "id": "evt_arrival_fishman_welcome",
+    "type": "local",
+    "title": "Under the sea",
+    "text": "The bubble of Fish-Man Island closed around the {ship}, and a crowd of fish-men and mermaids gathered to see who had come down this time.",
+    "trigger": "arrival",
+    "weight": 100,
+    "cooldown": 12,
+    "conditions": [
+      { "kind": "atLocation", "location": "loc_fishman_island" },
+      { "kind": "atSea", "value": false }
+    ],
+    "choices": [
+      {
+        "id": "friendly",
+        "label": "Wave",
+        "check": {
+          "stat": "charisma",
+          "difficulty": 40,
+          "success": {
+            "text": "Most of them waved back. Not all.",
+            "effects": [{ "kind": "train", "stats": { "charisma": 0.5 } }]
+          },
+          "failure": {
+            "text": "A gang of fish-man toughs decided they did not like the look of a human.",
+            "effects": [{ "kind": "injury", "severity": "minor", "cause": "violence" }]
+          }
+        }
+      }
+    ],
+    "tags": ["arrival", "fishman"]
+  }
+]

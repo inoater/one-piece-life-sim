@@ -1,0 +1,308 @@
+{
+  "population": {
+    "named": {
+      "none": 0,
+      "hamlet": 8,
+      "village": 20,
+      "town": 36,
+      "city": 56,
+      "capital": 76
+    },
+    "residents": {
+      "none": 0,
+      "hamlet": 150,
+      "village": 700,
+      "town": 5000,
+      "city": 30000,
+      "capital": 120000
+    },
+    "ages": {
+      "children": 0.3,
+      "adults": 0.58,
+      "elders": 0.12
+    },
+    "birthRate": 0.03,
+    "deathRate": 0.025,
+    "namedAges": {
+      "min": 16,
+      "max": 68
+    },
+    "childChance": 0.18,
+    "namedCap": 1.5
+  },
+  "npc": {
+    "goals": [
+      {
+        "id": "survive",
+        "name": "Get by",
+        "weight": 5,
+        "occupations": {
+          "occ_farmer": 1.5,
+          "occ_fisher": 1.3,
+          "occ_net_mender": 1.5
+        }
+      },
+      {
+        "id": "wealth",
+        "name": "Get rich",
+        "weight": 3,
+        "occupations": {
+          "occ_merchant": 2.5,
+          "occ_smuggler": 2,
+          "occ_shopkeeper": 2
+        }
+      },
+      {
+        "id": "glory",
+        "name": "Be remembered",
+        "weight": 1.5,
+        "occupations": {
+          "occ_mercenary": 2,
+          "occ_samurai": 2.5,
+          "occ_warrior": 2.5,
+          "occ_marine": 2,
+          "occ_swordsman": 2.5
+        }
+      },
+      {
+        "id": "revenge",
+        "name": "Settle a score",
+        "weight": 0.5,
+        "occupations": {
+          "occ_street_kid": 2,
+          "occ_bandit": 2
+        }
+      },
+      {
+        "id": "freedom",
+        "name": "Be free",
+        "weight": 1.2,
+        "occupations": {
+          "occ_sailor": 2.5,
+          "occ_old_sailor": 2,
+          "occ_pirate": 3
+        }
+      }
+    ],
+    "actions": [
+      {
+        "id": "work",
+        "name": "worked",
+        "utility": {
+          "survive": 1,
+          "wealth": 1.2,
+          "glory": 0.1,
+          "revenge": 0.1,
+          "freedom": 0.2
+        },
+        "ages": {
+          "min": 12,
+          "max": 120
+        }
+      },
+      {
+        "id": "train",
+        "name": "trained",
+        "utility": {
+          "survive": 0.3,
+          "wealth": 0.1,
+          "glory": 1,
+          "revenge": 1,
+          "freedom": 0.4
+        },
+        "ages": {
+          "min": 10,
+          "max": 70
+        }
+      },
+      {
+        "id": "voyage",
+        "name": "set sail",
+        "utility": {
+          "survive": 0.05,
+          "wealth": 0.4,
+          "glory": 0.5,
+          "revenge": 0.3,
+          "freedom": 1
+        },
+        "ages": {
+          "min": 16,
+          "max": 65
+        }
+      },
+      {
+        "id": "piracy",
+        "name": "turned pirate",
+        "utility": {
+          "survive": 0,
+          "wealth": 0.4,
+          "glory": 0.7,
+          "revenge": 0.4,
+          "freedom": 0.8
+        },
+        "ages": {
+          "min": 15,
+          "max": 55
+        }
+      },
+      {
+        "id": "enlist",
+        "name": "joined the Marines",
+        "utility": {
+          "survive": 0.4,
+          "wealth": 0.3,
+          "glory": 0.9,
+          "revenge": 0.4,
+          "freedom": 0
+        },
+        "ages": {
+          "min": 16,
+          "max": 35
+        }
+      },
+      {
+        "id": "settle",
+        "name": "settled down",
+        "utility": {
+          "survive": 0.9,
+          "wealth": 0.3,
+          "glory": 0.1,
+          "revenge": 0,
+          "freedom": 0.1
+        },
+        "ages": {
+          "min": 18,
+          "max": 50
+        }
+      },
+      {
+        "id": "scheme",
+        "name": "went after a rival",
+        "utility": {
+          "survive": 0,
+          "wealth": 0.2,
+          "glory": 0.3,
+          "revenge": 1.5,
+          "freedom": 0
+        },
+        "ages": {
+          "min": 14,
+          "max": 70
+        }
+      },
+      {
+        "id": "rest",
+        "name": "took it easy",
+        "utility": {
+          "survive": 0.6,
+          "wealth": 0,
+          "glory": 0,
+          "revenge": 0,
+          "freedom": 0.3
+        },
+        "ages": {
+          "min": 0,
+          "max": 200
+        }
+      }
+    ],
+    "noise": 0.35,
+    "poorBelow": 5000,
+    "fighterPower": 175,
+    "crewNames": [
+      "Black Gull Pirates",
+      "Rusty Anchor Pirates",
+      "Red Squall Pirates",
+      "Barrel Kings",
+      "Ninefin Pirates",
+      "Grinning Shark Pirates",
+      "Crooked Mast Pirates",
+      "Iron Wave Pirates",
+      "Saltfang Pirates",
+      "Thunder Gull Pirates",
+      "Copper Moon Pirates",
+      "Howling Reef Pirates",
+      "Lantern Jaw Pirates",
+      "Splitsail Pirates",
+      "Bonefish Pirates",
+      "Midnight Kelp Pirates"
+    ],
+    "bounty": {
+      "min": 2000000,
+      "max": 15000000
+    }
+  },
+  "factions": {
+    "crewStrength": 0.4,
+    "territoryStrength": 1.5,
+    "hostileBelow": -50,
+    "umbrellaShare": 0.15,
+    "umbrellaCap": 60
+  },
+  "economy": {
+    "prosperity": {
+      "low": 35,
+      "medium": 50,
+      "high": 70
+    },
+    "priceSlope": 0.006
+  },
+  "news": {
+    "delay": {
+      "place": 0,
+      "region": 1,
+      "near": 2,
+      "far": 3
+    }
+  },
+  "events": {
+    "playerPerMonth": [88, 10, 2, 0],
+    "worldPerMonth": [55, 32, 10, 3]
+  },
+  "climates": {
+    "temperate": {
+      "name": "Temperate",
+      "illness": {}
+    },
+    "tropical": {
+      "name": "Tropical",
+      "illness": {
+        "fever": 1.4,
+        "bad_stomach": 1.3
+      }
+    },
+    "arid": {
+      "name": "Desert",
+      "illness": {
+        "bad_stomach": 1.2,
+        "fever": 0.8
+      }
+    },
+    "cold": {
+      "name": "Winter island",
+      "illness": {
+        "chest_cough": 1.6,
+        "fever": 1.1
+      }
+    },
+    "volatile": {
+      "name": "Wild weather",
+      "illness": {
+        "fever": 1.2,
+        "chest_cough": 1.2
+      }
+    },
+    "sky": {
+      "name": "Sky island",
+      "illness": {
+        "chest_cough": 0.8
+      }
+    },
+    "undersea": {
+      "name": "Under the sea",
+      "illness": {
+        "chest_cough": 1.2
+      }
+    }
+  }
+}

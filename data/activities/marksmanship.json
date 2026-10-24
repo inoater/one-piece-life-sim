@@ -13,7 +13,7 @@
     "dexterity": 0.7,
     "perception": 0.4
   },
-  "tags": ["training"],
+  "tags": ["training", "at_sea"],
   "outcomes": [
     {
       "id": "bottles",

@@ -19,6 +19,7 @@ import {
 import { renderActions } from './screens/actions';
 import { renderCharacter } from './screens/character';
 import { renderFeed } from './screens/feed';
+import { createCanonPage } from './screens/canon';
 import { createMapPage } from './screens/map';
 import { renderEnd } from './screens/end';
 import { createNewLife } from './screens/new-life';
@@ -130,6 +131,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   const mapPage = createMapPage(app);
   const mapPageEl = h('div', { class: 'map-page-slot', hidden: true }, mapPage.el);
   const endPageEl = h('div', { class: 'end-page-slot', hidden: true });
+  const canonPage = createCanonPage(app);
+  const canonPageEl = h('div', { class: 'canon-page-slot', hidden: true }, canonPage.el);
 
   // ---- Controls
   const nextButton = h('button', { class: 'button button--primary', type: 'button' }, 'Next month');
@@ -221,6 +224,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     newLifePage,
     mapPageEl,
     endPageEl,
+    canonPageEl,
     controls,
     toasts,
   );
@@ -334,7 +338,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   function renderNav(state: UiState): void {
     // On the Map page only the Map link is current (it is set where the page is shown).
     const current: Route | null =
-      state.route === 'map'
+      state.route === 'map' || state.route === 'canon'
         ? null
         : isWide() && !isSideRoute(state.route)
           ? state.sideTab
@@ -497,11 +501,13 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   function render(state: UiState, previous: UiState | null): void {
     const mapping = state.route === 'map';
     if (mapping !== !mapPageEl.hidden) mapPageEl.hidden = !mapping;
-    if (
-      mapping &&
-      (previous?.route !== 'map' || state.snapshot?.sheet !== previous.snapshot?.sheet)
-    )
+    // The map follows the player (Phase 3): redrawn whenever the world moves while it is open.
+    if (mapping && (previous?.route !== 'map' || state.snapshot !== previous.snapshot))
       void mapPage.show();
+    const reading = state.route === 'canon';
+    if (reading !== !canonPageEl.hidden) canonPageEl.hidden = !reading;
+    if (reading && (previous?.route !== 'canon' || state.snapshot !== previous.snapshot))
+      void canonPage.show();
     if (mapping) mapLink.setAttribute('aria-current', 'page');
     else mapLink.removeAttribute('aria-current');
     const ending = state.route === 'end';

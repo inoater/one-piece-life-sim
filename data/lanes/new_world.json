@@ -1,0 +1,163 @@
+[
+  {
+    "id": "lane_fishman_island_punk_hazard",
+    "from": "loc_fishman_island",
+    "to": "loc_punk_hazard",
+    "miles": 130,
+    "danger": 4,
+    "current": "strong",
+    "requires": "log_pose",
+    "traffic": 1
+  },
+  {
+    "id": "lane_fishman_island_dressrosa",
+    "from": "loc_fishman_island",
+    "to": "loc_dressrosa",
+    "miles": 240,
+    "danger": 3,
+    "current": "strong",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_fishman_island_whole_cake",
+    "from": "loc_fishman_island",
+    "to": "loc_whole_cake",
+    "miles": 600,
+    "danger": 4,
+    "current": "strong",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_punk_hazard_dressrosa",
+    "from": "loc_punk_hazard",
+    "to": "loc_dressrosa",
+    "miles": 120,
+    "danger": 3,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 1
+  },
+  {
+    "id": "lane_dressrosa_green_bit",
+    "from": "loc_dressrosa",
+    "to": "loc_green_bit",
+    "miles": 80,
+    "danger": 2,
+    "current": "none",
+    "requires": "none",
+    "land": true,
+    "description": "Across the iron bridge."
+  },
+  {
+    "id": "lane_dressrosa_new_world_island",
+    "from": "loc_dressrosa",
+    "to": "loc_new_world_island",
+    "miles": 430,
+    "danger": 4,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_dressrosa_zou",
+    "from": "loc_dressrosa",
+    "to": "loc_zou",
+    "miles": 560,
+    "danger": 3,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 1
+  },
+  {
+    "id": "lane_whole_cake_new_world_island",
+    "from": "loc_whole_cake",
+    "to": "loc_new_world_island",
+    "miles": 130,
+    "danger": 4,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_whole_cake_wano",
+    "from": "loc_whole_cake",
+    "to": "loc_wano",
+    "miles": 440,
+    "danger": 4,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 1
+  },
+  {
+    "id": "lane_new_world_island_zou",
+    "from": "loc_new_world_island",
+    "to": "loc_zou",
+    "miles": 150,
+    "danger": 3,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_zou_wano",
+    "from": "loc_zou",
+    "to": "loc_wano",
+    "miles": 290,
+    "danger": 3,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 1,
+    "closedBy": "wano.closed",
+    "closedText": "Wano's borders are closed to those born there"
+  },
+  {
+    "id": "lane_wano_egghead",
+    "from": "loc_wano",
+    "to": "loc_egghead",
+    "miles": 140,
+    "danger": 4,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 1,
+    "closedBy": "wano.closed",
+    "closedText": "Wano's borders are closed to those born there"
+  },
+  {
+    "id": "lane_egghead_sphinx",
+    "from": "loc_egghead",
+    "to": "loc_sphinx",
+    "miles": 80,
+    "danger": 3,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_sphinx_elbaf",
+    "from": "loc_sphinx",
+    "to": "loc_elbaf",
+    "miles": 80,
+    "danger": 3,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_egghead_elbaf",
+    "from": "loc_egghead",
+    "to": "loc_elbaf",
+    "miles": 130,
+    "danger": 4,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 1
+  },
+  {
+    "id": "lane_elbaf_laugh_tale",
+    "from": "loc_elbaf",
+    "to": "loc_laugh_tale",
+    "miles": 270,
+    "danger": 5,
+    "current": "wild",
+    "requires": "eternal_pose",
+    "traffic": 0,
+    "needsFlag": "pose.laugh_tale",
+    "needsText": "Only the Road Poneglyphs point the way to the last island",
+    "description": "Past the end of every chart."
+  }
+]

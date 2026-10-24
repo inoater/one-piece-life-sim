@@ -68,5 +68,6 @@
       ]
     }
   ],
-  "tags": ["fight", "work"]
+  "tags": ["fight", "work"],
+  "travels": true
 }

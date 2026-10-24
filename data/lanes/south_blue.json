@@ -1,0 +1,58 @@
+[
+  {
+    "id": "lane_south_blue_island_baterilla",
+    "from": "loc_south_blue_island",
+    "to": "loc_baterilla",
+    "miles": 350,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none"
+  },
+  {
+    "id": "lane_baterilla_briss_kingdom",
+    "from": "loc_baterilla",
+    "to": "loc_briss_kingdom",
+    "miles": 280,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none"
+  },
+  {
+    "id": "lane_south_blue_island_sorbet_kingdom",
+    "from": "loc_south_blue_island",
+    "to": "loc_sorbet_kingdom",
+    "miles": 420,
+    "danger": 2,
+    "current": "steady",
+    "requires": "none"
+  },
+  {
+    "id": "lane_sorbet_kingdom_karate_island",
+    "from": "loc_sorbet_kingdom",
+    "to": "loc_karate_island",
+    "miles": 280,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none"
+  },
+  {
+    "id": "lane_karate_island_south_blue_island",
+    "from": "loc_karate_island",
+    "to": "loc_south_blue_island",
+    "miles": 660,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 1
+  },
+  {
+    "id": "lane_briss_kingdom_south_blue_island",
+    "from": "loc_briss_kingdom",
+    "to": "loc_south_blue_island",
+    "miles": 460,
+    "danger": 2,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 1
+  }
+]

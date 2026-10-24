@@ -16,12 +16,40 @@ export interface MapPin {
   y: number;
   /** Short name drawn beside the pin when it is labelled. */
   label: string;
-  /** home: where the player lives; open/closed/chosen/rolled: birthplace choices. */
-  kind: 'home' | 'open' | 'closed' | 'chosen' | 'rolled';
+  /**
+   * home: where the player lives; open/closed/chosen/rolled: birthplace choices. Phase 3 (the
+   * Map page): here (where the player is), place, visited, reachable (a lane leads there from
+   * here), target (where the voyage is bound), ship (the player at sea; not a button).
+   */
+  kind:
+    | 'home'
+    | 'open'
+    | 'closed'
+    | 'chosen'
+    | 'rolled'
+    | 'here'
+    | 'place'
+    | 'visited'
+    | 'reachable'
+    | 'target'
+    | 'ship';
   /** Spoken and shown on hover. */
   title: string;
   /** Draw the label even when not hovered. */
   labelled?: boolean;
+}
+
+/** A sea lane drawn on the map (Phase 3). */
+export interface MapRoute {
+  id: string;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  /** lane: any lane; reachable: from where the player is; voyage: the one being sailed. */
+  kind: 'lane' | 'reachable' | 'voyage';
+  danger: number;
+  land: boolean;
 }
 
 export interface WorldMapOptions {
@@ -35,6 +63,8 @@ export interface WorldMapOptions {
 export interface WorldMap {
   el: HTMLElement;
   setPins(pins: readonly MapPin[]): void;
+  /** Draw the sea lanes (Phase 3). Lanes that cross the map's edge are drawn across it. */
+  setRoutes(routes: readonly MapRoute[]): void;
   /** Glide to a map point at a zoom (1 = whole map). */
   focusOn(x: number, y: number, zoom: number): void;
   /** Open the notes for a named place, and go there. */
@@ -58,8 +88,9 @@ export function createWorldMap(options: WorldMapOptions): WorldMap {
   const { overlay } = drawAtlas(map);
   const selection = svg('g', { class: 'atlas__selection', 'pointer-events': 'none' });
   const pinLayer = svg('g', { class: 'atlas__pins' });
+  const routeLayer = svg('g', { class: 'atlas__routes', 'pointer-events': 'none' });
   overlay.append(selection);
-  map.append(pinLayer); // above the names, so a pin is never hidden under a label
+  map.append(routeLayer, pinLayer); // above the names, so a pin is never hidden under a label
 
   const name = h('h3', { class: 'atlas-info__name' });
   const where = h('p', { class: 'atlas-info__where' });
@@ -229,12 +260,63 @@ export function createWorldMap(options: WorldMapOptions): WorldMap {
 
   // ---- Pins --------------------------------------------------------------------------------
 
+  const STAR =
+    'M0 -9 L2.6 -2.8 L9 -2.8 L3.8 1.2 L5.6 7.6 L0 3.8 L-5.6 7.6 L-3.8 1.2 L-9 -2.8 L-2.6 -2.8 Z';
+  const BOAT = 'M-9 1 L9 1 L5 7 L-5 7 Z M0 1 L0 -9 L7 -1 Z';
+  const markFor = (pin: MapPin) => {
+    if (pin.kind === 'home' || pin.kind === 'here')
+      return svg('path', { class: 'atlas-pin__mark', d: STAR });
+    if (pin.kind === 'ship') return svg('path', { class: 'atlas-pin__mark', d: BOAT });
+    return svg('circle', {
+      class: 'atlas-pin__mark',
+      r:
+        pin.kind === 'chosen' || pin.kind === 'rolled' || pin.kind === 'target'
+          ? 6.5
+          : pin.kind === 'place'
+            ? 4
+            : 5,
+    });
+  };
+  const inert = (pin: MapPin) =>
+    pin.kind === 'closed' || pin.kind === 'home' || pin.kind === 'ship';
+
+  function setRoutes(routes: readonly MapRoute[]): void {
+    const lines: SVGElement[] = [];
+    for (const r of routes) {
+      // A lane across the map's edge (Sabaody to Fish-Man Island) is drawn off both edges.
+      const wraps = Math.abs(r.x1 - r.x2) > MAP_W / 2;
+      const segments = wraps
+        ? r.x1 > r.x2
+          ? [
+              [r.x1, r.y1, r.x2 + MAP_W, r.y2],
+              [r.x1 - MAP_W, r.y1, r.x2, r.y2],
+            ]
+          : [
+              [r.x1, r.y1, r.x2 - MAP_W, r.y2],
+              [r.x1 + MAP_W, r.y1, r.x2, r.y2],
+            ]
+        : [[r.x1, r.y1, r.x2, r.y2]];
+      for (const [x1, y1, x2, y2] of segments) {
+        lines.push(
+          svg('line', {
+            class: 'atlas-route',
+            x1,
+            y1,
+            x2,
+            y2,
+            dataset: { kind: r.kind, danger: String(r.danger), land: String(r.land) },
+          }),
+        );
+      }
+    }
+    routeLayer.replaceChildren(...lines);
+  }
+
   function setPins(next: readonly MapPin[]): void {
     pins = next;
     pinLayer.replaceChildren(
       ...pins.map((pin) => {
-        const interactive =
-          options.onPin !== undefined && pin.kind !== 'closed' && pin.kind !== 'home';
+        const interactive = options.onPin !== undefined && !inert(pin);
         const g = svg(
           'g',
           {
@@ -249,15 +331,7 @@ export function createWorldMap(options: WorldMapOptions): WorldMap {
           },
           svg('title', null, pin.title),
           svg('circle', { class: 'atlas-pin__halo', r: 13 }),
-          pin.kind === 'home'
-            ? svg('path', {
-                class: 'atlas-pin__mark',
-                d: 'M0 -9 L2.6 -2.8 L9 -2.8 L3.8 1.2 L5.6 7.6 L0 3.8 L-5.6 7.6 L-3.8 1.2 L-9 -2.8 L-2.6 -2.8 Z',
-              })
-            : svg('circle', {
-                class: 'atlas-pin__mark',
-                r: pin.kind === 'chosen' || pin.kind === 'rolled' ? 6.5 : 5,
-              }),
+          markFor(pin),
           svg(
             'text',
             { class: 'atlas-pin__label', x: 0, y: -15, 'text-anchor': 'middle' },
@@ -284,6 +358,7 @@ export function createWorldMap(options: WorldMapOptions): WorldMap {
     let best: MapPin | undefined;
     let bestD = Infinity;
     for (const p of pins) {
+      if (p.kind === 'ship') continue;
       const d = Math.hypot(p.x - x, p.y - y);
       if (d <= reach && d < bestD) {
         best = p;
@@ -342,7 +417,7 @@ export function createWorldMap(options: WorldMapOptions): WorldMap {
     lastTap = now;
     const [x, y] = toWorld(event.clientX, event.clientY);
     const pin = pinAt(x, y);
-    if (pin && options.onPin && pin.kind !== 'closed' && pin.kind !== 'home') {
+    if (pin && options.onPin && !inert(pin)) {
       options.onPin(pin.id);
       return;
     }
@@ -403,6 +478,7 @@ export function createWorldMap(options: WorldMapOptions): WorldMap {
   return {
     el,
     setPins,
+    setRoutes,
     focusOn,
     open: openPlace,
     measure,

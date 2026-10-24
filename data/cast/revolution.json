@@ -1,0 +1,331 @@
+[
+  {
+    "id": "char_monkey_d_dragon",
+    "name": "Monkey D. Dragon",
+    "givenName": "Dragon",
+    "familyName": "Monkey",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -17,
+      "month": 10
+    },
+    "birthplace": "loc_dawn_island",
+    "description": "Garp's son, the most wanted man in the world, who means to end the World Government.",
+    "epithet": "the Revolutionary",
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 90,
+      "willpower": 170,
+      "charisma": 170,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -17,
+          "month": 10
+        },
+        "place": "loc_dawn_island"
+      },
+      {
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Leader of the Revolutionary Army",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 26,
+          "month": 5
+        },
+        "place": "loc_dawn_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Leader of the Revolutionary Army",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 26,
+          "month": 8
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Leader of the Revolutionary Army",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 3
+        },
+        "place": "loc_loguetown",
+        "affiliation": "org_revolutionary_army",
+        "title": "Leader of the Revolutionary Army",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 4
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Leader of the Revolutionary Army",
+        "approx": true
+      }
+    ],
+    "ties": ["char_sabo"]
+  },
+  {
+    "id": "char_bartholomew_kuma",
+    "name": "Bartholomew Kuma",
+    "givenName": "Kuma",
+    "familyName": "Bartholomew",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -9,
+      "month": 2
+    },
+    "birthplace": "loc_sorbet_kingdom",
+    "description": "A gentle giant of a man, a king, a revolutionary and a Warlord, who gave away everything he was.",
+    "epithet": "the Tyrant",
+    "approx": true,
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -9,
+          "month": 2
+        },
+        "place": "loc_sorbet_kingdom",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "place": "loc_sorbet_kingdom",
+        "title": "King of the Sorbet Kingdom",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Officer of the Revolutionary Army",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "place": "loc_sabaody",
+        "affiliation": "org_revolutionary_army",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 37,
+          "month": 1
+        },
+        "place": "loc_mary_geoise",
+        "affiliation": "org_world_government",
+        "title": "Pacifista",
+        "status": "imprisoned",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_emporio_ivankov",
+    "name": "Emporio Ivankov",
+    "givenName": "Ivankov",
+    "familyName": "Emporio",
+    "pronouns": "they",
+    "race": "race_human",
+    "born": {
+      "year": -15,
+      "month": 1
+    },
+    "birthplace": "loc_new_world_island",
+    "description": "The queen of the okama and a commander of the revolution, who can rewrite a body's hormones with a jab.",
+    "approx": true,
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -15,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Commander of the Revolutionary Army",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 27,
+          "month": 1
+        },
+        "place": "loc_impel_down",
+        "affiliation": "org_revolutionary_army",
+        "title": "Commander of the Revolutionary Army",
+        "status": "imprisoned",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_revolutionary_army",
+        "title": "Commander of the Revolutionary Army",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Commander of the Revolutionary Army",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_sabo",
+    "name": "Sabo",
+    "givenName": "Sabo",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": 16,
+      "month": 3
+    },
+    "birthplace": "loc_dawn_island",
+    "description": "A noble boy who ran away from his family to be free, and nearly paid for it with his life.",
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": 16,
+          "month": 3
+        },
+        "place": "loc_dawn_island"
+      },
+      {
+        "from": {
+          "year": 26,
+          "month": 8
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Revolutionary",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Chief of Staff of the Revolutionary Army",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 5
+        },
+        "place": "loc_dressrosa",
+        "affiliation": "org_revolutionary_army",
+        "title": "Chief of Staff of the Revolutionary Army",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 7
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Chief of Staff of the Revolutionary Army",
+        "approx": true
+      }
+    ],
+    "ties": ["char_portgas_d_ace", "char_monkey_d_luffy"]
+  }
+]

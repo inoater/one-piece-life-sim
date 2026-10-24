@@ -6,9 +6,12 @@ debug panel. **Phase 1** (character genesis) adds New Life: race, birthplace, fa
 an entry year and age with a simulated backstory, and a written appearance, as a full character
 sheet. **Phase 2** (the life loop) lets that character live month by month: a routine of activities
 by life stage, effort and Vigor, training with diminishing returns, jobs and money, injuries,
-illness and healing, relationships, aging and death, and carrying on as an heir. Travel, the world
-and the canon story are Phase 3. Status reports: `docs/PHASE0.md`, `docs/PHASE1.md`,
-`docs/PHASE2.md`.
+illness and healing, relationships, aging and death, and carrying on as an heir. **Phase 3** (the
+world) puts that life on a map of 55 places joined by sea lanes: voyages that take whole months in
+six ways of travelling, ships to buy and crew, factions, territory and an economy, two thousand
+named people living by their goals, a random-event engine with skill checks, and the canon story,
+pushed by the canon mode, with a Divergence Log of every way the world leaves it. Status reports:
+`docs/PHASE0.md` to `docs/PHASE3.md`.
 
 ## Quick start
 
@@ -23,19 +26,20 @@ Node 20 or newer (`.nvmrc` pins 22).
 
 ## Scripts
 
-| Command                 | What it does                                                                                                             |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `npm run dev`           | Dev server. Validates `/data` at start and on every change; problems show in the browser overlay.                        |
-| `npm run build`         | Typecheck, then a production build in `dist/`. **Fails if any data file is invalid.** No debug panel.                    |
-| `npm run build:preview` | One self-contained HTML file with the debug panel: `dist-preview/opsim-preview.html`.                                    |
-| `npm run validate`      | Every JSON file against its schema, plus references between files; then canon lint. Exit 1 on any problem.               |
-| `npm run lint:sim`      | Determinism and layering rules (see below).                                                                              |
-| `npm run sim -- ...`    | Headless simulation: `--seed s --ticks 468 --worlds 1000 --verify --probe --json`.                                       |
-| `npm run genesis`       | Phase 1 checks: 1,000 potential rolls per race against the cap table, New Life timing. `-- --sample` prints a character. |
-| `npm run lives`         | Phase 2 balance: whole headless lives per race on every core: `-- --lives 1000 --race all`. Lifespans, causes, outcomes. |
-| `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                                    |
-| `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                                     |
-| `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                                   |
+| Command                 | What it does                                                                                                                               |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run dev`           | Dev server. Validates `/data` at start and on every change; problems show in the browser overlay.                                          |
+| `npm run build`         | Typecheck, then a production build in `dist/`. **Fails if any data file is invalid.** No debug panel.                                      |
+| `npm run build:preview` | One self-contained HTML file with the debug panel: `dist-preview/opsim-preview.html`.                                                      |
+| `npm run validate`      | Every JSON file against its schema, plus references between files; then canon lint. Exit 1 on any problem.                                 |
+| `npm run lint:sim`      | Determinism and layering rules (see below).                                                                                                |
+| `npm run sim -- ...`    | Headless simulation: `--seed s --ticks 468 --worlds 1000 --verify --probe --json`.                                                         |
+| `npm run genesis`       | Phase 1 checks: 1,000 potential rolls per race against the cap table, New Life timing. `-- --sample` prints a character.                   |
+| `npm run lives`         | Phase 2 balance: whole headless lives per race on every core: `-- --lives 1000 --race all`. Lifespans, causes, outcomes.                   |
+| `npm run world`         | Phase 3: Year 0 to the present with nobody in it; prints the world's timeline. `-- --rates 100`: how often each beat fires per canon mode. |
+| `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                                                      |
+| `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                                                       |
+| `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                                                     |
 
 ## Where things live
 

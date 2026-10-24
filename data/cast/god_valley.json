@@ -1,0 +1,240 @@
+[
+  {
+    "id": "char_rocks_d_xebec",
+    "name": "Rocks D. Xebec",
+    "givenName": "Xebec",
+    "familyName": "Rocks",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -50,
+      "month": 1
+    },
+    "birthplace": "loc_new_world_island",
+    "description": "Captain of the Rocks Pirates, the man who wanted to be king of the world and gathered monsters to take it.",
+    "epithet": "Captain of the Rocks",
+    "approx": true,
+    "stats": {
+      "strength": 190,
+      "speed": 170,
+      "endurance": 190,
+      "durability": 190,
+      "dexterity": 150,
+      "intellect": 80,
+      "willpower": 200,
+      "charisma": 150,
+      "perception": 170,
+      "luck": 80
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -30,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -6,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_rocks_pirates",
+        "title": "Captain of the Rocks Pirates",
+        "bounty": 5600000000,
+        "haki": ["observation", "armament", "conqueror"],
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_god_valley",
+        "affiliation": "org_rocks_pirates",
+        "title": "Captain of the Rocks Pirates",
+        "bounty": 5600000000,
+        "haki": ["observation", "armament", "conqueror"]
+      }
+    ]
+  },
+  {
+    "id": "char_gol_d_roger",
+    "name": "Gol D. Roger",
+    "givenName": "Roger",
+    "familyName": "Gol",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -39,
+      "month": 12
+    },
+    "birthplace": "loc_loguetown",
+    "description": "A laughing, reckless, unbeatable pirate who meant to sail the whole Grand Line and did.",
+    "epithet": "the Pirate King",
+    "stats": {
+      "strength": 190,
+      "speed": 170,
+      "endurance": 190,
+      "durability": 190,
+      "dexterity": 150,
+      "intellect": 80,
+      "willpower": 200,
+      "charisma": 150,
+      "perception": 170,
+      "luck": 80
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -39,
+          "month": 12
+        },
+        "place": "loc_loguetown"
+      },
+      {
+        "from": {
+          "year": -16,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "affiliation": "org_roger_pirates",
+        "title": "Captain of the Roger Pirates",
+        "bounty": 1500000000,
+        "haki": ["observation", "armament", "conqueror"],
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_god_valley",
+        "affiliation": "org_roger_pirates",
+        "title": "Captain of the Roger Pirates",
+        "bounty": 2000000000,
+        "haki": ["observation", "armament", "conqueror"],
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 4
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_roger_pirates",
+        "title": "Captain of the Roger Pirates",
+        "bounty": 3000000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 1
+        },
+        "place": "loc_laugh_tale",
+        "affiliation": "org_roger_pirates",
+        "title": "Captain of the Roger Pirates",
+        "bounty": 5564800000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 7
+        },
+        "place": "loc_sabaody",
+        "affiliation": "org_roger_pirates",
+        "title": "King of the Pirates",
+        "bounty": 5564800000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 14,
+          "month": 4
+        },
+        "place": "loc_loguetown",
+        "title": "King of the Pirates",
+        "bounty": 5564800000,
+        "status": "imprisoned",
+        "approx": true
+      }
+    ],
+    "ties": [
+      "char_silvers_rayleigh",
+      "char_shanks",
+      "char_buggy",
+      "char_crocus",
+      "char_scopper_gaban",
+      "char_portgas_d_rouge"
+    ]
+  },
+  {
+    "id": "char_monkey_d_garp",
+    "name": "Monkey D. Garp",
+    "givenName": "Garp",
+    "familyName": "Monkey",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -40,
+      "month": 5
+    },
+    "birthplace": "loc_dawn_island",
+    "description": "A Marine who punches first, sleeps through meetings and refuses every promotion to admiral.",
+    "epithet": "the Hero of the Marines",
+    "stats": {
+      "strength": 190,
+      "speed": 170,
+      "endurance": 190,
+      "durability": 190,
+      "dexterity": 150,
+      "intellect": 80,
+      "willpower": 200,
+      "charisma": 150,
+      "perception": 170,
+      "luck": 80
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -40,
+          "month": 5
+        },
+        "place": "loc_dawn_island"
+      },
+      {
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Marine officer",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_god_valley",
+        "affiliation": "org_marines",
+        "title": "Vice Admiral"
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 4
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Vice Admiral, Hero of the Marines"
+      }
+    ],
+    "ties": ["char_monkey_d_dragon", "char_monkey_d_luffy"]
+  }
+]

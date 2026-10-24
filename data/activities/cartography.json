@@ -12,7 +12,7 @@
     "perception": 0.4,
     "dexterity": 0.2
   },
-  "tags": ["study"],
+  "tags": ["study", "at_sea"],
   "outcomes": [
     {
       "id": "coastline",

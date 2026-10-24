@@ -299,6 +299,11 @@ function finishStats(ctx: GenesisCtx): void {
 export interface CreateLifeOptions {
   /** Generate even when an entry warning is an error (for the preview). Starting refuses. */
   allowBlocked?: boolean;
+  /**
+   * Phase 3: whether the world gets its ~2,000 named Tier 2 people ("full", the default) or only
+   * the canon cast and the places' numbers ("none": balancing runs and tests of other systems).
+   */
+  population?: 'full' | 'none';
 }
 
 export function createLife(
@@ -344,6 +349,7 @@ export function createLife(
       canonMode: options.canonMode,
       difficulty: options.difficulty,
       rareRaces: options.rareRaces,
+      population: settings.population ?? 'full',
     },
     intro: false,
   });

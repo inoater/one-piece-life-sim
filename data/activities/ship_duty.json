@@ -1,0 +1,238 @@
+[
+  {
+    "id": "act_stand_watch",
+    "name": "Stand watch",
+    "category": "train_mind",
+    "description": "Hours in the crow's nest or at the rail, watching the sea for trouble before it watches you.",
+    "minAge": 10,
+    "requires": { "atSea": true },
+    "gains": { "perception": 0.6, "willpower": 0.2 },
+    "tags": ["at_sea", "ship_duty"],
+    "outcomes": [
+      {
+        "id": "quiet",
+        "text": "A quiet watch: stars, spray and the creak of the rigging.",
+        "weight": 3,
+        "quiet": true
+      },
+      {
+        "id": "spotted",
+        "text": "You spotted a squall on the horizon in time for the {ship} to run around it.",
+        "weight": 1,
+        "statWeights": { "perception": 0.5 },
+        "effects": [
+          { "kind": "delay", "months": -0.1 },
+          { "kind": "morale", "value": 2 }
+        ]
+      },
+      {
+        "id": "asleep",
+        "text": "You fell asleep on watch and woke to the bosun's boot.",
+        "weight": 0.4,
+        "statWeights": { "willpower": -0.5 },
+        "effects": [{ "kind": "morale", "value": -2 }]
+      }
+    ]
+  },
+  {
+    "id": "act_work_rigging",
+    "name": "Work the rigging",
+    "category": "train_body",
+    "description": "Up the ratlines, out along the yards, hauling and reefing in all weathers.",
+    "minAge": 12,
+    "physical": true,
+    "requires": { "atSea": true },
+    "gains": { "speed": 0.4, "dexterity": 0.4, "strength": 0.3 },
+    "risk": { "injury": 0.03, "areas": { "arms": 2, "legs": 2, "torso": 1 } },
+    "tags": ["at_sea", "ship_duty", "training"],
+    "outcomes": [
+      {
+        "id": "hauled",
+        "text": "You hauled and reefed until your palms were leather.",
+        "weight": 3,
+        "quiet": true
+      },
+      {
+        "id": "trimmed",
+        "text": "The sails drew better than they had all voyage, and the {ship} picked up a knot.",
+        "weight": 1,
+        "statWeights": { "dexterity": 0.5 },
+        "effects": [{ "kind": "delay", "months": -0.1 }]
+      },
+      {
+        "id": "fell",
+        "text": "A footrope snapped under you and you dropped to the deck.",
+        "weight": 0.3,
+        "statWeights": { "dexterity": -0.5 },
+        "effects": [{ "kind": "injury", "severity": "minor", "cause": "accident" }]
+      }
+    ]
+  },
+  {
+    "id": "act_navigate",
+    "name": "Help with the navigation",
+    "category": "train_mind",
+    "description": "Sun sights at noon, star sights at dusk, and long hours over the chart table.",
+    "minAge": 12,
+    "requires": { "atSea": true },
+    "gains": { "intellect": 0.6, "perception": 0.2 },
+    "tags": ["at_sea", "ship_duty", "study"],
+    "outcomes": [
+      {
+        "id": "plotted",
+        "text": "You worked the noon sight and plotted the {ship}'s position to the mile.",
+        "weight": 3,
+        "quiet": true
+      },
+      {
+        "id": "shortcut",
+        "text": "You spotted an error in the course and trimmed days off the passage to {destination}.",
+        "weight": 1,
+        "statWeights": { "intellect": 0.6 },
+        "effects": [
+          { "kind": "delay", "months": -0.2 },
+          { "kind": "morale", "value": 2 }
+        ]
+      },
+      {
+        "id": "lost",
+        "text": "Your sums came out wrong and the {ship} lost a day finding out.",
+        "weight": 0.4,
+        "statWeights": { "intellect": -0.6 },
+        "effects": [{ "kind": "delay", "months": 0.05 }]
+      }
+    ]
+  },
+  {
+    "id": "act_cook_galley",
+    "name": "Cook for the crew",
+    "category": "work",
+    "description": "Turn salt pork, biscuit and whatever was caught today into something worth sitting down for.",
+    "minAge": 10,
+    "requires": { "atSea": true },
+    "gains": { "dexterity": 0.2, "charisma": 0.2, "intellect": 0.1 },
+    "tags": ["at_sea", "ship_duty", "cooking"],
+    "outcomes": [
+      {
+        "id": "fed",
+        "text": "Everyone ate, and nobody complained more than usual.",
+        "weight": 3,
+        "effects": [{ "kind": "morale", "value": 1 }],
+        "quiet": true
+      },
+      {
+        "id": "feast",
+        "text": "You made something out of nothing, and the whole crew asked for seconds.",
+        "weight": 1,
+        "statWeights": { "dexterity": 0.4 },
+        "effects": [
+          { "kind": "morale", "value": 5 },
+          { "kind": "supplies", "months": 0.3 }
+        ]
+      },
+      {
+        "id": "burnt",
+        "text": "You burnt the stew. Nobody will let you forget it.",
+        "weight": 0.5,
+        "effects": [{ "kind": "morale", "value": -3 }]
+      }
+    ]
+  },
+  {
+    "id": "act_repair_ship",
+    "name": "Repair the ship",
+    "category": "work",
+    "description": "Caulking seams, splicing lines, patching sails: the work that keeps a ship a ship.",
+    "minAge": 12,
+    "physical": true,
+    "requires": { "atSea": true },
+    "gains": { "dexterity": 0.4, "strength": 0.2 },
+    "tags": ["at_sea", "ship_duty", "craft"],
+    "outcomes": [
+      {
+        "id": "patched",
+        "text": "You worked over the {ship} from bow to stern, and she was the better for it.",
+        "weight": 3,
+        "effects": [{ "kind": "hull", "value": 2 }],
+        "quiet": true
+      },
+      {
+        "id": "good_job",
+        "text": "You found rot in a frame before it found the sea, and replaced it.",
+        "weight": 1,
+        "statWeights": { "dexterity": 0.5 },
+        "effects": [{ "kind": "hull", "value": 5 }]
+      }
+    ]
+  },
+  {
+    "id": "act_craft_at_sea",
+    "name": "Carve and craft",
+    "category": "work",
+    "description": "Scrimshaw, knotwork, little ships in bottles: things to sell in the next port.",
+    "minAge": 8,
+    "requires": { "atSea": true },
+    "earn": { "min": 50, "max": 400 },
+    "gains": { "dexterity": 0.5, "willpower": 0.1 },
+    "tags": ["at_sea", "craft"],
+    "outcomes": [
+      {
+        "id": "made",
+        "text": "You carved a whale out of a scrap of bone and sold it to a shipmate.",
+        "weight": 3,
+        "quiet": true
+      },
+      {
+        "id": "fine",
+        "text": "You built a ship in a bottle so fine that the bosun paid double for it.",
+        "weight": 0.6,
+        "statWeights": { "dexterity": 0.6 },
+        "effects": [{ "kind": "berries", "min": 300, "max": 900 }]
+      }
+    ]
+  },
+  {
+    "id": "act_shipmates",
+    "name": "Socialize with shipmates",
+    "category": "social",
+    "description": "Dice, songs and long talks on the forecastle after the watch changes.",
+    "minAge": 6,
+    "requires": { "atSea": true },
+    "gains": { "charisma": 0.4 },
+    "tags": ["at_sea", "relationship"],
+    "outcomes": [
+      {
+        "id": "yarns",
+        "text": "You swapped yarns with the watch below until the lamps went out.",
+        "weight": 3,
+        "effects": [{ "kind": "morale", "value": 1 }],
+        "quiet": true
+      },
+      {
+        "id": "friend",
+        "text": "{other}, a hand from the starboard watch, became a real friend over the voyage.",
+        "weight": 1,
+        "statWeights": { "charisma": 0.5 },
+        "effects": [
+          {
+            "kind": "relationship",
+            "role": "friend",
+            "occupation": "occ_sailor",
+            "opinion": 35,
+            "ageOffset": { "min": -6, "max": 10 },
+            "flags": { "shipmate": true }
+          }
+        ]
+      },
+      {
+        "id": "song",
+        "text": "You led the whole crew in a shanty that carried across the water.",
+        "weight": 0.6,
+        "effects": [
+          { "kind": "morale", "value": 4 },
+          { "kind": "fame", "value": 0.2 }
+        ]
+      }
+    ]
+  }
+]

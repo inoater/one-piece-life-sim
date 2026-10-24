@@ -4,8 +4,10 @@ import { STAT_IDS } from '../stats';
 import {
   APPEARANCE_VARS,
   BACKSTORY_VARS,
+  CANON_VARS,
   checkTemplate,
   LIFE_VARS,
+  roleOfVar,
   templateVarsUsed,
 } from '../template';
 
@@ -41,6 +43,8 @@ const template = templateOf();
 const backstoryTemplate = templateOf(BACKSTORY_VARS);
 /** Life-loop text: what happened this month, with the people and places involved (Phase 2). */
 const lifeTemplate = templateOf(LIFE_VARS);
+/** The canon layer's own lines (Phase 3): who, which beat, why. */
+const canonTemplate = templateOf(CANON_VARS);
 
 /** A lowercase flag name such as "haki.observation". */
 const flagName = z
@@ -226,26 +230,11 @@ export const WeaponSchema = z.strictObject({
 });
 export type Weapon = z.infer<typeof WeaponSchema>;
 
-export const LocationSchema = z.strictObject({
-  id: slug('loc'),
-  name: z.string().min(1),
-  region: z.enum(REGIONS),
-  description: z.string().optional(),
-  tags,
-});
-export type Location = z.infer<typeof LocationSchema>;
+// Locations (map nodes) are defined with the world map, in the Phase 3 section below.
 
 // ---------------------------------------------------------------------------------------------
-// events
+// life effects
 // ---------------------------------------------------------------------------------------------
-
-/** (inert) Validated and cross-referenced now; evaluated when the candidate engine arrives. */
-export const ConditionSchema = z.discriminatedUnion('kind', [
-  z.strictObject({ kind: z.literal('hasTrait'), trait: slug('trait') }),
-  z.strictObject({ kind: z.literal('atLocation'), location: slug('loc') }),
-  z.strictObject({ kind: z.literal('flag'), flag: z.string().min(1), equals: FlagValueSchema }),
-]);
-export type Condition = z.infer<typeof ConditionSchema>;
 
 /** How a body got hurt. Decides the death-or-collapse roll at Health 0 (data/life.json `collapse`). */
 export const HARM_CAUSES = [
@@ -332,6 +321,24 @@ const lifeEffectOptions = [
   z.strictObject({ kind: z.literal('deed') }),
   /** Arrested: a fine if it can be paid, otherwise months in a cell (actions locked). */
   z.strictObject({ kind: z.literal('arrest'), fine: intRange(0), months: intRange(0) }),
+  // Phase 3: what a month at sea can do to the vessel the character is aboard (their own ship,
+  // or the one carrying them). Outside a voyage these do nothing.
+  /** Hull points gained (repairs) or lost (a reef). Zero hull is a shipwreck. */
+  z.strictObject({ kind: z.literal('hull'), value: z.number().int() }),
+  /** Supplies, in person-months, found or lost. */
+  z.strictObject({ kind: z.literal('supplies'), months: z.number() }),
+  /** Hands gained (a castaway signs on) or lost (washed overboard, deserted). */
+  z.strictObject({ kind: z.literal('crew'), value: z.number().int() }),
+  /** The crew's morale (0 to 100). */
+  z.strictObject({ kind: z.literal('morale'), value: z.number() }),
+  /** Months added to the voyage (a storm) or taken off it (a fair wind): fractions allowed. */
+  z.strictObject({ kind: z.literal('delay'), months: z.number().min(-3).max(3) }),
+  /** The vessel puts in at the nearest port instead of where it was going. */
+  z.strictObject({ kind: z.literal('redirect') }),
+  /** Over the side: a swimming check decides between a cold rescue and something worse. */
+  z.strictObject({ kind: z.literal('overboard') }),
+  /** A bounty on the character's head rises (or a pardon lowers it). */
+  z.strictObject({ kind: z.literal('bounty'), value: z.number().int() }),
 ] as const;
 
 export const LifeEffectSchema = z.discriminatedUnion('kind', [
@@ -343,76 +350,6 @@ export const LifeEffectSchema = z.discriminatedUnion('kind', [
   }),
 ]);
 export type LifeEffect = z.infer<typeof LifeEffectSchema>;
-
-export const EffectSchema = z.discriminatedUnion('kind', [
-  z.strictObject({ kind: z.literal('log'), text: template, tags }),
-  z.strictObject({
-    kind: z.literal('setFlag'),
-    flag: flagName,
-    value: FlagValueSchema,
-  }),
-  z.strictObject({
-    kind: z.literal('schedule'),
-    eventId: slug('evt'),
-    /** Counted from the month the effect is applied. At least 1, so chains cannot loop in one tick. */
-    afterMonths: z.number().int().min(1).max(1200),
-  }),
-  // Phase 2: an event or a choice can also change the player's life directly.
-  ...lifeEffectOptions,
-]);
-export type Effect = z.infer<typeof EffectSchema>;
-
-export const ChoiceSchema = z.strictObject({
-  id: z
-    .string()
-    .regex(/^[a-z0-9_]+$/, { message: 'choice ids use lowercase letters, digits and "_"' }),
-  label: z.string().min(1),
-  text: z.string().optional(),
-  effects: z.array(EffectSchema).default([]),
-});
-export type Choice = z.infer<typeof ChoiceSchema>;
-
-export const EventSchema = z
-  .strictObject({
-    id: slug('evt'),
-    type: z.enum(['personal', 'local', 'voyage', 'world', 'canon']),
-    title: z.string().min(1),
-    text: template,
-    /** Only "manual" exists so far: the event fires when scheduled or forced. */
-    trigger: z.enum(['manual']).default('manual'),
-    conditions: z.array(ConditionSchema).default([]),
-    /** (inert) Weighted random selection arrives with the event engine. */
-    weight: z.number().min(0).default(1),
-    /** (inert) Minimum months between firings. */
-    cooldown: z.number().int().min(0).default(0),
-    /** "secret" events are true in the world but not known to anyone by default (rule 4). */
-    visibility: z.enum(['public', 'secret']).default('public'),
-    choices: z.array(ChoiceSchema).default([]),
-    effects: z.array(EffectSchema).default([]),
-    news: template.optional(),
-    tags,
-  })
-  .superRefine((event, ctx) => {
-    const seen = new Set<string>();
-    event.choices.forEach((choice, i) => {
-      if (seen.has(choice.id)) {
-        ctx.addIssue({
-          code: 'custom',
-          path: ['choices', i, 'id'],
-          message: `duplicate choice id "${choice.id}"`,
-        });
-      }
-      seen.add(choice.id);
-    });
-    if (event.visibility === 'secret' && event.news !== undefined) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['news'],
-        message: 'a secret event cannot produce news (news is public by definition)',
-      });
-    }
-  });
-export type EventDef = z.infer<typeof EventSchema>;
 
 // ---------------------------------------------------------------------------------------------
 // Character genesis (Phase 1): races, birthplaces, family legacies, occupations, names, backstory
@@ -533,6 +470,8 @@ export const BirthplaceSchema = z.strictObject({
   flags: z.record(flagName, FlagValueSchema).default({}),
   /** What there is to do here (Phase 2): activities and jobs that need a coast, a school, a doctor. */
   features: z.array(z.enum(PLACE_FEATURES)).default([]),
+  /** The map node a life born here starts on (Phase 3): where "home" is on the travel graph. */
+  location: slug('loc'),
   tags,
 });
 export type Birthplace = z.infer<typeof BirthplaceSchema>;
@@ -1200,6 +1139,8 @@ const requiresShape = {
   unwell: z.boolean().optional(),
   /** Berries in hand at least this. */
   berries: z.number().optional(),
+  /** Only on a voyage (true), or only ashore (false) (Phase 3). */
+  atSea: z.boolean().optional(),
 } as const;
 
 /** Conditions on the character, their home, body, purse and people. All listed must hold. */
@@ -1394,6 +1335,11 @@ export const JobSchema = z
     infamy: z.number().default(0),
     /** Flags set while the job is held (and kept: "path.smith" opens the smith's path). */
     grants: z.record(flagName, FlagValueSchema).default({}),
+    /**
+     * Work that goes where the worker goes (a ship's hand, a Marine). Any other job is left behind
+     * when the character sails away (Phase 3).
+     */
+    travels: z.boolean().default(false),
     /** A rank track: every `everyMonths` of service, the next title (Marine recruit to Seaman ...). */
     ranks: z
       .strictObject({
@@ -1524,6 +1470,8 @@ export const LifeRulesSchema = z
       illness: z.string().min(1),
       /** Multiplies that illness's chance while the epidemic lasts. */
       mult: z.number().min(1),
+      /** Chance per month that an outbreak spreads along a sea lane to a neighbouring island (Phase 3). */
+      spread: z.number().min(0).max(1).default(0),
       news: z.array(template).min(1),
     }),
     /** At Health 0: chance of death (otherwise a collapse), by what caused it. */
@@ -1705,6 +1653,1130 @@ export const LifeRulesSchema = z
 export type LifeRules = z.infer<typeof LifeRulesSchema>;
 
 // ---------------------------------------------------------------------------------------------
+// The world (Phase 3): the map graph, ships and travel, factions, the event engine and the canon
+// layer. All numbers are design values to tune, not canon facts.
+// ---------------------------------------------------------------------------------------------
+
+/** "Year 14, month 3" in data: a tick written the way people read dates. */
+export const WhenSchema = z.strictObject({
+  year: z.number().int().min(-1000).max(1000),
+  month: monthIndex.default(1),
+});
+export type When = z.infer<typeof WhenSchema>;
+/** The first tick of a date. */
+export const tickOfWhen = (w: When): number => w.year * 12 + (w.month - 1);
+
+export const NODE_KINDS = [
+  'island',
+  'port',
+  'kingdom',
+  'sky_island',
+  'undersea',
+  'landmark',
+  'stronghold',
+  'ruin',
+] as const;
+export const CLIMATES = [
+  'temperate',
+  'tropical',
+  'arid',
+  'cold',
+  'volatile',
+  'sky',
+  'undersea',
+] as const;
+export const POPULATION_TIERS = ['none', 'hamlet', 'village', 'town', 'city', 'capital'] as const;
+export type PopulationTier = (typeof POPULATION_TIERS)[number];
+
+/**
+ * A node of the world map: an island, a port, a sky island or a landmark (Phase 3). Where people
+ * live, work, train and meet each other; sea lanes join nodes into the travel graph.
+ */
+export const LocationSchema = z.strictObject({
+  id: slug('loc'),
+  name: nonEmptyText,
+  /** For the header and the map: "Loguetown". Defaults to the name. */
+  shortName: nonEmptyText.optional(),
+  /** How a story names it mid-sentence, filling {place} and {home}: "Loguetown", "the village". */
+  home: nonEmptyText.optional(),
+  kind: z.enum(NODE_KINDS).default('island'),
+  region: z.enum(REGIONS),
+  climate: z.enum(CLIMATES).default('temperate'),
+  /** Canon places, or places the game invents (the generic villages of the four seas). */
+  origin: z.enum(['canon', 'generated']).default('canon'),
+  description: nonEmptyText,
+  population: z.enum(POPULATION_TIERS),
+  wealth: z.enum(WEALTH_LEVELS),
+  /** 0 (a sleepy harbour) to 5 (nobody sane lives here). Sets the safety of living there. */
+  danger: z.number().int().min(0).max(5),
+  /** The faction that holds it at the start of the world; null for nobody in particular. */
+  controller: slug('org').nullable().default(null),
+  /** What there is to do and buy: docks, a shipyard, a doctor, a Marine base, a black market... */
+  features: z.array(z.enum(PLACE_FEATURES)).default([]),
+  /** Only these jobs are offered here (empty: every job the place's features allow). */
+  jobs: z.array(slug('job')).default([]),
+  /** Event tag -> weight multiplier: what tends to happen here (the local event pool). */
+  eventTags: multipliers,
+  /** Whose ways the people here share: names, races and occupations (a birthplace id). */
+  culture: slug('bp'),
+  /** Grand Line islands: months before the Log Pose sets on the next island (0 to 12). */
+  logPose: z.number().int().min(0).max(12).optional(),
+  /** Eternal Poses to these islands are sold here. */
+  eternalPoses: z.array(slug('loc')).default([]),
+  /** Where it is drawn on the map (map units, as for birthplaces). */
+  map: z.strictObject({ x: z.number().min(0).max(2576), y: z.number().min(0).max(1288) }),
+  tags,
+});
+export type Location = z.infer<typeof LocationSchema>;
+
+export const CURRENTS = ['calm', 'gentle', 'steady', 'strong', 'wild', 'none'] as const;
+export const LANE_REQUIREMENTS = [
+  'none',
+  'log_pose',
+  'eternal_pose',
+  'coated_ship',
+  'sky_route',
+] as const;
+export type LaneRequirement = (typeof LANE_REQUIREMENTS)[number];
+
+/** A sea lane (an edge of the travel graph). Lanes run both ways unless `oneWay`. */
+export const LaneSchema = z
+  .strictObject({
+    id: slug('lane'),
+    from: slug('loc'),
+    to: slug('loc'),
+    /** Sea miles. A voyage takes ceil(miles / (speed x wind and current x navigator)) months. */
+    miles: z.number().int().min(10).max(5000),
+    /** 0 to 5: how many hazards and encounters a month on it rolls. */
+    danger: z.number().int().min(0).max(5),
+    current: z.enum(CURRENTS).default('steady'),
+    requires: z.enum(LANE_REQUIREMENTS).default('none'),
+    /** The sea whose dangers it crosses (its region modifier). Defaults to the start's region. */
+    zone: z.enum(REGIONS).optional(),
+    /** Only from -> to (Reverse Mountain's currents run uphill one way). */
+    oneWay: z.boolean().default(false),
+    /** Walked, not sailed: only on foot. */
+    land: z.boolean().default(false),
+    /** How many ships run it, 0 to 3. Zero: no captain takes passengers, crew or stowaways. */
+    traffic: z.number().int().min(0).max(3).default(2),
+    /** A flag on the traveller (or the world) that closes it, and what the planner says. */
+    closedBy: flagName.optional(),
+    closedText: nonEmptyText.optional(),
+    /** A flag that must be set to use it, and what the planner says when it is not. */
+    needsFlag: flagName.optional(),
+    needsText: nonEmptyText.optional(),
+    description: z.string().optional(),
+    tags,
+  })
+  .superRefine((lane, ctx) => {
+    if (lane.from === lane.to) {
+      ctx.addIssue({ code: 'custom', path: ['to'], message: 'a lane must join two places' });
+    }
+    if (lane.closedBy && !lane.closedText) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['closedText'],
+        message: 'say why the lane is closed (shown in the planner)',
+      });
+    }
+    if (lane.needsFlag && !lane.needsText) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['needsText'],
+        message: 'say what the lane needs (shown in the planner)',
+      });
+    }
+  });
+export type Lane = z.infer<typeof LaneSchema>;
+
+/** A class of ship: a dinghy, a merchant sloop, a galleon. */
+export const VesselSchema = z
+  .strictObject({
+    id: slug('vessel'),
+    name: nonEmptyText,
+    description: nonEmptyText,
+    /** Sea miles a month. */
+    speed: z.number().int().min(1),
+    hull: z.number().int().min(1),
+    minCrew: z.number().int().min(1),
+    maxCrew: z.number().int().min(1),
+    /** Cargo space; supplies take it up (travel.json `provisions.perCargo`). */
+    cargo: z.number().int().min(0),
+    /** Berries; null when it cannot be bought (Marine-issued or captured). */
+    cost: z.number().int().min(0).nullable(),
+    /** A place must have this to sell it ("docks" for small boats, "shipyard" for the rest). */
+    soldAt: z.enum(PLACE_FEATURES).default('shipyard'),
+    tags,
+  })
+  .refine((v) => v.minCrew <= v.maxCrew, {
+    message: 'minCrew must not be above maxCrew',
+    path: ['maxCrew'],
+  });
+export type Vessel = z.infer<typeof VesselSchema>;
+
+export const FACTION_KINDS = [
+  'government',
+  'marines',
+  'pirates',
+  'revolutionary',
+  'kingdom',
+  'underworld',
+  'merchants',
+  'crew',
+] as const;
+export type FactionKind = (typeof FACTION_KINDS)[number];
+
+/** A faction (or a canon pirate crew, kind "crew"): an organization entity in the world. */
+export const FactionSchema = z.strictObject({
+  id: slug('org'),
+  name: nonEmptyText,
+  shortName: nonEmptyText,
+  kind: z.enum(FACTION_KINDS),
+  description: nonEmptyText,
+  goal: nonEmptyText,
+  /** 0 to 100 at the start of the world (Year 0). */
+  strength: z.number().min(0).max(100),
+  /** Change in strength per year ("low, rising"). */
+  trend: z.number().default(0),
+  /** The faction this one answers to (the Marines answer to the World Government). */
+  parent: slug('org').optional(),
+  /** A crew counts toward this faction's strength (every crew: the pirates). */
+  umbrella: slug('org').optional(),
+  /** Base opinion of other factions, -100 to 100. Events add modifiers (rule 3). */
+  opinions: z.record(slug('org'), z.number().min(-100).max(100)).default({}),
+  /** Kingdoms: a member of the World Government (or not). */
+  wgMember: z.boolean().optional(),
+  /** When it comes into being (a crew's founding). Absent: it exists from the start. */
+  founded: WhenSchema.optional(),
+  /** Active when it comes into being. A crew a canon beat founds starts inactive. */
+  active: z.boolean().default(true),
+  /** Crews: the captain, and who takes over if the captain falls, in order. */
+  captain: slug('char').optional(),
+  succession: z.array(slug('char')).default([]),
+  /** Its base of operations. */
+  home: slug('loc').optional(),
+  /** A fixture for the tests: only exists in worlds made with the dev canon fixtures. */
+  dev: z.boolean().default(false),
+  tags,
+});
+export type Faction = z.infer<typeof FactionSchema>;
+
+// ---- The event engine (Phase 3) ---------------------------------------------------------------
+
+export const TRAVEL_MODES = ['own', 'crew', 'passenger', 'stowaway', 'marine', 'foot'] as const;
+export type TravelMode = (typeof TRAVEL_MODES)[number];
+export const EVENT_TRIGGERS = ['manual', 'random', 'voyage', 'world', 'arrival'] as const;
+export const BEAT_STATUSES = ['pending', 'fired', 'diverged'] as const;
+
+/**
+ * When an event can happen. An event is a candidate only if every condition holds. Conditions
+ * about the player are about where they are now: at sea, the voyage's lane and vessel.
+ */
+export const ConditionSchema = z.discriminatedUnion('kind', [
+  z.strictObject({ kind: z.literal('hasTrait'), trait: slug('trait') }),
+  z.strictObject({ kind: z.literal('notTrait'), trait: slug('trait') }),
+  z.strictObject({ kind: z.literal('atLocation'), location: slug('loc') }),
+  z.strictObject({ kind: z.literal('flag'), flag: z.string().min(1), equals: FlagValueSchema }),
+  z.strictObject({ kind: z.literal('notFlag'), flag: flagName }),
+  /** A number flag (on the player, or the world) at least this ("bounty" at least 1). */
+  z.strictObject({ kind: z.literal('flagAtLeast'), flag: flagName, value: z.number() }),
+  /** Sailing one of these lanes. */
+  z.strictObject({ kind: z.literal('lane'), lanes: z.array(slug('lane')).min(1) }),
+  /** At (or sailing through) one of these seas. */
+  z.strictObject({ kind: z.literal('region'), regions: z.array(z.enum(REGIONS)).min(1) }),
+  z.strictObject({ kind: z.literal('atSea'), value: z.boolean().default(true) }),
+  z.strictObject({ kind: z.literal('travelMode'), modes: z.array(z.enum(TRAVEL_MODES)).min(1) }),
+  /** Owns a ship (true), or does not (false). */
+  z.strictObject({ kind: z.literal('ownShip'), value: z.boolean().default(true) }),
+  /** Human-equivalent age. */
+  z.strictObject({
+    kind: z.literal('age'),
+    min: z.number().int().min(0).optional(),
+    max: z.number().int().min(0).optional(),
+  }),
+  z.strictObject({
+    kind: z.literal('stat'),
+    stat: z.union([statId, z.literal('combatPower')]),
+    min: z.number().optional(),
+    max: z.number().optional(),
+  }),
+  z.strictObject({ kind: z.literal('canonMode'), modes: z.array(z.string().min(1)).min(1) }),
+  z.strictObject({
+    kind: z.literal('year'),
+    min: z.number().int().optional(),
+    max: z.number().int().optional(),
+  }),
+  /** The place has at least one of these. */
+  z.strictObject({ kind: z.literal('feature'), features: z.array(z.enum(PLACE_FEATURES)).min(1) }),
+  /** The danger of the place, or of the lane when at sea. */
+  z.strictObject({
+    kind: z.literal('danger'),
+    min: z.number().int().min(0).optional(),
+    max: z.number().int().max(5).optional(),
+  }),
+  z.strictObject({ kind: z.literal('berries'), min: z.number() }),
+  z.strictObject({ kind: z.literal('relation'), relation: z.enum(LIVING_ROLES) }),
+  z.strictObject({ kind: z.literal('noRelation'), relation: z.enum(LIVING_ROLES) }),
+  /** The vessel's crew morale, 0 to 100 (at sea). */
+  z.strictObject({
+    kind: z.literal('morale'),
+    min: z.number().optional(),
+    max: z.number().optional(),
+  }),
+  /** Supplies aboard, in months for everyone aboard (at sea, own ship). */
+  z.strictObject({ kind: z.literal('supplies'), max: z.number() }),
+  z.strictObject({ kind: z.literal('climate'), climates: z.array(z.enum(CLIMATES)).min(1) }),
+  z.strictObject({ kind: z.literal('season'), seasons: z.array(z.string().min(1)).min(1) }),
+  z.strictObject({ kind: z.literal('job'), jobs: z.array(slug('job')).min(1) }),
+  z.strictObject({
+    kind: z.literal('beat'),
+    beat: slug('beat'),
+    status: z.enum(BEAT_STATUSES),
+  }),
+  /** A canon character is at the same place (for a "canon" role). */
+  z.strictObject({ kind: z.literal('canonHere') }),
+]);
+export type Condition = z.infer<typeof ConditionSchema>;
+
+const STRENGTH_SOURCE = nonEmptyText;
+
+/** Effects on the world rather than a life: factions, territory, islands, the news. */
+const worldEffectOptions = [
+  /** A faction grows or weakens, or changes its mind about another (a modifier, rule 3). */
+  z.strictObject({
+    kind: z.literal('faction'),
+    org: slug('org'),
+    strength: z.number().optional(),
+    opinion: z
+      .strictObject({ toward: slug('org'), value: z.number().min(-100).max(100) })
+      .optional(),
+    /** How long the change lasts; absent means for good. */
+    months: z.number().int().min(1).optional(),
+    source: STRENGTH_SOURCE,
+  }),
+  /** Who holds a place changes (the event's place when `location` is absent). */
+  z.strictObject({
+    kind: z.literal('control'),
+    org: slug('org').nullable(),
+    location: slug('loc').optional(),
+  }),
+  /** A place does better or worse for a while (prosperity, which sets prices and wages). */
+  z.strictObject({
+    kind: z.literal('prosperity'),
+    value: z.number(),
+    months: z.number().int().min(1).optional(),
+    location: slug('loc').optional(),
+    source: STRENGTH_SOURCE,
+  }),
+  /** A place's people grow or shrink by this percentage (a raid, a famine, a boom). */
+  z.strictObject({ kind: z.literal('population'), pct: z.number().min(-90).max(100) }),
+  /** A flag on the place, for a while ("epidemic": true for 4 months). */
+  z.strictObject({
+    kind: z.literal('localFlag'),
+    flag: flagName,
+    value: FlagValueSchema,
+    months: z.number().int().min(1).optional(),
+  }),
+  /** A headline of its own, beside the event's `news`. */
+  z.strictObject({ kind: z.literal('news'), text: template }),
+  /** The person cast in a role enters the player's life. */
+  z.strictObject({
+    kind: z.literal('meet'),
+    role: z.string().regex(/^[a-z][a-z0-9_]*$/),
+    as: z.enum(['mentor', 'friend', 'rival', 'sweetheart', 'protege', 'benefactor'] as const),
+    opinion: z.number().min(-100).max(100),
+  }),
+] as const;
+
+export const EffectSchema = z.discriminatedUnion('kind', [
+  z.strictObject({ kind: z.literal('log'), text: template, tags }),
+  z.strictObject({
+    kind: z.literal('setFlag'),
+    flag: flagName,
+    value: FlagValueSchema,
+  }),
+  z.strictObject({
+    kind: z.literal('schedule'),
+    eventId: slug('evt'),
+    /** Counted from the month the effect is applied. At least 1, so chains cannot loop in one tick. */
+    afterMonths: z.number().int().min(1).max(1200),
+  }),
+  // Phase 2: an event or a choice can also change the player's life directly.
+  ...lifeEffectOptions,
+  // Phase 3: and the world.
+  ...worldEffectOptions,
+]);
+export type Effect = z.infer<typeof EffectSchema>;
+
+/** What a check measures: a stat, Combat Power, or seamanship (navigation at sea). */
+export const CHECK_STATS = [...STAT_IDS, 'combatPower', 'navigation'] as const;
+
+export const CheckBandSchema = z.strictObject({
+  text: template,
+  effects: z.array(EffectSchema).default([]),
+});
+export type CheckBand = z.infer<typeof CheckBandSchema>;
+
+export const CheckSchema = z.strictObject({
+  stat: z.enum(CHECK_STATS),
+  /** The value that gives an even chance. Each 20 points above or below moves it by half. */
+  difficulty: z.number().min(0),
+  /** Added to the difficulty for each point of danger where it happens. */
+  perDanger: z.number().default(0),
+  criticalSuccess: CheckBandSchema.optional(),
+  success: CheckBandSchema,
+  failure: CheckBandSchema,
+  criticalFailure: CheckBandSchema.optional(),
+});
+export type Check = z.infer<typeof CheckSchema>;
+
+export const ChoiceSchema = z.strictObject({
+  id: z
+    .string()
+    .regex(/^[a-z0-9_]+$/, { message: 'choice ids use lowercase letters, digits and "_"' }),
+  /** May name the event's roles: "Try to speak to {role.famous.name}". */
+  label: template,
+  text: z.string().optional(),
+  /** Only offered when these hold (paying a toll needs the Berries). */
+  requires: z.array(ConditionSchema).default([]),
+  /** Applied whatever the result. */
+  effects: z.array(EffectSchema).default([]),
+  /** A skill check with four result bands, each with its own text and effects. */
+  check: CheckSchema.optional(),
+});
+export type Choice = z.infer<typeof ChoiceSchema>;
+
+/** Someone an event casts, named in its text as {role.<name>.name}. */
+export const RoleSpecSchema = z.discriminatedUnion('kind', [
+  /** A living person the player knows (the event cannot happen without one). */
+  z.strictObject({ kind: z.literal('relation'), relation: z.enum(LIVING_ROLES) }),
+  /** Someone met for the first time, from the place's people. */
+  z.strictObject({
+    kind: z.literal('stranger'),
+    occupation: slug('occ').optional(),
+    /** Their age relative to the player's, in human years. */
+    ageOffset: intRange().default({ min: -10, max: 15 }),
+  }),
+  /** A canon character at the same place (the event needs one there). */
+  z.strictObject({ kind: z.literal('canon') }),
+  /** Whoever commands the vessel: the player on their own ship, otherwise its captain. */
+  z.strictObject({ kind: z.literal('captain') }),
+]);
+export type RoleSpec = z.infer<typeof RoleSpecSchema>;
+
+/** Where a world event happens: a place picked from those that match. */
+export const WhereSchema = z.strictObject({
+  regions: z.array(z.enum(REGIONS)).default([]),
+  /** At least one of these. */
+  features: z.array(z.enum(PLACE_FEATURES)).default([]),
+  kinds: z.array(z.enum(NODE_KINDS)).default([]),
+  /** Held by one of these factions (or by any member of their kind's tree). */
+  controllers: z.array(slug('org')).default([]),
+  /** Not held by these. */
+  notControllers: z.array(slug('org')).default([]),
+  minDanger: z.number().int().min(0).max(5).default(0),
+  maxDanger: z.number().int().min(0).max(5).default(5),
+  /** Only where there are people. */
+  inhabited: z.boolean().default(true),
+});
+export type Where = z.infer<typeof WhereSchema>;
+
+const ROLE_NAME = /^[a-z][a-z0-9_]*$/;
+
+/** Every template in an event (text, news, choice results, log effects), for the role check. */
+function eventTemplates(event: {
+  text: string;
+  news?: string | undefined;
+  effects: readonly Effect[];
+  choices: readonly Choice[];
+}): { path: (string | number)[]; text: string }[] {
+  const out: { path: (string | number)[]; text: string }[] = [{ path: ['text'], text: event.text }];
+  if (event.news !== undefined) out.push({ path: ['news'], text: event.news });
+  const fromEffects = (effects: readonly Effect[], path: (string | number)[]) =>
+    effects.forEach((e, i) => {
+      if (e.kind === 'log' || e.kind === 'news')
+        out.push({ path: [...path, i, 'text'], text: e.text });
+    });
+  fromEffects(event.effects, ['effects']);
+  event.choices.forEach((choice, i) => {
+    out.push({ path: ['choices', i, 'label'], text: choice.label });
+    fromEffects(choice.effects, ['choices', i, 'effects']);
+    const check = choice.check;
+    if (!check) return;
+    for (const band of ['criticalSuccess', 'success', 'failure', 'criticalFailure'] as const) {
+      const b = check[band];
+      if (!b) continue;
+      out.push({ path: ['choices', i, 'check', band, 'text'], text: b.text });
+      fromEffects(b.effects, ['choices', i, 'check', band, 'effects']);
+    }
+  });
+  return out;
+}
+
+export const EventSchema = z
+  .strictObject({
+    id: slug('evt'),
+    type: z.enum(['personal', 'local', 'voyage', 'world', 'canon']),
+    title: z.string().min(1),
+    text: template,
+    /**
+     * When it is considered: "manual" (only when scheduled or forced), "random" (each month, for
+     * the player ashore), "voyage" (each month at sea), "world" (each month, somewhere in the
+     * world), "arrival" (when the player reaches a place).
+     */
+    trigger: z.enum(EVENT_TRIGGERS).default('manual'),
+    conditions: z.array(ConditionSchema).default([]),
+    /** Relative chance among the candidates of the month. */
+    weight: z.number().min(0).default(1),
+    /** Multiplies the weight when every condition in `when` holds. */
+    weightMods: z
+      .array(z.strictObject({ when: z.array(ConditionSchema).min(1), mult: z.number().min(0) }))
+      .default([]),
+    /** Minimum months between firings. */
+    cooldown: z.number().int().min(0).default(0),
+    /** Fires at most once per world. */
+    once: z.boolean().default(false),
+    /** People cast in the event: {role.<name>.name} in its text. */
+    roles: z.record(z.string().regex(ROLE_NAME), RoleSpecSchema).default({}),
+    /** World events: where in the world it can happen. */
+    where: WhereSchema.optional(),
+    /** "secret" events are true in the world but not known to anyone by default (rule 4). */
+    visibility: z.enum(['public', 'secret']).default('public'),
+    choices: z.array(ChoiceSchema).default([]),
+    effects: z.array(EffectSchema).default([]),
+    news: template.optional(),
+    tags,
+  })
+  .superRefine((event, ctx) => {
+    const seen = new Set<string>();
+    event.choices.forEach((choice, i) => {
+      if (seen.has(choice.id)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['choices', i, 'id'],
+          message: `duplicate choice id "${choice.id}"`,
+        });
+      }
+      seen.add(choice.id);
+    });
+    if (event.choices.length > 0 && event.choices.every((c) => c.requires.length > 0)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['choices'],
+        message: 'at least one choice must have no requirements, so there is always a way out',
+      });
+    }
+    if (event.visibility === 'secret' && event.news !== undefined) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['news'],
+        message: 'a secret event cannot produce news (news is public by definition)',
+      });
+    }
+    for (const { path, text } of eventTemplates(event)) {
+      for (const name of templateVarsUsed(text)) {
+        const role = roleOfVar(name);
+        if (role !== null && !(role in event.roles)) {
+          ctx.addIssue({
+            code: 'custom',
+            path,
+            message: `{${name}} names the role "${role}", which the event does not declare in "roles"`,
+          });
+        }
+      }
+    }
+    const allEffects = [
+      ...event.effects,
+      ...event.choices.flatMap((c) => [
+        ...c.effects,
+        ...(c.check
+          ? [c.check.success, c.check.failure, c.check.criticalSuccess, c.check.criticalFailure]
+              .filter((b) => b !== undefined)
+              .flatMap((b) => b.effects)
+          : []),
+      ]),
+    ];
+    for (const effect of allEffects) {
+      if (effect.kind === 'meet' && !(effect.role in event.roles)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['roles'],
+          message: `a "meet" effect names the role "${effect.role}", which is not declared`,
+        });
+      }
+    }
+    if (event.trigger === 'world' && !event.where) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['where'],
+        message: 'a world event needs "where": the kind of place it can happen',
+      });
+    }
+    if (event.trigger === 'world' && Object.keys(event.roles).length > 0) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['roles'],
+        message: 'world events happen far from the player and cannot cast roles',
+      });
+    }
+  });
+export type EventDef = z.infer<typeof EventSchema>;
+
+// ---- The canon layer (Phase 3) ----------------------------------------------------------------
+
+export const HAKI = ['observation', 'armament', 'conqueror'] as const;
+
+/** Where a canon character is, and as what, over a range of months. */
+export const KeyframeSchema = z.strictObject({
+  from: WhenSchema,
+  /** Inclusive. Absent: until the next keyframe (or for good). */
+  to: WhenSchema.optional(),
+  place: slug('loc'),
+  affiliation: slug('org').optional(),
+  title: nonEmptyText.optional(),
+  bounty: z.number().int().min(0).optional(),
+  haki: z.array(z.enum(HAKI)).optional(),
+  /** The Devil Fruit they hold (a name for now; fruits arrive in Phase 4). */
+  fruit: nonEmptyText.optional(),
+  status: z.enum(['active', 'imprisoned', 'retired', 'hidden']).default('active'),
+  /** The source is vague about this one. */
+  approx: z.boolean().default(false),
+});
+export type Keyframe = z.infer<typeof KeyframeSchema>;
+
+/** A canon character: spawned on their birth month, then follows keyframes until they diverge. */
+export const CastSchema = z
+  .strictObject({
+    id: slug('char'),
+    name: nonEmptyText,
+    givenName: nonEmptyText,
+    familyName: z.string().default(''),
+    /** "Whitebeard": used as their title in text. */
+    epithet: nonEmptyText.optional(),
+    pronouns: z.enum(PRONOUNS),
+    race: slug('race'),
+    born: WhenSchema,
+    /** The birth date is a guess. */
+    approx: z.boolean().default(false),
+    birthplace: slug('loc'),
+    description: nonEmptyText,
+    /** Their stats (missing ones take canon.json's default). Design values, not canon facts. */
+    stats: statNumbers,
+    keyframes: z.array(KeyframeSchema).min(1),
+    /** People whose story is bound to theirs: tagged canon-diverged if this one dies early. */
+    ties: z.array(slug('char')).default([]),
+    dev: z.boolean().default(false),
+    tags,
+  })
+  .superRefine((cast, ctx) => {
+    let previous = -Infinity;
+    cast.keyframes.forEach((k, i) => {
+      const from = tickOfWhen(k.from);
+      if (from < previous) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['keyframes', i, 'from'],
+          message: 'keyframes must be in date order',
+        });
+      }
+      if (k.to && tickOfWhen(k.to) < from) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['keyframes', i, 'to'],
+          message: '"to" is before "from"',
+        });
+      }
+      previous = from;
+    });
+    if (cast.keyframes[0] && tickOfWhen(cast.keyframes[0].from) < tickOfWhen(cast.born)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['keyframes', 0, 'from'],
+        message: 'the first keyframe is before the character is born',
+      });
+    }
+  });
+export type CastMember = z.infer<typeof CastSchema>;
+
+export const ANCHORS = ['hard', 'soft', 'seed'] as const;
+export type Anchor = (typeof ANCHORS)[number];
+
+const roleKey = z.string().regex(ROLE_NAME);
+
+/** What a beat does to the world when it happens (or, in `onDiverge`, when it does not). */
+export const BeatEffectSchema = z.discriminatedUnion('kind', [
+  /** The role-holder dies: a canon death, not a divergence. */
+  z.strictObject({ kind: z.literal('death'), role: roleKey, cause: nonEmptyText }),
+  z.strictObject({ kind: z.literal('imprison'), role: roleKey, place: slug('loc') }),
+  z.strictObject({ kind: z.literal('move'), role: roleKey, place: slug('loc') }),
+  z.strictObject({ kind: z.literal('affiliation'), role: roleKey, org: slug('org') }),
+  z.strictObject({ kind: z.literal('bounty'), role: roleKey, value: z.number().int().min(0) }),
+  z.strictObject({ kind: z.literal('control'), place: slug('loc'), org: slug('org').nullable() }),
+  z.strictObject({
+    kind: z.literal('faction'),
+    org: slug('org'),
+    strength: z.number().optional(),
+    opinion: z
+      .strictObject({ toward: slug('org'), value: z.number().min(-100).max(100) })
+      .optional(),
+    months: z.number().int().min(1).optional(),
+    source: nonEmptyText,
+  }),
+  /** A crew is founded (active) or breaks up. */
+  z.strictObject({ kind: z.literal('crew'), org: slug('org'), active: z.boolean() }),
+  z.strictObject({ kind: z.literal('flag'), flag: flagName, value: FlagValueSchema }),
+  z.strictObject({
+    kind: z.literal('prosperity'),
+    place: slug('loc'),
+    value: z.number(),
+    months: z.number().int().min(1).optional(),
+    source: nonEmptyText,
+  }),
+]);
+export type BeatEffect = z.infer<typeof BeatEffectSchema>;
+
+export const BeatChoiceSchema = z.strictObject({
+  id: z.string().regex(/^[a-z0-9_]+$/),
+  label: nonEmptyText,
+  text: template.optional(),
+  /** What it does to the player's life. */
+  effects: z.array(EffectSchema).default([]),
+  /** This choice stops the beat: it diverges, caused by the player. */
+  diverge: z.boolean().default(false),
+  /** Only offered to an instigator (who meets the beat's `instigate` bar). */
+  instigator: z.boolean().default(false),
+});
+export type BeatChoice = z.infer<typeof BeatChoiceSchema>;
+
+/** A canon beat: something the story says happens, which the canon mode pushes toward. */
+export const BeatSchema = z
+  .strictObject({
+    id: slug('beat'),
+    name: nonEmptyText,
+    /** What happened, written for the chronicle and the timeline. */
+    text: template,
+    news: template.optional(),
+    /** Written when it does not happen. */
+    divergeText: template.optional(),
+    divergeNews: template.optional(),
+    window: z.strictObject({ from: WhenSchema, to: WhenSchema }),
+    /** hard: fixed points of the story; soft: likely; seed: small things that may or may not be. */
+    anchor: z.enum(ANCHORS),
+    /** The chance it happens at all across its window by ordinary chance (Random mode). */
+    chance: z.number().min(0).max(1).optional(),
+    place: slug('loc'),
+    roles: z
+      .record(
+        roleKey,
+        z.strictObject({
+          char: slug('char'),
+          /** Who can take their place if they are dead, in order. */
+          substitutes: z.array(slug('char')).default([]),
+          /** Must be at the place (true), or can be anywhere (false). */
+          present: z.boolean().default(true),
+        }),
+      )
+      .default({}),
+    /** Beats that must have happened first. If one diverged, so does this one. */
+    requires: z.array(slug('beat')).default([]),
+    outcomes: z.array(BeatEffectSchema).default([]),
+    onDiverge: z.array(BeatEffectSchema).default([]),
+    /** Beats that depend on this one (documentation; checked to name this one in "requires"). */
+    dependents: z.array(slug('beat')).default([]),
+    /** The player present can take part (gets the non-instigator choices) from this Combat Power. */
+    participate: z.strictObject({ combatPower: z.number().min(0) }).optional(),
+    /** And can start, stop or hijack it from this Combat Power. */
+    instigate: z.strictObject({ combatPower: z.number().min(0) }).optional(),
+    choices: z.array(BeatChoiceSchema).default([]),
+    dev: z.boolean().default(false),
+    tags,
+  })
+  .superRefine((beat, ctx) => {
+    if (tickOfWhen(beat.window.to) < tickOfWhen(beat.window.from)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['window', 'to'],
+        message: 'the window ends before it starts',
+      });
+    }
+    const roles = Object.keys(beat.roles);
+    const check = (effects: readonly BeatEffect[], key: string) =>
+      effects.forEach((e, i) => {
+        if ('role' in e && !roles.includes(e.role)) {
+          ctx.addIssue({
+            code: 'custom',
+            path: [key, i, 'role'],
+            message: `unknown role "${e.role}" (roles: ${roles.join(', ') || 'none'})`,
+          });
+        }
+      });
+    check(beat.outcomes, 'outcomes');
+    check(beat.onDiverge, 'onDiverge');
+    const texts: { path: (string | number)[]; text: string }[] = [
+      { path: ['text'], text: beat.text },
+    ];
+    for (const key of ['news', 'divergeText', 'divergeNews'] as const) {
+      const t = beat[key];
+      if (t !== undefined) texts.push({ path: [key], text: t });
+    }
+    beat.choices.forEach((c, i) => {
+      if (c.text !== undefined) texts.push({ path: ['choices', i, 'text'], text: c.text });
+    });
+    for (const { path, text } of texts) {
+      for (const name of templateVarsUsed(text)) {
+        const role = roleOfVar(name);
+        if (role !== null && !roles.includes(role)) {
+          ctx.addIssue({
+            code: 'custom',
+            path,
+            message: `{${name}} names the role "${role}", which the beat does not declare`,
+          });
+        }
+      }
+    }
+    if (beat.choices.length > 0 && !beat.participate) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['participate'],
+        message: 'a beat with choices needs "participate": who may take part',
+      });
+    }
+    if (beat.choices.length > 0 && beat.choices.every((c) => c.instigator)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['choices'],
+        message: 'at least one choice must be open to every participant',
+      });
+    }
+    if (beat.choices.some((c) => c.instigator) && !beat.instigate) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['instigate'],
+        message: 'instigator choices need "instigate": who counts as an instigator',
+      });
+    }
+  });
+export type Beat = z.infer<typeof BeatSchema>;
+
+// ---- travel.json ------------------------------------------------------------------------------
+
+export const CAPTAIN_ORDERS = ['hold', 'push', 'resupply', 'detour', 'turn_back'] as const;
+export type CaptainOrder = (typeof CAPTAIN_ORDERS)[number];
+
+const orderText = z.strictObject({ name: nonEmptyText, description: nonEmptyText });
+
+export const TravelRulesSchema = z.strictObject({
+  provisions: z.strictObject({
+    /** Berries for one person's supplies for a month. */
+    costPerMonth: z.number().int().min(0),
+    /** Person-months of supplies one point of cargo holds. */
+    perCargo: z.number().min(0),
+  }),
+  /** Berries a captain pays to dock, by the port's wealth. */
+  portFee: z.strictObject({ low: z.number(), medium: z.number(), high: z.number() }),
+  /** A passenger's fare per month at sea. */
+  fare: z.number().int().min(0),
+  /** A hired hand's wages per month, and what signing one on costs. */
+  crewWage: z.number().int().min(0),
+  hireCost: z.number().int().min(0),
+  repair: z.strictObject({
+    /** Berries per hull point at a shipyard. */
+    perHull: z.number().min(0),
+    /** Docks without a shipyard charge this much more (and only patch half the damage). */
+    docksMult: z.number().min(1),
+  }),
+  /** A ship's resin coating for the dive to Fish-Man Island. */
+  coating: z.strictObject({ cost: z.number().int().min(0), at: z.array(slug('loc')).min(1) }),
+  logPose: z.strictObject({ cost: z.number().int().min(0), at: z.array(slug('loc')).min(1) }),
+  eternalPose: z.strictObject({ cost: z.number().int().min(0) }),
+  /** Speed multiplier by the lane's current. */
+  currents: z.strictObject({
+    calm: z.number().min(0),
+    gentle: z.number().min(0),
+    steady: z.number().min(0),
+    strong: z.number().min(0),
+    wild: z.number().min(0),
+    none: z.number().min(0),
+  }),
+  /** Speed multiplier by season (the wind). */
+  wind: multipliers,
+  /** A navigator's bonus: 1 + (stat - from) x per, at most +max. */
+  navigator: z.strictObject({
+    stat: statId,
+    from: z.number(),
+    per: z.number().min(0),
+    max: z.number().min(0),
+    /** An NPC captain's navigator. */
+    npc: z.number().min(0),
+  }),
+  /** Which class of ship carries a traveller who does not captain their own. */
+  carriers: z.strictObject({
+    crew: slug('vessel'),
+    passenger: slug('vessel'),
+    stowaway: slug('vessel'),
+    marine: slug('vessel'),
+  }),
+  /** On foot: miles a month. */
+  walkSpeed: z.number().int().min(1),
+  orders: z.strictObject({
+    hold: orderText,
+    push: orderText.extend({ speed: z.number().min(1), hull: z.number().int().min(0) }),
+    resupply: orderText.extend({ progress: z.number().min(0).max(1), supplies: range(0) }),
+    detour: orderText,
+    turn_back: orderText,
+  }),
+  modes: z
+    .array(
+      z.strictObject({
+        id: z.enum(TRAVEL_MODES),
+        name: nonEmptyText,
+        description: nonEmptyText,
+        /** Who sets the route, and the main risk (the planner's table). */
+        route: nonEmptyText,
+        risk: nonEmptyText,
+      }),
+    )
+    .length(TRAVEL_MODES.length),
+  /** Extra voyage events a month by the sea crossed: 0.5 is a 50% chance of a second roll. */
+  regionDanger: z.partialRecord(z.enum(REGIONS), z.number().min(0)),
+  /** Base voyage-event rolls a month. */
+  baseEvents: z.number().int().min(0),
+  /** Weight of "a quiet month" against the voyage events, per roll. */
+  quietWeight: z.number().min(0),
+  /** Hazard and encounter events are this much likelier per point of lane danger. */
+  dangerWeight: z.number().min(0),
+  stowaway: z.strictObject({ discovery: z.number().min(0).max(1), eventId: slug('evt') }),
+  /** Crew-member mode: chance a month that the captain changes course. */
+  divertChance: z.number().min(0).max(1),
+  morale: z.strictObject({
+    start: z.number().min(0).max(100),
+    /** Morale lost a month when wages go unpaid, and when supplies run out. */
+    unpaid: z.number().min(0),
+    hungry: z.number().min(0),
+    /** Morale drifts toward this a month at sea. */
+    rest: z.number().min(0).max(100),
+    drift: z.number().min(0),
+    /** Below this a mutiny becomes possible (the mutiny event's weight rises). */
+    mutinyBelow: z.number().min(0).max(100),
+  }),
+  /** Share of Max Health lost a month with no supplies. */
+  starvation: z.number().min(0).max(1),
+  /** Months at sea before scurvy can set in, and its chance a month after that. */
+  scurvy: z.strictObject({
+    afterMonths: z.number().int().min(0),
+    chance: z.number().min(0).max(1),
+  }),
+  seasickness: z.strictObject({ chance: z.number().min(0).max(1), trait: slug('trait') }),
+  wreck: z.strictObject({ crewLost: z.number().min(0).max(1) }),
+  overboard: z.strictObject({ stat: statId, difficulty: z.number() }),
+  /** The life loop's place while at sea. */
+  atSea: z.strictObject({
+    features: z.array(z.enum(PLACE_FEATURES)),
+    /** Train Body works at this efficiency at sea. */
+    trainBody: z.number().min(0).max(1),
+    wealth: z.enum(WEALTH_LEVELS),
+  }),
+  /** Safety of living somewhere, by its danger 0 to 5. */
+  safetyByDanger: z.array(z.enum(SAFETY_LEVELS)).length(6),
+  shipNames: z.array(nonEmptyText).min(1),
+  lines: z.strictObject({
+    departed: lifeTemplate,
+    arrived: lifeTemplate,
+    missedNews: lifeTemplate,
+    witnessedAtSea: lifeTemplate,
+    progress: lifeTemplate,
+    order: lifeTemplate,
+    wrecked: lifeTemplate,
+    castaway: lifeTemplate,
+    starving: lifeTemplate,
+    unpaid: lifeTemplate,
+    diverted: lifeTemplate,
+    redirected: lifeTemplate,
+    turnedBack: lifeTemplate,
+    resupplied: lifeTemplate,
+    jobLeft: lifeTemplate,
+    bought: lifeTemplate,
+    hired: lifeTemplate,
+    provisioned: lifeTemplate,
+    repaired: lifeTemplate,
+    coated: lifeTemplate,
+    pose: lifeTemplate,
+    portFee: lifeTemplate,
+    fare: lifeTemplate,
+    rescued: lifeTemplate,
+    drowned: lifeTemplate,
+  }),
+});
+export type TravelRules = z.infer<typeof TravelRulesSchema>;
+
+// ---- world.json -------------------------------------------------------------------------------
+
+export const NPC_ACTIONS = [
+  'work',
+  'train',
+  'voyage',
+  'piracy',
+  'enlist',
+  'settle',
+  'scheme',
+  'rest',
+] as const;
+export type NpcAction = (typeof NPC_ACTIONS)[number];
+
+const byTier = z.strictObject({
+  none: z.number().int().min(0),
+  hamlet: z.number().int().min(0),
+  village: z.number().int().min(0),
+  town: z.number().int().min(0),
+  city: z.number().int().min(0),
+  capital: z.number().int().min(0),
+});
+
+export const WorldRulesSchema = z.strictObject({
+  population: z.strictObject({
+    /** Named (Tier 2) people per place, by its population tier. */
+    named: byTier,
+    /** Everyone else (Tier 3), kept as numbers. */
+    residents: byTier,
+    /** Shares of children, adults and elders among residents. */
+    ages: z.strictObject({ children: z.number(), adults: z.number(), elders: z.number() }),
+    /** Yearly births and deaths among residents, as fractions. */
+    birthRate: z.number().min(0).max(1),
+    deathRate: z.number().min(0).max(1),
+    /** Named people are adults of these human ages when the world is populated. */
+    namedAges: intRange(0),
+    /** Chance a year that a named couple has a child, while young enough. */
+    childChance: z.number().min(0).max(1),
+    /** Named people of a place grow past this multiple of its share only as residents. */
+    namedCap: z.number().min(1),
+  }),
+  npc: z.strictObject({
+    goals: z
+      .array(
+        z.strictObject({
+          id: z.string().regex(/^[a-z]+$/),
+          name: nonEmptyText,
+          weight: z.number().min(0),
+          /** Occupation id -> multiplier on choosing this goal. */
+          occupations: multipliers,
+        }),
+      )
+      .min(1),
+    actions: z
+      .array(
+        z.strictObject({
+          id: z.enum(NPC_ACTIONS),
+          name: nonEmptyText,
+          /** Goal id -> how well this action serves it. */
+          utility: z.record(z.string(), z.number()),
+          /** Human ages it is open to. */
+          ages: intRange(0),
+        }),
+      )
+      .min(1),
+    /** Random spread added to every utility. */
+    noise: z.number().min(0),
+    /** Below this many Berries, work counts double. */
+    poorBelow: z.number().min(0),
+    /** Combat Power at which piracy and enlisting become open. */
+    fighterPower: z.number().min(0),
+    /** Generated pirate crews: names, and the bounty a member's deeds add. */
+    crewNames: z.array(nonEmptyText).min(1),
+    bounty: intRange(0),
+  }),
+  factions: z.strictObject({
+    /** Each active crew (or kingdom) adds this to its umbrella's strength... */
+    crewStrength: z.number().min(0),
+    /** ...plus this share of its own strength, the total at most `umbrellaCap`. */
+    umbrellaShare: z.number().min(0),
+    umbrellaCap: z.number().min(0),
+    /** Each place held adds this. */
+    territoryStrength: z.number().min(0),
+    /** Chance a month that two hostile factions clash (a world event decides where). */
+    hostileBelow: z.number().min(-100).max(100),
+  }),
+  economy: z.strictObject({
+    /** Prosperity (0 to 100) a place settles toward, by its wealth. */
+    prosperity: z.strictObject({ low: z.number(), medium: z.number(), high: z.number() }),
+    /** Living costs and wages: 1 + (prosperity - 50) x this. */
+    priceSlope: z.number().min(0),
+  }),
+  news: z.strictObject({
+    /** Months news takes to reach someone: same place, same sea, a neighbouring sea, farther. */
+    delay: z.strictObject({
+      place: z.number().int().min(0),
+      region: z.number().int().min(0),
+      near: z.number().int().min(0),
+      far: z.number().int().min(0),
+    }),
+  }),
+  events: z.strictObject({
+    /** Weights for 0, 1, 2 and 3 random events a month for the player ashore. */
+    playerPerMonth: z.array(z.number().min(0)).length(4),
+    /** Weights for 0 to 3 world events a month. */
+    worldPerMonth: z.array(z.number().min(0)).length(4),
+  }),
+  /** By climate: a name, and illness id -> chance multiplier. */
+  climates: z.record(
+    z.enum(CLIMATES),
+    z.strictObject({ name: nonEmptyText, illness: multipliers }),
+  ),
+});
+export type WorldRules = z.infer<typeof WorldRulesSchema>;
+
+// ---- canon.json -------------------------------------------------------------------------------
+
+const modeRule = z.strictObject({
+  /** Fires on its date when its roles are alive and present. */
+  certain: z.boolean().default(false),
+  /** Multiplies its chance a month. */
+  mult: z.number().min(0).default(1),
+});
+
+export const CanonRulesSchema = z.strictObject({
+  /** Canon mode id (creation.json) -> how each anchor strength is pushed. */
+  modes: z.record(
+    z.string(),
+    z.strictObject({
+      hard: modeRule,
+      soft: modeRule,
+      seed: modeRule,
+      /** Canon characters only die in beats (or by the player's hand), not of ordinary causes. */
+      protectCast: z.boolean(),
+    }),
+  ),
+  /** The chance each anchor strength happens across its window by ordinary chance. */
+  chance: z.strictObject({ hard: z.number(), soft: z.number(), seed: z.number() }),
+  /** A role-holder who is elsewhere may delay a beat this long before it is cancelled. */
+  delayMonths: z.number().int().min(0),
+  /** How fast a role-holder travels to a beat (miles a month). */
+  travelSpeed: z.number().min(1),
+  /** The last arc the game knows. After it, the world runs on random events. */
+  cutoff: z.strictObject({ year: z.number().int(), month: monthIndex, label: nonEmptyText }),
+  /** Stats a canon character has unless their file says otherwise. */
+  defaultStats: statNumbers,
+  lines: z.strictObject({
+    witnessed: canonTemplate,
+    witnessedFar: canonTemplate,
+    participant: canonTemplate,
+    diverged: canonTemplate,
+    missed: canonTemplate,
+    substituted: canonTemplate,
+    delayed: canonTemplate,
+    roleDead: canonTemplate,
+    roleAway: canonTemplate,
+    requirement: canonTemplate,
+    earlyDeath: canonTemplate,
+    earlyDeathNews: canonTemplate,
+    fruitReturns: canonTemplate,
+    successor: canonTemplate,
+    crewEnds: canonTemplate,
+    playerDiverged: canonTemplate,
+  }),
+});
+export type CanonRules = z.infer<typeof CanonRulesSchema>;
+
+// ---------------------------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------------------------
 
@@ -1723,6 +2795,11 @@ export const COLLECTIONS = {
   backstory: { schema: BackstoryEventSchema, prefix: 'bs', label: 'backstory event' },
   activities: { schema: ActivitySchema, prefix: 'act', label: 'activity' },
   jobs: { schema: JobSchema, prefix: 'job', label: 'job' },
+  lanes: { schema: LaneSchema, prefix: 'lane', label: 'sea lane' },
+  vessels: { schema: VesselSchema, prefix: 'vessel', label: 'vessel' },
+  factions: { schema: FactionSchema, prefix: 'org', label: 'faction' },
+  cast: { schema: CastSchema, prefix: 'char', label: 'canon character' },
+  canon: { schema: BeatSchema, prefix: 'beat', label: 'canon beat' },
 } as const;
 export type CollectionKind = keyof typeof COLLECTIONS;
 export const COLLECTION_KINDS = Object.keys(COLLECTIONS) as CollectionKind[];
@@ -1735,11 +2812,14 @@ export const SINGLETONS = {
   'data/creation.json': { key: 'creation', schema: CreationSchema },
   'data/appearance.json': { key: 'appearance', schema: AppearanceSchema },
   'data/life.json': { key: 'life', schema: LifeRulesSchema },
+  'data/travel.json': { key: 'travel', schema: TravelRulesSchema },
+  'data/world.json': { key: 'world', schema: WorldRulesSchema },
+  'data/canon.json': { key: 'canonRules', schema: CanonRulesSchema },
 } as const;
 export type SingletonPath = keyof typeof SINGLETONS;
 
 /** Directories that exist in the layout but have no schema yet; files placed there are rejected. */
-export const RESERVED_DIRS = ['canon', 'fruits', 'news'] as const;
+export const RESERVED_DIRS = ['fruits', 'news'] as const;
 
 export interface GameData {
   calendar: Calendar;
@@ -1748,6 +2828,9 @@ export interface GameData {
   creation: Creation;
   appearance: Appearance;
   life: LifeRules;
+  travel: TravelRules;
+  world: WorldRules;
+  canonRules: CanonRules;
   traits: Readonly<Record<string, Trait>>;
   weapons: Readonly<Record<string, Weapon>>;
   locations: Readonly<Record<string, Location>>;
@@ -1761,4 +2844,9 @@ export interface GameData {
   backstory: Readonly<Record<string, BackstoryEvent>>;
   activities: Readonly<Record<string, Activity>>;
   jobs: Readonly<Record<string, Job>>;
+  lanes: Readonly<Record<string, Lane>>;
+  vessels: Readonly<Record<string, Vessel>>;
+  factions: Readonly<Record<string, Faction>>;
+  cast: Readonly<Record<string, CastMember>>;
+  canon: Readonly<Record<string, Beat>>;
 }

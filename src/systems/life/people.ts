@@ -42,13 +42,16 @@ function rollOccupation(data: GameData, p: Person, rng: Rng): Occupation | undef
   const pool = sortedValues(data.occupations).filter(
     (o) =>
       !o.special &&
-      (o.places.length === 0 || o.places.includes(p.home.id)) &&
+      (o.places.length === 0 || o.places.includes(p.place.culture.id)) &&
       (o.races.length === 0 || o.races.includes(p.race.id)),
   );
   return rng.weightedPick(pool, (o) => o.weight);
 }
 
-/** Someone new, of the player's race and from the player's home, with a name nobody else has. */
+/**
+ * Someone new, of the player's race, from the people of the place the player is (Phase 3: met
+ * abroad, they have that place's names), with a name nobody else has.
+ */
 export function makePerson(
   state: WorldState,
   data: GameData,
@@ -56,7 +59,7 @@ export function makePerson(
   rng: Rng,
   spec: NewPerson,
 ): Entity {
-  const pool = namePool(data, { race: p.race, birthplace: p.home });
+  const pool = namePool(data, { race: p.race, birthplace: p.place.culture });
   const pronouns = spec.pronouns ?? rollPronouns(rng.fork('pronouns'));
   const taken = new Set<string>();
   for (const entity of Object.values(state.entities)) {
@@ -72,7 +75,7 @@ export function makePerson(
     pronouns,
     race: p.race.id,
     birthTick: spec.birthTick,
-    birthplace: p.home.id,
+    birthplace: p.place.culture.id,
     alive: true,
     traits: [...p.race.innateTraits, ...npcTraits(data, rng.fork('traits'))],
     appearance: {},
@@ -81,6 +84,7 @@ export function makePerson(
     berries: 0,
   };
   if (spec.occupation !== undefined) character.occupation = spec.occupation;
+  if (p.place.location) character.place = p.place.location.id;
   const entity = createEntity(state, {
     type: 'character',
     origin: 'generated',
@@ -91,6 +95,19 @@ export function makePerson(
   });
   entity.character = character;
   return entity;
+}
+
+/**
+ * Tier 3 (Phase 3): the people of a place are numbers until the player meets one of them. Then
+ * that person stops being a number: one fewer of their age, and of their trade.
+ */
+function countMet(state: WorldState, p: Person, humanAge: number, occupation?: string): void {
+  const here = p.place.location ? state.entities[p.place.location.id]?.place : undefined;
+  if (!here) return;
+  const group = humanAge < 16 ? 'children' : humanAge >= 65 ? 'elders' : 'adults';
+  here.residents[group] = Math.max(0, here.residents[group] - 1);
+  if (occupation && (here.jobs[occupation] ?? 0) > 0)
+    here.jobs[occupation] = (here.jobs[occupation] ?? 1) - 1;
 }
 
 /** Someone the player meets, `ageOffset` human years older (or younger) than they are. */
@@ -115,6 +132,7 @@ export function meetPerson(
   const birthTick = Math.min(tick, tick - Math.round(years * 12) - rng.fork('month').int(0, 11));
   const occupation =
     spec.occupation ?? (humanAge >= 16 ? rollOccupation(data, p, rng.fork('job'))?.id : undefined);
+  countMet(state, p, humanAge, occupation);
   return makePerson(state, data, p, rng, {
     birthTick,
     ...(occupation !== undefined ? { occupation } : {}),

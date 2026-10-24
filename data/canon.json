@@ -1,0 +1,82 @@
+{
+  "modes": {
+    "canon": {
+      "hard": {
+        "certain": true
+      },
+      "soft": {
+        "certain": true
+      },
+      "seed": {
+        "mult": 6
+      },
+      "protectCast": true
+    },
+    "probable": {
+      "hard": {
+        "mult": 6
+      },
+      "soft": {
+        "mult": 6
+      },
+      "seed": {
+        "mult": 3
+      },
+      "protectCast": true
+    },
+    "random": {
+      "hard": {
+        "mult": 1
+      },
+      "soft": {
+        "mult": 1
+      },
+      "seed": {
+        "mult": 1
+      },
+      "protectCast": false
+    }
+  },
+  "chance": {
+    "hard": 0.17,
+    "soft": 0.12,
+    "seed": 0.08
+  },
+  "delayMonths": 6,
+  "travelSpeed": 180,
+  "cutoff": {
+    "year": 38,
+    "month": 12,
+    "label": "Egghead (Year 38)"
+  },
+  "defaultStats": {
+    "strength": 60,
+    "speed": 55,
+    "endurance": 60,
+    "durability": 55,
+    "dexterity": 50,
+    "intellect": 45,
+    "willpower": 60,
+    "charisma": 50,
+    "perception": 50,
+    "luck": 50
+  },
+  "lines": {
+    "witnessed": "You were there in {place} and saw it with your own eyes: {beat}.",
+    "witnessedFar": "Word of it reached the deck from close by: {beat}.",
+    "participant": "You were in the thick of it when it happened: {beat}.",
+    "diverged": "It never happened: {beat}. ({cause})",
+    "missed": "The years went by and it never came to pass: {beat}.",
+    "substituted": "{name} stood where another should have stood: {beat}.",
+    "delayed": "{name} was elsewhere, and the hour of it slipped: {beat}.",
+    "roleDead": "{name} was already dead",
+    "roleAway": "{name} could not get there in time",
+    "requirement": "what had to come first never happened",
+    "earlyDeath": "{name} died before their time: {cause}.",
+    "earlyDeathNews": "{name} is dead, years before anyone thought. The seas will not be the same.",
+    "fruitReturns": "Somewhere, the {fruit} that {name} held has returned to the world.",
+    "successor": "{successor} took command of the {crew}.",
+    "crewEnds": "With nobody to lead them, the {crew} broke apart.",
+    "playerDiverged": "your hand turned it aside"
+  }
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "lane_west_blue_port_ohara",
+    "from": "loc_west_blue_port",
+    "to": "loc_ohara",
+    "miles": 200,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 2
+  },
+  {
+    "id": "lane_ohara_god_valley",
+    "from": "loc_ohara",
+    "to": "loc_god_valley",
+    "miles": 280,
+    "danger": 2,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 1
+  },
+  {
+    "id": "lane_west_blue_port_ilisia",
+    "from": "loc_west_blue_port",
+    "to": "loc_ilisia",
+    "miles": 310,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 3
+  },
+  {
+    "id": "lane_god_valley_kano",
+    "from": "loc_god_valley",
+    "to": "loc_kano",
+    "miles": 400,
+    "danger": 2,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 1
+  },
+  {
+    "id": "lane_kano_west_blue_port",
+    "from": "loc_kano",
+    "to": "loc_west_blue_port",
+    "miles": 520,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 3
+  }
+]

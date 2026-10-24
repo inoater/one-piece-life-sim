@@ -42,6 +42,8 @@ export async function mountUi(
     debug: true,
     newSeed: () => 'ui-seed',
     yieldToHost: async () => {},
+    // A world without its Tier 2 crowd (Phase 3): the page's tests need small, quick saves.
+    population: 'none',
     ...options.core,
   });
   const host = new InlineSimHost(core);

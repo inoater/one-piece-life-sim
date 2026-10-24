@@ -1,0 +1,501 @@
+[
+  {
+    "id": "loc_reverse_mountain",
+    "name": "Reverse Mountain",
+    "home": "Reverse Mountain",
+    "kind": "landmark",
+    "region": "red_line",
+    "climate": "cold",
+    "description": "Where the currents of the four seas climb the Red Line and pour together down into the Grand Line. Nobody lives on its slopes; ships either make the climb or smash against the wall.",
+    "population": "none",
+    "wealth": "low",
+    "danger": 3,
+    "features": ["coast"],
+    "culture": "bp_grand_line_island",
+    "map": {
+      "x": 1320,
+      "y": 656
+    }
+  },
+  {
+    "id": "loc_twin_cape",
+    "name": "Twin Cape",
+    "home": "Twin Cape",
+    "kind": "port",
+    "region": "paradise",
+    "climate": "temperate",
+    "description": "The cape at the foot of Reverse Mountain, with a lighthouse, an old doctor who keeps it, and the first Log Pose a crew will ever need.",
+    "population": "hamlet",
+    "wealth": "low",
+    "danger": 1,
+    "features": ["coast", "docks", "doctor"],
+    "eventTags": {
+      "sea": 1.5,
+      "quiet": 1.3
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 0,
+    "map": {
+      "x": 1394,
+      "y": 681
+    }
+  },
+  {
+    "id": "loc_little_garden",
+    "name": "Little Garden",
+    "home": "Little Garden",
+    "kind": "island",
+    "region": "paradise",
+    "climate": "tropical",
+    "description": "A primeval jungle of giant ferns and older beasts. Its Log Pose takes a full year to set, which is time enough for most visitors to be eaten.",
+    "population": "none",
+    "wealth": "low",
+    "danger": 4,
+    "features": ["coast", "jungle", "forest", "ruins"],
+    "eventTags": {
+      "wild": 2,
+      "fight": 1.3
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 12,
+    "map": {
+      "x": 1453,
+      "y": 612
+    }
+  },
+  {
+    "id": "loc_drum",
+    "name": "Drum Island",
+    "home": "Drum",
+    "kind": "kingdom",
+    "region": "paradise",
+    "climate": "cold",
+    "description": "A winter island of drum-shaped mountains, once famous for its doctors, whose castle stands on the highest peak.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 2,
+    "controller": "org_kingdom_drum",
+    "features": ["coast", "docks", "mountains", "cold", "doctor", "forest", "market"],
+    "eventTags": {
+      "hardship": 1.3,
+      "medicine": 2
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 1,
+    "map": {
+      "x": 1543,
+      "y": 613
+    }
+  },
+  {
+    "id": "loc_alabasta",
+    "name": "Alabasta",
+    "home": "Alabasta",
+    "kind": "kingdom",
+    "region": "paradise",
+    "climate": "arid",
+    "description": "A desert kingdom four thousand years old, its cities strung along a great river, its royal line among the founders of the World Government.",
+    "population": "capital",
+    "wealth": "high",
+    "danger": 2,
+    "controller": "org_kingdom_alabasta",
+    "features": [
+      "coast",
+      "docks",
+      "market",
+      "ruins",
+      "school",
+      "library",
+      "doctor",
+      "smithy",
+      "underworld"
+    ],
+    "eventTags": {
+      "trade": 1.5,
+      "noble": 1.5,
+      "hardship": 1.2
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 1,
+    "map": {
+      "x": 1643,
+      "y": 602
+    }
+  },
+  {
+    "id": "loc_grand_line_island",
+    "name": "Tidebell Island",
+    "home": "the island",
+    "kind": "island",
+    "region": "paradise",
+    "climate": "volatile",
+    "origin": "generated",
+    "description": "One of the hundreds of islands strung along the first half of the Grand Line: a port town, a jungle, ruins nobody can read, and weather that changes its mind by the hour.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 3,
+    "features": ["coast", "docks", "forest", "ruins", "market", "doctor", "smithy", "underworld"],
+    "eventTags": {
+      "pirate": 1.5,
+      "sea": 1.3
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 2,
+    "map": {
+      "x": 1560,
+      "y": 700
+    }
+  },
+  {
+    "id": "loc_jaya",
+    "name": "Jaya",
+    "home": "Jaya",
+    "kind": "island",
+    "region": "paradise",
+    "climate": "tropical",
+    "description": "Half an island, with a lawless port called Mock Town where pirates drink, brawl and laugh at anyone who talks about islands in the sky.",
+    "population": "town",
+    "wealth": "low",
+    "danger": 4,
+    "features": ["coast", "docks", "jungle", "market", "underworld"],
+    "eventTags": {
+      "pirate": 2,
+      "crime": 1.5,
+      "fight": 1.5
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 1,
+    "map": {
+      "x": 1720,
+      "y": 676
+    }
+  },
+  {
+    "id": "loc_long_ring",
+    "name": "Long Ring Long Land",
+    "home": "Long Ring Long Land",
+    "kind": "island",
+    "region": "paradise",
+    "climate": "temperate",
+    "description": "A ring of long, narrow islands where everything grows tall and thin, the animals included. A nomad's land of wide grass.",
+    "population": "hamlet",
+    "wealth": "low",
+    "danger": 1,
+    "features": ["coast", "farmland", "forest"],
+    "eventTags": {
+      "quiet": 1.5,
+      "wild": 1.3
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 1,
+    "map": {
+      "x": 1865,
+      "y": 605
+    }
+  },
+  {
+    "id": "loc_water_seven",
+    "name": "Water Seven",
+    "home": "Water Seven",
+    "kind": "port",
+    "region": "paradise",
+    "climate": "temperate",
+    "description": "The city of water: canals for streets, a great fountain at its heart, and the finest shipwrights in the world working its docks. A sea train runs from here to the Government's judicial island.",
+    "population": "capital",
+    "wealth": "high",
+    "danger": 1,
+    "features": [
+      "coast",
+      "docks",
+      "shipyard",
+      "market",
+      "school",
+      "doctor",
+      "smithy",
+      "library",
+      "underworld"
+    ],
+    "eventTags": {
+      "trade": 2,
+      "craft": 2
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 1,
+    "eternalPoses": ["loc_enies_lobby", "loc_sabaody"],
+    "map": {
+      "x": 2098,
+      "y": 631
+    }
+  },
+  {
+    "id": "loc_marine_base_town",
+    "name": "Bastion Port",
+    "home": "the base town",
+    "kind": "port",
+    "region": "paradise",
+    "climate": "temperate",
+    "origin": "generated",
+    "description": "A Marine branch base on the Grand Line and the disciplined town that grew up to feed and house it. Recruits drill on the quay at dawn.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 1,
+    "controller": "org_marines",
+    "features": [
+      "coast",
+      "docks",
+      "marine_base",
+      "school",
+      "library",
+      "doctor",
+      "smithy",
+      "market",
+      "dojo",
+      "shipyard"
+    ],
+    "eventTags": {
+      "marine": 2.5
+    },
+    "culture": "bp_marine_base_town",
+    "logPose": 1,
+    "eternalPoses": ["loc_marineford"],
+    "map": {
+      "x": 2140,
+      "y": 700
+    }
+  },
+  {
+    "id": "loc_enies_lobby",
+    "name": "Enies Lobby",
+    "home": "Enies Lobby",
+    "kind": "stronghold",
+    "region": "paradise",
+    "climate": "temperate",
+    "description": "The World Government's judicial island, where it never gets dark and no trial has ever ended in acquittal. Beyond its Gate of Justice lie Impel Down and Marineford.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 4,
+    "controller": "org_world_government",
+    "features": ["coast", "docks", "marine_base"],
+    "eventTags": {
+      "marine": 2.5
+    },
+    "culture": "bp_marine_base_town",
+    "map": {
+      "x": 2241,
+      "y": 674
+    }
+  },
+  {
+    "id": "loc_thriller_bark",
+    "name": "Thriller Bark",
+    "home": "Thriller Bark",
+    "kind": "landmark",
+    "region": "paradise",
+    "climate": "volatile",
+    "description": "A ship the size of an island drifting through the fog of the Florian Triangle, full of things that should not walk.",
+    "population": "none",
+    "wealth": "low",
+    "danger": 5,
+    "features": ["coast", "ruins"],
+    "eventTags": {
+      "eerie": 3
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 1,
+    "map": {
+      "x": 2307,
+      "y": 641
+    }
+  },
+  {
+    "id": "loc_marineford",
+    "name": "Marineford",
+    "home": "Marineford",
+    "kind": "stronghold",
+    "region": "paradise",
+    "climate": "temperate",
+    "description": "The Marines' headquarters: a fortress on a crescent bay with a town for the families of the officers who serve there.",
+    "population": "city",
+    "wealth": "medium",
+    "danger": 1,
+    "controller": "org_marines",
+    "features": [
+      "coast",
+      "docks",
+      "marine_base",
+      "school",
+      "library",
+      "doctor",
+      "dojo",
+      "smithy",
+      "shipyard",
+      "market"
+    ],
+    "eventTags": {
+      "marine": 3
+    },
+    "culture": "bp_marine_base_town",
+    "map": {
+      "x": 2340,
+      "y": 673
+    }
+  },
+  {
+    "id": "loc_kuraigana",
+    "name": "Kuraigana Island",
+    "home": "Kuraigana",
+    "kind": "ruin",
+    "region": "paradise",
+    "climate": "volatile",
+    "description": "A ruined kingdom under a permanent grey sky, its castle haunted by baboons that copy whoever fights them.",
+    "population": "hamlet",
+    "wealth": "low",
+    "danger": 4,
+    "features": ["coast", "ruins", "forest", "farmland"],
+    "eventTags": {
+      "fight": 2,
+      "eerie": 1.5
+    },
+    "culture": "bp_grand_line_island",
+    "map": {
+      "x": 2420,
+      "y": 705
+    }
+  },
+  {
+    "id": "loc_sabaody",
+    "name": "Sabaody Archipelago",
+    "home": "Sabaody",
+    "kind": "port",
+    "region": "paradise",
+    "climate": "temperate",
+    "description": "Seventy-nine giant mangroves at the foot of the Red Line, where crews have their ships coated for the dive to Fish-Man Island, World Nobles go shopping, and people are sold at auction.",
+    "population": "city",
+    "wealth": "high",
+    "danger": 3,
+    "controller": "org_world_government",
+    "features": ["coast", "docks", "shipyard", "market", "underworld", "doctor", "school"],
+    "eventTags": {
+      "pirate": 2,
+      "crime": 1.5,
+      "noble": 1.5
+    },
+    "culture": "bp_grand_line_island",
+    "logPose": 1,
+    "eternalPoses": ["loc_marineford"],
+    "map": {
+      "x": 2475,
+      "y": 659
+    }
+  },
+  {
+    "id": "loc_mary_geoise",
+    "name": "Mary Geoise",
+    "home": "Mary Geoise",
+    "kind": "stronghold",
+    "region": "red_line",
+    "climate": "temperate",
+    "description": "The Holy Land atop the Red Line, seat of the World Government and the World Nobles. Its streets are paved, its gardens perfect, and its slaves many.",
+    "population": "capital",
+    "wealth": "high",
+    "danger": 2,
+    "controller": "org_world_government",
+    "features": ["library", "doctor", "market", "school"],
+    "eventTags": {
+      "noble": 3
+    },
+    "culture": "bp_marine_base_town",
+    "map": {
+      "x": 25,
+      "y": 651
+    }
+  },
+  {
+    "id": "loc_amazon_lily",
+    "name": "Amazon Lily",
+    "home": "Amazon Lily",
+    "kind": "kingdom",
+    "region": "calm_belt",
+    "climate": "tropical",
+    "description": "A kingdom of women warriors in the windless Calm Belt, guarded by sea kings and closed to men on pain of stone.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 3,
+    "controller": "org_kingdom_amazon_lily",
+    "features": ["coast", "docks", "jungle", "dojo", "market"],
+    "eventTags": {
+      "fight": 2
+    },
+    "culture": "bp_grand_line_island",
+    "map": {
+      "x": 2200,
+      "y": 753
+    }
+  },
+  {
+    "id": "loc_impel_down",
+    "name": "Impel Down",
+    "home": "Impel Down",
+    "kind": "stronghold",
+    "region": "calm_belt",
+    "climate": "undersea",
+    "description": "The Government's great prison, sunk beneath the Calm Belt in six levels of hell. Its gates have been broken once.",
+    "population": "hamlet",
+    "wealth": "low",
+    "danger": 5,
+    "controller": "org_world_government",
+    "features": ["marine_base"],
+    "eventTags": {
+      "marine": 2
+    },
+    "culture": "bp_marine_base_town",
+    "map": {
+      "x": 2298,
+      "y": 756
+    }
+  },
+  {
+    "id": "loc_skypiea",
+    "name": "Skypiea",
+    "home": "Skypiea",
+    "kind": "sky_island",
+    "region": "sky",
+    "climate": "sky",
+    "description": "An island of clouds ten thousand metres above the sea, its people winged, its sacred forest older than its god, and its gold older still.",
+    "population": "town",
+    "wealth": "low",
+    "danger": 1,
+    "features": ["clouds", "forest", "ruins", "school", "market", "doctor"],
+    "eventTags": {
+      "sky": 3,
+      "ruins": 1.5
+    },
+    "culture": "bp_sky_island",
+    "map": {
+      "x": 1782,
+      "y": 632
+    }
+  },
+  {
+    "id": "loc_weatheria",
+    "name": "Weatheria",
+    "home": "Weatheria",
+    "kind": "sky_island",
+    "region": "sky",
+    "climate": "sky",
+    "description": "A small sky island drifting on the trade winds, where old scholars study the weather and keep tidy gardens.",
+    "population": "hamlet",
+    "wealth": "medium",
+    "danger": 1,
+    "features": ["clouds", "library", "school"],
+    "eventTags": {
+      "study": 2,
+      "sky": 2
+    },
+    "culture": "bp_sky_island",
+    "map": {
+      "x": 1919,
+      "y": 577
+    }
+  }
+]

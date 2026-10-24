@@ -13,10 +13,14 @@ checked against a schema when the game starts, in `npm run validate`, in the pre
 | `data/character.json`                                | caps, growth, talent tiers, life stages, derived                | required (Phase 1)                                |
 | `data/creation.json`                                 | entry limits, canon modes, difficulty, wealth, family, backfill | required (Phase 1)                                |
 | `data/appearance.json`                               | appearance fields, options, the sentence                        | required (Phase 1)                                |
-| `data/traits/`, `weapons/`, `locations/`, `events/`  | one item per file, or an array of items                         | schemas exist                                     |
+| `data/traits/`, `weapons/`, `events/`                | one item per file, or an array of items                         | schemas exist                                     |
 | `data/races/`, `birthplaces/`, `legacies/`           | character genesis                                               | schemas exist (Phase 1)                           |
 | `data/occupations/`, `names/`, `foci/`, `backstory/` | character genesis                                               | schemas exist (Phase 1)                           |
-| `data/canon/`, `fruits/`, `news/`                    | _reserved_                                                      | **files here are rejected until a schema exists** |
+| `data/life.json`, `activities/`, `jobs/`             | the life loop                                                   | required (Phase 2)                                |
+| `data/locations/`, `lanes/`, `vessels/`              | the map's places, the sea lanes between them, ships             | required (Phase 3)                                |
+| `data/travel.json`, `world.json`, `canon.json`       | voyages; factions, people, economy, news; the canon modes       | required (Phase 3)                                |
+| `data/factions/`, `cast/`, `canon/`                  | factions and crews; the canon cast; the canon beats             | schemas exist (Phase 3)                           |
+| `data/fruits/`, `news/`                              | _reserved_                                                      | **files here are rejected until a schema exists** |
 
 A file may hold one object or an array of objects. Subfolders are fine. By convention a single-item file
 is named after its id without the prefix: `data/traits/test_brawler.json` defines `trait_test_brawler`
@@ -148,9 +152,55 @@ How the files fit together, and the rules the loader enforces beyond each schema
   `{title}`, `{cause}` and a few more.
 - Every number is a design value. `npm run lives` and the Life debug tab show what they add up to.
 
+## The world (Phase 3)
+
+- **Places** (`data/locations/`) are the nodes of the travel graph: region, climate, population
+  tier, wealth, danger (0 to 5, which sets how safe it is to live there), the faction that holds it
+  at the start, features (the services: docks, a shipyard, a doctor, a Marine base, an underworld
+  for the black market, a library...), the culture its people share (a birthplace, for names, races
+  and trades), event tags (the local event pool), a Log Pose time (Grand Line islands), the Eternal
+  Poses sold there and a position on the map. Every birthplace names the place it is (`location`).
+  Canon places have `origin: "canon"`; the generic villages of the four seas are `"generated"`.
+- **Lanes** (`data/lanes/`) join two places: sea miles, danger, current, and what they need
+  (`none`, `log_pose`, `eternal_pose`, `coated_ship`, `sky_route`); `oneWay` (Reverse Mountain),
+  `land` (walked), `traffic` (0: no ship takes travellers), `closedBy` and `needsFlag` with the
+  planner's text. The loader fails if any place cannot be reached, or has no lane.
+- **Vessels** (`data/vessels/`): speed, hull, crew, cargo, cost and where they are sold.
+- **`data/travel.json`**: provisions, fares, wages, repairs, coating and poses; currents, winds and
+  the navigator's bonus; the six travel modes; the captain's orders; region danger and voyage-event
+  rolls; morale, starvation, scurvy, seasickness, wrecks, going overboard; the place at sea; lines.
+- **`data/world.json`**: Tier 2 and Tier 3 people (how many per population tier, births and deaths,
+  goals and the utility of each action), faction rules, the economy, news delays, how many random
+  events a month, and climates.
+- **Factions** (`data/factions/`): strength and its yearly trend, opinions of each other, the
+  faction they answer to, and for crews (`kind: "crew"`) a captain, a line of succession, a founding
+  date and `active` (a crew a beat founds starts inactive). `umbrella` counts a crew toward the
+  pirates' strength, or a kingdom toward the kingdoms'.
+- **The cast** (`data/cast/`): name, race, birth date (with `approx`), birthplace, prime stats and
+  keyframes: from a month, where they are, as what, with what bounty, haki and fruit, flagged
+  `approx` when the source is vague. Keyframes are in order and never overlap (canon lint). `ties`
+  are the people who leave the story with them if they die early.
+- **Beats** (`data/canon/`): a window, an anchor (`hard`, `soft`, `seed`), an optional `chance` (the
+  Random-mode chance across the window), a place, roles (a character and substitutes, present or
+  not), `requires`, `outcomes` and `onDiverge` (deaths, imprisonment, territory, factions, crews,
+  flags, prosperity), news, and choices for a player who takes part (`participate` and `instigate`
+  give the Combat Power needed; a choice with `diverge` stops the beat).
+- **Events** grew the engine the Phase 0 schema promised: `trigger` (`random` for the player ashore,
+  `voyage` at sea, `world` somewhere in the world, `arrival` on landing), conditions (about 30 kinds:
+  place, sea, lane, travel mode, ship, age, stats, flags, canon mode, beats, a canon character here...),
+  `weightMods`, `cooldown`, `once`, `roles` (`relation`, `stranger`, `canon`, `captain`, named in text
+  as `{role.<name>.name}`, `.title`, `.they`, `.them`, `.their`), `where` (world events), choices with
+  `requires` and a skill `check` with four bands, and effects on the vessel (`hull`, `supplies`,
+  `crew`, `morale`, `delay`, `redirect`, `overboard`), the player (`bounty`) and the world (`faction`,
+  `control`, `prosperity`, `population`, `localFlag`, `news`, `meet`).
+- New text variables: `{place}`, `{destination}`, `{ship}` everywhere, and the canon lines' own
+  (`CANON_VARS`: `{name}`, `{title}`, `{beat}`, `{cause}`, `{successor}`, `{crew}`, `{fruit}`).
+
 ## Dev fixtures
 
-Everything named `test_*` is a fixture for the debug panel and the tests (a test entity whose strength is
+Phase 3 adds a test crew, three test characters and a test duel beat (`dev: true`), and a dev place
+and lane (tagged `dev`). They exist only in worlds with `dev.fixtures` set. Everything named
+`test_*` is a fixture for the debug panel and the tests (a test entity whose strength is
 `50 + 12 training + 8 Brawler + 4 Cutlass = 74`, a chain of events, a secret event). They contain no lore.
 They are bundled into the worker in every build but cannot fire in production, because forcing an event is a
 debug action the worker refuses. The test traits have `"weight": 0`, so character genesis never draws them. Delete them when real content makes them redundant, and update

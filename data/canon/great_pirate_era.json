@@ -1,0 +1,732 @@
+[
+  {
+    "id": "beat_fisher_tiger_raid",
+    "name": "Fisher Tiger frees the slaves of Mary Geoise",
+    "text": "{role.tiger.name} climbed the Red Line with his bare hands, broke into the Holy Land and set its slaves free, human and fish-man alike. He asked none of them their race.",
+    "news": "A fish-man has attacked Mary Geoise and freed the World Nobles' slaves. The Government calls it a riot. Everyone else calls it a miracle.",
+    "divergeNews": "The Holy Land is quiet. Its slaves are where they were.",
+    "window": {
+      "from": {
+        "year": 22,
+        "month": 2
+      },
+      "to": {
+        "year": 22,
+        "month": 6
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_mary_geoise",
+    "roles": {
+      "tiger": {
+        "char": "char_fisher_tiger"
+      }
+    },
+    "outcomes": [
+      {
+        "kind": "crew",
+        "org": "org_sun_pirates",
+        "active": true
+      },
+      {
+        "kind": "bounty",
+        "role": "tiger",
+        "value": 230000000
+      },
+      {
+        "kind": "faction",
+        "org": "org_world_government",
+        "strength": -3,
+        "months": 24,
+        "source": "The Holy Land breached"
+      },
+      {
+        "kind": "faction",
+        "org": "org_ryugu_kingdom",
+        "opinion": {
+          "toward": "org_world_government",
+          "value": -15
+        },
+        "source": "Fisher Tiger's raid"
+      }
+    ],
+    "dependents": ["beat_fisher_tiger_death"],
+    "tags": ["fishman", "government"]
+  },
+  {
+    "id": "beat_fisher_tiger_death",
+    "name": "The death of Fisher Tiger",
+    "text": "Ambushed by Marines on the way home with a freed slave girl, {role.tiger.name} refused a transfusion of human blood and died on the deck of his ship.",
+    "news": "Fisher Tiger, captain of the Sun Pirates, is dead. Fish-Man Island mourns.",
+    "window": {
+      "from": {
+        "year": 25,
+        "month": 1
+      },
+      "to": {
+        "year": 25,
+        "month": 6
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_grand_line_island",
+    "roles": {
+      "tiger": {
+        "char": "char_fisher_tiger"
+      }
+    },
+    "requires": ["beat_fisher_tiger_raid"],
+    "outcomes": [
+      {
+        "kind": "death",
+        "role": "tiger",
+        "cause": "died of his wounds after a Marine ambush"
+      },
+      {
+        "kind": "faction",
+        "org": "org_ryugu_kingdom",
+        "opinion": {
+          "toward": "org_marines",
+          "value": -20
+        },
+        "source": "Fisher Tiger's death"
+      }
+    ],
+    "dependents": ["beat_arlong_park"],
+    "tags": ["fishman"]
+  },
+  {
+    "id": "beat_flevance",
+    "name": "The fall of Flevance",
+    "text": "The white lead under {place} turned out to be a poison the Government had known about for a century. When the White Town began to die, its neighbours closed the borders and shot anyone who crossed. {role.law.name} crossed anyway, hidden under the bodies.",
+    "news": "Flevance quarantined: the Amber Lead Syndrome is called contagious, and the White Town is under siege by its neighbours.",
+    "window": {
+      "from": {
+        "year": 22,
+        "month": 1
+      },
+      "to": {
+        "year": 22,
+        "month": 6
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_flevance",
+    "roles": {
+      "law": {
+        "char": "char_trafalgar_law",
+        "present": false
+      }
+    },
+    "outcomes": [
+      {
+        "kind": "control",
+        "place": "loc_flevance",
+        "org": null
+      },
+      {
+        "kind": "prosperity",
+        "place": "loc_flevance",
+        "value": -60,
+        "source": "The Amber Lead Syndrome"
+      },
+      {
+        "kind": "flag",
+        "flag": "canon.flevance_fallen",
+        "value": true
+      }
+    ],
+    "tags": ["north_blue", "government"]
+  },
+  {
+    "id": "beat_shanks_arm",
+    "name": "Shanks gives away his arm and his hat",
+    "text": "In a village on {place}, {role.shanks.name} lost an arm to a sea king saving a boy called {role.luffy.name}, and left him a straw hat to give back one day.",
+    "window": {
+      "from": {
+        "year": 25,
+        "month": 6
+      },
+      "to": {
+        "year": 26,
+        "month": 6
+      }
+    },
+    "anchor": "soft",
+    "place": "loc_dawn_island",
+    "roles": {
+      "shanks": {
+        "char": "char_shanks"
+      },
+      "luffy": {
+        "char": "char_monkey_d_luffy"
+      }
+    },
+    "outcomes": [
+      {
+        "kind": "flag",
+        "flag": "canon.straw_hat_promise",
+        "value": true
+      }
+    ],
+    "tags": ["luffy"]
+  },
+  {
+    "id": "beat_sabo_attacked",
+    "name": "A noble boy's boat is fired on",
+    "text": "Off {place}, a World Noble fired on a little boat flying a pirate flag. Its captain, {role.sabo.name}, was ten. {role.dragon.name} pulled him from the sea and took him away to learn what freedom costs.",
+    "window": {
+      "from": {
+        "year": 26,
+        "month": 5
+      },
+      "to": {
+        "year": 26,
+        "month": 7
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_dawn_island",
+    "roles": {
+      "sabo": {
+        "char": "char_sabo"
+      },
+      "dragon": {
+        "char": "char_monkey_d_dragon"
+      }
+    },
+    "outcomes": [
+      {
+        "kind": "affiliation",
+        "role": "sabo",
+        "org": "org_revolutionary_army"
+      },
+      {
+        "kind": "faction",
+        "org": "org_revolutionary_army",
+        "strength": 2,
+        "source": "Sabo"
+      }
+    ],
+    "tags": ["revolution", "luffy"]
+  },
+  {
+    "id": "beat_doflamingo_dressrosa",
+    "name": "Doflamingo takes Dressrosa",
+    "text": "{role.doflamingo.name} made the gentle King Riku of {place} attack his own people, then flew in to save them from their king. By morning Dressrosa had a new king, and the toys had begun.",
+    "news": "Dressrosa has a new king: the Warlord Donquixote Doflamingo, who ended King Riku's madness, the papers say.",
+    "divergeNews": "King Riku still rules Dressrosa. A Warlord's ships were seen leaving in a hurry.",
+    "window": {
+      "from": {
+        "year": 27,
+        "month": 1
+      },
+      "to": {
+        "year": 27,
+        "month": 3
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_dressrosa",
+    "roles": {
+      "doflamingo": {
+        "char": "char_donquixote_doflamingo"
+      }
+    },
+    "outcomes": [
+      {
+        "kind": "control",
+        "place": "loc_dressrosa",
+        "org": "org_donquixote_pirates"
+      },
+      {
+        "kind": "faction",
+        "org": "org_underworld",
+        "strength": 5,
+        "source": "Joker's trade"
+      },
+      {
+        "kind": "faction",
+        "org": "org_kingdom_dressrosa",
+        "strength": -10,
+        "source": "The Riku family deposed"
+      }
+    ],
+    "dependents": ["beat_dressrosa_freed"],
+    "tags": ["dressrosa", "underworld"]
+  },
+  {
+    "id": "beat_arlong_park",
+    "name": "Arlong takes the Conomi Islands",
+    "text": "{role.arlong.name} landed at {place} and set a price on every head in the village. {role.bellemere.name} paid for two girls instead of herself, and was shot in front of them.",
+    "news": "Fish-man pirates hold the Conomi Islands. The Marine branch nearby says it has no reports of trouble.",
+    "divergeNews": "A fish-man crew put in at the Conomi Islands and was driven off by the villagers.",
+    "window": {
+      "from": {
+        "year": 27,
+        "month": 6
+      },
+      "to": {
+        "year": 27,
+        "month": 12
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_cocoyashi",
+    "roles": {
+      "arlong": {
+        "char": "char_arlong"
+      },
+      "bellemere": {
+        "char": "char_bellemere"
+      }
+    },
+    "requires": ["beat_fisher_tiger_death"],
+    "outcomes": [
+      {
+        "kind": "death",
+        "role": "bellemere",
+        "cause": "shot by Arlong"
+      },
+      {
+        "kind": "control",
+        "place": "loc_cocoyashi",
+        "org": "org_arlong_pirates"
+      },
+      {
+        "kind": "prosperity",
+        "place": "loc_cocoyashi",
+        "value": -25,
+        "source": "Arlong's tribute"
+      }
+    ],
+    "dependents": ["beat_arlong_falls"],
+    "participate": {
+      "combatPower": 150
+    },
+    "instigate": {
+      "combatPower": 450
+    },
+    "choices": [
+      {
+        "id": "hide",
+        "label": "Keep your head down",
+        "text": "You paid what they asked and kept your eyes on the ground."
+      },
+      {
+        "id": "fight",
+        "label": "Drive the fish-men out",
+        "text": "You took up a cutlass beside the villagers and threw Arlong's crew back into the sea.",
+        "diverge": true,
+        "instigator": true,
+        "effects": [
+          {
+            "kind": "fame",
+            "value": 25
+          },
+          {
+            "kind": "injury",
+            "severity": "serious",
+            "cause": "violence"
+          }
+        ]
+      }
+    ],
+    "tags": ["east_blue", "fishman"]
+  },
+  {
+    "id": "beat_thatch_murder",
+    "name": "Teach kills Thatch",
+    "text": "Aboard Whitebeard's flagship, {role.teach.name} murdered his crewmate Thatch for the fruit Thatch had found, and jumped ship with it.",
+    "news": "A Whitebeard Pirate has killed one of his own and fled. Whitebeard's commanders are hunting him across the seas.",
+    "window": {
+      "from": {
+        "year": 35,
+        "month": 10
+      },
+      "to": {
+        "year": 35,
+        "month": 12
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_new_world_island",
+    "roles": {
+      "teach": {
+        "char": "char_marshall_d_teach"
+      }
+    },
+    "outcomes": [
+      {
+        "kind": "crew",
+        "org": "org_blackbeard_pirates",
+        "active": true
+      },
+      {
+        "kind": "affiliation",
+        "role": "teach",
+        "org": "org_blackbeard_pirates"
+      }
+    ],
+    "dependents": ["beat_ace_captured"],
+    "tags": ["emperor", "blackbeard"]
+  },
+  {
+    "id": "beat_luffy_sets_sail",
+    "name": "A boy in a straw hat sets sail",
+    "text": "A seventeen-year-old in a straw hat rowed out from {place} in a fishing boat, waved to the village, and promised the sea he would be King of the Pirates. His name was {role.luffy.name}.",
+    "window": {
+      "from": {
+        "year": 35,
+        "month": 12
+      },
+      "to": {
+        "year": 35,
+        "month": 12
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_dawn_island",
+    "roles": {
+      "luffy": {
+        "char": "char_monkey_d_luffy"
+      }
+    },
+    "requires": [],
+    "outcomes": [
+      {
+        "kind": "crew",
+        "org": "org_straw_hat_pirates",
+        "active": true
+      }
+    ],
+    "dependents": [
+      "beat_arlong_falls",
+      "beat_alabasta",
+      "beat_dressrosa_freed",
+      "beat_wano_liberated"
+    ],
+    "tags": ["luffy"]
+  },
+  {
+    "id": "beat_arlong_falls",
+    "name": "Arlong Park falls",
+    "text": "{role.luffy.name} smashed Arlong Park to rubble and {role.arlong.name} with it, and Cocoyashi village was free.",
+    "news": "Wanted: Monkey D. Luffy, 30 million Berries, for the defeat of Arlong in the East Blue.",
+    "window": {
+      "from": {
+        "year": 36,
+        "month": 2
+      },
+      "to": {
+        "year": 36,
+        "month": 3
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_cocoyashi",
+    "roles": {
+      "luffy": {
+        "char": "char_monkey_d_luffy"
+      },
+      "arlong": {
+        "char": "char_arlong"
+      }
+    },
+    "requires": ["beat_arlong_park", "beat_luffy_sets_sail"],
+    "outcomes": [
+      {
+        "kind": "control",
+        "place": "loc_cocoyashi",
+        "org": null
+      },
+      {
+        "kind": "imprison",
+        "role": "arlong",
+        "place": "loc_impel_down"
+      },
+      {
+        "kind": "bounty",
+        "role": "luffy",
+        "value": 30000000
+      },
+      {
+        "kind": "prosperity",
+        "place": "loc_cocoyashi",
+        "value": 20,
+        "months": 24,
+        "source": "Free of Arlong"
+      }
+    ],
+    "tags": ["east_blue", "luffy"]
+  },
+  {
+    "id": "beat_alabasta",
+    "name": "The Alabasta civil war ends",
+    "text": "With rebels and royal army at each other's throats in Alabasta, {role.luffy.name} found {role.crocodile.name} beneath the capital and beat him in the dark. Then it rained for the first time in three years.",
+    "news": "The Alabasta civil war is over. The papers credit the Marines for unmasking the Warlord Crocodile. Monkey D. Luffy's bounty rises to 100 million.",
+    "divergeNews": "Alabasta burns: civil war, a drought, and a Warlord who stands above it all smiling.",
+    "window": {
+      "from": {
+        "year": 36,
+        "month": 4
+      },
+      "to": {
+        "year": 36,
+        "month": 5
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_alabasta",
+    "roles": {
+      "luffy": {
+        "char": "char_monkey_d_luffy"
+      },
+      "crocodile": {
+        "char": "char_crocodile"
+      },
+      "cobra": {
+        "char": "char_nefertari_cobra",
+        "present": false
+      }
+    },
+    "requires": ["beat_luffy_sets_sail"],
+    "outcomes": [
+      {
+        "kind": "imprison",
+        "role": "crocodile",
+        "place": "loc_impel_down"
+      },
+      {
+        "kind": "bounty",
+        "role": "luffy",
+        "value": 100000000
+      },
+      {
+        "kind": "control",
+        "place": "loc_alabasta",
+        "org": "org_kingdom_alabasta"
+      },
+      {
+        "kind": "faction",
+        "org": "org_underworld",
+        "strength": -4,
+        "source": "Baroque Works broken"
+      }
+    ],
+    "onDiverge": [
+      {
+        "kind": "control",
+        "place": "loc_alabasta",
+        "org": "org_underworld"
+      },
+      {
+        "kind": "prosperity",
+        "place": "loc_alabasta",
+        "value": -30,
+        "source": "Civil war"
+      }
+    ],
+    "tags": ["alabasta", "luffy"]
+  },
+  {
+    "id": "beat_enies_lobby",
+    "name": "The Straw Hats storm Enies Lobby",
+    "text": "To get {role.robin.name} back, {role.luffy.name}'s crew declared war on the World Government, shot a hole in its flag, and burned the judicial island's untouchable reputation to the ground.",
+    "news": "ENIES LOBBY FALLS. A pirate crew has stormed the Government's judicial island and shot down its flag. Bounties on every one of them.",
+    "window": {
+      "from": {
+        "year": 36,
+        "month": 6
+      },
+      "to": {
+        "year": 36,
+        "month": 7
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_enies_lobby",
+    "roles": {
+      "luffy": {
+        "char": "char_monkey_d_luffy"
+      },
+      "robin": {
+        "char": "char_nico_robin"
+      }
+    },
+    "requires": ["beat_alabasta"],
+    "outcomes": [
+      {
+        "kind": "bounty",
+        "role": "luffy",
+        "value": 300000000
+      },
+      {
+        "kind": "faction",
+        "org": "org_world_government",
+        "strength": -4,
+        "months": 24,
+        "source": "Enies Lobby fell"
+      },
+      {
+        "kind": "faction",
+        "org": "org_straw_hat_pirates",
+        "strength": 5,
+        "source": "Enies Lobby"
+      }
+    ],
+    "tags": ["government", "luffy"]
+  },
+  {
+    "id": "beat_ace_captured",
+    "name": "Blackbeard captures Fire Fist Ace",
+    "text": "On a burned-out island, {role.ace.name} caught up with {role.teach.name} at last, and lost. Teach handed him to the Marines for a Warlord's seat.",
+    "news": "Portgas D. Ace, commander of the Whitebeard Pirates, is in Marine hands, delivered by a new Warlord. Headquarters announces his public execution.",
+    "window": {
+      "from": {
+        "year": 36,
+        "month": 3
+      },
+      "to": {
+        "year": 36,
+        "month": 5
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_grand_line_island",
+    "roles": {
+      "ace": {
+        "char": "char_portgas_d_ace"
+      },
+      "teach": {
+        "char": "char_marshall_d_teach"
+      }
+    },
+    "requires": ["beat_thatch_murder"],
+    "outcomes": [
+      {
+        "kind": "imprison",
+        "role": "ace",
+        "place": "loc_impel_down"
+      }
+    ],
+    "dependents": ["beat_marineford"],
+    "tags": ["blackbeard", "emperor"]
+  },
+  {
+    "id": "beat_marineford",
+    "name": "The Summit War of Marineford",
+    "text": "{role.whitebeard.name} brought his whole fleet to {place} to take back his son. In the war that followed, {role.ace.name} died in his brother's arms and Whitebeard died on his feet, without a wound in his back.",
+    "news": "WHITEBEARD AND FIRE FIST ACE ARE DEAD. The war at Marineford is over. The Navy has won, and the New World has lost its strongest man.",
+    "divergeText": "The war at {place} never came: Whitebeard's son was not on the scaffold, and Whitebeard did not need to come for him.",
+    "divergeNews": "There will be no war at Marineford after all. The Navy is said to be relieved.",
+    "window": {
+      "from": {
+        "year": 36,
+        "month": 8
+      },
+      "to": {
+        "year": 36,
+        "month": 9
+      }
+    },
+    "anchor": "hard",
+    "place": "loc_marineford",
+    "roles": {
+      "whitebeard": {
+        "char": "char_edward_newgate"
+      },
+      "ace": {
+        "char": "char_portgas_d_ace"
+      },
+      "sengoku": {
+        "char": "char_sengoku",
+        "substitutes": ["char_kong", "char_tsuru"]
+      },
+      "sakazuki": {
+        "char": "char_sakazuki",
+        "substitutes": ["char_borsalino"]
+      }
+    },
+    "requires": ["beat_ace_captured"],
+    "outcomes": [
+      {
+        "kind": "death",
+        "role": "ace",
+        "cause": "killed at Marineford"
+      },
+      {
+        "kind": "death",
+        "role": "whitebeard",
+        "cause": "fell at Marineford"
+      },
+      {
+        "kind": "faction",
+        "org": "org_marines",
+        "strength": 4,
+        "source": "The Summit War"
+      },
+      {
+        "kind": "faction",
+        "org": "org_pirates",
+        "strength": 10,
+        "source": "The age of the new emperors"
+      },
+      {
+        "kind": "flag",
+        "flag": "canon.summit_war",
+        "value": true
+      }
+    ],
+    "participate": {
+      "combatPower": 250
+    },
+    "instigate": {
+      "combatPower": 1000
+    },
+    "choices": [
+      {
+        "id": "survive",
+        "label": "Survive the war",
+        "text": "You fought for your life in the middle of the greatest battle of the age and somehow kept it.",
+        "effects": [
+          {
+            "kind": "injury",
+            "severity": "serious",
+            "cause": "violence"
+          },
+          {
+            "kind": "train",
+            "stats": {
+              "willpower": 3,
+              "durability": 2
+            }
+          }
+        ]
+      },
+      {
+        "id": "save_ace",
+        "label": "Get Ace off the scaffold",
+        "text": "You cut Ace's chains in the confusion and carried him to Whitebeard's ship. Nobody died on the scaffold that day.",
+        "diverge": true,
+        "instigator": true,
+        "effects": [
+          {
+            "kind": "fame",
+            "value": 60
+          },
+          {
+            "kind": "bounty",
+            "value": 400000000
+          },
+          {
+            "kind": "injury",
+            "severity": "severe",
+            "cause": "violence"
+          }
+        ]
+      }
+    ],
+    "tags": ["marineford", "emperor"]
+  }
+]

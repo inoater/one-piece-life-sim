@@ -43,6 +43,7 @@
     "shipyard",
     "smithy"
   ],
+  "location": "loc_west_blue_port",
   "map": {
     "x": 600,
     "y": 985

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "lane_loguetown_marineford",
+    "from": "loc_loguetown",
+    "to": "loc_marineford",
+    "miles": 1190,
+    "danger": 4,
+    "current": "none",
+    "requires": "coated_ship",
+    "zone": "calm_belt",
+    "traffic": 1,
+    "description": "Straight across the Calm Belt on a hull that sea kings cannot sense."
+  },
+  {
+    "id": "lane_karate_island_amazon_lily",
+    "from": "loc_karate_island",
+    "to": "loc_amazon_lily",
+    "miles": 280,
+    "danger": 4,
+    "current": "none",
+    "requires": "coated_ship",
+    "zone": "calm_belt",
+    "traffic": 1
+  },
+  {
+    "id": "lane_amazon_lily_marine_base_town",
+    "from": "loc_amazon_lily",
+    "to": "loc_marine_base_town",
+    "miles": 100,
+    "danger": 4,
+    "current": "none",
+    "requires": "coated_ship",
+    "zone": "calm_belt",
+    "traffic": 1
+  },
+  {
+    "id": "lane_amazon_lily_impel_down",
+    "from": "loc_amazon_lily",
+    "to": "loc_impel_down",
+    "miles": 130,
+    "danger": 4,
+    "current": "none",
+    "requires": "coated_ship",
+    "zone": "calm_belt",
+    "traffic": 0
+  },
+  {
+    "id": "lane_impel_down_enies_lobby",
+    "from": "loc_impel_down",
+    "to": "loc_enies_lobby",
+    "miles": 130,
+    "danger": 3,
+    "current": "none",
+    "requires": "eternal_pose",
+    "zone": "calm_belt",
+    "traffic": 1,
+    "description": "Through the Gates of Justice."
+  },
+  {
+    "id": "lane_impel_down_marineford",
+    "from": "loc_impel_down",
+    "to": "loc_marineford",
+    "miles": 120,
+    "danger": 3,
+    "current": "none",
+    "requires": "eternal_pose",
+    "zone": "calm_belt",
+    "traffic": 1
+  },
+  {
+    "id": "lane_north_blue_town_dressrosa",
+    "from": "loc_north_blue_town",
+    "to": "loc_dressrosa",
+    "miles": 660,
+    "danger": 5,
+    "current": "none",
+    "requires": "coated_ship",
+    "zone": "calm_belt",
+    "traffic": 1
+  },
+  {
+    "id": "lane_ilisia_new_world_island",
+    "from": "loc_ilisia",
+    "to": "loc_new_world_island",
+    "miles": 340,
+    "danger": 5,
+    "current": "none",
+    "requires": "coated_ship",
+    "zone": "calm_belt",
+    "traffic": 1
+  }
+]

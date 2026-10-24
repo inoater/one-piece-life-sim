@@ -8,7 +8,7 @@
     "willpower": 0.8,
     "perception": 0.3
   },
-  "tags": ["spirit"],
+  "tags": ["spirit", "at_sea"],
   "outcomes": [
     {
       "id": "quiet",

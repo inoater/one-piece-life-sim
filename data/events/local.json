@@ -1,0 +1,454 @@
+[
+  {
+    "id": "evt_local_festival",
+    "type": "local",
+    "title": "Festival night",
+    "text": "{place} held its festival: lanterns on every boat, music on every corner, and nobody working.",
+    "trigger": "random",
+    "weight": 2,
+    "cooldown": 10,
+    "conditions": [{ "kind": "age", "min": 4 }],
+    "roles": { "stranger": { "kind": "stranger", "ageOffset": { "min": -3, "max": 3 } } },
+    "choices": [
+      {
+        "id": "dance",
+        "label": "Join the dancing",
+        "check": {
+          "stat": "charisma",
+          "difficulty": 40,
+          "success": {
+            "text": "You danced until the lanterns burned down, mostly with {role.stranger.name}.",
+            "effects": [
+              { "kind": "meet", "role": "stranger", "as": "friend", "opinion": 30 },
+              { "kind": "train", "stats": { "charisma": 1 } }
+            ]
+          },
+          "failure": {
+            "text": "You trod on every foot in {place}.",
+            "effects": [{ "kind": "train", "stats": { "charisma": 0.5 } }]
+          }
+        }
+      },
+      {
+        "id": "eat",
+        "label": "Eat your way round the stalls",
+        "effects": [
+          { "kind": "health", "fraction": 0.05 },
+          { "kind": "berries", "min": -300, "max": -100 }
+        ]
+      }
+    ],
+    "tags": ["local", "social"]
+  },
+  {
+    "id": "evt_local_pirate_raid",
+    "type": "local",
+    "title": "Pirates in the harbour",
+    "text": "A pirate crew sailed into {place} at dawn, fired a cannon at the church tower for fun, and came ashore for whatever they could carry.",
+    "trigger": "random",
+    "weight": 1,
+    "cooldown": 18,
+    "conditions": [
+      { "kind": "feature", "features": ["docks", "coast"] },
+      { "kind": "danger", "min": 1 }
+    ],
+    "weightMods": [
+      { "when": [{ "kind": "danger", "min": 3 }], "mult": 2.5 },
+      { "when": [{ "kind": "feature", "features": ["marine_base"] }], "mult": 0.3 }
+    ],
+    "choices": [
+      {
+        "id": "hide",
+        "label": "Hide and let them take what they want",
+        "effects": [{ "kind": "berries", "min": -3000, "max": -500 }]
+      },
+      {
+        "id": "fight",
+        "label": "Stand and fight",
+        "requires": [{ "kind": "age", "min": 14 }],
+        "check": {
+          "stat": "combatPower",
+          "difficulty": 190,
+          "perDanger": 20,
+          "criticalSuccess": {
+            "text": "You threw their captain off the pier, and the rest of them followed him.",
+            "effects": [{ "kind": "fame", "value": 15 }, { "kind": "deed" }]
+          },
+          "success": {
+            "text": "You and a few others held the harbour street until the pirates decided it was not worth it.",
+            "effects": [
+              { "kind": "fame", "value": 5 },
+              { "kind": "injury", "severity": "minor", "cause": "violence" }
+            ]
+          },
+          "failure": {
+            "text": "They beat you down in the street and took your purse as a lesson.",
+            "effects": [
+              { "kind": "injury", "severity": "serious", "cause": "violence" },
+              { "kind": "berries", "min": -3000, "max": -1000 }
+            ]
+          }
+        }
+      },
+      {
+        "id": "join",
+        "label": "Ask if they need hands",
+        "requires": [{ "kind": "age", "min": 16 }],
+        "effects": [
+          { "kind": "infamy", "value": 8 },
+          { "kind": "flag", "flag": "path.pirate", "value": true },
+          {
+            "kind": "log",
+            "text": "The captain laughed, and told you to look for them on the Grand Line if you lived that long.",
+            "tags": ["pirate"]
+          }
+        ]
+      }
+    ],
+    "tags": ["local", "pirate", "fight"]
+  },
+  {
+    "id": "evt_local_marine_recruiters",
+    "type": "local",
+    "title": "Marine recruiters",
+    "text": "A Marine recruiting party set up a table on the quay in {place}: three meals a day, a white coat and Justice on your back.",
+    "trigger": "random",
+    "weight": 1,
+    "cooldown": 24,
+    "once": false,
+    "conditions": [
+      { "kind": "feature", "features": ["marine_base", "docks"] },
+      { "kind": "age", "min": 15, "max": 30 }
+    ],
+    "weightMods": [{ "when": [{ "kind": "feature", "features": ["marine_base"] }], "mult": 3 }],
+    "choices": [
+      {
+        "id": "sign",
+        "label": "Put your name down",
+        "effects": [
+          { "kind": "flag", "flag": "marine.recommended", "value": true },
+          {
+            "kind": "log",
+            "text": "The recruiter wrote you a letter of recommendation for any Marine base in the world.",
+            "tags": ["marine"]
+          }
+        ]
+      },
+      { "id": "walk", "label": "Walk on", "effects": [] }
+    ],
+    "tags": ["local", "marine"]
+  },
+  {
+    "id": "evt_local_tavern_brawl",
+    "type": "local",
+    "title": "A tavern brawl",
+    "text": "Somebody threw a chair in a tavern in {place}, and somebody else threw it back, and then everybody was throwing everything.",
+    "trigger": "random",
+    "weight": 1.2,
+    "cooldown": 6,
+    "conditions": [{ "kind": "age", "min": 16 }],
+    "weightMods": [{ "when": [{ "kind": "hasTrait", "trait": "trait_hot_headed" }], "mult": 2 }],
+    "choices": [
+      {
+        "id": "brawl",
+        "label": "Wade in",
+        "check": {
+          "stat": "strength",
+          "difficulty": 40,
+          "success": {
+            "text": "You were still standing when the town watch arrived, which is the only way to win a brawl.",
+            "effects": [
+              { "kind": "fame", "value": 1 },
+              { "kind": "train", "stats": { "strength": 1, "durability": 1 } }
+            ]
+          },
+          "failure": {
+            "text": "You woke up under a table.",
+            "effects": [
+              { "kind": "injury", "severity": "minor", "area": "head", "cause": "violence" }
+            ]
+          }
+        }
+      },
+      { "id": "leave", "label": "Slip out the back", "effects": [] }
+    ],
+    "tags": ["local", "fight"]
+  },
+  {
+    "id": "evt_local_merchant_fleet",
+    "type": "local",
+    "title": "A merchant fleet",
+    "text": "A merchant fleet put into {place}, and for a week the market sold things nobody there had ever seen.",
+    "trigger": "random",
+    "weight": 1,
+    "cooldown": 12,
+    "conditions": [
+      { "kind": "feature", "features": ["market"] },
+      { "kind": "age", "min": 12 }
+    ],
+    "choices": [
+      {
+        "id": "work",
+        "label": "Hire on to unload them",
+        "effects": [
+          { "kind": "berries", "min": 600, "max": 1800 },
+          { "kind": "train", "stats": { "strength": 0.5 } }
+        ]
+      },
+      {
+        "id": "buy",
+        "label": "Buy something fine",
+        "requires": [{ "kind": "berries", "min": 3000 }],
+        "effects": [
+          { "kind": "berries", "min": -3000, "max": -3000 },
+          { "kind": "train", "stats": { "charisma": 1 } }
+        ]
+      },
+      { "id": "look", "label": "Just look", "effects": [] }
+    ],
+    "tags": ["local", "trade"]
+  },
+  {
+    "id": "evt_local_storm_damage",
+    "type": "local",
+    "title": "A storm on land",
+    "text": "A storm came in off the sea and tore the roofs off half of {place}.",
+    "trigger": "random",
+    "weight": 0.8,
+    "cooldown": 12,
+    "conditions": [{ "kind": "feature", "features": ["coast"] }],
+    "weightMods": [
+      { "when": [{ "kind": "climate", "climates": ["volatile", "tropical"] }], "mult": 2 }
+    ],
+    "choices": [
+      {
+        "id": "help",
+        "label": "Help rebuild",
+        "effects": [
+          { "kind": "train", "stats": { "strength": 1, "endurance": 1 } },
+          { "kind": "fame", "value": 1 },
+          { "kind": "prosperity", "value": -3, "months": 6, "source": "Storm damage" }
+        ]
+      },
+      {
+        "id": "home",
+        "label": "Fix your own roof first",
+        "effects": [
+          { "kind": "berries", "min": -800, "max": -200 },
+          { "kind": "prosperity", "value": -5, "months": 6, "source": "Storm damage" }
+        ]
+      }
+    ],
+    "tags": ["local", "weather"]
+  },
+  {
+    "id": "evt_local_famous_visitor",
+    "type": "local",
+    "title": "A famous face",
+    "text": "{role.famous.name}, {role.famous.title}, passed through {place}, and the whole town found a reason to be in the street.",
+    "trigger": "random",
+    "weight": 3,
+    "cooldown": 12,
+    "conditions": [{ "kind": "canonHere" }, { "kind": "age", "min": 5 }],
+    "roles": { "famous": { "kind": "canon" } },
+    "choices": [
+      {
+        "id": "watch",
+        "label": "Watch from a distance",
+        "effects": [{ "kind": "count", "flag": "seen.legends", "by": 1 }]
+      },
+      {
+        "id": "approach",
+        "label": "Try to speak to {role.famous.name}",
+        "check": {
+          "stat": "charisma",
+          "difficulty": 60,
+          "success": {
+            "text": "{role.famous.name} stopped, listened, and laughed at your joke. You will dine out on it for years.",
+            "effects": [
+              { "kind": "meet", "role": "famous", "as": "benefactor", "opinion": 15 },
+              { "kind": "fame", "value": 2 }
+            ]
+          },
+          "failure": {
+            "text": "{role.famous.name} looked straight through you and walked on.",
+            "effects": []
+          }
+        }
+      }
+    ],
+    "tags": ["local", "canon", "people"]
+  },
+  {
+    "id": "evt_local_fire",
+    "type": "local",
+    "title": "Fire!",
+    "text": "A fire broke out in a warehouse in {place} and the wind carried it toward the houses.",
+    "trigger": "random",
+    "weight": 0.8,
+    "cooldown": 18,
+    "conditions": [{ "kind": "age", "min": 10 }],
+    "choices": [
+      {
+        "id": "bucket",
+        "label": "Join the bucket chain",
+        "check": {
+          "stat": "endurance",
+          "difficulty": 40,
+          "success": {
+            "text": "You passed buckets until the fire died, and the whole street knew your name by morning.",
+            "effects": [
+              { "kind": "fame", "value": 4 },
+              { "kind": "train", "stats": { "endurance": 1 } }
+            ]
+          },
+          "failure": {
+            "text": "A falling beam caught you as the roof came in.",
+            "effects": [{ "kind": "injury", "severity": "minor", "cause": "accident" }]
+          }
+        }
+      },
+      { "id": "clear", "label": "Stay clear", "effects": [] }
+    ],
+    "tags": ["local"]
+  },
+  {
+    "id": "evt_local_wanted_poster",
+    "type": "local",
+    "title": "Your face on a wall",
+    "text": "There was a new wanted poster on the noticeboard in {place}, and the face on it was yours.",
+    "trigger": "random",
+    "weight": 3,
+    "cooldown": 12,
+    "conditions": [{ "kind": "flagAtLeast", "flag": "bounty", "value": 1 }],
+    "choices": [
+      {
+        "id": "low",
+        "label": "Lie low",
+        "effects": [{ "kind": "health", "fraction": -0.03 }]
+      },
+      {
+        "id": "pride",
+        "label": "Take it down and keep it",
+        "effects": [
+          { "kind": "infamy", "value": 2 },
+          { "kind": "fame", "value": 1 }
+        ]
+      }
+    ],
+    "tags": ["local", "bounty"]
+  },
+  {
+    "id": "evt_local_slavers",
+    "type": "local",
+    "title": "Slavers",
+    "text": "A slaver's ship was taking on cargo in {place}, and the cargo was people.",
+    "trigger": "random",
+    "weight": 0.6,
+    "cooldown": 24,
+    "conditions": [
+      { "kind": "feature", "features": ["underworld"] },
+      { "kind": "age", "min": 16 }
+    ],
+    "choices": [
+      {
+        "id": "away",
+        "label": "Look away",
+        "effects": [
+          {
+            "kind": "log",
+            "text": "You looked away. It did not get easier to remember.",
+            "tags": ["crime"]
+          }
+        ]
+      },
+      {
+        "id": "free",
+        "label": "Free the captives",
+        "check": {
+          "stat": "combatPower",
+          "difficulty": 210,
+          "success": {
+            "text": "You broke the locks and the captives scattered into the town before the slavers knew what had happened.",
+            "effects": [
+              { "kind": "fame", "value": 12 },
+              { "kind": "infamy", "value": 5 },
+              { "kind": "bounty", "value": 5000000 },
+              { "kind": "deed" }
+            ]
+          },
+          "failure": {
+            "text": "The slavers' guards were waiting.",
+            "effects": [
+              { "kind": "injury", "severity": "severe", "cause": "violence" },
+              { "kind": "infamy", "value": 3 }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["local", "crime", "fight"]
+  },
+  {
+    "id": "evt_local_ruins",
+    "type": "local",
+    "title": "In the ruins",
+    "text": "In the ruins outside {place} you found a stone covered in a script nobody had read for centuries.",
+    "trigger": "random",
+    "weight": 0.6,
+    "cooldown": 24,
+    "conditions": [
+      { "kind": "feature", "features": ["ruins"] },
+      { "kind": "age", "min": 10 }
+    ],
+    "choices": [
+      {
+        "id": "study",
+        "label": "Copy it down",
+        "check": {
+          "stat": "intellect",
+          "difficulty": 55,
+          "success": {
+            "text": "You copied every mark and puzzled out three words. That was three more than anyone else.",
+            "effects": [
+              { "kind": "count", "flag": "history.fragments", "by": 1 },
+              { "kind": "train", "stats": { "intellect": 1.5 } }
+            ]
+          },
+          "failure": {
+            "text": "You copied every mark and understood none of them.",
+            "effects": [{ "kind": "train", "stats": { "intellect": 0.5 } }]
+          }
+        }
+      },
+      { "id": "leave", "label": "Leave it be", "effects": [] }
+    ],
+    "tags": ["local", "ruins", "study"]
+  },
+  {
+    "id": "evt_local_stranger_passage",
+    "type": "local",
+    "title": "A stranger with a question",
+    "text": "{role.stranger.name}, new in {place}, asked you whether you knew a captain who would take a passenger with no questions asked.",
+    "trigger": "random",
+    "weight": 1,
+    "cooldown": 12,
+    "conditions": [
+      { "kind": "feature", "features": ["docks"] },
+      { "kind": "age", "min": 14 }
+    ],
+    "roles": { "stranger": { "kind": "stranger", "ageOffset": { "min": -5, "max": 20 } } },
+    "choices": [
+      {
+        "id": "help",
+        "label": "Find them a ship",
+        "effects": [
+          { "kind": "meet", "role": "stranger", "as": "friend", "opinion": 25 },
+          { "kind": "berries", "min": 200, "max": 1000 }
+        ]
+      },
+      { "id": "no", "label": "Say you know nobody", "effects": [] }
+    ],
+    "tags": ["local", "people", "sea"]
+  }
+]

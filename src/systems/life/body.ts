@@ -18,6 +18,7 @@ import type {
 import { makeStat, statLabel, statValue } from '../../engine/stats';
 import { formatBerries } from '../genesis/text';
 import { ageAt, humanAgeFor, raceAgeFor, stageAt } from '../genesis/stages';
+import { placeOf, type Place } from '../places/place';
 
 /**
  * The life loop's view of a body (Phase 2): how old someone is in their race's years and in human
@@ -33,7 +34,10 @@ export interface Person {
   entity: Entity;
   c: CharacterData;
   race: Race;
+  /** Where they were born: their people's ways, how they grew up. */
   home: Birthplace;
+  /** Where they are now (Phase 3): what there is to do, what it costs, how safe it is. */
+  place: Place;
 }
 
 export function personOf(data: GameData, entity: Entity | undefined): Person | null {
@@ -42,7 +46,7 @@ export function personOf(data: GameData, entity: Entity | undefined): Person | n
   const race = data.races[c.race];
   const home = data.birthplaces[c.birthplace];
   if (!race || !home) return null;
-  return { entity, c, race, home };
+  return { entity, c, race, home, place: placeOf(data, c, home) };
 }
 
 export function playerPerson(state: WorldState, data: GameData): Person | null {
@@ -269,7 +273,9 @@ function baseReason(
   req: RequiresBase,
   tick: number,
 ): string | null {
-  const features = p.home.features;
+  if (req.atSea === true && !p.place.atSea) return 'Only at sea';
+  if (req.atSea === false && p.place.atSea) return 'Not at sea';
+  const features = p.place.features;
   const missing = req.features.find((f) => !features.includes(f));
   if (missing) return `Needs ${FEATURE_LABEL[missing]} nearby`;
   if (req.anyFeatures.length > 0 && !req.anyFeatures.some((f) => features.includes(f))) {

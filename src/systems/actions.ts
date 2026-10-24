@@ -10,6 +10,7 @@ import {
   type QueuedAction,
   type WorldState,
 } from '../engine/state';
+import { CAPTAIN_ORDERS, TRAVEL_MODES } from '../engine/data/schemas';
 import { addDebugModifier, spawnTestEntity } from './devtools';
 import { resolveDecision, scheduleEvent } from './events';
 import { livePlayerRoutine } from './life';
@@ -24,6 +25,21 @@ import {
   takeLoan,
 } from './life/commands';
 import { CONTINUE_MODES } from './life/death';
+import { ensureWorldLayer } from './places/history';
+import {
+  buyPose,
+  buyShip,
+  coatShip,
+  debugKillEntity,
+  debugTeleport,
+  dismissHands,
+  giveOrder,
+  hireHands,
+  provision,
+  repairShip,
+  sail,
+  sellShip,
+} from './voyage/commands';
 
 /**
  * Actions: the only way the UI changes the world (rule 7: it reads state and sends actions).
@@ -86,6 +102,31 @@ export const ActionSchema = z.discriminatedUnion('type', [
     type: z.literal('debug/kill'),
     cause: z.string().min(1).max(80).default('a debug command'),
   }),
+  // ---- The world (Phase 3)
+  z.strictObject({
+    type: z.literal('travel/sail'),
+    lane: z.string().min(1),
+    mode: z.enum(TRAVEL_MODES),
+  }),
+  z.strictObject({ type: z.literal('travel/order'), order: z.enum(CAPTAIN_ORDERS) }),
+  z.strictObject({ type: z.literal('travel/buyShip'), vessel: z.string().min(1) }),
+  z.strictObject({ type: z.literal('travel/sellShip') }),
+  z.strictObject({ type: z.literal('travel/hire'), count: z.number().int().min(1).max(200) }),
+  z.strictObject({ type: z.literal('travel/dismiss'), count: z.number().int().min(1).max(200) }),
+  z.strictObject({ type: z.literal('travel/provision'), months: z.number().int().min(1).max(24) }),
+  z.strictObject({ type: z.literal('travel/repair') }),
+  z.strictObject({ type: z.literal('travel/coat') }),
+  z.strictObject({
+    type: z.literal('travel/pose'),
+    kind: z.enum(['log', 'eternal']),
+    target: z.string().min(1).optional(),
+  }),
+  z.strictObject({
+    type: z.literal('debug/killEntity'),
+    entityId: z.string().min(1),
+    cause: z.string().min(1).max(80).default('a debug command'),
+  }),
+  z.strictObject({ type: z.literal('debug/teleport'), location: z.string().min(1) }),
 ]);
 export type Action = z.infer<typeof ActionSchema>;
 
@@ -181,6 +222,28 @@ export function applyAction(
       if (action.type.startsWith('life/')) effects.push({ kind: 'autosave' });
       break;
 
+    case 'travel/sail':
+    case 'travel/order':
+    case 'travel/buyShip':
+    case 'travel/sellShip':
+    case 'travel/hire':
+    case 'travel/dismiss':
+    case 'travel/provision':
+    case 'travel/repair':
+    case 'travel/coat':
+    case 'travel/pose':
+    case 'debug/killEntity':
+    case 'debug/teleport':
+      try {
+        applyTravelAction(state, data, action);
+      } catch (error) {
+        if (error instanceof ActionError) throw error;
+        throw new ActionError(error instanceof Error ? error.message : String(error));
+      }
+      // Setting sail, buying a ship: decisions that survive closing the tab.
+      if (action.type.startsWith('travel/')) effects.push({ kind: 'autosave' });
+      break;
+
     case 'debug/setOpenEnded':
       state.openEnded = action.value;
       appendLog(state, state.tick, {
@@ -238,6 +301,52 @@ function applyLifeAction(state: WorldState, data: GameData, action: LifeAction):
   }
 }
 
+type TravelAction = Extract<
+  Action,
+  { type: `travel/${string}` | 'debug/killEntity' | 'debug/teleport' }
+>;
+
+function applyTravelAction(state: WorldState, data: GameData, action: TravelAction): void {
+  switch (action.type) {
+    case 'travel/sail':
+      sail(state, data, action.lane, action.mode);
+      break;
+    case 'travel/order':
+      giveOrder(state, data, action.order);
+      break;
+    case 'travel/buyShip':
+      buyShip(state, data, action.vessel);
+      break;
+    case 'travel/sellShip':
+      sellShip(state, data);
+      break;
+    case 'travel/hire':
+      hireHands(state, data, action.count);
+      break;
+    case 'travel/dismiss':
+      dismissHands(state, data, action.count);
+      break;
+    case 'travel/provision':
+      provision(state, data, action.months);
+      break;
+    case 'travel/repair':
+      repairShip(state, data);
+      break;
+    case 'travel/coat':
+      coatShip(state, data);
+      break;
+    case 'travel/pose':
+      buyPose(state, data, action.kind, action.target);
+      break;
+    case 'debug/killEntity':
+      debugKillEntity(state, data, action.entityId, action.cause);
+      break;
+    case 'debug/teleport':
+      debugTeleport(state, data, action.location);
+      break;
+  }
+}
+
 export type QueuedActionHandler = (
   state: WorldState,
   ctx: TickContext,
@@ -251,10 +360,12 @@ export type QueuedActionHandler = (
 export function createResolveActionsStep(
   handlers: Readonly<Record<string, QueuedActionHandler>>,
   routine?: (state: WorldState, ctx: TickContext) => void,
+  prepare?: (state: WorldState, ctx: TickContext) => void,
 ): TickStep {
   return {
     id: 'resolveActions',
     run(state, ctx) {
+      prepare?.(state, ctx);
       if (state.queue.length === 0) {
         routine?.(state, ctx);
         return;
@@ -279,4 +390,12 @@ export function createResolveActionsStep(
   };
 }
 
-export const resolveActions = createResolveActionsStep({}, livePlayerRoutine);
+/**
+ * Before anything else in a month: a world someone is living in needs its map, factions, canon
+ * cast and people (Phase 3). A world saved before Phase 3 gets them, and its past, here.
+ */
+function prepareWorld(state: WorldState, ctx: TickContext): void {
+  if (state.playerId !== null) ensureWorldLayer(state, ctx.data);
+}
+
+export const resolveActions = createResolveActionsStep({}, livePlayerRoutine, prepareWorld);

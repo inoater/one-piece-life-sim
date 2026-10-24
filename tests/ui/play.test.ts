@@ -34,6 +34,8 @@ async function startLife(over: Record<string, unknown> = {}): Promise<void> {
     pronouns: 'they',
     ...over,
   });
+  // These tests are about the life loop: no random events (Phase 3) to stop a skip with a choice.
+  ui.core.peekState().flags['dev.quiet'] = true;
   await settle(10);
 }
 
@@ -166,18 +168,41 @@ describe('keyboard shortcuts', () => {
 });
 
 describe('the Map page', () => {
-  it('shows the world with home marked once a life has started', async () => {
+  it('shows the world with where you are, every place, and the lanes, once a life has started', async () => {
     await startLife();
     navigate('map');
     await settle(10);
     expect(q('.map-page-slot')?.hidden).toBe(false);
     expect(q('.map-page svg.atlas')).not.toBeNull();
     await settle(10);
-    const home = q('.atlas-pin[data-kind="home"]');
-    expect(home?.getAttribute('aria-label')).toMatch(/home: A village on the East Blue/);
-    expect(q('.map-page button[hidden]')).toBeNull(); // "Go home" is offered
+    const here = q('.atlas-pin[data-kind="here"]');
+    expect(here?.getAttribute('aria-label')).toMatch(/^Seabreeze Village: East Blue, you are here/);
+    expect(ui.root.querySelectorAll('.atlas-pin').length).toBeGreaterThan(50);
+    expect(ui.root.querySelectorAll('.atlas-route').length).toBeGreaterThan(80);
+    expect(ui.root.querySelectorAll('.atlas-route[data-kind="reachable"]').length).toBe(2);
+    expect(q('.map-page button[hidden]')).toBeNull(); // "Where am I?" is offered
     navigate('feed');
     await settle();
     expect(q('.map-page-slot')?.hidden).toBe(true);
+  });
+
+  it('opens a place with a lane from here, and sets sail from its panel', async () => {
+    await startLife();
+    navigate('map');
+    await settle(10);
+    const shells = q('.atlas-pin[data-pin="loc_shells_town"]') as HTMLElement;
+    expect(shells.dataset['kind']).toBe('reachable');
+    shells.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    await settle(10);
+    const panel = q('.place-panel') as HTMLElement;
+    expect(panel.hidden).toBe(false);
+    expect(text(panel.querySelector('.atlas-info__name'))).toBe('Shells Town');
+    expect(text(panel.querySelector('.facts__row dd'))).toBe('The Marines');
+    expect(text(panel)).toContain('(a safe place to live)');
+    button(panel, /^Book passage/).click();
+    await settle(10);
+    expect(ui.app.store.get().snapshot?.player?.location).toBe('At sea, bound for Shells Town');
+    expect(q('.atlas-pin[data-kind="ship"]')).not.toBeNull();
+    expect(q('.atlas-pin[data-kind="target"]')?.getAttribute('data-pin')).toBe('loc_shells_town');
   });
 });

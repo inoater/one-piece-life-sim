@@ -8,7 +8,7 @@
     "employed": true
   },
   "worksJob": true,
-  "tags": ["work"],
+  "tags": ["work", "at_sea"],
   "outcomes": [
     {
       "id": "worked",

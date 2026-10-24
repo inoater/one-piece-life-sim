@@ -1,0 +1,454 @@
+[
+  {
+    "id": "char_silvers_rayleigh",
+    "name": "Silvers Rayleigh",
+    "givenName": "Rayleigh",
+    "familyName": "Silvers",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -40,
+      "month": 1
+    },
+    "birthplace": "loc_sabaody",
+    "description": "The Pirate King's right hand, who later coats ships on Sabaody and gambles away the fee.",
+    "epithet": "the Dark King",
+    "approx": true,
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 120,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -40,
+          "month": 1
+        },
+        "place": "loc_sabaody",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -16,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "affiliation": "org_roger_pirates",
+        "title": "First mate of the Roger Pirates",
+        "bounty": 1000000000,
+        "haki": ["observation", "armament", "conqueror"],
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_god_valley",
+        "affiliation": "org_roger_pirates",
+        "title": "First mate of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 4
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_roger_pirates",
+        "title": "First mate of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 1
+        },
+        "place": "loc_laugh_tale",
+        "affiliation": "org_roger_pirates",
+        "title": "First mate of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 7
+        },
+        "place": "loc_sabaody",
+        "title": "Coating mechanic of Sabaody",
+        "status": "retired",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_crocus",
+    "name": "Crocus",
+    "givenName": "Crocus",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -33,
+      "month": 1
+    },
+    "birthplace": "loc_twin_cape",
+    "description": "An old doctor who joined the Roger Pirates for their last voyage, then went back to keeping a lighthouse.",
+    "approx": true,
+    "stats": {
+      "strength": 35,
+      "speed": 40,
+      "endurance": 45,
+      "durability": 40,
+      "dexterity": 45,
+      "intellect": 130,
+      "willpower": 80,
+      "charisma": 80,
+      "perception": 60,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -33,
+          "month": 1
+        },
+        "place": "loc_twin_cape",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 11,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_roger_pirates",
+        "title": "Doctor of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 7
+        },
+        "place": "loc_twin_cape",
+        "title": "Keeper of the Twin Cape lighthouse",
+        "status": "retired",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_scopper_gaban",
+    "name": "Scopper Gaban",
+    "givenName": "Gaban",
+    "familyName": "Scopper",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -38,
+      "month": 1
+    },
+    "birthplace": "loc_east_blue_village",
+    "description": "One of the Roger Pirates' fighters, who vanished into his own life after the crew broke up.",
+    "approx": true,
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 90,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -38,
+          "month": 1
+        },
+        "place": "loc_east_blue_village",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -16,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "affiliation": "org_roger_pirates",
+        "title": "Fighter of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_god_valley",
+        "affiliation": "org_roger_pirates",
+        "title": "Fighter of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 4
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_roger_pirates",
+        "title": "Fighter of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 1
+        },
+        "place": "loc_laugh_tale",
+        "affiliation": "org_roger_pirates",
+        "title": "Fighter of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 7
+        },
+        "place": "loc_elbaf",
+        "title": "Retired pirate",
+        "status": "retired",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_shanks",
+    "name": "Shanks",
+    "givenName": "Shanks",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -1,
+      "month": 3
+    },
+    "birthplace": "loc_god_valley",
+    "description": "A red-haired boy found in a treasure chest at God Valley, raised as the Roger Pirates' cabin boy.",
+    "epithet": "Red Hair",
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 90,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -1,
+          "month": 3
+        },
+        "place": "loc_god_valley",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 4
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_roger_pirates",
+        "title": "Cabin boy of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 7
+        },
+        "place": "loc_grand_line_island",
+        "title": "Wandering pirate",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 16,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "affiliation": "org_red_hair_pirates",
+        "title": "Captain of the Red Hair Pirates",
+        "haki": ["observation", "armament", "conqueror"],
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "place": "loc_dawn_island",
+        "affiliation": "org_red_hair_pirates",
+        "title": "Captain of the Red Hair Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 27,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_red_hair_pirates",
+        "title": "Captain of the Red Hair Pirates",
+        "bounty": 1040000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 35,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_red_hair_pirates",
+        "title": "Emperor of the Sea",
+        "bounty": 4048900000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 9
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_red_hair_pirates",
+        "title": "Emperor of the Sea",
+        "bounty": 4048900000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_red_hair_pirates",
+        "title": "Emperor of the Sea",
+        "bounty": 4048900000,
+        "approx": true
+      }
+    ],
+    "ties": ["char_buggy"]
+  },
+  {
+    "id": "char_buggy",
+    "name": "Buggy",
+    "givenName": "Buggy",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -1,
+      "month": 8
+    },
+    "birthplace": "loc_east_blue_village",
+    "description": "A cabin boy of the Roger Pirates who grew up loud, unlucky, and somehow always on top.",
+    "epithet": "the Clown",
+    "approx": true,
+    "stats": {
+      "strength": 90,
+      "speed": 85,
+      "endurance": 95,
+      "durability": 90,
+      "dexterity": 80,
+      "intellect": 60,
+      "willpower": 90,
+      "charisma": 70,
+      "perception": 80,
+      "luck": 99
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -1,
+          "month": 8
+        },
+        "place": "loc_east_blue_village",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 4
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_roger_pirates",
+        "title": "Cabin boy of the Roger Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 7
+        },
+        "place": "loc_grand_line_island",
+        "title": "Wandering pirate",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "place": "loc_orange_town",
+        "title": "Captain of the Buggy Pirates",
+        "bounty": 15000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "place": "loc_impel_down",
+        "status": "imprisoned",
+        "title": "Captain of the Buggy Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 9
+        },
+        "place": "loc_marineford",
+        "title": "Captain of the Buggy Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 11
+        },
+        "place": "loc_new_world_island",
+        "title": "Warlord of the Sea",
+        "bounty": 3189000000,
+        "approx": true
+      }
+    ]
+  }
+]

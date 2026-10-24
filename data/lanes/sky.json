@@ -1,0 +1,39 @@
+[
+  {
+    "id": "lane_jaya_skypiea",
+    "from": "loc_jaya",
+    "to": "loc_skypiea",
+    "miles": 100,
+    "danger": 3,
+    "current": "wild",
+    "requires": "sky_route",
+    "oneWay": true,
+    "traffic": 0,
+    "zone": "sky",
+    "description": "Up the Knock Up Stream: a geyser of sea that throws a ship into the sky, or breaks it."
+  },
+  {
+    "id": "lane_skypiea_long_ring",
+    "from": "loc_skypiea",
+    "to": "loc_long_ring",
+    "miles": 110,
+    "danger": 2,
+    "current": "strong",
+    "requires": "none",
+    "oneWay": true,
+    "traffic": 0,
+    "zone": "sky",
+    "description": "Down the cloud river and off the edge of the sky."
+  },
+  {
+    "id": "lane_skypiea_weatheria",
+    "from": "loc_skypiea",
+    "to": "loc_weatheria",
+    "miles": 190,
+    "danger": 1,
+    "current": "gentle",
+    "requires": "none",
+    "zone": "sky",
+    "traffic": 1
+  }
+]

@@ -38,6 +38,7 @@
     "complexion.sunburnt": 1.5
   },
   "features": ["coast", "docks", "farmland", "forest", "school", "doctor", "market"],
+  "location": "loc_east_blue_village",
   "map": {
     "x": 2330,
     "y": 300

@@ -238,13 +238,14 @@ export function catchIllnesses(env: LifeEnv): void {
     s.months.includes((((tick % 12) + 12) % 12) + 1),
   )?.id;
   const stage = stageOf(data, p, tick).id;
-  const epidemic =
-    typeof state.flags['epidemic.until'] === 'number' &&
-    (state.flags['epidemic.until'] as number) > tick &&
-    state.flags['epidemic.place'] === p.home.id;
+  // An outbreak where they are (Phase 3: epidemics live on the places they reach).
+  const until = state.entities[p.place.id]?.flags['epidemic.until'];
+  const epidemic = typeof until === 'number' && until > tick;
+  const climate = data.world.climates[p.place.climate as keyof typeof data.world.climates];
   for (const def of data.life.illnesses) {
     if (def.atSea || def.chance <= 0) continue;
     let chance = def.chance * (def.seasons[season ?? ''] ?? 1) * (def.stages[stage] ?? 1);
+    chance *= climate?.illness[def.id] ?? 1;
     if (epidemic && def.id === data.life.epidemic.illness) chance *= data.life.epidemic.mult;
     for (const trait of p.c.traits) chance *= data.traits[trait]?.eventWeights['illness'] ?? 1;
     chance = paced(Math.min(1, chance), lifePace(data, p.race));
@@ -340,7 +341,8 @@ export function paced(chance: number, pace: number): number {
 export interface MortalityInput {
   data: GameData;
   state: WorldState;
-  p: Pick<Person, 'race' | 'c' | 'home'>;
+  /** Where they live decides how safe their life is. */
+  p: Pick<Person, 'race' | 'c'> & { place: { safety: Person['place']['safety'] } };
   tick: number;
   /** Health as a share of Max Health; 1 for people the life loop does not track. */
   healthRatio: number;
@@ -355,7 +357,7 @@ export function mortalityChance(input: MortalityInput): number {
     m.table.map((r) => ({ at: r.at, value: r.chance })),
     x,
   );
-  chance *= m.safety[p.home.safety];
+  chance *= m.safety[p.place.safety];
   if (healthRatio < m.lowHealth.below) chance *= m.lowHealth.mult;
   for (const trait of p.c.traits) chance *= m.traits[trait] ?? 1;
   const difficulty = data.creation.difficulties.find((d) => d.id === state.config.difficulty);
@@ -372,7 +374,7 @@ export function mortalityCause(input: MortalityInput, rng: Rng): string {
       cause.weights.map((r) => ({ at: r.at, value: r.weight })),
       x,
     );
-    return w * (cause.bySafety ? m.safety[p.home.safety] : 1);
+    return w * (cause.bySafety ? m.safety[p.place.safety] : 1);
   });
   return pick?.label ?? 'old age';
 }

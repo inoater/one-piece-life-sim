@@ -1,0 +1,351 @@
+[
+  {
+    "id": "char_fisher_tiger",
+    "name": "Fisher Tiger",
+    "givenName": "Tiger",
+    "familyName": "Fisher",
+    "pronouns": "he",
+    "race": "race_fishman",
+    "born": {
+      "year": -20,
+      "month": 1
+    },
+    "birthplace": "loc_fishman_island",
+    "description": "A fish-man adventurer who climbed the Red Line with his bare hands and set the Holy Land's slaves free.",
+    "approx": true,
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "place": "loc_fishman_island",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "place": "loc_mary_geoise",
+        "title": "Slave of the World Nobles",
+        "status": "imprisoned",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 21,
+          "month": 1
+        },
+        "place": "loc_fishman_island",
+        "title": "Adventurer",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 2
+        },
+        "place": "loc_mary_geoise",
+        "title": "Adventurer",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 7
+        },
+        "place": "loc_fishman_island",
+        "affiliation": "org_sun_pirates",
+        "title": "Captain of the Sun Pirates",
+        "bounty": 230000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 24,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "affiliation": "org_sun_pirates",
+        "title": "Captain of the Sun Pirates",
+        "bounty": 230000000,
+        "approx": true
+      }
+    ],
+    "ties": ["char_jinbe", "char_arlong"]
+  },
+  {
+    "id": "char_jinbe",
+    "name": "Jinbe",
+    "givenName": "Jinbe",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_fishman",
+    "born": {
+      "year": -8,
+      "month": 4
+    },
+    "birthplace": "loc_fishman_island",
+    "description": "A whale-shark fish-man of honour, a master of Fish-Man Karate, and the bridge between two peoples.",
+    "epithet": "Knight of the Sea",
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -8,
+          "month": 4
+        },
+        "place": "loc_fishman_island"
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 7
+        },
+        "place": "loc_fishman_island",
+        "affiliation": "org_sun_pirates",
+        "title": "Sun Pirate",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "affiliation": "org_sun_pirates",
+        "title": "Captain of the Sun Pirates",
+        "bounty": 250000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 26,
+          "month": 1
+        },
+        "place": "loc_fishman_island",
+        "affiliation": "org_sun_pirates",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "place": "loc_impel_down",
+        "title": "Former Warlord",
+        "status": "imprisoned",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 9
+        },
+        "place": "loc_marineford",
+        "title": "Former Warlord",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 11
+        },
+        "place": "loc_fishman_island",
+        "title": "Former Warlord",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 8
+        },
+        "place": "loc_wano",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Helmsman of the Straw Hat Pirates",
+        "bounty": 1100000000,
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_arlong",
+    "name": "Arlong",
+    "givenName": "Arlong",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_fishman",
+    "born": {
+      "year": -3,
+      "month": 5
+    },
+    "birthplace": "loc_fishman_island",
+    "description": "A saw-nosed fish-man who learned hatred in the Sun Pirates and brought it to the East Blue.",
+    "epithet": "the Saw",
+    "stats": {
+      "strength": 110,
+      "speed": 85,
+      "endurance": 95,
+      "durability": 90,
+      "dexterity": 80,
+      "intellect": 60,
+      "willpower": 90,
+      "charisma": 70,
+      "perception": 80,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -3,
+          "month": 5
+        },
+        "place": "loc_fishman_island"
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 7
+        },
+        "place": "loc_fishman_island",
+        "affiliation": "org_sun_pirates",
+        "title": "Sun Pirate",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 27,
+          "month": 6
+        },
+        "place": "loc_cocoyashi",
+        "affiliation": "org_arlong_pirates",
+        "title": "Captain of the Arlong Pirates",
+        "bounty": 20000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 3
+        },
+        "place": "loc_impel_down",
+        "title": "Prisoner of Impel Down",
+        "bounty": 20000000,
+        "status": "imprisoned",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_boa_hancock",
+    "name": "Boa Hancock",
+    "givenName": "Hancock",
+    "familyName": "Boa",
+    "pronouns": "she",
+    "race": "race_human",
+    "born": {
+      "year": 7,
+      "month": 9
+    },
+    "birthplace": "loc_amazon_lily",
+    "description": "A former slave who became Empress of Amazon Lily and a Warlord, and guards her past behind her beauty.",
+    "epithet": "the Pirate Empress",
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 190,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": 7,
+          "month": 9
+        },
+        "place": "loc_amazon_lily"
+      },
+      {
+        "from": {
+          "year": 19,
+          "month": 1
+        },
+        "place": "loc_mary_geoise",
+        "title": "Slave of the World Nobles",
+        "status": "imprisoned",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 7
+        },
+        "place": "loc_amazon_lily",
+        "title": "Kuja warrior",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 26,
+          "month": 1
+        },
+        "place": "loc_amazon_lily",
+        "affiliation": "org_kuja_pirates",
+        "title": "Empress of Amazon Lily",
+        "bounty": 80000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 9
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_kuja_pirates",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_amazon_lily",
+        "affiliation": "org_kuja_pirates",
+        "title": "Empress of Amazon Lily",
+        "bounty": 1659000000,
+        "approx": true
+      }
+    ]
+  }
+]

@@ -22,6 +22,34 @@
   .shell[data-route='end'] .year-rail {
     display: none !important;
   }
+  /* The canon timeline (Phase 3) takes the same space, with the tabs still there to leave by. */
+  .canon-page-slot {
+    grid-row: 4;
+    grid-column: 1 / -1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--s-4);
+  }
+  .canon-page-slot[hidden] {
+    display: none;
+  }
+  .shell[data-route='canon'] .panel,
+  .shell[data-route='canon'] .year-rail {
+    display: none !important;
+  }
+  @media (min-width: 700px) {
+    .canon-page-slot {
+      padding: var(--s-5) var(--s-6);
+    }
+    .shell[data-route='canon'] .tabs {
+      grid-column: 1 / -1;
+      border-left: 0;
+    }
+    .shell[data-route='canon'] .tab--feed {
+      display: block;
+    }
+  }
   @media (min-width: 700px) {
     .end-page-slot {
       padding: var(--s-5) var(--s-6);

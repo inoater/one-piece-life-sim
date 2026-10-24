@@ -24,6 +24,7 @@ import { injure, restore, setExhausted, speedHealing } from './health';
 import { advanceJob } from './jobs';
 import { childWords, parentWords, siblingWords } from './people';
 import { breakthrough, trainStat } from './training';
+import { monthsLeft } from '../voyage/progress';
 
 /**
  * The player's month (step 1 of the tick): each activity in the routine, in order, up to the
@@ -50,15 +51,20 @@ export function doctorCost(env: Pick<LifeEnv, 'data' | 'life' | 'tick'>): number
   return data.life.doctor.cost[order[worst] ?? 'none'];
 }
 
+/** "At sea: 2 months to the next island" (the plan's wording), from the voyage's progress. */
+export function atSeaReason(env: Pick<LifeEnv, 'data' | 'p' | 'state'>): string {
+  const left = monthsLeft(env.data, env.state, env.p.c);
+  if (left === null) return 'At sea';
+  return `At sea: ${left === 1 ? '1 month' : `${left} months`} to the next island`;
+}
+
 export function lockReason(env: LifeEnv, act: Activity): string | null {
   const { data, state, tick, p, life } = env;
   if (!p.c.alive) return 'Your life has ended';
   if (isJailed(life, tick)) {
     return `In a cell until ${formatDate(dateOf(data.calendar, life.jailedUntil ?? tick))}`;
   }
-  if (flagOf(state, p.entity, 'travel.at_sea') === true && !act.tags.includes('at_sea')) {
-    return 'At sea';
-  }
+  if (p.place.atSea && !act.tags.includes('at_sea')) return atSeaReason(env);
   const humanAge = humanAgeOf(data, p, tick);
   if (humanAge < act.minAge) return `From age ${raceYearsFor(data, p.race, act.minAge)}`;
   if (act.maxAge !== undefined && humanAge >= act.maxAge + 1) return 'Too old for this';
@@ -72,6 +78,7 @@ export function lockReason(env: LifeEnv, act: Activity): string | null {
   if (act.worksJob && life.job) {
     const job = data.jobs[life.job.id];
     if (job?.physical && isBedRest(data, life, tick)) return 'On bed rest';
+    if (p.place.atSea && !job?.travels) return atSeaReason(env);
   }
   if (act.cost && p.c.berries < act.cost.max)
     return `Costs up to ${formatBerries(act.cost.max)} Berries`;
@@ -139,7 +146,7 @@ export function outcomeAllowed(
       return false;
   }
   if (r.notFlags.some((f) => flagOf(state, p.entity, f) !== undefined)) return false;
-  if (r.features.some((f) => !p.home.features.includes(f))) return false;
+  if (r.features.some((f) => !p.place.features.includes(f))) return false;
   for (const effect of outcome.effects) {
     if (effect.kind === 'conceive' && !canHaveChild(env, humanAge)) return false;
     if (effect.kind === 'marry' && (isMarried(p.entity) || !cast['sweetheart'])) return false;
@@ -328,7 +335,7 @@ function doctorVisit(env: LifeEnv, act: Activity, rng: Rng): Outcome | undefined
   const ailing =
     life.injuries.some((i) => i.healTick > tick) || life.illnesses.some((i) => i.healTick > tick);
   if (!ailing) return find('checkup');
-  const chance = Math.min(0.95, data.life.doctor.intellect[p.home.wealth] / 100);
+  const chance = Math.min(0.95, data.life.doctor.intellect[p.place.wealth] / 100);
   if (rng.fork('doctor').chance(chance)) {
     speedHealing(env, data.life.doctor.months);
     restore(env, 0.15);
@@ -363,7 +370,8 @@ export function runActivity(
   const eff = data.life.efforts[effort];
   const rng = env.rng.fork('slot', index, act.id);
   const vigor = act.restful ? 0 : eff.vigor + act.extraVigor;
-  const scale = eff.gain * stageOf(data, p, tick).training * teacherMultiplier(env, act);
+  const atSea = p.place.atSea && act.category === 'train_body' ? data.travel.atSea.trainBody : 1;
+  const scale = eff.gain * stageOf(data, p, tick).training * teacherMultiplier(env, act) * atSea;
   const actEnv = withCause(env, act.id, undefined, rng);
 
   if (act.cost) pay(actEnv, -rng.fork('cost').int(act.cost.min, act.cost.max));

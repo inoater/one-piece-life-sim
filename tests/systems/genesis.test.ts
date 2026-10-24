@@ -10,6 +10,7 @@ import {
 } from '../../src/engine/state';
 import { statValue } from '../../src/engine/stats';
 import { appearanceSentence } from '../../src/systems/genesis/appearance';
+import { resolveDecision } from '../../src/systems/events';
 import { createLife, describeAppearance } from '../../src/systems/genesis/generate';
 import { GenesisError, type GenesisOptionsInput } from '../../src/systems/genesis/options';
 import { characterSheet } from '../../src/systems/genesis/sheet';
@@ -78,7 +79,12 @@ describe('character genesis', () => {
     expect(WorldStateSchema.safeParse(state).success).toBe(true);
     expect(state.playerId).toBe(playerId);
     expect(Math.floor(state.tick / 12)).toBe(14);
-    expect(state.config).toEqual({ canonMode: 'canon', difficulty: 'normal', rareRaces: false });
+    expect(state.config).toEqual({
+      canonMode: 'canon',
+      difficulty: 'normal',
+      rareRaces: false,
+      population: 'full',
+    });
     const { bytes } = await serializeSave(state, { dataHash, label: 't', now: 1 }, LIMITS);
     const loaded = await deserializeSave(bytes, { dataHash, limits: LIMITS });
     expect(loaded.report.hashMatches).toBe(true);
@@ -465,10 +471,16 @@ describe('the family legacy event chain', () => {
     expect(chain).toBeDefined();
     const birth = playerOf(state).character!.birthTick;
     expect(chain!.tick).toBe(birth + 16 * 12);
-    advance(state, data, Rng.root(state.seed), {
-      kind: 'months',
-      count: chain!.tick - state.tick + 1,
-    });
+    // Since Phase 3 other events with choices can come first: answer those and keep going.
+    while (state.tick <= chain!.tick) {
+      advance(state, data, Rng.root(state.seed), {
+        kind: 'months',
+        count: chain!.tick - state.tick + 1,
+      });
+      const other = state.pending.find((d) => d.eventId !== 'evt_legacy_marine_letter');
+      if (!other) break;
+      resolveDecision(state, data, other.id, other.choices[0]!.id);
+    }
     const fired = state.log.find(
       (r) => r.cause === 'evt_legacy_marine_letter' && r.kind === 'event',
     );

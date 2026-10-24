@@ -1,0 +1,466 @@
+[
+  {
+    "id": "evt_voyage_reef",
+    "type": "voyage",
+    "title": "Rocks ahead",
+    "text": "The lookout screamed: white water dead ahead, and the black teeth of a reef just under it.",
+    "trigger": "voyage",
+    "weight": 2,
+    "weightMods": [{ "when": [{ "kind": "danger", "min": 2 }], "mult": 1.5 }],
+    "choices": [
+      {
+        "id": "steer",
+        "label": "Hard over",
+        "check": {
+          "stat": "perception",
+          "difficulty": 40,
+          "perDanger": 5,
+          "success": {
+            "text": "The {ship} heeled over and the reef slid past close enough to touch.",
+            "effects": []
+          },
+          "failure": {
+            "text": "The reef raked the hull from bow to stern.",
+            "effects": [{ "kind": "hull", "value": -10 }]
+          },
+          "criticalFailure": {
+            "text": "The {ship} struck hard and stuck. It took days to float her off, and she limped to the nearest port.",
+            "effects": [{ "kind": "hull", "value": -20 }, { "kind": "redirect" }]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "hazard"]
+  },
+  {
+    "id": "evt_voyage_whirlpool",
+    "type": "voyage",
+    "title": "A whirlpool",
+    "text": "The sea opened into a great turning funnel, and the {ship} began to slide toward it sideways.",
+    "trigger": "voyage",
+    "weight": 1.5,
+    "conditions": [
+      { "kind": "region", "regions": ["paradise", "new_world", "wano", "fishman_island"] }
+    ],
+    "choices": [
+      {
+        "id": "pull",
+        "label": "Pull away with everything you have",
+        "check": {
+          "stat": "navigation",
+          "difficulty": 55,
+          "perDanger": 4,
+          "success": {
+            "text": "Every hand on the sheets, every oar in the water, and the whirlpool let you go.",
+            "effects": [{ "kind": "morale", "value": 5 }]
+          },
+          "failure": {
+            "text": "The whirlpool spun you twice around before it spat you out, battered and lost.",
+            "effects": [
+              { "kind": "hull", "value": -12 },
+              { "kind": "delay", "months": 1 },
+              { "kind": "crew", "value": -1 }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "hazard", "grand_line"]
+  },
+  {
+    "id": "evt_voyage_sea_king",
+    "type": "voyage",
+    "title": "A sea king",
+    "text": "Something the size of an island rose beside the {ship} and looked at her with one yellow eye.",
+    "trigger": "voyage",
+    "weight": 1,
+    "weightMods": [
+      { "when": [{ "kind": "region", "regions": ["calm_belt"] }], "mult": 6 },
+      { "when": [{ "kind": "danger", "min": 3 }], "mult": 2 }
+    ],
+    "conditions": [{ "kind": "danger", "min": 2 }],
+    "choices": [
+      {
+        "id": "fight",
+        "label": "Fight it",
+        "check": {
+          "stat": "combatPower",
+          "difficulty": 260,
+          "perDanger": 30,
+          "criticalSuccess": {
+            "text": "You knocked the sea king senseless, and everyone aboard ate sea king steak for a month.",
+            "effects": [
+              { "kind": "fame", "value": 10 },
+              { "kind": "supplies", "months": 4 },
+              { "kind": "morale", "value": 20 }
+            ]
+          },
+          "success": {
+            "text": "You drove it off with bloody cuts and a cracked hull to show for it.",
+            "effects": [
+              { "kind": "hull", "value": -5 },
+              { "kind": "fame", "value": 3 }
+            ]
+          },
+          "failure": {
+            "text": "It smashed the rail, swallowed a boat, and took a chunk of you with it.",
+            "effects": [
+              { "kind": "hull", "value": -20 },
+              { "kind": "injury", "severity": "serious", "cause": "violence" }
+            ]
+          },
+          "criticalFailure": {
+            "text": "It coiled around the {ship} and squeezed. Three hands were never seen again.",
+            "effects": [
+              { "kind": "hull", "value": -35 },
+              { "kind": "crew", "value": -3 },
+              { "kind": "injury", "severity": "severe", "cause": "violence" }
+            ]
+          }
+        }
+      },
+      {
+        "id": "flee",
+        "label": "Flee",
+        "check": {
+          "stat": "navigation",
+          "difficulty": 50,
+          "perDanger": 5,
+          "success": {
+            "text": "You put on every sail and outran it, just.",
+            "effects": [{ "kind": "delay", "months": 0.3 }]
+          },
+          "failure": {
+            "text": "Its tail caught the stern as you ran.",
+            "effects": [{ "kind": "hull", "value": -15 }]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "hazard"]
+  },
+  {
+    "id": "evt_voyage_calm_belt_drift",
+    "type": "voyage",
+    "title": "Becalmed in the Calm Belt",
+    "text": "No wind, no current, no sound: the {ship} drifted in the Calm Belt, and under her the shadows began to gather.",
+    "trigger": "voyage",
+    "weight": 4,
+    "conditions": [{ "kind": "region", "regions": ["calm_belt"] }],
+    "choices": [
+      {
+        "id": "row",
+        "label": "Row for your lives",
+        "check": {
+          "stat": "endurance",
+          "difficulty": 60,
+          "success": {
+            "text": "You rowed through the silence until the wind came back, and nothing rose.",
+            "effects": [
+              { "kind": "delay", "months": 0.5 },
+              { "kind": "train", "stats": { "endurance": 1.5 } }
+            ]
+          },
+          "failure": {
+            "text": "The sea kings came up under the {ship}. You got away, but not everyone did.",
+            "effects": [
+              { "kind": "hull", "value": -20 },
+              { "kind": "crew", "value": -2 },
+              { "kind": "injury", "severity": "serious", "cause": "violence" }
+            ]
+          }
+        }
+      },
+      {
+        "id": "still",
+        "label": "Keep perfectly still",
+        "check": {
+          "stat": "willpower",
+          "difficulty": 50,
+          "success": {
+            "text": "Nobody breathed for a day and a night. The shadows passed under you and went away.",
+            "effects": [{ "kind": "delay", "months": 1 }]
+          },
+          "failure": {
+            "text": "Someone dropped a bucket.",
+            "effects": [
+              { "kind": "hull", "value": -25 },
+              { "kind": "crew", "value": -2 }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "hazard"]
+  },
+  {
+    "id": "evt_voyage_leak",
+    "type": "voyage",
+    "title": "Springing a leak",
+    "text": "Water in the bilge, and more every hour: the {ship} had sprung a leak below the waterline.",
+    "trigger": "voyage",
+    "weight": 1.5,
+    "choices": [
+      {
+        "id": "patch",
+        "label": "Go down and patch it",
+        "check": {
+          "stat": "dexterity",
+          "difficulty": 40,
+          "success": {
+            "text": "You worked in the dark with tar and oakum until the leak was a drip.",
+            "effects": [
+              { "kind": "hull", "value": -1 },
+              { "kind": "train", "stats": { "dexterity": 1 } }
+            ]
+          },
+          "failure": {
+            "text": "Your patch held for a day. The hold flooded on the second.",
+            "effects": [
+              { "kind": "hull", "value": -6 },
+              { "kind": "supplies", "months": -1 }
+            ]
+          }
+        }
+      },
+      {
+        "id": "bail",
+        "label": "Bail and pray",
+        "effects": [
+          { "kind": "hull", "value": -4 },
+          { "kind": "delay", "months": 0.3 }
+        ]
+      }
+    ],
+    "tags": ["voyage", "ship"]
+  },
+  {
+    "id": "evt_voyage_spoiled_stores",
+    "type": "voyage",
+    "title": "Spoiled stores",
+    "text": "The salt pork had turned green and the biscuit was walking on its own.",
+    "trigger": "voyage",
+    "weight": 1.5,
+    "conditions": [{ "kind": "ownShip" }, { "kind": "travelMode", "modes": ["own"] }],
+    "choices": [
+      {
+        "id": "dump",
+        "label": "Throw it overboard",
+        "effects": [{ "kind": "supplies", "months": -2 }]
+      },
+      {
+        "id": "eat",
+        "label": "Eat it anyway",
+        "check": {
+          "stat": "endurance",
+          "difficulty": 40,
+          "success": {
+            "text": "You ate it, kept it down, and saved the stores.",
+            "effects": [{ "kind": "train", "stats": { "endurance": 0.5 } }]
+          },
+          "failure": {
+            "text": "You ate it. You regretted it for a week.",
+            "effects": [
+              { "kind": "illness", "illness": "bad_stomach" },
+              { "kind": "morale", "value": -5 }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "ship"]
+  },
+  {
+    "id": "evt_voyage_fever_aboard",
+    "type": "voyage",
+    "title": "Fever aboard",
+    "text": "A fever went round the {ship}, hammock to hammock.",
+    "trigger": "voyage",
+    "weight": 1,
+    "weightMods": [{ "when": [{ "kind": "climate", "climates": ["tropical"] }], "mult": 1.5 }],
+    "choices": [
+      {
+        "id": "nurse",
+        "label": "Nurse the sick",
+        "check": {
+          "stat": "intellect",
+          "difficulty": 45,
+          "success": {
+            "text": "You kept them cool and dosed, and nobody died.",
+            "effects": [
+              { "kind": "morale", "value": 10 },
+              { "kind": "train", "stats": { "intellect": 1 } }
+            ]
+          },
+          "failure": {
+            "text": "You caught it yourself and two hands did not get up again.",
+            "effects": [
+              { "kind": "illness", "illness": "fever" },
+              { "kind": "crew", "value": -2 }
+            ]
+          }
+        }
+      },
+      {
+        "id": "avoid",
+        "label": "Keep your distance",
+        "check": {
+          "stat": "endurance",
+          "difficulty": 40,
+          "success": {
+            "text": "You stayed on deck in the wind and stayed well.",
+            "effects": [{ "kind": "morale", "value": -5 }]
+          },
+          "failure": {
+            "text": "The fever found you anyway.",
+            "effects": [{ "kind": "illness", "illness": "fever" }]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "ship"]
+  },
+  {
+    "id": "evt_voyage_mutiny_grumbles",
+    "type": "voyage",
+    "title": "Grumbling below decks",
+    "text": "Conversations stopped when you walked past. Somebody had carved a skull into the mast.",
+    "trigger": "voyage",
+    "weight": 3,
+    "conditions": [
+      { "kind": "travelMode", "modes": ["own"] },
+      { "kind": "morale", "max": 40 }
+    ],
+    "choices": [
+      {
+        "id": "pay",
+        "label": "Promise better pay",
+        "requires": [{ "kind": "berries", "min": 5000 }],
+        "effects": [
+          { "kind": "berries", "min": -5000, "max": -5000 },
+          { "kind": "morale", "value": 20 }
+        ]
+      },
+      {
+        "id": "example",
+        "label": "Make an example",
+        "check": {
+          "stat": "charisma",
+          "difficulty": 50,
+          "success": {
+            "text": "You called the ringleader out in front of everyone, and the grumbling stopped.",
+            "effects": [
+              { "kind": "morale", "value": 10 },
+              { "kind": "train", "stats": { "charisma": 1 } }
+            ]
+          },
+          "failure": {
+            "text": "The crew sided with the ringleader. Two of them jumped ship at night with a boat.",
+            "effects": [
+              { "kind": "morale", "value": -15 },
+              { "kind": "crew", "value": -2 }
+            ]
+          }
+        }
+      },
+      {
+        "id": "ignore",
+        "label": "Ignore it",
+        "effects": [{ "kind": "morale", "value": -10 }]
+      }
+    ],
+    "tags": ["voyage", "crew"]
+  },
+  {
+    "id": "evt_voyage_mutiny",
+    "type": "voyage",
+    "title": "Mutiny",
+    "text": "You woke to a cutlass at your throat and the crew of the {ship} crowded into your cabin.",
+    "trigger": "voyage",
+    "weight": 6,
+    "cooldown": 6,
+    "conditions": [
+      { "kind": "travelMode", "modes": ["own"] },
+      { "kind": "morale", "max": 25 }
+    ],
+    "choices": [
+      {
+        "id": "face",
+        "label": "Face them down",
+        "check": {
+          "stat": "willpower",
+          "difficulty": 60,
+          "criticalSuccess": {
+            "text": "You laughed at the cutlass until the man holding it lowered it. By morning they were your crew again, and more loyal than before.",
+            "effects": [
+              { "kind": "morale", "value": 40 },
+              { "kind": "fame", "value": 3 }
+            ]
+          },
+          "success": {
+            "text": "You talked them down, one by one, until the ringleaders stood alone.",
+            "effects": [{ "kind": "morale", "value": 25 }]
+          },
+          "failure": {
+            "text": "They put you in the boat with a barrel of water and took the {ship} wherever they pleased.",
+            "effects": [
+              { "kind": "crew", "value": -4 },
+              { "kind": "redirect" },
+              { "kind": "injury", "severity": "minor", "cause": "violence" }
+            ]
+          },
+          "criticalFailure": {
+            "text": "The mutineers beat you bloody and threw what was left over the side.",
+            "effects": [
+              { "kind": "injury", "severity": "serious", "cause": "violence" },
+              { "kind": "overboard" }
+            ]
+          }
+        }
+      },
+      {
+        "id": "purse",
+        "label": "Give them the ship's purse",
+        "requires": [{ "kind": "berries", "min": 10000 }],
+        "effects": [
+          { "kind": "berries", "min": -10000, "max": -10000 },
+          { "kind": "morale", "value": 15 }
+        ]
+      }
+    ],
+    "tags": ["voyage", "crew"]
+  },
+  {
+    "id": "evt_voyage_rats",
+    "type": "voyage",
+    "title": "Rats in the hold",
+    "text": "The rats had found the grain, and they had brought their families.",
+    "trigger": "voyage",
+    "weight": 1,
+    "conditions": [{ "kind": "travelMode", "modes": ["own", "crew", "stowaway"] }],
+    "choices": [
+      {
+        "id": "hunt",
+        "label": "Hunt them down",
+        "check": {
+          "stat": "dexterity",
+          "difficulty": 35,
+          "success": {
+            "text": "You spent three nights in the dark with a belaying pin and won.",
+            "effects": [{ "kind": "train", "stats": { "dexterity": 0.5, "perception": 0.5 } }]
+          },
+          "failure": {
+            "text": "The rats won. They usually do.",
+            "effects": [{ "kind": "supplies", "months": -1 }]
+          }
+        }
+      },
+      {
+        "id": "leave",
+        "label": "Let them have some",
+        "effects": [{ "kind": "supplies", "months": -0.5 }]
+      }
+    ],
+    "tags": ["voyage", "ship"]
+  }
+]

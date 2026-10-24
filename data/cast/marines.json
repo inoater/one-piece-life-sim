@@ -1,0 +1,554 @@
+[
+  {
+    "id": "char_sengoku",
+    "name": "Sengoku",
+    "givenName": "Sengoku",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -41,
+      "month": 5
+    },
+    "birthplace": "loc_marineford",
+    "description": "A Marine strategist with a goat, a temper, and the patience to run the Navy for twenty years.",
+    "epithet": "the Buddha",
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 140,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -41,
+          "month": 5
+        },
+        "place": "loc_marineford",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 14,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Fleet Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Inspector General",
+        "status": "retired",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_kong",
+    "name": "Kong",
+    "givenName": "Kong",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -48,
+      "month": 1
+    },
+    "birthplace": "loc_marineford",
+    "description": "Fleet Admiral before Sengoku, and afterwards the Commander-in-Chief of the Government's forces.",
+    "approx": true,
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -48,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -15,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Fleet Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 14,
+          "month": 1
+        },
+        "place": "loc_mary_geoise",
+        "affiliation": "org_world_government",
+        "title": "Commander-in-Chief",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_tsuru",
+    "name": "Tsuru",
+    "givenName": "Tsuru",
+    "familyName": "",
+    "pronouns": "she",
+    "race": "race_human",
+    "born": {
+      "year": -38,
+      "month": 1
+    },
+    "birthplace": "loc_marineford",
+    "description": "A Vice Admiral of the old guard, the Navy's great strategist and its laundress of pirates.",
+    "approx": true,
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 130,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -38,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Vice Admiral",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_zephyr",
+    "name": "Zephyr",
+    "givenName": "Zephyr",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -38,
+      "month": 1
+    },
+    "birthplace": "loc_marineford",
+    "description": "An admiral who never killed a pirate and trained a generation of the Navy's best.",
+    "epithet": "Black Arm",
+    "approx": true,
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 90,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -38,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 14,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Instructor",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_sakazuki",
+    "name": "Sakazuki",
+    "givenName": "Sakazuki",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -17,
+      "month": 8
+    },
+    "birthplace": "loc_north_blue_town",
+    "description": "A Marine of absolute justice, who will burn a ship of refugees to be sure of one scholar.",
+    "epithet": "Akainu",
+    "approx": true,
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 90,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -17,
+          "month": 8
+        },
+        "place": "loc_north_blue_town",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -2,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Marine officer",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 16,
+          "month": 5
+        },
+        "place": "loc_ohara",
+        "affiliation": "org_marines",
+        "title": "Vice Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 16,
+          "month": 7
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Vice Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Fleet Admiral",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_kuzan",
+    "name": "Kuzan",
+    "givenName": "Kuzan",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -11,
+      "month": 9
+    },
+    "birthplace": "loc_south_blue_island",
+    "description": "A lazy, decent Marine of lazy justice, who let one child go and never stopped wondering about it.",
+    "epithet": "Aokiji",
+    "approx": true,
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 90,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -11,
+          "month": 9
+        },
+        "place": "loc_south_blue_island",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Marine officer",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 16,
+          "month": 5
+        },
+        "place": "loc_ohara",
+        "affiliation": "org_marines",
+        "title": "Vice Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 16,
+          "month": 7
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Vice Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 37,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "title": "Former Admiral",
+        "status": "hidden",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_borsalino",
+    "name": "Borsalino",
+    "givenName": "Borsalino",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -20,
+      "month": 11
+    },
+    "birthplace": "loc_marineford",
+    "description": "A Marine of unclear justice, who moves at the speed of light and talks at the speed of a tortoise.",
+    "epithet": "Kizaru",
+    "approx": true,
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 90,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -20,
+          "month": 11
+        },
+        "place": "loc_marineford",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Marine officer",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "place": "loc_sabaody",
+        "affiliation": "org_marines",
+        "title": "Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_marines",
+        "title": "Admiral",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 11
+        },
+        "place": "loc_egghead",
+        "affiliation": "org_marines",
+        "title": "Admiral",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_bellemere",
+    "name": "Bell-mere",
+    "givenName": "Bell-mere",
+    "familyName": "",
+    "pronouns": "she",
+    "race": "race_human",
+    "born": {
+      "year": -8,
+      "month": 1
+    },
+    "birthplace": "loc_cocoyashi",
+    "description": "A Marine who came home with two orphans and raised them on tangerines and stubbornness.",
+    "approx": true,
+    "stats": {
+      "strength": 90,
+      "speed": 85,
+      "endurance": 95,
+      "durability": 90,
+      "dexterity": 80,
+      "intellect": 60,
+      "willpower": 90,
+      "charisma": 70,
+      "perception": 80,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -8,
+          "month": 1
+        },
+        "place": "loc_cocoyashi",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "place": "loc_marine_base_town",
+        "affiliation": "org_marines",
+        "title": "Marine",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 18,
+          "month": 1
+        },
+        "place": "loc_cocoyashi",
+        "title": "Tangerine farmer",
+        "status": "retired",
+        "approx": true
+      }
+    ],
+    "ties": ["char_nami"]
+  }
+]

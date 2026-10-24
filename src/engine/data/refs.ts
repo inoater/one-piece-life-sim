@@ -2,21 +2,31 @@ import type {
   Activity,
   Appearance,
   BackstoryEvent,
+  Beat,
+  BeatEffect,
   Birthplace,
+  CanonRules,
+  CastMember,
   CollectionKind,
+  Condition,
   Creation,
   Effect,
   EventDef,
+  Faction,
   Focus,
   Job,
+  Lane,
   Legacy,
   LifeEffect,
   LifeRules,
+  Location,
   Requires,
   Risk,
   Occupation,
   Race,
   Trait,
+  TravelRules,
+  WorldRules,
 } from './schemas';
 
 /**
@@ -45,7 +55,8 @@ export type RefTarget =
   | 'appearanceKeys'
   | 'severities'
   | 'illnesses'
-  | 'seasons';
+  | 'seasons'
+  | 'npcGoals';
 
 export interface Ref {
   /** Where the reference was written: the field path inside the file. */
@@ -78,6 +89,12 @@ export const TARGET_LABEL: Record<RefTarget, string> = {
   severities: 'injury severity',
   illnesses: 'illness',
   seasons: 'season',
+  npcGoals: 'NPC goal',
+  lanes: 'sea lane',
+  vessels: 'vessel',
+  factions: 'faction',
+  cast: 'canon character',
+  canon: 'canon beat',
 };
 
 /** Where an author fixes a missing id of this kind. */
@@ -104,6 +121,12 @@ export const TARGET_HOME: Record<RefTarget, string> = {
   severities: 'data/life.json (injuries.severities)',
   illnesses: 'data/life.json (illnesses)',
   seasons: 'data/calendar.json (seasons)',
+  npcGoals: 'data/world.json (npc.goals)',
+  lanes: 'data/lanes/',
+  vessels: 'data/vessels/',
+  factions: 'data/factions/',
+  cast: 'data/cast/',
+  canon: 'data/canon/',
 };
 
 const each = (target: RefTarget, ids: readonly string[], field: string): Ref[] =>
@@ -135,6 +158,49 @@ function effectRefs(effects: readonly (Effect | LifeEffect)[], base: string): Re
         break;
       case 'relationship':
         refs.push(...one('occupations', effect.occupation, `${at}.occupation`));
+        break;
+      case 'faction':
+        refs.push({ field: `${at}.org`, target: 'factions', id: effect.org });
+        refs.push(...one('factions', effect.opinion?.toward, `${at}.opinion.toward`));
+        break;
+      case 'control':
+        refs.push(...one('factions', effect.org ?? undefined, `${at}.org`));
+        refs.push(...one('locations', effect.location, `${at}.location`));
+        break;
+      case 'prosperity':
+        refs.push(...one('locations', effect.location, `${at}.location`));
+        break;
+    }
+  });
+  return refs;
+}
+
+function conditionRefs(conditions: readonly Condition[], base: string): Ref[] {
+  const refs: Ref[] = [];
+  conditions.forEach((condition, i) => {
+    const at = `${base}[${i}]`;
+    switch (condition.kind) {
+      case 'hasTrait':
+      case 'notTrait':
+        refs.push({ field: `${at}.trait`, target: 'traits', id: condition.trait });
+        break;
+      case 'atLocation':
+        refs.push({ field: `${at}.location`, target: 'locations', id: condition.location });
+        break;
+      case 'canonMode':
+        refs.push(...each('canonModes', condition.modes, `${at}.modes`));
+        break;
+      case 'season':
+        refs.push(...each('seasons', condition.seasons, `${at}.seasons`));
+        break;
+      case 'job':
+        refs.push(...each('jobs', condition.jobs, `${at}.jobs`));
+        break;
+      case 'beat':
+        refs.push({ field: `${at}.beat`, target: 'canon', id: condition.beat });
+        break;
+      case 'lane':
+        refs.push(...each('lanes', condition.lanes, `${at}.lanes`));
         break;
     }
   });
@@ -184,23 +250,139 @@ function jobRefs(job: Job): Ref[] {
 }
 
 export function eventRefs(event: EventDef): Ref[] {
-  const refs: Ref[] = [];
-  event.conditions.forEach((condition, i) => {
-    if (condition.kind === 'hasTrait') {
-      refs.push({ field: `conditions[${i}].trait`, target: 'traits', id: condition.trait });
-    } else if (condition.kind === 'atLocation') {
-      refs.push({
-        field: `conditions[${i}].location`,
-        target: 'locations',
-        id: condition.location,
-      });
-    }
-  });
+  const refs: Ref[] = [...conditionRefs(event.conditions, 'conditions')];
+  event.weightMods.forEach((mod, i) =>
+    refs.push(...conditionRefs(mod.when, `weightMods[${i}].when`)),
+  );
   refs.push(...effectRefs(event.effects, 'effects'));
   event.choices.forEach((choice, i) => {
+    refs.push(...conditionRefs(choice.requires, `choices[${i}].requires`));
     refs.push(...effectRefs(choice.effects, `choices[${i}].effects`));
+    const check = choice.check;
+    if (!check) return;
+    for (const band of ['criticalSuccess', 'success', 'failure', 'criticalFailure'] as const) {
+      const b = check[band];
+      if (b) refs.push(...effectRefs(b.effects, `choices[${i}].check.${band}.effects`));
+    }
+  });
+  for (const [name, role] of Object.entries(event.roles)) {
+    if (role.kind === 'stranger') {
+      refs.push(...one('occupations', role.occupation, `roles.${name}.occupation`));
+    }
+  }
+  if (event.where) {
+    refs.push(...each('factions', event.where.controllers, 'where.controllers'));
+    refs.push(...each('factions', event.where.notControllers, 'where.notControllers'));
+  }
+  return refs;
+}
+
+// ---- The world (Phase 3) ----------------------------------------------------------------------
+
+function locationRefs(loc: Location): Ref[] {
+  return [
+    ...one('factions', loc.controller ?? undefined, 'controller'),
+    ...each('jobs', loc.jobs, 'jobs'),
+    { field: 'culture', target: 'birthplaces', id: loc.culture },
+    ...each('locations', loc.eternalPoses, 'eternalPoses'),
+  ];
+}
+
+function laneRefs(lane: Lane): Ref[] {
+  return [
+    { field: 'from', target: 'locations', id: lane.from },
+    { field: 'to', target: 'locations', id: lane.to },
+  ];
+}
+
+function factionRefs(faction: Faction): Ref[] {
+  return [
+    ...one('factions', faction.parent, 'parent'),
+    ...one('factions', faction.umbrella, 'umbrella'),
+    ...keys('factions', faction.opinions, 'opinions'),
+    ...one('cast', faction.captain, 'captain'),
+    ...each('cast', faction.succession, 'succession'),
+    ...one('locations', faction.home, 'home'),
+  ];
+}
+
+function castRefs(cast: CastMember): Ref[] {
+  const refs: Ref[] = [
+    { field: 'race', target: 'races', id: cast.race },
+    { field: 'birthplace', target: 'locations', id: cast.birthplace },
+    ...each('cast', cast.ties, 'ties'),
+  ];
+  cast.keyframes.forEach((k, i) => {
+    refs.push({ field: `keyframes[${i}].place`, target: 'locations', id: k.place });
+    refs.push(...one('factions', k.affiliation, `keyframes[${i}].affiliation`));
   });
   return refs;
+}
+
+function beatEffectRefs(effects: readonly BeatEffect[], base: string): Ref[] {
+  const refs: Ref[] = [];
+  effects.forEach((e, i) => {
+    const at = `${base}[${i}]`;
+    if ('place' in e) refs.push({ field: `${at}.place`, target: 'locations', id: e.place });
+    if (e.kind === 'affiliation' || e.kind === 'crew' || e.kind === 'faction') {
+      refs.push({ field: `${at}.org`, target: 'factions', id: e.org });
+    }
+    if (e.kind === 'control' && e.org !== null) {
+      refs.push({ field: `${at}.org`, target: 'factions', id: e.org });
+    }
+    if (e.kind === 'faction') {
+      refs.push(...one('factions', e.opinion?.toward, `${at}.opinion.toward`));
+    }
+  });
+  return refs;
+}
+
+function beatRefs(beat: Beat): Ref[] {
+  const refs: Ref[] = [
+    { field: 'place', target: 'locations', id: beat.place },
+    ...each('canon', beat.requires, 'requires'),
+    ...each('canon', beat.dependents, 'dependents'),
+    ...beatEffectRefs(beat.outcomes, 'outcomes'),
+    ...beatEffectRefs(beat.onDiverge, 'onDiverge'),
+  ];
+  for (const [name, role] of Object.entries(beat.roles)) {
+    refs.push({ field: `roles.${name}.char`, target: 'cast', id: role.char });
+    refs.push(...each('cast', role.substitutes, `roles.${name}.substitutes`));
+  }
+  beat.choices.forEach((c, i) => refs.push(...effectRefs(c.effects, `choices[${i}].effects`)));
+  return refs;
+}
+
+export function travelRefs(travel: TravelRules): Ref[] {
+  return [
+    ...each('locations', travel.coating.at, 'coating.at'),
+    ...each('locations', travel.logPose.at, 'logPose.at'),
+    ...keys('seasons', travel.wind, 'wind'),
+    { field: 'carriers.crew', target: 'vessels', id: travel.carriers.crew },
+    { field: 'carriers.passenger', target: 'vessels', id: travel.carriers.passenger },
+    { field: 'carriers.stowaway', target: 'vessels', id: travel.carriers.stowaway },
+    { field: 'carriers.marine', target: 'vessels', id: travel.carriers.marine },
+    { field: 'stowaway.eventId', target: 'events', id: travel.stowaway.eventId },
+    { field: 'seasickness.trait', target: 'traits', id: travel.seasickness.trait },
+  ];
+}
+
+export function worldRulesRefs(world: WorldRules): Ref[] {
+  const refs: Ref[] = [];
+  world.npc.goals.forEach((goal, i) => {
+    refs.push(...keys('occupations', goal.occupations, `npc.goals[${i}].occupations`));
+  });
+  world.npc.actions.forEach((action, i) => {
+    refs.push(...keys('npcGoals', action.utility, `npc.actions[${i}].utility`));
+  });
+  for (const [climate, rules] of Object.entries(world.climates)) {
+    refs.push(...keys('illnesses', rules.illness, `climates.${climate}.illness`));
+  }
+  return refs;
+}
+
+export function canonRulesRefs(canon: CanonRules): Ref[] {
+  return keys('canonModes', canon.modes, 'modes');
 }
 
 function traitRefs(trait: Trait): Ref[] {
@@ -218,6 +400,7 @@ function raceRefs(race: Race): Ref[] {
 
 function birthplaceRefs(place: Birthplace): Ref[] {
   return [
+    { field: 'location', target: 'locations', id: place.location },
     ...each('races', place.races, 'races'),
     ...each('traits', place.traitPool, 'traitPool'),
     ...one('names', place.namePool, 'namePool'),
@@ -272,8 +455,13 @@ function backstoryRefs(event: BackstoryEvent): Ref[] {
   return refs;
 }
 
-/** Collections whose items can refer to other content. Weapons and locations are leaves for now. */
+/** Collections whose items can refer to other content. Weapons and vessels are leaves. */
 export const REF_EXTRACTORS: Partial<Record<CollectionKind, (item: never) => Ref[]>> = {
+  locations: locationRefs as (item: never) => Ref[],
+  lanes: laneRefs as (item: never) => Ref[],
+  factions: factionRefs as (item: never) => Ref[],
+  cast: castRefs as (item: never) => Ref[],
+  canon: beatRefs as (item: never) => Ref[],
   events: eventRefs as (item: never) => Ref[],
   traits: traitRefs as (item: never) => Ref[],
   races: raceRefs as (item: never) => Ref[],
@@ -331,8 +519,10 @@ export function singletonTargets(singletons: {
   stageIds?: readonly string[];
   life?: LifeRules;
   seasonIds?: readonly string[];
+  npcGoalIds?: readonly string[];
 }): Partial<Record<RefTarget, Set<string>>> {
   const out: Partial<Record<RefTarget, Set<string>>> = {};
+  if (singletons.npcGoalIds) out.npcGoals = new Set(singletons.npcGoalIds);
   const { creation, appearance, life } = singletons;
   if (life) {
     out.severities = new Set(life.injuries.severities.map((s) => s.id));

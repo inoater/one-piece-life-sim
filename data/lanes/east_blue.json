@@ -1,0 +1,106 @@
+[
+  {
+    "id": "lane_east_blue_village_dawn_island",
+    "from": "loc_east_blue_village",
+    "to": "loc_dawn_island",
+    "miles": 90,
+    "danger": 0,
+    "current": "gentle",
+    "requires": "none"
+  },
+  {
+    "id": "lane_east_blue_village_shells_town",
+    "from": "loc_east_blue_village",
+    "to": "loc_shells_town",
+    "miles": 270,
+    "danger": 0,
+    "current": "steady",
+    "requires": "none"
+  },
+  {
+    "id": "lane_dawn_island_shells_town",
+    "from": "loc_dawn_island",
+    "to": "loc_shells_town",
+    "miles": 180,
+    "danger": 0,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 3
+  },
+  {
+    "id": "lane_shells_town_orange_town",
+    "from": "loc_shells_town",
+    "to": "loc_orange_town",
+    "miles": 180,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none"
+  },
+  {
+    "id": "lane_orange_town_syrup_village",
+    "from": "loc_orange_town",
+    "to": "loc_syrup_village",
+    "miles": 350,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none"
+  },
+  {
+    "id": "lane_syrup_village_baratie",
+    "from": "loc_syrup_village",
+    "to": "loc_baratie",
+    "miles": 300,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none"
+  },
+  {
+    "id": "lane_baratie_cocoyashi",
+    "from": "loc_baratie",
+    "to": "loc_cocoyashi",
+    "miles": 550,
+    "danger": 1,
+    "current": "strong",
+    "requires": "none"
+  },
+  {
+    "id": "lane_cocoyashi_loguetown",
+    "from": "loc_cocoyashi",
+    "to": "loc_loguetown",
+    "miles": 300,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none"
+  },
+  {
+    "id": "lane_baratie_loguetown",
+    "from": "loc_baratie",
+    "to": "loc_loguetown",
+    "miles": 650,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 3
+  },
+  {
+    "id": "lane_syrup_village_cocoyashi",
+    "from": "loc_syrup_village",
+    "to": "loc_cocoyashi",
+    "miles": 300,
+    "danger": 1,
+    "current": "gentle",
+    "requires": "none",
+    "traffic": 1
+  },
+  {
+    "id": "lane_test_harbor_east_blue_village",
+    "from": "loc_test_harbor",
+    "to": "loc_east_blue_village",
+    "miles": 100,
+    "danger": 0,
+    "current": "calm",
+    "requires": "none",
+    "traffic": 0,
+    "tags": ["dev"]
+  }
+]

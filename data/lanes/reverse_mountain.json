@@ -1,0 +1,63 @@
+[
+  {
+    "id": "lane_loguetown_reverse_mountain",
+    "from": "loc_loguetown",
+    "to": "loc_reverse_mountain",
+    "miles": 290,
+    "danger": 2,
+    "current": "strong",
+    "requires": "none",
+    "oneWay": true,
+    "zone": "red_line",
+    "description": "Into the current that climbs the Red Line from the East Blue."
+  },
+  {
+    "id": "lane_lvneel_reverse_mountain",
+    "from": "loc_lvneel",
+    "to": "loc_reverse_mountain",
+    "miles": 810,
+    "danger": 2,
+    "current": "strong",
+    "requires": "none",
+    "oneWay": true,
+    "zone": "red_line",
+    "description": "Into the current that climbs the Red Line from the North Blue."
+  },
+  {
+    "id": "lane_kano_reverse_mountain",
+    "from": "loc_kano",
+    "to": "loc_reverse_mountain",
+    "miles": 860,
+    "danger": 2,
+    "current": "strong",
+    "requires": "none",
+    "oneWay": true,
+    "zone": "red_line",
+    "description": "Into the current that climbs the Red Line from the West Blue."
+  },
+  {
+    "id": "lane_briss_kingdom_reverse_mountain",
+    "from": "loc_briss_kingdom",
+    "to": "loc_reverse_mountain",
+    "miles": 530,
+    "danger": 2,
+    "current": "strong",
+    "requires": "none",
+    "oneWay": true,
+    "zone": "red_line",
+    "description": "Into the current that climbs the Red Line from the South Blue."
+  },
+  {
+    "id": "lane_reverse_mountain_twin_cape",
+    "from": "loc_reverse_mountain",
+    "to": "loc_twin_cape",
+    "miles": 100,
+    "danger": 3,
+    "current": "wild",
+    "requires": "none",
+    "oneWay": true,
+    "zone": "red_line",
+    "traffic": 3,
+    "description": "Up the mountain and down the other side, onto the Grand Line."
+  }
+]

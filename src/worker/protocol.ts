@@ -13,8 +13,22 @@ import type { EntryWarning } from '../systems/genesis/warnings';
 import type { ContinueOption, LifeRecap } from '../systems/life/death';
 import type { CurvePoint } from '../systems/life/training';
 import type { ActivityView, JobView, LifeView } from '../systems/life/view';
+import type {
+  CanonView,
+  FactionView,
+  MapView,
+  PlaceDetailView,
+  WorldSummary,
+} from '../systems/places/view';
+import type { TravelView } from '../systems/voyage/view';
 
 export type {
+  CanonView,
+  FactionView,
+  MapView,
+  PlaceDetailView,
+  TravelView,
+  WorldSummary,
   ActivityView,
   CharacterSheet,
   ContinueOption,
@@ -57,6 +71,11 @@ export interface NewsEntry {
   tick: number;
   dateLabel: string;
   text: string;
+  /** Where it happened (Phase 3), and how many months late it reached the player. */
+  place: string | null;
+  late: number;
+  /** Shown only because omniscient mode is on: it has not reached the player yet. */
+  hidden: boolean;
 }
 
 export interface DecisionView {
@@ -92,13 +111,17 @@ export interface Snapshot {
     age: number;
     /** Life stage name ("Adolescent"). */
     stage: string;
-    /** Where they are: the birthplace until travel exists (Phase 3). */
+    /** Where they are (Phase 3): a place on the map, or at sea. */
     location: string;
     berries: number;
     alive: boolean;
   };
   /** The life loop (Phase 2): health, routine, jobs, money; the recap once the life has ended. */
   life: LifeView | null;
+  /** Travel (Phase 3): where the player is, their voyage, the routes from here, the harbour. */
+  travel: TravelView | null;
+  /** The world (Phase 3): factions, the canon layer's progress, the population. */
+  world: WorldSummary;
   /** At the present, before open-ended play: the epilogue to show. */
   epilogue: null | { title: string; text: string };
   /** The player's character sheet. Hidden facts are included only in omniscient views. */
@@ -368,6 +391,11 @@ export interface Protocol {
     res: { points: CurvePoint[]; softCap: number };
   };
   'debug/lives': { req: { raceId: string; lives: number; seed?: string }; res: LivesReport };
+  // ---- The world (Phase 3)
+  'world/map': { req: Record<string, never>; res: MapView };
+  'world/place': { req: { id: string; view: ViewOptions }; res: PlaceDetailView | null };
+  'world/canon': { req: Record<string, never>; res: CanonView };
+  'world/factions': { req: { generated?: boolean }; res: FactionView[] };
 }
 
 /** A handful of headless lives of one race, for the debug panel's lifespan chart. */

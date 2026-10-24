@@ -1,0 +1,140 @@
+[
+  {
+    "id": "char_test_captain",
+    "name": "Test Captain",
+    "givenName": "Test",
+    "familyName": "Captain",
+    "pronouns": "they",
+    "race": "race_human",
+    "born": {
+      "year": -30,
+      "month": 1
+    },
+    "birthplace": "loc_east_blue_village",
+    "description": "Dev fixture: the captain whose duel the canon tests watch.",
+    "stats": {
+      "strength": 90,
+      "speed": 85,
+      "endurance": 95,
+      "durability": 90,
+      "dexterity": 80,
+      "intellect": 60,
+      "willpower": 90,
+      "charisma": 70,
+      "perception": 80,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -30,
+          "month": 1
+        },
+        "place": "loc_east_blue_village"
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_loguetown",
+        "affiliation": "org_test_crew",
+        "title": "Captain of the Test Crew"
+      }
+    ],
+    "ties": ["char_test_mate"],
+    "dev": true,
+    "tags": ["dev"]
+  },
+  {
+    "id": "char_test_mate",
+    "name": "Test Mate",
+    "givenName": "Test",
+    "familyName": "Mate",
+    "pronouns": "they",
+    "race": "race_human",
+    "born": {
+      "year": -28,
+      "month": 1
+    },
+    "birthplace": "loc_east_blue_village",
+    "description": "Dev fixture: the captain's successor, and a substitute in the duel.",
+    "stats": {
+      "strength": 90,
+      "speed": 85,
+      "endurance": 95,
+      "durability": 90,
+      "dexterity": 80,
+      "intellect": 60,
+      "willpower": 90,
+      "charisma": 70,
+      "perception": 80,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -28,
+          "month": 1
+        },
+        "place": "loc_east_blue_village"
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_loguetown",
+        "affiliation": "org_test_crew",
+        "title": "First mate of the Test Crew"
+      }
+    ],
+    "dev": true,
+    "tags": ["dev"]
+  },
+  {
+    "id": "char_test_rival",
+    "name": "Test Rival",
+    "givenName": "Test",
+    "familyName": "Rival",
+    "pronouns": "they",
+    "race": "race_human",
+    "born": {
+      "year": -29,
+      "month": 1
+    },
+    "birthplace": "loc_east_blue_village",
+    "description": "Dev fixture: the rival in the duel.",
+    "stats": {
+      "strength": 90,
+      "speed": 85,
+      "endurance": 95,
+      "durability": 90,
+      "dexterity": 80,
+      "intellect": 60,
+      "willpower": 90,
+      "charisma": 70,
+      "perception": 80,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -29,
+          "month": 1
+        },
+        "place": "loc_east_blue_village"
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_loguetown",
+        "title": "Rival of the Test Crew"
+      }
+    ],
+    "dev": true,
+    "tags": ["dev"]
+  }
+]

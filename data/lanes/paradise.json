@@ -1,0 +1,198 @@
+[
+  {
+    "id": "lane_twin_cape_little_garden",
+    "from": "loc_twin_cape",
+    "to": "loc_little_garden",
+    "miles": 120,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_twin_cape_grand_line_island",
+    "from": "loc_twin_cape",
+    "to": "loc_grand_line_island",
+    "miles": 220,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 3
+  },
+  {
+    "id": "lane_little_garden_drum",
+    "from": "loc_little_garden",
+    "to": "loc_drum",
+    "miles": 120,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 1
+  },
+  {
+    "id": "lane_grand_line_island_drum",
+    "from": "loc_grand_line_island",
+    "to": "loc_drum",
+    "miles": 120,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_drum_alabasta",
+    "from": "loc_drum",
+    "to": "loc_alabasta",
+    "miles": 130,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_grand_line_island_alabasta",
+    "from": "loc_grand_line_island",
+    "to": "loc_alabasta",
+    "miles": 170,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 3
+  },
+  {
+    "id": "lane_alabasta_jaya",
+    "from": "loc_alabasta",
+    "to": "loc_jaya",
+    "miles": 140,
+    "danger": 3,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_jaya_long_ring",
+    "from": "loc_jaya",
+    "to": "loc_long_ring",
+    "miles": 210,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_long_ring_water_seven",
+    "from": "loc_long_ring",
+    "to": "loc_water_seven",
+    "miles": 300,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_water_seven_marine_base_town",
+    "from": "loc_water_seven",
+    "to": "loc_marine_base_town",
+    "miles": 110,
+    "danger": 1,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 3
+  },
+  {
+    "id": "lane_water_seven_thriller_bark",
+    "from": "loc_water_seven",
+    "to": "loc_thriller_bark",
+    "miles": 270,
+    "danger": 4,
+    "current": "wild",
+    "requires": "log_pose",
+    "traffic": 1,
+    "description": "Through the fog of the Florian Triangle."
+  },
+  {
+    "id": "lane_marine_base_town_thriller_bark",
+    "from": "loc_marine_base_town",
+    "to": "loc_thriller_bark",
+    "miles": 230,
+    "danger": 4,
+    "current": "wild",
+    "requires": "log_pose",
+    "traffic": 1
+  },
+  {
+    "id": "lane_thriller_bark_sabaody",
+    "from": "loc_thriller_bark",
+    "to": "loc_sabaody",
+    "miles": 220,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose"
+  },
+  {
+    "id": "lane_marine_base_town_sabaody",
+    "from": "loc_marine_base_town",
+    "to": "loc_sabaody",
+    "miles": 440,
+    "danger": 2,
+    "current": "steady",
+    "requires": "log_pose",
+    "traffic": 3
+  },
+  {
+    "id": "lane_water_seven_enies_lobby",
+    "from": "loc_water_seven",
+    "to": "loc_enies_lobby",
+    "miles": 190,
+    "danger": 3,
+    "current": "steady",
+    "requires": "eternal_pose",
+    "traffic": 1,
+    "description": "The sea train line and the Government ships that follow it."
+  },
+  {
+    "id": "lane_marine_base_town_marineford",
+    "from": "loc_marine_base_town",
+    "to": "loc_marineford",
+    "miles": 260,
+    "danger": 1,
+    "current": "steady",
+    "requires": "eternal_pose",
+    "traffic": 3
+  },
+  {
+    "id": "lane_sabaody_marineford",
+    "from": "loc_sabaody",
+    "to": "loc_marineford",
+    "miles": 180,
+    "danger": 1,
+    "current": "steady",
+    "requires": "eternal_pose",
+    "traffic": 3
+  },
+  {
+    "id": "lane_thriller_bark_kuraigana",
+    "from": "loc_thriller_bark",
+    "to": "loc_kuraigana",
+    "miles": 170,
+    "danger": 4,
+    "current": "steady",
+    "requires": "eternal_pose",
+    "traffic": 0
+  },
+  {
+    "id": "lane_kuraigana_sabaody",
+    "from": "loc_kuraigana",
+    "to": "loc_sabaody",
+    "miles": 90,
+    "danger": 3,
+    "current": "steady",
+    "requires": "eternal_pose",
+    "traffic": 0
+  },
+  {
+    "id": "lane_enies_lobby_marineford",
+    "from": "loc_enies_lobby",
+    "to": "loc_marineford",
+    "miles": 130,
+    "danger": 3,
+    "current": "steady",
+    "requires": "eternal_pose",
+    "traffic": 1,
+    "description": "Through the Gates of Justice."
+  }
+]

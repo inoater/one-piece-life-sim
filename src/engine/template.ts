@@ -17,7 +17,11 @@
  *  - APPEARANCE_VARS: the appearance sentence, assembled from the appearance fields.
  */
 
-export const TEMPLATE_VARS = [
+/** Marks a registry that accepts `{role.<name>.<field>}` (see `roleOfVar`). */
+export const ROLE_WILDCARD = 'role.*';
+
+/** The world's variables: dates, the player, and (Phase 3) places. */
+const WORLD_VARS = [
   'date',
   'year',
   'month',
@@ -30,8 +34,28 @@ export const TEMPLATE_VARS = [
   'player.home',
   'legacy.parent',
   'legacy.parentName',
+  // Phase 3: where things happen, and the people an event casts in its roles.
+  'place',
+  'destination',
+  'ship',
 ] as const;
+
+/** Event, log and news text: the world's variables, plus the people an event casts. */
+export const TEMPLATE_VARS = [...WORLD_VARS, ROLE_WILDCARD] as const;
 export type TemplateVarName = (typeof TEMPLATE_VARS)[number];
+
+/**
+ * `{role.<name>.<field>}` names a person an event casts (Phase 3): `{role.rival.name}`,
+ * `{role.captain.title}`, `{role.stranger.they}`. A registry that lists this wildcard accepts any
+ * such variable; the event's schema then checks that the role is declared.
+ */
+export const ROLE_FIELDS = ['name', 'title', 'they', 'them', 'their'] as const;
+const ROLE_VAR = /^role\.([a-z][a-z0-9_]*)\.(name|title|they|them|their)$/;
+
+/** The role a `{role.x.field}` variable names, or null. */
+export function roleOfVar(name: string): string | null {
+  return ROLE_VAR.exec(name)?.[1] ?? null;
+}
 
 export const BACKSTORY_VARS = [
   'age',
@@ -53,7 +77,7 @@ export const BACKSTORY_VARS = [
  * checks that, as it does for backstory text.
  */
 export const LIFE_VARS = [
-  ...TEMPLATE_VARS,
+  ...WORLD_VARS,
   'age',
   'ageWords',
   'home',
@@ -77,6 +101,21 @@ export const LIFE_VARS = [
   'stat',
   'months',
   'name',
+] as const;
+
+/**
+ * The canon layer's own lines (Phase 3): the world's variables, plus who it is about ({name},
+ * {title}), the beat ({beat}), why ({cause}), and who takes over ({successor}, {crew}, {fruit}).
+ */
+export const CANON_VARS = [
+  ...WORLD_VARS,
+  'name',
+  'title',
+  'beat',
+  'cause',
+  'successor',
+  'crew',
+  'fruit',
 ] as const;
 
 export const APPEARANCE_VARS = [
@@ -157,6 +196,7 @@ export function checkTemplate(text: string, known: readonly string[] = TEMPLATE_
   for (const token of parsed.tokens) {
     if (token.type !== 'var' || seen.has(token.name)) continue;
     seen.add(token.name);
+    if (known.includes(ROLE_WILDCARD) && roleOfVar(token.name) !== null) continue;
     if (!known.includes(token.name)) {
       problems.push(
         `Unknown template variable "{${token.name}}". Known variables: ${known.map((k) => `{${k}}`).join(', ')}`,

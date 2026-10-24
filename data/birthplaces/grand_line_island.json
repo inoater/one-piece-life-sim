@@ -33,6 +33,7 @@
     "sea": 1.5
   },
   "features": ["coast", "docks", "forest", "ruins", "market", "doctor", "smithy", "underworld"],
+  "location": "loc_grand_line_island",
   "map": {
     "x": 1560,
     "y": 700

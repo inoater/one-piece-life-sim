@@ -255,7 +255,7 @@ describe('whole-file problems', () => {
   });
 
   it('rejects content in folders that have no schema yet', () => {
-    for (const dir of ['canon', 'fruits', 'news']) {
+    for (const dir of ['fruits', 'news']) {
       const files = clone();
       files.push({ path: `data/${dir}/thing.json`, content: { id: 'x' } });
       const issue = errors(files).find((i) => i.file === `data/${dir}/thing.json`);
@@ -327,6 +327,13 @@ describe('duplicates, arrays and conventions', () => {
     const files = clone();
     const base = content(files, 'test_harbor.json');
     files.push({ path: 'data/locations/pack.json', content: [{ ...base, id: 'loc_pack_cove' }] });
+    // Every place needs a sea lane (Phase 3), and lanes live in array files too.
+    files.push({
+      path: 'data/lanes/pack.json',
+      content: [
+        { id: 'lane_pack', from: 'loc_pack_cove', to: 'loc_test_harbor', miles: 80, danger: 0 },
+      ],
+    });
     content(files, 'test_crossroads.json')['conditions'][1].location = 'loc_pack_cove';
     expect(loadGameData(files).ok).toBe(true);
   });

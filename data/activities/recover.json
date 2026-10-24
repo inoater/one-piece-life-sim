@@ -9,7 +9,7 @@
   "restful": true,
   "regen": 0.3,
   "speedsHealing": 1,
-  "tags": ["rest"],
+  "tags": ["rest", "at_sea"],
   "outcomes": [
     {
       "id": "bed_rest",

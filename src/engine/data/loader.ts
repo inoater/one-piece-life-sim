@@ -3,12 +3,15 @@ import { hashValue } from '../canonical';
 import { didYouMean, formatPath, type DataIssue } from './issues';
 import {
   appearanceRefs,
+  canonRulesRefs,
   creationRefs,
   lifeRefs,
   REF_EXTRACTORS,
   singletonTargets,
   TARGET_HOME,
   TARGET_LABEL,
+  travelRefs,
+  worldRulesRefs,
   type Ref,
   type RefTarget,
 } from './refs';
@@ -25,6 +28,11 @@ import {
   type LifeRules,
   type SingletonPath,
   type Calendar,
+  type CanonRules,
+  type TravelRules,
+  type WorldRules,
+  tickOfWhen,
+  type When,
 } from './schemas';
 
 /**
@@ -241,6 +249,9 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   const creation = singletons['data/creation.json'] as Creation | undefined;
   const appearance = singletons['data/appearance.json'] as Appearance | undefined;
   const life = singletons['data/life.json'] as LifeRules | undefined;
+  const travel = singletons['data/travel.json'] as TravelRules | undefined;
+  const worldRules = singletons['data/world.json'] as WorldRules | undefined;
+  const canonRules = singletons['data/canon.json'] as CanonRules | undefined;
 
   // ---- Pass 2: references --------------------------------------------------------------------
 
@@ -250,6 +261,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     ...(character ? { stageIds: character.stages.map((s) => s.id) } : {}),
     ...(life ? { life } : {}),
     ...(calendar ? { seasonIds: calendar.seasons.map((s) => s.id) } : {}),
+    ...(worldRules ? { npcGoalIds: worldRules.npc.goals.map((g) => g.id) } : {}),
   });
   /** Is the target's id list available? If its file is broken, its references are not checked. */
   const has = (target: RefTarget, id: string): boolean | null => {
@@ -292,6 +304,9 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   if (creation) checkRefs('data/creation.json', '', creationRefs(creation));
   if (appearance) checkRefs('data/appearance.json', '', appearanceRefs(appearance));
   if (life) checkRefs('data/life.json', '', lifeRefs(life));
+  if (travel) checkRefs('data/travel.json', '', travelRefs(travel));
+  if (worldRules) checkRefs('data/world.json', '', worldRulesRefs(worldRules));
+  if (canonRules) checkRefs('data/canon.json', '', canonRulesRefs(canonRules));
 
   // ---- Pass 3: coherence ---------------------------------------------------------------------
 
@@ -410,6 +425,129 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     }
     if (defaults.entryAge < entry.minAge || defaults.entryAge > entry.maxAge) {
       error('data/creation.json', 'defaults.entryAge', 'The default entry age is out of range');
+    }
+  }
+
+  // ---- The world (Phase 3) -------------------------------------------------------------------
+
+  for (const kind of ['locations', 'lanes', 'vessels', 'factions'] as const) {
+    if (parsed[kind].size === 0 && invalidIds[kind].size === 0) {
+      error(
+        `data/${kind}/`,
+        '(file)',
+        `The world needs at least one ${COLLECTIONS[kind].label}`,
+        `add a file to data/${kind}/`,
+      );
+    }
+  }
+
+  // The travel graph: every place has a lane, and every place can be reached from every other
+  // (lanes followed in either direction; one-way lanes and requirements are the planner's business).
+  const neighbours = new Map<string, Set<string>>();
+  const pairs = new Map<string, string>();
+  for (const id of parsed.locations.keys()) neighbours.set(id, new Set());
+  for (const [id, entry] of parsed.lanes) {
+    const lane = entry.value as { from: string; to: string };
+    neighbours.get(lane.from)?.add(lane.to);
+    neighbours.get(lane.to)?.add(lane.from);
+    const key = [lane.from, lane.to].sort().join(' ');
+    const twin = pairs.get(key);
+    if (twin) {
+      warn(entry.file, fieldOf(entry, 'to'), `"${id}" joins the same two places as "${twin}"`);
+    }
+    pairs.set(key, id);
+  }
+  const reachable = new Set<string>();
+  const first = [...parsed.locations.keys()].sort()[0];
+  if (first !== undefined && parsed.lanes.size > 0) {
+    const queue = [first];
+    reachable.add(first);
+    while (queue.length > 0) {
+      const at = queue.shift() as string;
+      for (const next of neighbours.get(at) ?? []) {
+        if (!reachable.has(next)) {
+          reachable.add(next);
+          queue.push(next);
+        }
+      }
+    }
+    for (const [id, entry] of parsed.locations) {
+      if ((neighbours.get(id)?.size ?? 0) === 0) {
+        error(
+          entry.file,
+          fieldOf(entry, 'id'),
+          `No sea lane reaches "${id}"`,
+          'add one in data/lanes/',
+        );
+      } else if (!reachable.has(id)) {
+        error(
+          entry.file,
+          fieldOf(entry, 'id'),
+          `"${id}" cannot be reached from "${first}"`,
+          'the travel graph must be connected; add a lane between the two groups',
+        );
+      }
+    }
+  }
+
+  // Beats: a dependent must name this beat in its "requires", and a dated role must be alive then.
+  const beatTick = (w: When) => tickOfWhen(w);
+  for (const [id, entry] of parsed.canon) {
+    const beat = entry.value as {
+      dependents: string[];
+      window: { from: When; to: When };
+      roles: Record<string, { char: string }>;
+      dev: boolean;
+    };
+    beat.dependents.forEach((dep, i) => {
+      const other = parsed.canon.get(dep)?.value as { requires: string[] } | undefined;
+      if (other && !other.requires.includes(id)) {
+        error(
+          entry.file,
+          fieldOf(entry, `dependents[${i}]`),
+          `"${dep}" is listed as a dependent but does not require "${id}"`,
+          `add "${id}" to the "requires" of "${dep}"`,
+        );
+      }
+    });
+    for (const [role, ref] of Object.entries(beat.roles)) {
+      const cast = parsed.cast.get(ref.char)?.value as { born: When; dev: boolean } | undefined;
+      if (cast && beatTick(cast.born) > beatTick(beat.window.to)) {
+        error(
+          entry.file,
+          fieldOf(entry, `roles.${role}.char`),
+          `"${ref.char}" is not born until after this beat's window`,
+        );
+      }
+      if (cast && cast.dev !== beat.dev) {
+        error(
+          entry.file,
+          fieldOf(entry, `roles.${role}.char`),
+          'dev fixtures and real canon cannot be mixed in one beat',
+        );
+      }
+    }
+  }
+  for (const [id, entry] of parsed.factions) {
+    const faction = entry.value as { kind: string; umbrella?: string; captain?: string };
+    if (faction.kind === 'crew' && (!faction.umbrella || !faction.captain)) {
+      error(
+        entry.file,
+        fieldOf(entry, 'kind'),
+        `The crew "${id}" needs a captain and an umbrella faction (the pirates)`,
+      );
+    }
+  }
+  if (canonRules && creation) {
+    for (const mode of creation.canonModes) {
+      if (!(mode.id in canonRules.modes)) {
+        error(
+          'data/canon.json',
+          `modes.${mode.id}`,
+          `No rules for the "${mode.id}" canon mode`,
+          'every canon mode in data/creation.json needs a row here',
+        );
+      }
     }
   }
 

@@ -77,10 +77,14 @@ function candidatesFor(state: WorldState, dead: Person, mode: ContinueMode): Ent
     case 'sibling':
       return byAge(livingRelations(state, c, 'sibling'));
     case 'crewmate': {
+      // Gang members (Phase 2), and the shipmates made at sea (Phase 3).
       const gang = c.life?.gang;
-      if (!gang) return [];
       return byAge(
-        livingRelations(state, c, 'friend').filter((e) => e.flags['gang.name'] === gang),
+        livingRelations(state, c, 'friend').filter(
+          (e) =>
+            (gang !== null && gang !== undefined && e.flags['gang.name'] === gang) ||
+            e.flags['shipmate'] === true,
+        ),
       );
     }
     default:
@@ -91,7 +95,7 @@ function candidatesFor(state: WorldState, dead: Person, mode: ContinueMode): Ent
 const NONE_REASON: Record<ContinueMode, string> = {
   heir: 'No living children',
   protege: 'You never took on an apprentice',
-  crewmate: 'No crew: you never ran with a gang (ships and crews arrive in Phase 3)',
+  crewmate: 'No crew: no gang, and no shipmate who became a friend',
   sibling: 'No living brothers or sisters',
   newborn: '',
   new: '',
@@ -369,6 +373,15 @@ export function continueAs(
       notes.push(`${formatBerries(dead.c.berries)} Berries`);
       dead.c.berries = 0;
     }
+    // Phase 3: ships, and the command of their crews, pass on too.
+    for (const id of Object.keys(state.entities).sort()) {
+      const ship = state.entities[id]?.ship;
+      if (!ship || ship.ownerId !== dead.entity.id || ship.sunk) continue;
+      ship.ownerId = target.id;
+      notes.push(
+        `the ship ${state.entities[id]?.name ?? id}${ship.crew > 0 ? ` and her ${ship.crew} hands` : ''}`,
+      );
+    }
     const fame = statValue(reputation(dead.entity, 'fame'), state.tick);
     const legacy = Math.round(fame * data.life.fame.legacyPct) / 100;
     if (legacy > 0) {
@@ -390,6 +403,13 @@ export function continueAs(
       record.knownBy.push(target.id);
     }
   }
+  // A life that ended at sea ends its voyage: whoever carries on is wherever they are.
+  if (dead.c.travel?.voyage) {
+    const voyage = dead.c.travel.voyage;
+    const ship = voyage.shipId ? state.entities[voyage.shipId]?.ship : undefined;
+    if (ship && !ship.sunk) ship.place = voyage.done < voyage.miles / 2 ? voyage.from : voyage.to;
+    dead.c.travel.voyage = null;
+  }
   const life = freshLife(data, target, state.tick, (deadLife?.generation ?? 1) + 1);
   life.predecessorId = dead.entity.id;
   if (mode === 'crewmate' && deadLife?.gang) {
@@ -409,7 +429,7 @@ export function continueAs(
     tags: ['personal', 'genesis'],
     actorIds: [target.id],
     targetIds: [dead.entity.id],
-    place: tc.birthplace,
+    place: tc.place ?? data.birthplaces[tc.birthplace]?.location ?? null,
     cause: `sys:continue:${mode}`,
     knownBy: ['*'],
   });

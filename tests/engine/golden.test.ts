@@ -89,4 +89,21 @@ describe('golden saves: every old save version must keep loading', () => {
     advance(state, data, Rng.root(state.seed), { kind: 'months', count: 3 }, 'auto-random');
     expect(player?.character?.life?.health).toBeGreaterThan(0);
   });
+
+  it('world_v3.opsim, saved before the world, gets its map, factions, canon cast and past', async () => {
+    const bytes = new Uint8Array(readFileSync(join(dir, 'world_v3.opsim')));
+    const { state, report } = await deserializeSave(bytes, { dataHash, limits: LIMITS });
+    expect(report.migratedFrom).toBe(3);
+    expect(state.canon).toEqual({ beats: {}, divergences: [] });
+    expect(state.flags['world.built']).toBeUndefined();
+    advance(state, data, Rng.root(state.seed), { kind: 'months', count: 1 }, 'auto-random');
+    expect(state.flags['world.built']).toBe(true);
+    expect(Object.values(state.entities).filter((e) => e.type === 'location')).toHaveLength(55);
+    expect(state.entities['char_gol_d_roger']).toBeDefined();
+    expect(Object.keys(state.canon.beats).length).toBeGreaterThan(0);
+    const player = state.entities[state.playerId as string]!;
+    expect(
+      player.character?.place ?? data.birthplaces[player.character!.birthplace]?.location,
+    ).toBeTruthy();
+  });
 });

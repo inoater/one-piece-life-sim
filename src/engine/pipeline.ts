@@ -38,6 +38,8 @@ export interface NewsDraft {
   text: string;
   tags: string[];
   sourceSeq?: number;
+  /** Where it happened (Phase 3): news travels from there, 0 to 3 months to reach anyone. */
+  place?: string | null;
 }
 
 export interface TickContext {

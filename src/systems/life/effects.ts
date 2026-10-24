@@ -8,6 +8,7 @@ import { fallIll, hurt, injure, restore } from './health';
 import { meetPerson, relate, shiftOpinion } from './people';
 import { giveTraitTo } from './traits';
 import { raisePotential, trainStat } from './training';
+import { delayVoyage, overboard, redirect, shipEffect } from '../voyage/sea';
 
 /**
  * What a month can do to a life, in one place: activity outcomes, job shifts and events all apply
@@ -37,6 +38,8 @@ export const AFTER_TEXT = new Set<LifeEffect['kind']>([
   'potential',
   'arrest',
   'schedule',
+  'redirect',
+  'overboard',
 ]);
 
 const OPINION_KIND: Record<string, RelationKind> = {
@@ -204,5 +207,37 @@ export function applyLifeEffect(env: LifeEnv, effect: LifeEffect, scope: EffectS
         env.causeSeq,
       );
       break;
+    // Phase 3: the vessel the character is aboard (or their own ship, moored where they are).
+    case 'hull':
+      shipEffect(env, 'hull', effect.value);
+      break;
+    case 'supplies':
+      shipEffect(env, 'supplies', effect.months);
+      break;
+    case 'crew':
+      shipEffect(env, 'crew', effect.value);
+      break;
+    case 'morale':
+      shipEffect(env, 'morale', effect.value);
+      break;
+    case 'delay':
+      delayVoyage(env, effect.months);
+      break;
+    case 'redirect': {
+      const voyage = p.c.travel?.voyage;
+      if (voyage) redirect(env, voyage, 'redirect');
+      break;
+    }
+    case 'overboard':
+      if (p.c.travel?.voyage) overboard(env);
+      break;
+    case 'bounty': {
+      const now = p.entity.flags['bounty'];
+      const next = Math.max(0, (typeof now === 'number' ? now : 0) + effect.value);
+      if (next > 0) p.entity.flags['bounty'] = next;
+      else delete p.entity.flags['bounty'];
+      if (effect.value > 0) reputation(p.entity, 'infamy').base += 1;
+      break;
+    }
   }
 }

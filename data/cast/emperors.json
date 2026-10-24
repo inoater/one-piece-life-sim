@@ -1,0 +1,597 @@
+[
+  {
+    "id": "char_edward_newgate",
+    "name": "Edward Newgate",
+    "givenName": "Edward",
+    "familyName": "Newgate",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -36,
+      "month": 4
+    },
+    "birthplace": "loc_sphinx",
+    "description": "The strongest man in the world, who wanted no treasure but a family and made one out of outcasts.",
+    "epithet": "Whitebeard",
+    "stats": {
+      "strength": 190,
+      "speed": 170,
+      "endurance": 190,
+      "durability": 190,
+      "dexterity": 150,
+      "intellect": 80,
+      "willpower": 200,
+      "charisma": 150,
+      "perception": 170,
+      "luck": 80
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -36,
+          "month": 4
+        },
+        "place": "loc_sphinx"
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_rocks_pirates",
+        "title": "Member of the Rocks Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_god_valley",
+        "affiliation": "org_rocks_pirates",
+        "title": "Member of the Rocks Pirates"
+      },
+      {
+        "from": {
+          "year": 1,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Captain of the Whitebeard Pirates",
+        "bounty": 3000000000,
+        "haki": ["observation", "armament", "conqueror"],
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Emperor of the Sea",
+        "bounty": 5046000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Emperor of the Sea",
+        "bounty": 5046000000,
+        "approx": true
+      }
+    ],
+    "ties": ["char_marco", "char_portgas_d_ace", "char_marshall_d_teach", "char_kozuki_oden"]
+  },
+  {
+    "id": "char_marco",
+    "name": "Marco",
+    "givenName": "Marco",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -7,
+      "month": 10
+    },
+    "birthplace": "loc_sphinx",
+    "description": "Whitebeard's eldest son in all but blood: a doctor, a phoenix, and the man who holds the crew together.",
+    "epithet": "the Phoenix",
+    "approx": true,
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -7,
+          "month": 10
+        },
+        "place": "loc_sphinx",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 8,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Whitebeard Pirate",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "First Division Commander",
+        "bounty": 1374000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "First Division Commander",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_sphinx",
+        "title": "Doctor of Sphinx",
+        "status": "retired",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_charlotte_linlin",
+    "name": "Charlotte Linlin",
+    "givenName": "Linlin",
+    "familyName": "Charlotte",
+    "pronouns": "she",
+    "race": "race_human",
+    "born": {
+      "year": -30,
+      "month": 2
+    },
+    "birthplace": "loc_elbaf",
+    "description": "A girl of impossible strength and appetite who grew into the mother of a country and eighty-five children.",
+    "epithet": "Big Mom",
+    "stats": {
+      "strength": 195,
+      "speed": 150,
+      "endurance": 180,
+      "durability": 200,
+      "dexterity": 130,
+      "intellect": 70,
+      "willpower": 180,
+      "charisma": 120,
+      "perception": 150,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -30,
+          "month": 2
+        },
+        "place": "loc_elbaf"
+      },
+      {
+        "from": {
+          "year": -24,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_rocks_pirates",
+        "title": "Member of the Rocks Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_god_valley",
+        "affiliation": "org_rocks_pirates",
+        "title": "Member of the Rocks Pirates"
+      },
+      {
+        "from": {
+          "year": 1,
+          "month": 6
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_big_mom_pirates",
+        "title": "Captain of the Big Mom Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "place": "loc_whole_cake",
+        "affiliation": "org_big_mom_pirates",
+        "title": "Queen of Totto Land",
+        "bounty": 3000000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "place": "loc_whole_cake",
+        "affiliation": "org_big_mom_pirates",
+        "title": "Emperor of the Sea",
+        "bounty": 4388000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 8
+        },
+        "place": "loc_wano",
+        "affiliation": "org_big_mom_pirates",
+        "title": "Emperor of the Sea",
+        "bounty": 4388000000,
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_kaido",
+    "name": "Kaido",
+    "givenName": "Kaido",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -21,
+      "month": 5
+    },
+    "birthplace": "loc_new_world_island",
+    "description": "A man who cannot die and has spent his life looking for someone who can manage it.",
+    "epithet": "of the Beasts",
+    "approx": true,
+    "stats": {
+      "strength": 175,
+      "speed": 150,
+      "endurance": 210,
+      "durability": 220,
+      "dexterity": 130,
+      "intellect": 70,
+      "willpower": 180,
+      "charisma": 120,
+      "perception": 150,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -21,
+          "month": 5
+        },
+        "place": "loc_new_world_island",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -11,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_rocks_pirates",
+        "title": "Apprentice of the Rocks Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_god_valley",
+        "affiliation": "org_rocks_pirates",
+        "title": "Apprentice of the Rocks Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 4
+        },
+        "place": "loc_new_world_island",
+        "title": "Pirate at large",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 8,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_beasts_pirates",
+        "title": "Captain of the Beasts Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 14,
+          "month": 1
+        },
+        "place": "loc_wano",
+        "affiliation": "org_beasts_pirates",
+        "title": "Governor-General of the Beasts Pirates",
+        "bounty": 4611100000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 11
+        },
+        "place": "loc_wano",
+        "title": "Fallen Emperor",
+        "status": "imprisoned",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_shiki",
+    "name": "Shiki",
+    "givenName": "Shiki",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -38,
+      "month": 1
+    },
+    "birthplace": "loc_new_world_island",
+    "description": "The Golden Lion, a schemer with a flying fleet who never forgave Roger for refusing him.",
+    "epithet": "the Golden Lion",
+    "approx": true,
+    "stats": {
+      "strength": 175,
+      "speed": 150,
+      "endurance": 180,
+      "durability": 180,
+      "dexterity": 130,
+      "intellect": 70,
+      "willpower": 180,
+      "charisma": 120,
+      "perception": 150,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -38,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_golden_lion_pirates",
+        "title": "Captain of the Golden Lion Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_rocks_pirates",
+        "title": "Member of the Rocks Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "place": "loc_god_valley",
+        "affiliation": "org_rocks_pirates",
+        "title": "Member of the Rocks Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 4
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_golden_lion_pirates",
+        "title": "Captain of the Golden Lion Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 14,
+          "month": 7
+        },
+        "place": "loc_impel_down",
+        "title": "Captain of the Golden Lion Pirates",
+        "status": "imprisoned",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 14,
+          "month": 11
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_golden_lion_pirates",
+        "title": "Escaped from Impel Down",
+        "status": "hidden",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_kozuki_oden",
+    "name": "Kozuki Oden",
+    "givenName": "Oden",
+    "familyName": "Kozuki",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -21,
+      "month": 1
+    },
+    "birthplace": "loc_wano",
+    "description": "The wild heir of Wano, who left his closed country to see the world and came back too late.",
+    "stats": {
+      "strength": 155,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 160,
+      "intellect": 90,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -21,
+          "month": 1
+        },
+        "place": "loc_wano"
+      },
+      {
+        "from": {
+          "year": 3,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Second Division Commander of the Whitebeard Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 11,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_roger_pirates",
+        "title": "Roger Pirate",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 1
+        },
+        "place": "loc_laugh_tale",
+        "affiliation": "org_roger_pirates",
+        "title": "Roger Pirate",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 7
+        },
+        "place": "loc_wano",
+        "affiliation": "org_kingdom_wano",
+        "title": "Daimyo of Kuri",
+        "approx": true
+      }
+    ],
+    "ties": ["char_kurozumi_orochi"]
+  },
+  {
+    "id": "char_kurozumi_orochi",
+    "name": "Kurozumi Orochi",
+    "givenName": "Orochi",
+    "familyName": "Kurozumi",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -18,
+      "month": 1
+    },
+    "birthplace": "loc_wano",
+    "description": "A frightened, spiteful man who sold his own country to Kaido for a shogun's hat.",
+    "approx": true,
+    "stats": {
+      "strength": 35,
+      "speed": 40,
+      "endurance": 45,
+      "durability": 40,
+      "dexterity": 45,
+      "intellect": 75,
+      "willpower": 80,
+      "charisma": 80,
+      "perception": 60,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -18,
+          "month": 1
+        },
+        "place": "loc_wano",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 14,
+          "month": 1
+        },
+        "place": "loc_wano",
+        "affiliation": "org_kingdom_wano",
+        "title": "Shogun of Wano",
+        "approx": true
+      }
+    ]
+  }
+]

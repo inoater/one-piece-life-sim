@@ -1,0 +1,1119 @@
+[
+  {
+    "id": "char_portgas_d_rouge",
+    "name": "Portgas D. Rouge",
+    "givenName": "Rouge",
+    "familyName": "Portgas",
+    "pronouns": "she",
+    "race": "race_human",
+    "born": {
+      "year": -12,
+      "month": 1
+    },
+    "birthplace": "loc_baterilla",
+    "description": "A woman of Baterilla who carried the Pirate King's son for twenty months to hide him from the world.",
+    "approx": true,
+    "stats": {
+      "strength": 35,
+      "speed": 40,
+      "endurance": 45,
+      "durability": 40,
+      "dexterity": 45,
+      "intellect": 75,
+      "willpower": 80,
+      "charisma": 80,
+      "perception": 60,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -12,
+          "month": 1
+        },
+        "place": "loc_baterilla",
+        "approx": true
+      }
+    ],
+    "ties": ["char_portgas_d_ace"]
+  },
+  {
+    "id": "char_portgas_d_ace",
+    "name": "Portgas D. Ace",
+    "givenName": "Ace",
+    "familyName": "Portgas",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": 16,
+      "month": 1
+    },
+    "birthplace": "loc_baterilla",
+    "description": "The Pirate King's son, raised in the mountains of Dawn Island, who never forgave the world for wishing him unborn.",
+    "epithet": "Fire Fist",
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": 16,
+          "month": 1
+        },
+        "place": "loc_baterilla"
+      },
+      {
+        "from": {
+          "year": 16,
+          "month": 3
+        },
+        "place": "loc_dawn_island",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 33,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "title": "Captain of the Spade Pirates",
+        "bounty": 50000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Second Division Commander",
+        "bounty": 550000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 3
+        },
+        "place": "loc_grand_line_island",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Second Division Commander",
+        "bounty": 550000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 6
+        },
+        "place": "loc_impel_down",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Second Division Commander",
+        "status": "imprisoned",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Second Division Commander",
+        "status": "imprisoned",
+        "approx": true
+      }
+    ],
+    "ties": ["char_monkey_d_luffy", "char_sabo"]
+  },
+  {
+    "id": "char_monkey_d_luffy",
+    "name": "Monkey D. Luffy",
+    "givenName": "Luffy",
+    "familyName": "Monkey",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": 19,
+      "month": 5
+    },
+    "birthplace": "loc_dawn_island",
+    "description": "A boy from a windmill village who promised a red-haired pirate he would be King of the Pirates.",
+    "epithet": "Straw Hat",
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": 19,
+          "month": 5
+        },
+        "place": "loc_dawn_island"
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 1
+        },
+        "place": "loc_shells_town",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 2
+        },
+        "place": "loc_cocoyashi",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 30000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 3
+        },
+        "place": "loc_loguetown",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 30000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 4
+        },
+        "place": "loc_alabasta",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 30000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 5
+        },
+        "place": "loc_skypiea",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 100000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 6
+        },
+        "place": "loc_enies_lobby",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 100000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "place": "loc_sabaody",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 300000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 300000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_amazon_lily",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 400000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 3
+        },
+        "place": "loc_fishman_island",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 400000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 4
+        },
+        "place": "loc_punk_hazard",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 400000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 5
+        },
+        "place": "loc_dressrosa",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 500000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 7
+        },
+        "place": "loc_whole_cake",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 1500000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 8
+        },
+        "place": "loc_wano",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Captain of the Straw Hat Pirates",
+        "bounty": 1500000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 11
+        },
+        "place": "loc_egghead",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Emperor of the Sea",
+        "bounty": 3000000000,
+        "approx": true
+      }
+    ],
+    "ties": ["char_portgas_d_ace", "char_sabo", "char_nami", "char_nico_robin", "char_jinbe"]
+  },
+  {
+    "id": "char_nami",
+    "name": "Nami",
+    "givenName": "Nami",
+    "familyName": "",
+    "pronouns": "she",
+    "race": "race_human",
+    "born": {
+      "year": 18,
+      "month": 7
+    },
+    "birthplace": "loc_cocoyashi",
+    "description": "An orphan who grew up among tangerines and drew maps for a fish-man to buy her village back.",
+    "epithet": "Cat Burglar",
+    "stats": {
+      "strength": 45,
+      "speed": 85,
+      "endurance": 95,
+      "durability": 90,
+      "dexterity": 80,
+      "intellect": 120,
+      "willpower": 90,
+      "charisma": 70,
+      "perception": 80,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": 18,
+          "month": 7
+        },
+        "place": "loc_cocoyashi",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 28,
+          "month": 6
+        },
+        "place": "loc_cocoyashi",
+        "affiliation": "org_arlong_pirates",
+        "title": "Cartographer of the Arlong Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 2
+        },
+        "place": "loc_cocoyashi",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 3
+        },
+        "place": "loc_loguetown",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 4
+        },
+        "place": "loc_alabasta",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 5
+        },
+        "place": "loc_skypiea",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 6
+        },
+        "place": "loc_enies_lobby",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "bounty": 16000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "place": "loc_sabaody",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "bounty": 16000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 9
+        },
+        "place": "loc_weatheria",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "bounty": 16000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 3
+        },
+        "place": "loc_fishman_island",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "bounty": 66000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 5
+        },
+        "place": "loc_dressrosa",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 7
+        },
+        "place": "loc_whole_cake",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 8
+        },
+        "place": "loc_wano",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "bounty": 366000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 11
+        },
+        "place": "loc_egghead",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Navigator of the Straw Hat Pirates",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_marshall_d_teach",
+    "name": "Marshall D. Teach",
+    "givenName": "Teach",
+    "familyName": "Marshall",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -2,
+      "month": 8
+    },
+    "birthplace": "loc_jaya",
+    "description": "A patient, laughing, rotten-toothed man who waited decades in Whitebeard's crew for one particular fruit.",
+    "epithet": "Blackbeard",
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -2,
+          "month": 8
+        },
+        "place": "loc_jaya",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_whitebeard_pirates",
+        "title": "Whitebeard Pirate",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 1
+        },
+        "place": "loc_jaya",
+        "affiliation": "org_blackbeard_pirates",
+        "title": "Captain of the Blackbeard Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 3
+        },
+        "place": "loc_grand_line_island",
+        "affiliation": "org_blackbeard_pirates",
+        "title": "Captain of the Blackbeard Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "place": "loc_impel_down",
+        "affiliation": "org_blackbeard_pirates",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_blackbeard_pirates",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_blackbeard_pirates",
+        "title": "Emperor of the Sea",
+        "bounty": 3996000000,
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_donquixote_doflamingo",
+    "name": "Donquixote Doflamingo",
+    "givenName": "Doflamingo",
+    "familyName": "Donquixote",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -3,
+      "month": 10
+    },
+    "birthplace": "loc_mary_geoise",
+    "description": "A World Noble's son thrown down into the world below, who climbed back up on strings of his own.",
+    "epithet": "Heavenly Yaksha",
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 110,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -3,
+          "month": 10
+        },
+        "place": "loc_mary_geoise"
+      },
+      {
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "place": "loc_north_blue_town",
+        "title": "Exiled noble",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "place": "loc_spider_miles",
+        "affiliation": "org_donquixote_pirates",
+        "title": "Captain of the Donquixote Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "place": "loc_spider_miles",
+        "affiliation": "org_donquixote_pirates",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 27,
+          "month": 1
+        },
+        "place": "loc_dressrosa",
+        "affiliation": "org_donquixote_pirates",
+        "title": "King of Dressrosa",
+        "bounty": 340000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 7
+        },
+        "place": "loc_impel_down",
+        "title": "Former King of Dressrosa",
+        "status": "imprisoned",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_crocodile",
+    "name": "Crocodile",
+    "givenName": "Crocodile",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -8,
+      "month": 9
+    },
+    "birthplace": "loc_grand_line_island",
+    "description": "A Warlord who played the hero of Alabasta while his criminal company dried it to dust.",
+    "epithet": "Sir Crocodile",
+    "approx": true,
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 80,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -8,
+          "month": 9
+        },
+        "place": "loc_grand_line_island",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "title": "Pirate",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "title": "Warlord of the Sea",
+        "bounty": 81000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "place": "loc_alabasta",
+        "affiliation": "org_underworld",
+        "title": "Warlord of the Sea",
+        "bounty": 81000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 5
+        },
+        "place": "loc_impel_down",
+        "title": "Former Warlord",
+        "bounty": 81000000,
+        "status": "imprisoned",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "title": "Former Warlord",
+        "bounty": 81000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_new_world_island",
+        "title": "Leader of the Cross Guild",
+        "bounty": 1965000000,
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_dracule_mihawk",
+    "name": "Dracule Mihawk",
+    "givenName": "Mihawk",
+    "familyName": "Dracule",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -5,
+      "month": 3
+    },
+    "birthplace": "loc_kuraigana",
+    "description": "The greatest swordsman in the world, who sails alone in a coffin-shaped boat looking for someone worth fighting.",
+    "epithet": "Hawk-Eyes",
+    "stats": {
+      "strength": 165,
+      "speed": 160,
+      "endurance": 160,
+      "durability": 150,
+      "dexterity": 200,
+      "intellect": 90,
+      "willpower": 170,
+      "charisma": 110,
+      "perception": 160,
+      "luck": 70
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -5,
+          "month": 3
+        },
+        "place": "loc_kuraigana",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 1
+        },
+        "place": "loc_baratie",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 2
+        },
+        "place": "loc_grand_line_island",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_kuraigana",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 6
+        },
+        "place": "loc_kuraigana",
+        "title": "Swordsman of the Cross Guild",
+        "bounty": 3590000000,
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_trafalgar_law",
+    "name": "Trafalgar Law",
+    "givenName": "Law",
+    "familyName": "Trafalgar",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": 12,
+      "month": 10
+    },
+    "birthplace": "loc_flevance",
+    "description": "A doctor's son of Flevance, the only survivor of a white plague and a Government lie.",
+    "epithet": "Surgeon of Death",
+    "stats": {
+      "strength": 125,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 130,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": 12,
+          "month": 10
+        },
+        "place": "loc_flevance"
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 6
+        },
+        "place": "loc_spider_miles",
+        "affiliation": "org_donquixote_pirates",
+        "title": "Donquixote recruit",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 23,
+          "month": 6
+        },
+        "place": "loc_minion_island",
+        "title": "Runaway",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 24,
+          "month": 1
+        },
+        "place": "loc_north_blue_town",
+        "title": "Young doctor",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "place": "loc_north_blue_town",
+        "affiliation": "org_heart_pirates",
+        "title": "Captain of the Heart Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "place": "loc_sabaody",
+        "affiliation": "org_heart_pirates",
+        "title": "Captain of the Heart Pirates",
+        "bounty": 200000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "place": "loc_marineford",
+        "affiliation": "org_heart_pirates",
+        "title": "Captain of the Heart Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 10
+        },
+        "place": "loc_punk_hazard",
+        "affiliation": "org_heart_pirates",
+        "title": "Warlord of the Sea",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 5
+        },
+        "place": "loc_dressrosa",
+        "affiliation": "org_heart_pirates",
+        "title": "Captain of the Heart Pirates",
+        "bounty": 500000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 8
+        },
+        "place": "loc_wano",
+        "affiliation": "org_heart_pirates",
+        "title": "Captain of the Heart Pirates",
+        "bounty": 3000000000,
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_nefertari_cobra",
+    "name": "Nefertari Cobra",
+    "givenName": "Cobra",
+    "familyName": "Nefertari",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -19,
+      "month": 1
+    },
+    "birthplace": "loc_alabasta",
+    "description": "The King of Alabasta, who loves his people more than his crown and once knelt in the street to prove it.",
+    "approx": true,
+    "stats": {
+      "strength": 35,
+      "speed": 40,
+      "endurance": 45,
+      "durability": 40,
+      "dexterity": 45,
+      "intellect": 75,
+      "willpower": 80,
+      "charisma": 80,
+      "perception": 60,
+      "luck": 55
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -19,
+          "month": 1
+        },
+        "place": "loc_alabasta",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 7,
+          "month": 1
+        },
+        "place": "loc_alabasta",
+        "affiliation": "org_kingdom_alabasta",
+        "title": "King of Alabasta",
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "char_vegapunk",
+    "name": "Vegapunk",
+    "givenName": "Vegapunk",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -28,
+      "month": 1
+    },
+    "birthplace": "loc_egghead",
+    "description": "The greatest mind in the world, who works for the Government and dreams of a world that would not need it.",
+    "epithet": "Dr.",
+    "approx": true,
+    "stats": {
+      "strength": 25,
+      "speed": 30,
+      "endurance": 40,
+      "durability": 30,
+      "dexterity": 50,
+      "intellect": 250,
+      "willpower": 90,
+      "charisma": 60,
+      "perception": 80,
+      "luck": 50
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -28,
+          "month": 1
+        },
+        "place": "loc_egghead",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 8,
+          "month": 1
+        },
+        "place": "loc_punk_hazard",
+        "affiliation": "org_world_government",
+        "title": "Government scientist",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "place": "loc_egghead",
+        "affiliation": "org_world_government",
+        "title": "Government scientist",
+        "approx": true
+      }
+    ]
+  }
+]

@@ -28,6 +28,7 @@
     "warrior": 3
   },
   "features": ["coast", "mountains", "forest", "cold", "dojo", "smithy", "farmland"],
+  "location": "loc_elbaf",
   "map": {
     "x": 975,
     "y": 643

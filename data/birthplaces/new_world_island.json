@@ -39,6 +39,7 @@
     "tag:scar": 2
   },
   "features": ["coast", "docks", "jungle", "ruins", "market", "smithy", "underworld"],
+  "location": "loc_new_world_island",
   "map": {
     "x": 560,
     "y": 690

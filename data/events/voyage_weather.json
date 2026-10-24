@@ -1,0 +1,293 @@
+[
+  {
+    "id": "evt_voyage_storm",
+    "type": "voyage",
+    "title": "A storm",
+    "text": "The sky went black by noon. By evening the {ship} was climbing waves as tall as her masts.",
+    "trigger": "voyage",
+    "weight": 3,
+    "weightMods": [
+      { "when": [{ "kind": "season", "seasons": ["winter", "autumn"] }], "mult": 1.5 },
+      { "when": [{ "kind": "region", "regions": ["paradise", "new_world"] }], "mult": 1.3 }
+    ],
+    "choices": [
+      {
+        "id": "ride",
+        "label": "Reef the sails and ride it out",
+        "check": {
+          "stat": "navigation",
+          "difficulty": 40,
+          "perDanger": 5,
+          "criticalSuccess": {
+            "text": "You read the storm like a book and let it carry you: the {ship} came out of it days ahead.",
+            "effects": [{ "kind": "delay", "months": -0.5 }]
+          },
+          "success": {
+            "text": "You rode it out with a split sail and a few sprung planks.",
+            "effects": [{ "kind": "hull", "value": -2 }]
+          },
+          "failure": {
+            "text": "The storm tore away a mast and half the stores, and blew you far off your course.",
+            "effects": [
+              { "kind": "hull", "value": -8 },
+              { "kind": "supplies", "months": -1 },
+              { "kind": "delay", "months": 0.5 }
+            ]
+          },
+          "criticalFailure": {
+            "text": "A wave broke over the deck and took barrels, rigging and very nearly you.",
+            "effects": [
+              { "kind": "hull", "value": -15 },
+              { "kind": "supplies", "months": -2 },
+              { "kind": "delay", "months": 1 },
+              { "kind": "injury", "severity": "minor", "cause": "accident" }
+            ]
+          }
+        }
+      },
+      {
+        "id": "run",
+        "label": "Run before the wind",
+        "check": {
+          "stat": "navigation",
+          "difficulty": 50,
+          "perDanger": 5,
+          "success": {
+            "text": "You ran before the gale and it flung you along your course.",
+            "effects": [
+              { "kind": "delay", "months": -0.5 },
+              { "kind": "hull", "value": -4 }
+            ]
+          },
+          "failure": {
+            "text": "The wind took you where it liked, which was nowhere you wanted to be.",
+            "effects": [
+              { "kind": "delay", "months": 1 },
+              { "kind": "hull", "value": -10 }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "weather"]
+  },
+  {
+    "id": "evt_voyage_dead_calm",
+    "type": "voyage",
+    "title": "Dead calm",
+    "text": "The wind died. For days the sails hung like laundry and the sea lay flat as a plate.",
+    "trigger": "voyage",
+    "weight": 2,
+    "weightMods": [{ "when": [{ "kind": "season", "seasons": ["summer"] }], "mult": 1.5 }],
+    "conditions": [
+      { "kind": "travelMode", "modes": ["own", "crew", "passenger", "stowaway", "marine"] }
+    ],
+    "choices": [
+      {
+        "id": "row",
+        "label": "Man the oars",
+        "check": {
+          "stat": "endurance",
+          "difficulty": 45,
+          "success": {
+            "text": "You rowed until your hands bled, and found the wind again.",
+            "effects": [{ "kind": "train", "stats": { "endurance": 1, "strength": 0.5 } }]
+          },
+          "failure": {
+            "text": "You rowed, and rowed, and the calm went on for weeks.",
+            "effects": [
+              { "kind": "delay", "months": 1 },
+              { "kind": "morale", "value": -5 }
+            ]
+          }
+        }
+      },
+      {
+        "id": "wait",
+        "label": "Wait for the wind",
+        "effects": [
+          { "kind": "delay", "months": 0.5 },
+          {
+            "kind": "log",
+            "text": "You waited. The wind came back in its own good time.",
+            "tags": ["voyage"]
+          }
+        ]
+      }
+    ],
+    "tags": ["voyage", "weather"]
+  },
+  {
+    "id": "evt_voyage_fog",
+    "type": "voyage",
+    "title": "Fog",
+    "text": "A fog bank swallowed the {ship} whole. You could not see the bow from the wheel.",
+    "trigger": "voyage",
+    "weight": 2,
+    "weightMods": [
+      { "when": [{ "kind": "danger", "min": 3 }], "mult": 1.5 },
+      { "when": [{ "kind": "climate", "climates": ["cold", "volatile"] }], "mult": 1.3 }
+    ],
+    "choices": [
+      {
+        "id": "feel",
+        "label": "Feel your way forward",
+        "check": {
+          "stat": "perception",
+          "difficulty": 40,
+          "perDanger": 4,
+          "success": {
+            "text": "You heard the surf on the rocks before you saw them, and slipped past.",
+            "effects": [{ "kind": "train", "stats": { "perception": 1 } }]
+          },
+          "failure": {
+            "text": "The {ship} ground over a reef nobody saw coming.",
+            "effects": [{ "kind": "hull", "value": -6 }]
+          }
+        }
+      },
+      {
+        "id": "anchor",
+        "label": "Drop anchor and wait",
+        "effects": [{ "kind": "delay", "months": 0.5 }]
+      }
+    ],
+    "tags": ["voyage", "weather"]
+  },
+  {
+    "id": "evt_voyage_heat_wave",
+    "type": "voyage",
+    "title": "A heat wave",
+    "text": "A white sun hung over the {ship} for a week. The water barrels went warm and then went bad.",
+    "trigger": "voyage",
+    "weight": 1.5,
+    "weightMods": [{ "when": [{ "kind": "season", "seasons": ["summer"] }], "mult": 2 }],
+    "choices": [
+      {
+        "id": "ration",
+        "label": "Ration the water",
+        "check": {
+          "stat": "willpower",
+          "difficulty": 35,
+          "success": {
+            "text": "Everyone took their half-cup without complaint, because you did.",
+            "effects": [{ "kind": "supplies", "months": -0.5 }]
+          },
+          "failure": {
+            "text": "The rationing broke down in fights over the barrels, and you went thirsty.",
+            "effects": [
+              { "kind": "supplies", "months": -1 },
+              { "kind": "health", "fraction": -0.1 },
+              { "kind": "morale", "value": -10 }
+            ]
+          }
+        }
+      },
+      {
+        "id": "drink",
+        "label": "Drink while it lasts",
+        "effects": [
+          { "kind": "supplies", "months": -1.5 },
+          { "kind": "morale", "value": 5 }
+        ]
+      }
+    ],
+    "tags": ["voyage", "weather"]
+  },
+  {
+    "id": "evt_voyage_grand_line_weather",
+    "type": "voyage",
+    "title": "Grand Line weather",
+    "text": "Within an hour the {ship} went from sunshine to snow to a cyclone, with an iceberg drifting past for good measure. The Grand Line's weather answers to nobody.",
+    "trigger": "voyage",
+    "weight": 3,
+    "conditions": [{ "kind": "region", "regions": ["paradise", "new_world", "wano"] }],
+    "choices": [
+      {
+        "id": "helm",
+        "label": "Fight the helm",
+        "check": {
+          "stat": "navigation",
+          "difficulty": 55,
+          "perDanger": 5,
+          "criticalSuccess": {
+            "text": "You caught the cyclone's edge and let it sling you forward.",
+            "effects": [{ "kind": "delay", "months": -1 }]
+          },
+          "success": {
+            "text": "You came through with cracked spars and everyone aboard.",
+            "effects": [{ "kind": "hull", "value": -5 }]
+          },
+          "failure": {
+            "text": "The cyclone spun the {ship} like a top and spat her out far off course.",
+            "effects": [
+              { "kind": "hull", "value": -15 },
+              { "kind": "delay", "months": 1 }
+            ]
+          },
+          "criticalFailure": {
+            "text": "Two hands went over the side and the mainmast went with them.",
+            "effects": [
+              { "kind": "hull", "value": -25 },
+              { "kind": "crew", "value": -2 },
+              { "kind": "injury", "severity": "serious", "cause": "accident" }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "weather", "grand_line"]
+  },
+  {
+    "id": "evt_voyage_ice_floes",
+    "type": "voyage",
+    "title": "Ice floes",
+    "text": "Pack ice closed in around the {ship}, grinding at her hull with a sound like teeth.",
+    "trigger": "voyage",
+    "weight": 2,
+    "conditions": [{ "kind": "climate", "climates": ["cold"] }],
+    "weightMods": [{ "when": [{ "kind": "season", "seasons": ["winter"] }], "mult": 2 }],
+    "choices": [
+      {
+        "id": "thread",
+        "label": "Thread a way through",
+        "check": {
+          "stat": "navigation",
+          "difficulty": 45,
+          "perDanger": 4,
+          "success": {
+            "text": "You found the open water between the floes and slid out.",
+            "effects": []
+          },
+          "failure": {
+            "text": "The ice held you for days and stove in a plank before it let go.",
+            "effects": [
+              { "kind": "hull", "value": -8 },
+              { "kind": "delay", "months": 0.5 }
+            ]
+          }
+        }
+      },
+      {
+        "id": "break",
+        "label": "Break the ice by hand",
+        "check": {
+          "stat": "strength",
+          "difficulty": 50,
+          "success": {
+            "text": "You went over the side with an axe and cut the {ship} free.",
+            "effects": [{ "kind": "train", "stats": { "strength": 1, "endurance": 1 } }]
+          },
+          "failure": {
+            "text": "You broke more fingers than ice.",
+            "effects": [
+              { "kind": "injury", "severity": "minor", "area": "arms", "cause": "accident" },
+              { "kind": "delay", "months": 0.5 }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "weather"]
+  }
+]

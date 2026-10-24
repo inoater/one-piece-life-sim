@@ -20,7 +20,7 @@
       "severe": 1
     }
   },
-  "tags": ["training", "fight"],
+  "tags": ["training", "fight", "at_sea"],
   "outcomes": [
     {
       "id": "won",

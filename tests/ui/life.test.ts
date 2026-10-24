@@ -37,6 +37,8 @@ async function startLife(over: Record<string, unknown> = {}): Promise<void> {
     pronouns: 'they',
     ...over,
   });
+  // These tests are about the life loop: no random events (Phase 3) to stop a skip with a choice.
+  ui.core.peekState().flags['dev.quiet'] = true;
   await settle(10);
 }
 

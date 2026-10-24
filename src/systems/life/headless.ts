@@ -61,7 +61,8 @@ export function runHeadlessLife(
     entryAge: 0,
     pronouns: 'they',
   };
-  const { state, playerId } = createLife(data, input, { allowBlocked: true });
+  // Balancing runs live one life at a time: no Tier 2 crowd (Phase 3) to slow them down.
+  const { state, playerId } = createLife(data, input, { allowBlocked: true, population: 'none' });
   state.openEnded = true;
   const rng = Rng.root(options.seed);
   const player = state.entities[playerId];

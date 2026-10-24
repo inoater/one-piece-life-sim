@@ -50,6 +50,7 @@
     "market",
     "doctor"
   ],
+  "location": "loc_north_blue_town",
   "map": {
     "x": 420,
     "y": 262

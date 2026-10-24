@@ -1,0 +1,42 @@
+[
+  {
+    "id": "lane_sabaody_fishman_island",
+    "from": "loc_sabaody",
+    "to": "loc_fishman_island",
+    "miles": 210,
+    "danger": 3,
+    "current": "wild",
+    "requires": "coated_ship",
+    "zone": "calm_belt",
+    "traffic": 2,
+    "description": "Down through the deep sea beneath the Red Line."
+  },
+  {
+    "id": "lane_sabaody_mary_geoise",
+    "from": "loc_sabaody",
+    "to": "loc_mary_geoise",
+    "miles": 160,
+    "danger": 1,
+    "current": "none",
+    "requires": "none",
+    "land": true,
+    "traffic": 0,
+    "needsFlag": "permit.red_line",
+    "needsText": "Only those with the Government's leave ride the Bondola to the Holy Land",
+    "description": "Up the Red Line by the Bondola."
+  },
+  {
+    "id": "lane_mary_geoise_punk_hazard",
+    "from": "loc_mary_geoise",
+    "to": "loc_punk_hazard",
+    "miles": 180,
+    "danger": 2,
+    "current": "none",
+    "requires": "none",
+    "land": true,
+    "traffic": 0,
+    "needsFlag": "permit.red_line",
+    "needsText": "Only those with the Government's leave cross the Holy Land",
+    "description": "Across the Holy Land and down to the New World."
+  }
+]

@@ -16,7 +16,7 @@
       "arms": 1
     }
   },
-  "tags": ["spirit"],
+  "tags": ["spirit", "at_sea"],
   "outcomes": [
     {
       "id": "cliff",

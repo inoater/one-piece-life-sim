@@ -1,0 +1,351 @@
+[
+  {
+    "id": "loc_west_blue_port",
+    "name": "Harrowgate",
+    "home": "the port",
+    "kind": "port",
+    "region": "west_blue",
+    "climate": "temperate",
+    "origin": "generated",
+    "description": "A crowded port city of the West Blue, where the mafia families take their cut of every crate and the libraries are better than the harbour.",
+    "population": "city",
+    "wealth": "medium",
+    "danger": 2,
+    "features": [
+      "coast",
+      "docks",
+      "market",
+      "school",
+      "library",
+      "doctor",
+      "underworld",
+      "shipyard",
+      "smithy"
+    ],
+    "eventTags": {
+      "crime": 1.5,
+      "trade": 1.5
+    },
+    "culture": "bp_west_blue_port",
+    "map": {
+      "x": 600,
+      "y": 985
+    }
+  },
+  {
+    "id": "loc_ohara",
+    "name": "Ohara",
+    "home": "Ohara",
+    "kind": "island",
+    "region": "west_blue",
+    "climate": "temperate",
+    "description": "An island of scholars gathered around a great tree that holds a library older than anyone can say. Its archaeologists ask questions the World Government would rather nobody asked.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 0,
+    "features": ["coast", "docks", "library", "school", "ruins", "doctor", "market"],
+    "eventTags": {
+      "study": 2,
+      "quiet": 1.5
+    },
+    "culture": "bp_west_blue_port",
+    "map": {
+      "x": 738,
+      "y": 1045
+    }
+  },
+  {
+    "id": "loc_god_valley",
+    "name": "God Valley",
+    "home": "God Valley",
+    "kind": "island",
+    "region": "west_blue",
+    "climate": "tropical",
+    "description": "A remote island the World Nobles used for a hunting ground. What happened there in Year 0 was erased from every record.",
+    "population": "hamlet",
+    "wealth": "low",
+    "danger": 3,
+    "controller": "org_world_government",
+    "features": ["coast", "jungle", "ruins"],
+    "eventTags": {
+      "ruins": 2
+    },
+    "culture": "bp_west_blue_port",
+    "map": {
+      "x": 886,
+      "y": 888
+    }
+  },
+  {
+    "id": "loc_ilisia",
+    "name": "Ilisia Kingdom",
+    "home": "Ilisia",
+    "kind": "kingdom",
+    "region": "west_blue",
+    "climate": "temperate",
+    "description": "A modest West Blue kingdom of vineyards and old stone towns, a member of the World Government that pays its heavenly tribute and complains about it.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 1,
+    "features": ["coast", "docks", "farmland", "market", "school"],
+    "eventTags": {
+      "farm": 1.5,
+      "noble": 1.3
+    },
+    "culture": "bp_west_blue_port",
+    "map": {
+      "x": 383,
+      "y": 884
+    }
+  },
+  {
+    "id": "loc_kano",
+    "name": "Kano Country",
+    "home": "Kano",
+    "kind": "kingdom",
+    "region": "west_blue",
+    "climate": "temperate",
+    "description": "A wealthy country at the southern end of the West Blue, closest of its sea's harbours to the climb up Reverse Mountain.",
+    "population": "city",
+    "wealth": "high",
+    "danger": 1,
+    "features": ["coast", "docks", "market", "shipyard", "school", "doctor", "library"],
+    "eventTags": {
+      "trade": 1.5,
+      "noble": 1.5
+    },
+    "culture": "bp_west_blue_port",
+    "map": {
+      "x": 940,
+      "y": 1194
+    }
+  },
+  {
+    "id": "loc_north_blue_town",
+    "name": "Coldharbour",
+    "home": "the town",
+    "kind": "port",
+    "region": "north_blue",
+    "climate": "cold",
+    "origin": "generated",
+    "description": "A grey mining town on the North Blue, where the harbour freezes some winters and the mercenaries winter with it.",
+    "population": "town",
+    "wealth": "low",
+    "danger": 2,
+    "features": [
+      "coast",
+      "docks",
+      "mountains",
+      "cold",
+      "forest",
+      "school",
+      "smithy",
+      "market",
+      "doctor"
+    ],
+    "eventTags": {
+      "hardship": 1.5,
+      "fight": 1.3
+    },
+    "culture": "bp_north_blue_town",
+    "map": {
+      "x": 420,
+      "y": 262
+    }
+  },
+  {
+    "id": "loc_flevance",
+    "name": "Flevance",
+    "home": "Flevance",
+    "kind": "kingdom",
+    "region": "north_blue",
+    "climate": "cold",
+    "description": "The White Town, rich on the white lead dug from beneath it. Everything in Flevance is white: the streets, the trees, the tableware, and, in time, the people.",
+    "population": "city",
+    "wealth": "high",
+    "danger": 1,
+    "features": ["coast", "docks", "mountains", "cold", "doctor", "school", "library", "market"],
+    "eventTags": {
+      "noble": 1.5,
+      "study": 1.3
+    },
+    "culture": "bp_north_blue_town",
+    "map": {
+      "x": 372,
+      "y": 314
+    }
+  },
+  {
+    "id": "loc_spider_miles",
+    "name": "Spider Miles",
+    "home": "Spider Miles",
+    "kind": "port",
+    "region": "north_blue",
+    "climate": "cold",
+    "description": "A filthy harbour of scrap heaps and smugglers' warehouses, where the North Blue's underworld does its buying and selling.",
+    "population": "town",
+    "wealth": "low",
+    "danger": 3,
+    "features": ["coast", "docks", "market", "underworld", "cold"],
+    "eventTags": {
+      "crime": 2.5,
+      "fight": 1.5
+    },
+    "culture": "bp_north_blue_town",
+    "map": {
+      "x": 437,
+      "y": 220
+    }
+  },
+  {
+    "id": "loc_lvneel",
+    "name": "Lvneel Kingdom",
+    "home": "Lvneel",
+    "kind": "kingdom",
+    "region": "north_blue",
+    "climate": "cold",
+    "description": "A kingdom proud of its explorers and its fables, the nearest North Blue harbour to the climb up Reverse Mountain.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 1,
+    "features": ["coast", "docks", "market", "school", "ruins", "shipyard"],
+    "eventTags": {
+      "study": 1.3,
+      "sea": 1.3
+    },
+    "culture": "bp_north_blue_town",
+    "map": {
+      "x": 832,
+      "y": 274
+    }
+  },
+  {
+    "id": "loc_minion_island",
+    "name": "Minion Island",
+    "home": "Minion Island",
+    "kind": "island",
+    "region": "north_blue",
+    "climate": "cold",
+    "description": "A snowbound island of pine forest and wind, with a few huts, a few hunters and nobody who asks questions.",
+    "population": "hamlet",
+    "wealth": "low",
+    "danger": 2,
+    "features": ["coast", "forest", "cold", "mountains"],
+    "eventTags": {
+      "hardship": 2
+    },
+    "culture": "bp_north_blue_town",
+    "map": {
+      "x": 534,
+      "y": 240
+    }
+  },
+  {
+    "id": "loc_south_blue_island",
+    "name": "Palmhook Island",
+    "home": "the island",
+    "kind": "island",
+    "region": "south_blue",
+    "climate": "tropical",
+    "origin": "generated",
+    "description": "A hot, green island of the South Blue whose harbour gangs settle their quarrels in the street and whose jungle settles everything else.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 3,
+    "features": ["coast", "docks", "jungle", "forest", "ruins", "market", "underworld"],
+    "eventTags": {
+      "fight": 1.5,
+      "crime": 1.3
+    },
+    "culture": "bp_south_blue_island",
+    "map": {
+      "x": 1885,
+      "y": 1060
+    }
+  },
+  {
+    "id": "loc_baterilla",
+    "name": "Baterilla",
+    "home": "Baterilla",
+    "kind": "island",
+    "region": "south_blue",
+    "climate": "tropical",
+    "description": "A quiet island of the South Blue with a little harbour town and long beaches, the kind of place a person goes to disappear.",
+    "population": "village",
+    "wealth": "low",
+    "danger": 1,
+    "features": ["coast", "docks", "farmland", "market"],
+    "eventTags": {
+      "quiet": 2
+    },
+    "culture": "bp_south_blue_island",
+    "map": {
+      "x": 1646,
+      "y": 1181
+    }
+  },
+  {
+    "id": "loc_sorbet_kingdom",
+    "name": "Sorbet Kingdom",
+    "home": "the Sorbet Kingdom",
+    "kind": "kingdom",
+    "region": "south_blue",
+    "climate": "temperate",
+    "description": "A poor South Blue kingdom with a cruel king, a gentle church and more orphans than either knows what to do with.",
+    "population": "town",
+    "wealth": "low",
+    "danger": 2,
+    "features": ["coast", "docks", "market", "school"],
+    "eventTags": {
+      "hardship": 1.5
+    },
+    "culture": "bp_south_blue_island",
+    "map": {
+      "x": 2210,
+      "y": 1056
+    }
+  },
+  {
+    "id": "loc_karate_island",
+    "name": "Karate Island",
+    "home": "Karate Island",
+    "kind": "island",
+    "region": "south_blue",
+    "climate": "temperate",
+    "description": "An island of martial schools where every child learns to throw a punch before they learn to read.",
+    "population": "village",
+    "wealth": "medium",
+    "danger": 1,
+    "features": ["coast", "docks", "dojo", "market"],
+    "eventTags": {
+      "fight": 2
+    },
+    "culture": "bp_south_blue_island",
+    "map": {
+      "x": 2363,
+      "y": 899
+    }
+  },
+  {
+    "id": "loc_briss_kingdom",
+    "name": "Briss Kingdom",
+    "home": "Briss",
+    "kind": "kingdom",
+    "region": "south_blue",
+    "climate": "tropical",
+    "description": "A South Blue kingdom of ruins and riddles that every few generations sends an expedition after a lost treasure and loses the expedition instead.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 2,
+    "features": ["coast", "docks", "market", "ruins", "shipyard"],
+    "eventTags": {
+      "ruins": 1.5,
+      "sea": 1.3
+    },
+    "culture": "bp_south_blue_island",
+    "map": {
+      "x": 1537,
+      "y": 998
+    }
+  }
+]

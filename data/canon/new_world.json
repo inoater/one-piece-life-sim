@@ -1,0 +1,101 @@
+[
+  {
+    "id": "beat_dressrosa_freed",
+    "name": "Dressrosa is freed",
+    "text": "In the colosseum and the streets of {place}, {role.luffy.name} and {role.law.name} tore down {role.doflamingo.name}'s birdcage of strings. The toys became people again, and remembered.",
+    "news": "Doflamingo defeated! The Warlord and King of Dressrosa is in Marine custody. The Riku family returns to the throne.",
+    "window": { "from": { "year": 38, "month": 5 }, "to": { "year": 38, "month": 6 } },
+    "anchor": "hard",
+    "place": "loc_dressrosa",
+    "roles": {
+      "luffy": { "char": "char_monkey_d_luffy" },
+      "law": { "char": "char_trafalgar_law" },
+      "doflamingo": { "char": "char_donquixote_doflamingo" }
+    },
+    "requires": ["beat_doflamingo_dressrosa", "beat_luffy_sets_sail"],
+    "outcomes": [
+      { "kind": "imprison", "role": "doflamingo", "place": "loc_impel_down" },
+      { "kind": "control", "place": "loc_dressrosa", "org": "org_kingdom_dressrosa" },
+      { "kind": "crew", "org": "org_donquixote_pirates", "active": false },
+      { "kind": "faction", "org": "org_underworld", "strength": -6, "source": "Joker fell" },
+      { "kind": "bounty", "role": "luffy", "value": 500000000 }
+    ],
+    "tags": ["dressrosa", "luffy"]
+  },
+  {
+    "id": "beat_wano_liberated",
+    "name": "Wano is liberated",
+    "text": "Twenty years after the Kozuki fell, the samurai of {place} and {role.luffy.name}'s allies stormed Onigashima. {role.kaido.name} fell into the earth, {role.orochi.name} burned, and Wano opened its borders.",
+    "news": "Kaido and Big Mom defeated in Wano. The pirate who did it is called an Emperor of the Sea now: Monkey D. Luffy.",
+    "window": { "from": { "year": 38, "month": 8 }, "to": { "year": 38, "month": 10 } },
+    "anchor": "hard",
+    "place": "loc_wano",
+    "roles": {
+      "luffy": { "char": "char_monkey_d_luffy" },
+      "kaido": { "char": "char_kaido" },
+      "orochi": { "char": "char_kurozumi_orochi" }
+    },
+    "requires": ["beat_oden_execution", "beat_luffy_sets_sail"],
+    "outcomes": [
+      { "kind": "death", "role": "orochi", "cause": "died in the burning of Onigashima" },
+      { "kind": "imprison", "role": "kaido", "place": "loc_wano" },
+      { "kind": "crew", "org": "org_beasts_pirates", "active": false },
+      { "kind": "control", "place": "loc_wano", "org": "org_kingdom_wano" },
+      { "kind": "faction", "org": "org_kingdom_wano", "strength": 12, "source": "Wano opened" },
+      { "kind": "prosperity", "place": "loc_wano", "value": 25, "source": "The Kozuki return" },
+      { "kind": "bounty", "role": "luffy", "value": 3000000000 }
+    ],
+    "tags": ["wano", "luffy", "emperor"]
+  },
+  {
+    "id": "beat_egghead",
+    "name": "The Egghead incident",
+    "text": "The World Government sent an admiral and a Buster Call to {place} to silence {role.vegapunk.name}. They silenced him, but not before he spoke to the whole world.",
+    "news": "Dr. Vegapunk is dead, and before he died he broadcast a message to every Den Den Mushi in the world. Nobody can agree on what it meant.",
+    "window": { "from": { "year": 38, "month": 11 }, "to": { "year": 38, "month": 12 } },
+    "anchor": "soft",
+    "place": "loc_egghead",
+    "roles": {
+      "vegapunk": { "char": "char_vegapunk" },
+      "luffy": { "char": "char_monkey_d_luffy" },
+      "borsalino": { "char": "char_borsalino" }
+    },
+    "outcomes": [
+      { "kind": "death", "role": "vegapunk", "cause": "shot at Egghead" },
+      {
+        "kind": "faction",
+        "org": "org_world_government",
+        "strength": -5,
+        "months": 36,
+        "source": "Vegapunk's broadcast"
+      },
+      {
+        "kind": "faction",
+        "org": "org_revolutionary_army",
+        "strength": 4,
+        "source": "Vegapunk's broadcast"
+      },
+      { "kind": "flag", "flag": "canon.egghead", "value": true }
+    ],
+    "tags": ["government", "luffy"]
+  },
+  {
+    "id": "beat_test_duel",
+    "name": "The test duel",
+    "text": "{role.captain.name} and {role.rival.name} met in {place} and settled it.",
+    "news": "Test fixture: the duel in {place} happened.",
+    "divergeNews": "Test fixture: the duel in {place} did not happen.",
+    "window": { "from": { "year": 2, "month": 1 }, "to": { "year": 2, "month": 6 } },
+    "anchor": "hard",
+    "chance": 0.15,
+    "place": "loc_loguetown",
+    "roles": {
+      "captain": { "char": "char_test_captain", "substitutes": ["char_test_mate"] },
+      "rival": { "char": "char_test_rival" }
+    },
+    "outcomes": [{ "kind": "flag", "flag": "test.duel", "value": true }],
+    "onDiverge": [{ "kind": "flag", "flag": "test.duel", "value": false }],
+    "dev": true,
+    "tags": ["dev"]
+  }
+]

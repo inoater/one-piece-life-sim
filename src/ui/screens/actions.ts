@@ -4,6 +4,7 @@ import { confirmButton } from '../components/confirm-button';
 import { h, type Child } from '../dom';
 import { formatInteger, plural } from '../format';
 import type { UiState } from '../store';
+import { travelSections } from './travel';
 
 /**
  * The Actions tab: how the month is spent (Phase 2). A routine of activity slots (how many depends
@@ -482,6 +483,7 @@ export function renderActions(state: UiState, app: App): HTMLElement {
       ? h('p', { class: 'side-screen__alert' }, `${life.jailed}. Nothing to do but wait.`)
       : null,
     routineSection(life, app, busy),
+    ...travelSections(state.snapshot?.travel ?? null, app, busy),
     healthSection(life),
     workSection(life, app, busy),
     moneySection(life, app, busy),

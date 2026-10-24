@@ -45,6 +45,8 @@ export function createWorld(options: CreateWorldOptions): WorldState {
     pending: [],
     queue: [],
     flags: {},
+    canon: { beats: {}, divergences: [] },
+    eventState: {},
   };
   if (options.probe) state.flags['dev.probe'] = true;
   if (options.intro === false) return state;

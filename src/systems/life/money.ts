@@ -3,6 +3,7 @@ import { scheduleEvent } from '../events';
 import { humanAgeOf } from './body';
 import { lifeLog, pay, renderLife, reportLine, withCause, type LifeEnv } from './env';
 import { hurt } from './health';
+import { priceMult } from '../places/place';
 
 /**
  * Money (Phase 2). Berries in hand are cash; what is owed to a loan shark is debt, which grows by
@@ -17,8 +18,9 @@ export function monthOfMoney(env: LifeEnv): void {
   const m = data.life.money;
   const humanAge = humanAgeOf(data, p, tick);
 
-  if (humanAge >= m.independentAge) {
-    const cost = m.livingCost[p.home.wealth];
+  // At sea the fare, the ship's stores or the captain's table feed you instead (Phase 3).
+  if (humanAge >= m.independentAge && !p.place.atSea) {
+    const cost = Math.round(m.livingCost[p.place.wealth] * priceMult(state, data, p.place.id));
     pay(env, -cost);
     reportLine(
       env,

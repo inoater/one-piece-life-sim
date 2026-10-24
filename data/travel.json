@@ -1,0 +1,226 @@
+{
+  "provisions": {
+    "costPerMonth": 300,
+    "perCargo": 2
+  },
+  "portFee": {
+    "low": 200,
+    "medium": 500,
+    "high": 1500
+  },
+  "fare": 2500,
+  "crewWage": 1200,
+  "hireCost": 1000,
+  "repair": {
+    "perHull": 400,
+    "docksMult": 1.5
+  },
+  "coating": {
+    "cost": 100000,
+    "at": ["loc_sabaody"]
+  },
+  "logPose": {
+    "cost": 15000,
+    "at": ["loc_loguetown", "loc_twin_cape", "loc_fishman_island"]
+  },
+  "eternalPose": {
+    "cost": 60000
+  },
+  "currents": {
+    "calm": 0.85,
+    "gentle": 1,
+    "steady": 1.05,
+    "strong": 1.2,
+    "wild": 0.95,
+    "none": 0.8
+  },
+  "wind": {
+    "winter": 0.9,
+    "spring": 1.05,
+    "summer": 1,
+    "autumn": 1
+  },
+  "navigator": {
+    "stat": "intellect",
+    "from": 20,
+    "per": 0.006,
+    "max": 0.3,
+    "npc": 1.1
+  },
+  "carriers": {
+    "crew": "vessel_caravel",
+    "passenger": "vessel_merchant_sloop",
+    "stowaway": "vessel_merchant_sloop",
+    "marine": "vessel_warship"
+  },
+  "walkSpeed": 120,
+  "orders": {
+    "hold": {
+      "name": "Hold course",
+      "description": "Sail on at an ordinary pace."
+    },
+    "push": {
+      "name": "Push speed",
+      "description": "Crowd on sail: a fifth faster, at the cost of the hull.",
+      "speed": 1.2,
+      "hull": 3
+    },
+    "resupply": {
+      "name": "Resupply",
+      "description": "Fish and trade with passing ships this month: half the progress, more stores.",
+      "progress": 0.5,
+      "supplies": {
+        "min": 1,
+        "max": 4
+      }
+    },
+    "detour": {
+      "name": "Detour to the nearest port",
+      "description": "Put in at whichever place is closest from here."
+    },
+    "turn_back": {
+      "name": "Turn back",
+      "description": "Head back where you came from; the miles already sailed are lost."
+    }
+  },
+  "modes": [
+    {
+      "id": "own",
+      "name": "Your own ship",
+      "description": "You command the ship and choose the course every month.",
+      "route": "You, every month",
+      "risk": "Storms, mutiny, running out of money"
+    },
+    {
+      "id": "crew",
+      "name": "Sign on as crew",
+      "description": "Work your passage as a ship's hand. You earn a hand's wages, and go where the captain goes.",
+      "route": "The captain",
+      "risk": "The captain's choices; mutiny"
+    },
+    {
+      "id": "passenger",
+      "name": "Book passage",
+      "description": "Pay a fare for each month at sea and leave the sailing to others.",
+      "route": "The captain",
+      "risk": "Being dropped at the wrong port"
+    },
+    {
+      "id": "stowaway",
+      "name": "Stow away",
+      "description": "Hide in a cargo hold and hope nobody looks. Free, until somebody looks.",
+      "route": "The captain",
+      "risk": "Discovery: forced labour, or thrown overboard"
+    },
+    {
+      "id": "marine",
+      "name": "Marine transport",
+      "description": "Ride a Marine warship to your posting. Free for those who serve.",
+      "route": "The Marines",
+      "risk": "Orders, and pirates who hate the flag"
+    },
+    {
+      "id": "foot",
+      "name": "On foot",
+      "description": "Walk it, carrying your own food.",
+      "route": "You",
+      "risk": "The wilderness"
+    }
+  ],
+  "regionDanger": {
+    "east_blue": 0,
+    "west_blue": 0.2,
+    "north_blue": 0.2,
+    "south_blue": 0.2,
+    "paradise": 0.5,
+    "new_world": 1,
+    "wano": 1,
+    "sky": 0.5,
+    "fishman_island": 0.5,
+    "red_line": 0.5,
+    "calm_belt": 1.5
+  },
+  "baseEvents": 1,
+  "quietWeight": 6,
+  "dangerWeight": 0.35,
+  "stowaway": {
+    "discovery": 0.2,
+    "eventId": "evt_voyage_stowaway_found"
+  },
+  "divertChance": 0.04,
+  "morale": {
+    "start": 60,
+    "unpaid": 15,
+    "hungry": 20,
+    "rest": 60,
+    "drift": 3,
+    "mutinyBelow": 30
+  },
+  "starvation": 0.15,
+  "scurvy": {
+    "afterMonths": 3,
+    "chance": 0.08
+  },
+  "seasickness": {
+    "chance": 0.25,
+    "trait": "trait_landlubber"
+  },
+  "wreck": {
+    "crewLost": 0.4
+  },
+  "overboard": {
+    "stat": "endurance",
+    "difficulty": 35
+  },
+  "atSea": {
+    "features": ["coast", "deep_sea", "docks"],
+    "trainBody": 0.7,
+    "wealth": "low"
+  },
+  "safetyByDanger": ["high", "high", "medium", "low", "very_low", "very_low"],
+  "shipNames": [
+    "Sea Lark",
+    "Gull's Rest",
+    "Second Chance",
+    "Morning Tide",
+    "Salt Wren",
+    "Barnacle Queen",
+    "Lucky Kelp",
+    "Driftwood Promise",
+    "Brass Albatross",
+    "Little Thunder",
+    "Wandering Spoon",
+    "Stubborn Heron",
+    "Red Lantern",
+    "Quiet Fortune",
+    "Bold Mackerel",
+    "Cloud Chaser"
+  ],
+  "lines": {
+    "departed": "You left {place} for {destination}, {title}.",
+    "arrived": "You reached {destination} after {months} {title}.",
+    "missedNews": "{amount} headlines were waiting for you in {destination}.",
+    "witnessedAtSea": "From the deck you saw it with your own eyes: {title}",
+    "progress": "Another month at sea: about {months} still to {destination}.",
+    "order": "Captain's order for the month: {title}.",
+    "wrecked": "The {ship} broke apart and went down.",
+    "castaway": "You washed up on {destination}, half drowned, with nothing but what you were wearing.",
+    "starving": "The stores ran out. Everyone aboard went hungry.",
+    "unpaid": "There was no money for the crew's wages, and the grumbling below decks grew.",
+    "diverted": "The captain changed course for {destination}, and nobody asked your opinion.",
+    "redirected": "The {ship} put in at {destination} instead.",
+    "turnedBack": "You put the helm over and turned back for {destination}.",
+    "resupplied": "You spent the month fishing and trading with passing ships, and stowed {amount} months of stores.",
+    "jobLeft": "You left your work as {job} behind.",
+    "bought": "You bought {title} and named her the {ship}.",
+    "hired": "You signed on {amount} hands.",
+    "provisioned": "You stocked the {ship} with {amount} months of stores.",
+    "repaired": "Shipwrights patched the {ship}.",
+    "coated": "The {ship}'s hull was sealed in resin for the dive into the deep sea.",
+    "pose": "You bought {title}.",
+    "portFee": "Harbour dues in {place}: {amount} Berries.",
+    "fare": "Fare for the month: {amount} Berries.",
+    "rescued": "You were hauled back aboard, coughing up seawater.",
+    "drowned": "The sea closed over you."
+  }
+}

@@ -16,7 +16,7 @@
     "perception": 0.2,
     "dexterity": 0.1
   },
-  "tags": ["sea", "work"],
+  "tags": ["sea", "work", "at_sea"],
   "outcomes": [
     {
       "id": "supper",

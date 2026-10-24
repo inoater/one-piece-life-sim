@@ -1,0 +1,425 @@
+[
+  {
+    "id": "evt_world_pirate_raid",
+    "type": "world",
+    "title": "Pirates sack a town",
+    "text": "Pirates sacked {place}, burning the harbour and carrying off everything of value.",
+    "trigger": "world",
+    "weight": 4,
+    "where": {
+      "features": ["docks"],
+      "notControllers": ["org_marines", "org_world_government"],
+      "minDanger": 1
+    },
+    "weightMods": [
+      {
+        "when": [
+          {
+            "kind": "flag",
+            "flag": "canon.great_pirate_era",
+            "equals": true
+          }
+        ],
+        "mult": 2
+      }
+    ],
+    "effects": [
+      {
+        "kind": "prosperity",
+        "value": -12,
+        "months": 18,
+        "source": "Sacked by pirates"
+      },
+      {
+        "kind": "population",
+        "pct": -2
+      },
+      {
+        "kind": "faction",
+        "org": "org_pirates",
+        "strength": 1,
+        "months": 12,
+        "source": "Plunder"
+      }
+    ],
+    "news": "Pirates sack {place}. The survivors say the Marines came a week late.",
+    "tags": ["world", "pirate"]
+  },
+  {
+    "id": "evt_world_marine_crackdown",
+    "type": "world",
+    "title": "A Marine crackdown",
+    "text": "The Marines swept the waters around {place}, and pirate flags came down by the dozen.",
+    "trigger": "world",
+    "weight": 3,
+    "where": {
+      "features": ["marine_base"]
+    },
+    "effects": [
+      {
+        "kind": "faction",
+        "org": "org_marines",
+        "strength": 2,
+        "months": 12,
+        "source": "Crackdown"
+      },
+      {
+        "kind": "faction",
+        "org": "org_pirates",
+        "strength": -2,
+        "months": 12,
+        "source": "Crackdown"
+      },
+      {
+        "kind": "prosperity",
+        "value": 4,
+        "months": 12,
+        "source": "Safer seas"
+      }
+    ],
+    "news": "The Marine base at {place} reports a great haul of pirates captured this month.",
+    "tags": ["world", "marine"]
+  },
+  {
+    "id": "evt_world_uprising",
+    "type": "world",
+    "title": "An uprising",
+    "text": "The people of {place} rose against their rulers, and the Revolutionary Army was said to be behind it.",
+    "trigger": "world",
+    "weight": 1,
+    "where": {
+      "kinds": ["kingdom"],
+      "notControllers": ["org_world_government", "org_marines"]
+    },
+    "conditions": [
+      {
+        "kind": "year",
+        "min": 5
+      }
+    ],
+    "weightMods": [
+      {
+        "when": [
+          {
+            "kind": "year",
+            "min": 20
+          }
+        ],
+        "mult": 2
+      },
+      {
+        "when": [
+          {
+            "kind": "year",
+            "min": 32
+          }
+        ],
+        "mult": 2
+      }
+    ],
+    "effects": [
+      {
+        "kind": "faction",
+        "org": "org_revolutionary_army",
+        "strength": 2,
+        "source": "Uprisings",
+        "months": 60
+      },
+      {
+        "kind": "faction",
+        "org": "org_kingdoms",
+        "strength": -1,
+        "months": 24,
+        "source": "Unrest"
+      },
+      {
+        "kind": "prosperity",
+        "value": -8,
+        "months": 12,
+        "source": "Uprising"
+      }
+    ],
+    "news": "Uprising in {place}! The Government blames the revolutionaries; the revolutionaries agree.",
+    "tags": ["world", "revolution"]
+  },
+  {
+    "id": "evt_world_trade_boom",
+    "type": "world",
+    "title": "A trade boom",
+    "text": "Trade boomed in {place}: new warehouses, new ships, new money.",
+    "trigger": "world",
+    "weight": 3,
+    "where": {
+      "features": ["market", "docks"],
+      "maxDanger": 3
+    },
+    "effects": [
+      {
+        "kind": "prosperity",
+        "value": 10,
+        "months": 24,
+        "source": "Trade boom"
+      },
+      {
+        "kind": "faction",
+        "org": "org_merchant_guilds",
+        "strength": 1,
+        "months": 24,
+        "source": "Trade boom"
+      }
+    ],
+    "news": "Business is booming in {place}, the merchant houses report.",
+    "tags": ["world", "trade"]
+  },
+  {
+    "id": "evt_world_famine",
+    "type": "world",
+    "title": "Famine",
+    "text": "The harvest failed in {place}, and then the fishing did.",
+    "trigger": "world",
+    "weight": 1.5,
+    "where": {
+      "features": ["farmland"]
+    },
+    "effects": [
+      {
+        "kind": "prosperity",
+        "value": -15,
+        "months": 12,
+        "source": "Famine"
+      },
+      {
+        "kind": "population",
+        "pct": -3
+      }
+    ],
+    "news": "Famine in {place}. Ships carrying grain are asking ruinous prices.",
+    "tags": ["world", "hardship"]
+  },
+  {
+    "id": "evt_world_underworld_war",
+    "type": "world",
+    "title": "An underworld war",
+    "text": "Two smuggling families went to war over the docks of {place}, and the streets emptied after dark.",
+    "trigger": "world",
+    "weight": 1.5,
+    "where": {
+      "features": ["underworld"]
+    },
+    "effects": [
+      {
+        "kind": "faction",
+        "org": "org_underworld",
+        "strength": -1,
+        "months": 12,
+        "source": "Gang war"
+      },
+      {
+        "kind": "prosperity",
+        "value": -6,
+        "months": 12,
+        "source": "Gang war"
+      },
+      {
+        "kind": "localFlag",
+        "flag": "gang_war",
+        "value": true,
+        "months": 6
+      }
+    ],
+    "news": "Bodies in the harbour at {place}: an underworld feud spills into the streets.",
+    "tags": ["world", "crime"]
+  },
+  {
+    "id": "evt_world_heavenly_tribute",
+    "type": "world",
+    "title": "The heavenly tribute",
+    "text": "The World Government collected its heavenly tribute from {place}, and a little more besides.",
+    "trigger": "world",
+    "weight": 1,
+    "where": {
+      "kinds": ["kingdom", "port"],
+      "notControllers": ["org_world_government"]
+    },
+    "effects": [
+      {
+        "kind": "prosperity",
+        "value": -6,
+        "months": 12,
+        "source": "Heavenly tribute"
+      },
+      {
+        "kind": "faction",
+        "org": "org_kingdoms",
+        "opinion": {
+          "toward": "org_world_government",
+          "value": -3
+        },
+        "months": 36,
+        "source": "Heavenly tribute"
+      }
+    ],
+    "news": "{place} pays the heavenly tribute again. The people go hungry so the World Nobles need not.",
+    "tags": ["world", "government"]
+  },
+  {
+    "id": "evt_world_buster_call",
+    "type": "world",
+    "title": "A Buster Call",
+    "text": "Ten warships and five vice admirals reduced {place} to rubble on the Government's orders.",
+    "trigger": "world",
+    "weight": 0.15,
+    "where": {
+      "minDanger": 2,
+      "notControllers": ["org_world_government", "org_marines"]
+    },
+    "effects": [
+      {
+        "kind": "prosperity",
+        "value": -40,
+        "months": 60,
+        "source": "Buster Call"
+      },
+      {
+        "kind": "population",
+        "pct": -25
+      },
+      {
+        "kind": "faction",
+        "org": "org_world_government",
+        "strength": 1,
+        "months": 12,
+        "source": "Buster Call"
+      },
+      {
+        "kind": "faction",
+        "org": "org_kingdoms",
+        "opinion": {
+          "toward": "org_world_government",
+          "value": -10
+        },
+        "months": 60,
+        "source": "Buster Call"
+      }
+    ],
+    "news": "BUSTER CALL ON {place}. The Government says it harboured enemies of the world. There is not much left of it to argue.",
+    "tags": ["world", "government"]
+  },
+  {
+    "id": "evt_world_sea_king",
+    "type": "world",
+    "title": "A sea king in the harbour",
+    "text": "A sea king came into the harbour at {place} and ate three fishing boats and a pier.",
+    "trigger": "world",
+    "weight": 1.5,
+    "where": {
+      "features": ["docks"],
+      "minDanger": 2
+    },
+    "effects": [
+      {
+        "kind": "prosperity",
+        "value": -5,
+        "months": 6,
+        "source": "Sea king attack"
+      },
+      {
+        "kind": "population",
+        "pct": -0.5
+      }
+    ],
+    "news": "A sea king attacks the harbour at {place}. The fishermen are staying home.",
+    "tags": ["world", "sea"]
+  },
+  {
+    "id": "evt_world_shipwright",
+    "type": "world",
+    "title": "A master shipwright",
+    "text": "A master shipwright set up a yard in {place}, and captains came from three seas to have their hulls looked at.",
+    "trigger": "world",
+    "weight": 1,
+    "where": {
+      "features": ["shipyard"]
+    },
+    "effects": [
+      {
+        "kind": "prosperity",
+        "value": 6,
+        "months": 24,
+        "source": "A master shipwright"
+      },
+      {
+        "kind": "faction",
+        "org": "org_merchant_guilds",
+        "strength": 0.5,
+        "months": 24,
+        "source": "Shipbuilding"
+      }
+    ],
+    "news": "A new shipyard in {place} is taking orders, and its first ship has already sailed.",
+    "tags": ["world", "trade"]
+  },
+  {
+    "id": "evt_world_pirate_surge",
+    "type": "world",
+    "title": "New pirates",
+    "text": "A dozen new crews ran up their flags in the waters off {place} this season.",
+    "trigger": "world",
+    "weight": 1,
+    "where": {
+      "features": ["docks"]
+    },
+    "conditions": [
+      {
+        "kind": "flag",
+        "flag": "canon.great_pirate_era",
+        "equals": true
+      }
+    ],
+    "effects": [
+      {
+        "kind": "faction",
+        "org": "org_pirates",
+        "strength": 0.5,
+        "source": "The Great Pirate Era",
+        "months": 60
+      },
+      {
+        "kind": "prosperity",
+        "value": -3,
+        "months": 12,
+        "source": "Pirate season"
+      }
+    ],
+    "news": "Another dozen pirate crews have set sail from around {place}. The One Piece is out there.",
+    "tags": ["world", "pirate"]
+  },
+  {
+    "id": "evt_world_kingdom_quarrel",
+    "type": "world",
+    "title": "A quarrel between kingdoms",
+    "text": "A border quarrel between {place} and its neighbours came to blows at sea.",
+    "trigger": "world",
+    "weight": 1,
+    "where": {
+      "kinds": ["kingdom"]
+    },
+    "effects": [
+      {
+        "kind": "faction",
+        "org": "org_kingdoms",
+        "strength": -0.5,
+        "months": 12,
+        "source": "Wars between kingdoms"
+      },
+      {
+        "kind": "prosperity",
+        "value": -5,
+        "months": 12,
+        "source": "War"
+      }
+    ],
+    "news": "Warships from {place} clash with a neighbour's navy. The World Government calls for calm.",
+    "tags": ["world", "war"]
+  }
+]

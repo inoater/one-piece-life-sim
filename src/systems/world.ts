@@ -1,15 +1,18 @@
-import { templateVarsFor } from '../engine/calendar';
-import { appendLog } from '../engine/log';
 import type { TickContext, TickStep } from '../engine/pipeline';
 import type { WorldState } from '../engine/state';
-import { renderTemplate } from '../engine/template';
-import { storyVars } from './events';
+import { spawnDueCast } from './canon/cast';
+import { factionsMonth } from './factions';
+import { peopleYear } from './places/people';
+import { epidemicsMonth, residentsYear } from './places/residents';
+import { worldBuilt } from './places/setup';
 
 /**
  * Step 4: update world state (factions, territory, economy).
  *
- * Each world system is a function in the list below; Phase 3 adds factions, territory and the
- * economy as one line each. Today: the entropy probe (dev) and epidemics (Phase 2).
+ * Each world system is a function in the list below. Phase 3 brings the world: canon characters
+ * born this month, factions and territory, the places' Tier 3 people and their epidemics, and the
+ * Tier 2 people's births and deaths. A bare world (no map built, as in the Phase 0 tools) is left
+ * as it is: only the entropy probe runs there.
  */
 export type WorldSystem = (state: WorldState, ctx: TickContext) => void;
 
@@ -33,35 +36,18 @@ export const entropyProbe: WorldSystem = (state, ctx) => {
   state.flags['dev.probe.draws'] = (typeof draws === 'number' ? draws : 0) + PROBE_DRAWS;
 };
 
-/**
- * Epidemics (Phase 2): now and then a sickness reaches the player's home for a few months, which
- * makes that illness far likelier there (data/life.json `epidemic`) and makes the news. Phase 3's
- * world events will spread them between islands.
- */
-export const epidemics: WorldSystem = (state, ctx) => {
-  const player = state.playerId ? state.entities[state.playerId] : undefined;
-  const c = player?.character;
-  if (!c?.alive || !c.life) return;
-  const until = state.flags['epidemic.until'];
-  if (typeof until === 'number' && until > ctx.tick) return;
-  const rules = ctx.data.life.epidemic;
-  const rng = ctx.rng.fork('epidemic');
-  if (!rng.chance(rules.chance)) return;
-  state.flags['epidemic.until'] = ctx.tick + rng.int(rules.months.min, rules.months.max);
-  state.flags['epidemic.place'] = c.birthplace;
-  const vars = { ...templateVarsFor(ctx.date), ...storyVars(state, ctx.data) };
-  const text = renderTemplate(rng.pick(rules.news), vars);
-  const record = appendLog(state, ctx.tick, {
-    kind: 'event',
-    summary: text,
-    tags: ['world', 'news', 'illness'],
-    place: c.birthplace,
-    cause: 'sys:epidemic',
-  });
-  ctx.newsDrafts.push({ text, tags: ['news', 'illness'], sourceSeq: record.seq });
+/** The world's month (Phase 3). */
+export const worldMonth: WorldSystem = (state, ctx) => {
+  if (!worldBuilt(state)) return;
+  const { data, tick } = ctx;
+  spawnDueCast(state, data, tick);
+  factionsMonth(state, data, tick);
+  residentsYear(state, data, tick);
+  epidemicsMonth(state, data, tick, ctx.rng.fork('epidemic'), ctx.newsDrafts);
+  peopleYear({ state, data, tick, rng: ctx.rng.fork('people'), newsDrafts: ctx.newsDrafts });
 };
 
-export const WORLD_SYSTEMS: readonly WorldSystem[] = [entropyProbe, epidemics];
+export const WORLD_SYSTEMS: readonly WorldSystem[] = [entropyProbe, worldMonth];
 
 export function createUpdateWorldStep(systems: readonly WorldSystem[]): TickStep {
   return {

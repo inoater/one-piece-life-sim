@@ -6,7 +6,7 @@
   "minAge": 2,
   "restful": true,
   "regen": 0.2,
-  "tags": ["rest"],
+  "tags": ["rest", "at_sea"],
   "outcomes": [
     {
       "id": "slept",

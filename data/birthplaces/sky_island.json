@@ -35,6 +35,7 @@
     "dials": 3
   },
   "features": ["clouds", "forest", "ruins", "school", "market", "doctor"],
+  "location": "loc_skypiea",
   "map": {
     "x": 1782,
     "y": 616

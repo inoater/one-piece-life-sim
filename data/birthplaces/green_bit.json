@@ -30,6 +30,7 @@
     "forage": 2
   },
   "features": ["forest", "jungle", "farmland", "ruins", "market"],
+  "location": "loc_green_bit",
   "map": {
     "x": 235,
     "y": 679

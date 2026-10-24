@@ -1,4 +1,5 @@
 import { advance, applyAction, createLife, Rng, type Action } from '../../src/core';
+import { ensureWorldLayer } from '../../src/systems/places/history';
 import type { GameData } from '../../src/engine/data/schemas';
 import type { WorldState } from '../../src/engine/state';
 
@@ -13,7 +14,9 @@ import type { WorldState } from '../../src/engine/state';
  * Since Phase 1 it starts with character genesis (a fixed New Life: race, birthplace, family,
  * 30 years of backstory), so a change to how characters are made shows up here too. Since Phase 2
  * the character lives: a job, a routine of three activities at mixed effort, and the months of
- * training, outcomes, injuries, money and aging that follow.
+ * training, outcomes, injuries, money and aging that follow. Since Phase 3 the world is full: its
+ * places, factions, canon cast and history, two thousand named people, random and world events,
+ * and a voyage as a passenger to the next island.
  */
 
 export const GOLDEN_SEED = 'golden-v1';
@@ -34,6 +37,7 @@ export const GOLDEN_LIFE = {
 export function playGoldenSession(data: GameData): WorldState {
   const { state } = createLife(data, GOLDEN_LIFE);
   state.flags['dev.probe'] = true;
+  ensureWorldLayer(state, data);
   const rng = Rng.root(GOLDEN_SEED);
   const act = (action: Action) => applyAction(state, data, action, { debug: true });
   const run = (months: number, policy: 'stop' | 'auto-random' = 'auto-random') =>
@@ -50,6 +54,8 @@ export function playGoldenSession(data: GameData): WorldState {
     ],
   });
   run(12);
+  act({ type: 'travel/sail', lane: 'lane_east_blue_village_shells_town', mode: 'passenger' });
+  run(3);
   act({ type: 'debug/forceEvent', eventId: 'evt_test_notice' });
   act({ type: 'debug/forceEvent', eventId: 'evt_test_crossroads' });
   run(6, 'stop'); // stops on the crossroads decision

@@ -30,6 +30,10 @@ import { ageAt } from '../systems/genesis/stages';
 import { runHeadlessLife } from '../systems/life/headless';
 import { trainingCurve } from '../systems/life/training';
 import { lifeView } from '../systems/life/view';
+import { newsHeard } from '../systems/news';
+import { ensureWorldLayer } from '../systems/places/history';
+import { canonView, factionViews, mapView, placeView, worldSummary } from '../systems/places/view';
+import { travelView } from '../systems/voyage/view';
 import { entryWarnings } from '../systems/genesis/warnings';
 import type {
   AdvanceReport,
@@ -81,6 +85,11 @@ export interface SimCoreDeps {
   newSeed?: () => string;
   /** Ticks per chunk of a long advance. */
   batchTicks?: number;
+  /**
+   * How full a new life's world is (Phase 3): "full" (the default) has ~2,000 named Tier 2
+   * people; tests of the page use "none" to keep every save small and quick.
+   */
+  population?: 'full' | 'none';
 }
 
 type Handlers = {
@@ -176,6 +185,10 @@ export class SimCore {
         };
       },
       'debug/lives': (req) => this.debugLives(req),
+      'world/map': () => mapView(this.state, this.deps.data),
+      'world/place': (req) => placeView(this.state, this.deps.data, req.id, req.view.omniscient),
+      'world/canon': () => canonView(this.state, this.deps.data),
+      'world/factions': (req) => factionViews(this.state, this.deps.data, req.generated ?? false),
     };
   }
 
@@ -211,6 +224,9 @@ export class SimCore {
   // ---- World lifecycle ----------------------------------------------------------------------
 
   private adopt(state: WorldState, load: LoadInfo | null): void {
+    // A world someone lives in gets its map, factions and people now (a save from before Phase 3
+    // gets them, and its past, on loading), so the first snapshot already shows them.
+    if (state.playerId !== null) ensureWorldLayer(state, this.deps.data);
     this.state = state;
     this.rng = Rng.root(state.seed);
     this.lastLoad = load;
@@ -486,7 +502,7 @@ export class SimCore {
     const options = this.genesisOptions(req.options);
     let life;
     try {
-      life = createLife(this.deps.data, options);
+      life = createLife(this.deps.data, options, { population: this.deps.population ?? 'full' });
     } catch (error) {
       if (error instanceof GenesisError) throw new ActionError(error.message);
       throw error;
@@ -633,9 +649,19 @@ export class SimCore {
     }
     feed.reverse();
 
+    // News reaches the player late, or not at all at sea (Phase 3); omniscient views show it all.
     const news = state.news
+      .filter((n) => view.omniscient || newsHeard(n, state.tick))
       .slice(-data.settings.host.newsTail)
-      .map((n) => ({ id: n.id, tick: n.tick, dateLabel: label(n.tick), text: n.text }))
+      .map((n) => ({
+        id: n.id,
+        tick: n.tick,
+        dateLabel: label(n.tick),
+        text: n.text,
+        place: n.place ? (data.locations[n.place]?.name ?? null) : null,
+        late: typeof n.reachTick === 'number' ? Math.max(0, n.reachTick - n.tick) : 0,
+        hidden: !newsHeard(n, state.tick),
+      }))
       .reverse();
 
     const pending: DecisionView[] = state.pending.map((d) => ({
@@ -670,6 +696,8 @@ export class SimCore {
         ? characterSheet(data, state, state.playerId, { omniscient: view.omniscient })
         : null,
       life: lifeView(state, data),
+      travel: travelView(state, data),
+      world: worldSummary(state, data),
       epilogue:
         !state.openEnded && hasReachedPresent(cal, state.tick)
           ? { title: data.life.epilogue.title, text: data.life.epilogue.text }

@@ -1,7 +1,13 @@
 import { dateOf, formatDate } from '../../engine/calendar';
 import type { DerivedDef, GameData } from '../../engine/data/schemas';
 import { Rng } from '../../engine/rng';
-import type { Entity, FlagValue, Relationship, WorldState } from '../../engine/state';
+import type {
+  CharacterData,
+  Entity,
+  FlagValue,
+  Relationship,
+  WorldState,
+} from '../../engine/state';
 import {
   describeBreakdown,
   formatNumber,
@@ -482,8 +488,21 @@ export function playerSummary(
     name: entity.name,
     age,
     stage: race ? stageAt(data.character, race, age).stage.name : '',
-    location: data.birthplaces[c.birthplace]?.shortName ?? c.birthplace,
+    location: whereabouts(data, c),
     berries: c.berries,
     alive: c.alive,
   };
+}
+
+/** Where someone is, for the header (Phase 3): "Loguetown", or "At sea, bound for Twin Cape". */
+function whereabouts(data: GameData, c: CharacterData): string {
+  const voyage = c.travel?.voyage;
+  if (voyage) {
+    const to = data.locations[voyage.to];
+    const how = voyage.mode === 'foot' ? 'On the road' : 'At sea';
+    return `${how}, bound for ${to?.shortName ?? to?.name ?? voyage.to}`;
+  }
+  const at = c.place ?? data.birthplaces[c.birthplace]?.location;
+  const loc = at ? data.locations[at] : undefined;
+  return loc?.shortName ?? loc?.name ?? data.birthplaces[c.birthplace]?.shortName ?? c.birthplace;
 }

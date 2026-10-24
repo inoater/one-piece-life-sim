@@ -35,6 +35,7 @@
     "skin.brown": 1.5
   },
   "features": ["coast", "docks", "jungle", "forest", "ruins", "market", "underworld"],
+  "location": "loc_south_blue_island",
   "map": {
     "x": 1885,
     "y": 1060

@@ -1,0 +1,271 @@
+[
+  {
+    "id": "org_rocks_pirates",
+    "name": "The Rocks Pirates",
+    "shortName": "Rocks Pirates",
+    "kind": "crew",
+    "description": "The most dangerous crew of their age: a ship full of future legends who hated each other almost as much as they hated the world.",
+    "goal": "Rule the world, by way of the Holy Land.",
+    "strength": 35,
+    "umbrella": "org_pirates",
+    "captain": "char_rocks_d_xebec",
+    "founded": {
+      "year": -6
+    },
+    "opinions": {
+      "org_marines": -90,
+      "org_world_government": -95
+    },
+    "home": "loc_god_valley"
+  },
+  {
+    "id": "org_roger_pirates",
+    "name": "The Roger Pirates",
+    "shortName": "Roger Pirates",
+    "kind": "crew",
+    "description": "Gol D. Roger's crew, never large, never beaten for long, and in the end the only crew to sail the whole Grand Line.",
+    "goal": "Reach the end of the Grand Line.",
+    "strength": 25,
+    "trend": 0.5,
+    "umbrella": "org_pirates",
+    "captain": "char_gol_d_roger",
+    "succession": ["char_silvers_rayleigh"],
+    "founded": {
+      "year": -16
+    },
+    "opinions": {
+      "org_marines": -60
+    }
+  },
+  {
+    "id": "org_golden_lion_pirates",
+    "name": "The Golden Lion Pirates",
+    "shortName": "Golden Lion Pirates",
+    "kind": "crew",
+    "description": "The great fleet of Shiki, the Golden Lion: hundreds of ships under one flying flagship.",
+    "goal": "Rule the seas and break the Government.",
+    "strength": 22,
+    "umbrella": "org_pirates",
+    "captain": "char_shiki",
+    "founded": {
+      "year": -20
+    },
+    "opinions": {
+      "org_marines": -80
+    }
+  },
+  {
+    "id": "org_whitebeard_pirates",
+    "name": "The Whitebeard Pirates",
+    "shortName": "Whitebeard Pirates",
+    "kind": "crew",
+    "description": "Edward Newgate's family of sons: sixteen divisions, dozens of allied crews, and a captain who wanted nothing in the world but family.",
+    "goal": "Family, and a flag that protects it.",
+    "strength": 14,
+    "trend": 1.2,
+    "umbrella": "org_pirates",
+    "captain": "char_edward_newgate",
+    "succession": ["char_marco"],
+    "founded": {
+      "year": 1
+    },
+    "opinions": {
+      "org_marines": -60
+    },
+    "home": "loc_sphinx"
+  },
+  {
+    "id": "org_big_mom_pirates",
+    "name": "The Big Mom Pirates",
+    "shortName": "Big Mom Pirates",
+    "kind": "crew",
+    "description": "Charlotte Linlin's family crew, most of them her children, with an island nation of sweets to defend and a mother to feed.",
+    "goal": "A country where every race lives at the same height, and dessert.",
+    "strength": 12,
+    "trend": 1.2,
+    "umbrella": "org_pirates",
+    "captain": "char_charlotte_linlin",
+    "founded": {
+      "year": 1,
+      "month": 6
+    },
+    "opinions": {
+      "org_marines": -60
+    },
+    "home": "loc_whole_cake"
+  },
+  {
+    "id": "org_beasts_pirates",
+    "name": "The Beasts Pirates",
+    "shortName": "Beasts Pirates",
+    "kind": "crew",
+    "description": "Kaido's army of brawlers and artificial-fruit beasts, the strongest single crew in the world by the end of the era.",
+    "goal": "A war big enough to end the world, and a death worth having.",
+    "strength": 10,
+    "trend": 1.4,
+    "umbrella": "org_pirates",
+    "captain": "char_kaido",
+    "founded": {
+      "year": 8
+    },
+    "opinions": {
+      "org_marines": -70,
+      "org_kingdom_wano": -40
+    },
+    "home": "loc_wano"
+  },
+  {
+    "id": "org_donquixote_pirates",
+    "name": "The Donquixote Pirates",
+    "shortName": "Donquixote Pirates",
+    "kind": "crew",
+    "description": "A family of outcasts gathered around a fallen World Noble boy who grew up to be a king of the underworld.",
+    "goal": "Revenge on the world that threw him out.",
+    "strength": 4,
+    "trend": 0.8,
+    "umbrella": "org_pirates",
+    "captain": "char_donquixote_doflamingo",
+    "founded": {
+      "year": 10
+    },
+    "opinions": {
+      "org_underworld": 60
+    },
+    "home": "loc_spider_miles"
+  },
+  {
+    "id": "org_red_hair_pirates",
+    "name": "The Red Hair Pirates",
+    "shortName": "Red Hair Pirates",
+    "kind": "crew",
+    "description": "Shanks's crew: hard-drinking, slow to anger, and by the end of the era one of the four great powers of the sea.",
+    "goal": "Keep the peace between the powers, and enjoy the party.",
+    "strength": 6,
+    "trend": 1.4,
+    "umbrella": "org_pirates",
+    "captain": "char_shanks",
+    "founded": {
+      "year": 16
+    },
+    "opinions": {
+      "org_marines": -30
+    }
+  },
+  {
+    "id": "org_kuja_pirates",
+    "name": "The Kuja Pirates",
+    "shortName": "Kuja Pirates",
+    "kind": "crew",
+    "description": "The warrior women of Amazon Lily, who sail out to plunder and come home to a kingdom no man may enter.",
+    "goal": "Plunder, and come home.",
+    "strength": 6,
+    "trend": 0.3,
+    "umbrella": "org_pirates",
+    "captain": "char_boa_hancock",
+    "founded": {
+      "year": 26
+    },
+    "home": "loc_amazon_lily"
+  },
+  {
+    "id": "org_sun_pirates",
+    "name": "The Sun Pirates",
+    "shortName": "Sun Pirates",
+    "kind": "crew",
+    "description": "Escaped slaves, fish-men and merfolk, who burned the mark of slavery off their skin by painting a sun over it.",
+    "goal": "Freedom, and never to be owned again.",
+    "strength": 8,
+    "umbrella": "org_pirates",
+    "captain": "char_fisher_tiger",
+    "succession": ["char_jinbe", "char_arlong"],
+    "founded": {
+      "year": 22,
+      "month": 2
+    },
+    "active": false,
+    "opinions": {
+      "org_world_government": -90
+    },
+    "home": "loc_fishman_island"
+  },
+  {
+    "id": "org_arlong_pirates",
+    "name": "The Arlong Pirates",
+    "shortName": "Arlong Pirates",
+    "kind": "crew",
+    "description": "Arlong's fish-man crew, who took the lesson of the Sun Pirates to be that humans should be ruled.",
+    "goal": "An empire of fish-men in the East Blue.",
+    "strength": 3,
+    "umbrella": "org_pirates",
+    "captain": "char_arlong",
+    "founded": {
+      "year": 27
+    },
+    "opinions": {
+      "org_marines": -40
+    }
+  },
+  {
+    "id": "org_heart_pirates",
+    "name": "The Heart Pirates",
+    "shortName": "Heart Pirates",
+    "kind": "crew",
+    "description": "A submarine crew from the North Blue under a surgeon with a grudge.",
+    "goal": "One man's revenge, carefully planned.",
+    "strength": 3,
+    "trend": 0.6,
+    "umbrella": "org_pirates",
+    "captain": "char_trafalgar_law",
+    "founded": {
+      "year": 34
+    }
+  },
+  {
+    "id": "org_straw_hat_pirates",
+    "name": "The Straw Hat Pirates",
+    "shortName": "Straw Hat Pirates",
+    "kind": "crew",
+    "description": "A boy with a straw hat and a dream, and the handful of misfits who followed him into every fight in the world.",
+    "goal": "The One Piece, and every dream aboard.",
+    "strength": 1,
+    "trend": 4,
+    "umbrella": "org_pirates",
+    "captain": "char_monkey_d_luffy",
+    "founded": {
+      "year": 35,
+      "month": 12
+    },
+    "active": false
+  },
+  {
+    "id": "org_blackbeard_pirates",
+    "name": "The Blackbeard Pirates",
+    "shortName": "Blackbeard Pirates",
+    "kind": "crew",
+    "description": "Marshall D. Teach's crew of the worst of the worst, gathered for a plan decades in the making.",
+    "goal": "Everything, in the right order.",
+    "strength": 3,
+    "trend": 5,
+    "umbrella": "org_pirates",
+    "captain": "char_marshall_d_teach",
+    "founded": {
+      "year": 35,
+      "month": 10
+    },
+    "active": false
+  },
+  {
+    "id": "org_test_crew",
+    "name": "The Test Crew",
+    "shortName": "Test Crew",
+    "kind": "crew",
+    "description": "Dev fixture crew for the canon tests.",
+    "goal": "Exist for the tests.",
+    "strength": 1,
+    "umbrella": "org_pirates",
+    "captain": "char_test_captain",
+    "succession": ["char_test_mate"],
+    "dev": true,
+    "tags": ["dev"]
+  }
+]

@@ -48,6 +48,7 @@
     "school",
     "doctor"
   ],
+  "location": "loc_wano",
   "map": {
     "x": 853,
     "y": 642

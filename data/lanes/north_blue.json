@@ -1,0 +1,62 @@
+[
+  {
+    "id": "lane_north_blue_town_spider_miles",
+    "from": "loc_north_blue_town",
+    "to": "loc_spider_miles",
+    "miles": 80,
+    "danger": 2,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 3
+  },
+  {
+    "id": "lane_north_blue_town_flevance",
+    "from": "loc_north_blue_town",
+    "to": "loc_flevance",
+    "miles": 90,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 3
+  },
+  {
+    "id": "lane_spider_miles_minion_island",
+    "from": "loc_spider_miles",
+    "to": "loc_minion_island",
+    "miles": 130,
+    "danger": 2,
+    "current": "strong",
+    "requires": "none",
+    "traffic": 1
+  },
+  {
+    "id": "lane_minion_island_lvneel",
+    "from": "loc_minion_island",
+    "to": "loc_lvneel",
+    "miles": 390,
+    "danger": 2,
+    "current": "strong",
+    "requires": "none",
+    "traffic": 1
+  },
+  {
+    "id": "lane_lvneel_north_blue_town",
+    "from": "loc_lvneel",
+    "to": "loc_north_blue_town",
+    "miles": 540,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 2
+  },
+  {
+    "id": "lane_flevance_lvneel",
+    "from": "loc_flevance",
+    "to": "loc_lvneel",
+    "miles": 600,
+    "danger": 1,
+    "current": "steady",
+    "requires": "none",
+    "traffic": 2
+  }
+]

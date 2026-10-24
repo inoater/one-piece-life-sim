@@ -1,0 +1,231 @@
+[
+  {
+    "id": "org_world_government",
+    "name": "The World Government",
+    "shortName": "World Government",
+    "kind": "government",
+    "description": "The union of more than a hundred and seventy kingdoms that has ruled the seas for eight hundred years, from the Holy Land of Mary Geoise.",
+    "goal": "Preserve order, and the order that keeps the World Nobles on top.",
+    "strength": 90,
+    "opinions": {
+      "org_marines": 70,
+      "org_revolutionary_army": -90,
+      "org_pirates": -70,
+      "org_underworld": -30,
+      "org_merchant_guilds": 30,
+      "org_kingdoms": 40
+    },
+    "home": "loc_mary_geoise"
+  },
+  {
+    "id": "org_marines",
+    "name": "The Marines",
+    "shortName": "Marines",
+    "kind": "marines",
+    "description": "The Government's navy: bases in every sea, ranks from seaman recruit to fleet admiral, and a creed of Justice painted on every coat.",
+    "goal": "Hunt pirates and keep the seas in order.",
+    "strength": 72,
+    "trend": 0.3,
+    "parent": "org_world_government",
+    "opinions": {
+      "org_world_government": 60,
+      "org_pirates": -85,
+      "org_revolutionary_army": -80,
+      "org_underworld": -50,
+      "org_merchant_guilds": 30,
+      "org_kingdoms": 30
+    },
+    "home": "loc_marineford"
+  },
+  {
+    "id": "org_pirates",
+    "name": "The pirates of the world",
+    "shortName": "Pirates",
+    "kind": "pirates",
+    "description": "Not one faction but thousands of crews under thousands of flags, from rowboat raiders to emperors of the sea. Their strength is the sum of every crew sailing.",
+    "goal": "Fame, treasure and freedom, in whatever order.",
+    "strength": 25,
+    "opinions": {
+      "org_marines": -80,
+      "org_world_government": -70,
+      "org_merchant_guilds": -40,
+      "org_underworld": 20
+    }
+  },
+  {
+    "id": "org_revolutionary_army",
+    "name": "The Revolutionary Army",
+    "shortName": "Revolutionaries",
+    "kind": "revolutionary",
+    "description": "A secret army that frees kingdoms from their rulers and means, one day, to free the world from the World Government.",
+    "goal": "Topple the World Government.",
+    "strength": 4,
+    "trend": 1.2,
+    "opinions": {
+      "org_world_government": -95,
+      "org_marines": -80,
+      "org_kingdoms": -20
+    }
+  },
+  {
+    "id": "org_kingdoms",
+    "name": "The kingdoms of the world",
+    "shortName": "Kingdoms",
+    "kind": "kingdom",
+    "description": "Every crowned head of the four seas and the Grand Line, members of the World Government or proudly outside it. They count for something together and very little apart.",
+    "goal": "Survive: their thrones, their tribute, their pirates.",
+    "strength": 45,
+    "opinions": {
+      "org_world_government": 30,
+      "org_pirates": -50,
+      "org_revolutionary_army": -30
+    }
+  },
+  {
+    "id": "org_underworld",
+    "name": "The underworld syndicates",
+    "shortName": "Underworld",
+    "kind": "underworld",
+    "description": "Smugglers, fences, slave traders and the brokers who sell Devil Fruits to the highest bidder. They run the black markets of every port that has one.",
+    "goal": "Profit, from anything that can be bought or sold.",
+    "strength": 35,
+    "trend": 0.4,
+    "opinions": {
+      "org_marines": -40,
+      "org_pirates": 25,
+      "org_merchant_guilds": 10
+    }
+  },
+  {
+    "id": "org_merchant_guilds",
+    "name": "The merchant guilds",
+    "shortName": "Merchants",
+    "kind": "merchants",
+    "description": "Traders, shipwrights and the news companies whose gulls carry the papers to every deck at sea.",
+    "goal": "Trade, safely and at a profit.",
+    "strength": 40,
+    "trend": 0.3,
+    "opinions": {
+      "org_pirates": -50,
+      "org_marines": 30,
+      "org_underworld": -10
+    }
+  },
+  {
+    "id": "org_kingdom_goa",
+    "name": "The Goa Kingdom",
+    "shortName": "Goa",
+    "kind": "kingdom",
+    "description": "The kingdom of Dawn Island, whose nobles dream of being invited to Mary Geoise and would burn their own slums to look tidy for the visit.",
+    "goal": "Be noticed by the World Nobles.",
+    "strength": 10,
+    "umbrella": "org_kingdoms",
+    "wgMember": true,
+    "opinions": {
+      "org_world_government": 60
+    },
+    "home": "loc_dawn_island"
+  },
+  {
+    "id": "org_kingdom_drum",
+    "name": "The Drum Kingdom",
+    "shortName": "Drum",
+    "kind": "kingdom",
+    "description": "A winter kingdom whose doctors were once the best in the world, until a king decided medicine was for the royal family alone.",
+    "goal": "Keep its medicine for itself.",
+    "strength": 12,
+    "umbrella": "org_kingdoms",
+    "wgMember": true,
+    "home": "loc_drum"
+  },
+  {
+    "id": "org_kingdom_alabasta",
+    "name": "The Alabasta Kingdom",
+    "shortName": "Alabasta",
+    "kind": "kingdom",
+    "description": "One of the twenty founding kingdoms of the World Government, ruled by the Nefertari line, who alone among the founders stayed home.",
+    "goal": "Rain, and peace for its people.",
+    "strength": 25,
+    "umbrella": "org_kingdoms",
+    "wgMember": true,
+    "opinions": {
+      "org_world_government": 30
+    },
+    "home": "loc_alabasta"
+  },
+  {
+    "id": "org_kingdom_dressrosa",
+    "name": "The Dressrosa Kingdom",
+    "shortName": "Dressrosa",
+    "kind": "kingdom",
+    "description": "A kingdom of the New World ruled by the gentle Riku family, which keeps no army to speak of and no secrets it knows of.",
+    "goal": "Peace, and a quiet colosseum.",
+    "strength": 14,
+    "umbrella": "org_kingdoms",
+    "wgMember": true,
+    "home": "loc_dressrosa"
+  },
+  {
+    "id": "org_kingdom_wano",
+    "name": "Wano Country",
+    "shortName": "Wano",
+    "kind": "kingdom",
+    "description": "The samurai country, ruled from the Flower Capital by its shogun and its five daimyo, outside the World Government and proud of it.",
+    "goal": "Stay closed, and stay itself.",
+    "strength": 22,
+    "umbrella": "org_kingdoms",
+    "wgMember": false,
+    "home": "loc_wano"
+  },
+  {
+    "id": "org_ryugu_kingdom",
+    "name": "The Ryugu Kingdom",
+    "shortName": "Ryugu",
+    "kind": "kingdom",
+    "description": "The undersea kingdom of Fish-Man Island, whose kings have long wanted to live under the sun beside the humans who fear them.",
+    "goal": "Move to the surface, in peace.",
+    "strength": 14,
+    "umbrella": "org_kingdoms",
+    "wgMember": false,
+    "opinions": {
+      "org_world_government": -20
+    },
+    "home": "loc_fishman_island"
+  },
+  {
+    "id": "org_mokomo_dukedom",
+    "name": "The Mokomo Dukedom",
+    "shortName": "Mokomo",
+    "kind": "kingdom",
+    "description": "The Minks' realm on the back of Zou, ruled by two lords: one of the day, one of the night.",
+    "goal": "Keep their promise and their secret.",
+    "strength": 10,
+    "umbrella": "org_kingdoms",
+    "wgMember": false,
+    "home": "loc_zou"
+  },
+  {
+    "id": "org_kingdom_amazon_lily",
+    "name": "The Kingdom of Amazon Lily",
+    "shortName": "Amazon Lily",
+    "kind": "kingdom",
+    "description": "The island of women warriors in the Calm Belt, ruled by the captain of its pirate crew.",
+    "goal": "Keep the world out.",
+    "strength": 12,
+    "umbrella": "org_kingdoms",
+    "wgMember": false,
+    "home": "loc_amazon_lily"
+  },
+  {
+    "id": "org_kingdom_elbaf",
+    "name": "The Kingdom of Elbaf",
+    "shortName": "Elbaf",
+    "kind": "kingdom",
+    "description": "The country of the giants, the strongest warriors in the world, who will fight anyone and lie to no one.",
+    "goal": "Honour, in battle and out of it.",
+    "strength": 30,
+    "umbrella": "org_kingdoms",
+    "wgMember": false,
+    "home": "loc_elbaf"
+  }
+]

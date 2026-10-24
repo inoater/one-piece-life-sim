@@ -1,0 +1,240 @@
+[
+  {
+    "id": "char_nico_olvia",
+    "name": "Nico Olvia",
+    "givenName": "Olvia",
+    "familyName": "Nico",
+    "pronouns": "she",
+    "race": "race_human",
+    "born": {
+      "year": -22,
+      "month": 1
+    },
+    "birthplace": "loc_ohara",
+    "description": "An archaeologist of Ohara who left her daughter to search for the true history, and came home with the Government behind her.",
+    "approx": true,
+    "stats": {
+      "strength": 25,
+      "speed": 30,
+      "endurance": 40,
+      "durability": 30,
+      "dexterity": 50,
+      "intellect": 140,
+      "willpower": 90,
+      "charisma": 60,
+      "perception": 80,
+      "luck": 50
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -22,
+          "month": 1
+        },
+        "place": "loc_ohara",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 9,
+          "month": 1
+        },
+        "place": "loc_grand_line_island",
+        "title": "Archaeologist",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 16,
+          "month": 4
+        },
+        "place": "loc_ohara",
+        "title": "Archaeologist",
+        "approx": true
+      }
+    ],
+    "ties": ["char_nico_robin"]
+  },
+  {
+    "id": "char_clover",
+    "name": "Professor Clover",
+    "givenName": "Clover",
+    "familyName": "",
+    "pronouns": "he",
+    "race": "race_human",
+    "born": {
+      "year": -45,
+      "month": 1
+    },
+    "birthplace": "loc_ohara",
+    "description": "The head scholar of Ohara, who read the Poneglyphs and began to say aloud what they said.",
+    "approx": true,
+    "stats": {
+      "strength": 25,
+      "speed": 30,
+      "endurance": 40,
+      "durability": 30,
+      "dexterity": 50,
+      "intellect": 140,
+      "willpower": 90,
+      "charisma": 60,
+      "perception": 80,
+      "luck": 50
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": -45,
+          "month": 1
+        },
+        "place": "loc_ohara",
+        "title": "Scholar of Ohara",
+        "approx": true
+      }
+    ],
+    "ties": ["char_nico_robin"]
+  },
+  {
+    "id": "char_nico_robin",
+    "name": "Nico Robin",
+    "givenName": "Robin",
+    "familyName": "Nico",
+    "pronouns": "she",
+    "race": "race_human",
+    "born": {
+      "year": 8,
+      "month": 2
+    },
+    "birthplace": "loc_ohara",
+    "description": "The only survivor of Ohara: a child with a bounty on her head and the ability to read history in stone.",
+    "stats": {
+      "strength": 70,
+      "speed": 125,
+      "endurance": 130,
+      "durability": 125,
+      "dexterity": 115,
+      "intellect": 150,
+      "willpower": 130,
+      "charisma": 90,
+      "perception": 120,
+      "luck": 60
+    },
+    "keyframes": [
+      {
+        "from": {
+          "year": 8,
+          "month": 2
+        },
+        "place": "loc_ohara"
+      },
+      {
+        "from": {
+          "year": 16,
+          "month": 7
+        },
+        "place": "loc_west_blue_port",
+        "title": "Fugitive of Ohara",
+        "bounty": 79000000,
+        "status": "hidden",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "place": "loc_alabasta",
+        "affiliation": "org_underworld",
+        "title": "Miss All Sunday of Baroque Works",
+        "bounty": 79000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 5
+        },
+        "place": "loc_skypiea",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Archaeologist of the Straw Hat Pirates",
+        "bounty": 79000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 6
+        },
+        "place": "loc_enies_lobby",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Archaeologist of the Straw Hat Pirates",
+        "bounty": 80000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "place": "loc_sabaody",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Archaeologist of the Straw Hat Pirates",
+        "bounty": 80000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 9
+        },
+        "place": "loc_new_world_island",
+        "affiliation": "org_revolutionary_army",
+        "title": "Guest of the Revolutionary Army",
+        "status": "hidden",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 3
+        },
+        "place": "loc_fishman_island",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Archaeologist of the Straw Hat Pirates",
+        "bounty": 130000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 5
+        },
+        "place": "loc_dressrosa",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Archaeologist of the Straw Hat Pirates",
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 8
+        },
+        "place": "loc_wano",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Archaeologist of the Straw Hat Pirates",
+        "bounty": 930000000,
+        "approx": true
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 11
+        },
+        "place": "loc_egghead",
+        "affiliation": "org_straw_hat_pirates",
+        "title": "Archaeologist of the Straw Hat Pirates",
+        "approx": true
+      }
+    ]
+  }
+]

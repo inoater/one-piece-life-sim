@@ -11,7 +11,7 @@
     "intellect": 0.7,
     "perception": 0.2
   },
-  "tags": ["study", "sea"],
+  "tags": ["study", "sea", "at_sea"],
   "outcomes": [
     {
       "id": "currents",

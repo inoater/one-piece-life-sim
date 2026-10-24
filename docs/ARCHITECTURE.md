@@ -32,16 +32,16 @@ reference into the simulation.
 processes the month `state.tick` and then advances the clock, so 468 ticks from Year 0 process Years 0 to 38
 and leave the clock on tick 468 (the first month of the present).
 
-| #   | Step             | Phase 0 behaviour                                                                              |
-| --- | ---------------- | ---------------------------------------------------------------------------------------------- |
-| 1   | `resolveActions` | Runs queued player actions through a handler table (empty until Phase 2)                       |
-| 2   | `advanceVoyages` | Registered, does nothing (Phase 3)                                                             |
-| 3   | `npcDecisions`   | Cadence and tier filtering in place (Tier 1 every tick, Tier 2 every third); no behaviours yet |
-| 4   | `updateWorld`    | A list of world systems; today only the dev entropy probe                                      |
-| 5   | `rollEvents`     | Fires scheduled and forced events; effects; chains; pending decisions                          |
-| 6   | `compileNews`    | Turns the news that events raised into news items                                              |
-| 7   | `aging`          | Removes expired modifiers (births, deaths and birthdays arrive in Phase 2)                     |
-| 8   | `autosave`       | **Requests** a save by returning an effect; never writes anything itself                       |
+| #   | Step             | Behaviour (as of Phase 3)                                                                   |
+| --- | ---------------- | ------------------------------------------------------------------------------------------- |
+| 1   | `resolveActions` | Builds the world layer if missing; queued actions; the player's routine (Phase 2)           |
+| 2   | `advanceVoyages` | The player's month at sea, or wages for a moored ship (Phase 3)                             |
+| 3   | `npcDecisions`   | Tier 1: the canon cast follows keyframes (monthly). Tier 2: goal-driven choices (quarterly) |
+| 4   | `updateWorld`    | Entropy probe; canon births; factions, territory, economy; Tier 3; epidemics; Tier 2's year |
+| 5   | `rollEvents`     | Canon beats; scheduled events; the player's arrival, voyage or local events; world events   |
+| 6   | `compileNews`    | News items, each with a place and the month it reaches the player                           |
+| 7   | `aging`          | The life loop's month: growth, birthdays, healing, money, births and deaths (Phase 2)       |
+| 8   | `autosave`       | **Requests** a save by returning an effect; never writes anything itself                    |
 
 A system is a `TickStep { id, run(state, ctx) }`. Adding one is one line in `src/systems/index.ts`. Steps
 mutate the draft they are given; `runTick` clones first, `runTickInPlace` does not (the host uses it for
@@ -132,6 +132,39 @@ chronicle reads on.
 `life/headless.ts` runs whole lives with an autopilot for the balancing tool (`npm run lives`,
 worker threads on every core) and the tests.
 
+## The world (Phase 3)
+
+`src/systems/places/` holds the map: the travel graph (`graph.ts`: lanes from a place, shortest
+distances, news delays), where a person is (`place.ts`: the life loop's `Person.place`, a map node or
+the open sea, replacing the birthplace for everything a place decides), building the world layer and
+its past (`setup.ts`, `history.ts`), Tier 2 and Tier 3 people (`people.ts`, `residents.ts`), the
+views and the timeline. `src/systems/voyage/` is travel: the planner (`plan.ts`, the one function
+both the page and the actions ask), the month at sea (`sea.ts`), progress maths (`progress.ts`),
+commands and views. `src/systems/story/` is the event engine: context, conditions, selection and
+weights, roles, skill checks, world effects. `src/systems/canon/` is the cast (keyframes, deaths) and
+the beats. `src/systems/factions.ts` is factions and territory.
+
+**The world layer** is built once per world that someone lives in: location entities for the 55
+places, organization entities for the factions and canon crews, the canon cast born by then; then
+`runHistory` plays Year 0 up to the world's first month with a pipeline of the world's steps only
+(no player, no voyages, no autosave), using the same keyed random streams; then the Tier 2 people
+are made. A bare world (the Phase 0 tools) stays bare: world systems and random events only run once
+the layer exists. A save from before Phase 3 gets its layer when it is opened.
+
+**Canon beats** run first in step 5. A beat waits for what it requires, fills its roles (dead:
+substitute or cancel; elsewhere: travel at canon speed and delay up to six months, or cancel; someone
+still on the story's path counts as present if the story had them there when the window opened),
+and then happens if the canon mode says so this month (Canon: hard and soft on their date; Probable:
+six times the ordinary chance; Random: the ordinary chance). A player present takes part through a
+decision, or witnesses it; one sailing past sees it from the deck; everyone else reads the news. A
+beat that does not happen is a divergence: logged with kind, cause and month, its `onDiverge` applied,
+every beat requiring it diverging at once, and (when the story was broken: a role-holder lost, or the
+player's doing) its survivors leave the story. Every non-player death goes through
+`killCharacter`, so an early canon death is always noticed (fruit, successor, news, ties).
+
+**Knowledge** (rule 4): world events and beats are logged known to nobody, unless the player is
+there; the news carries them, late by distance, and not at all at sea until landfall.
+
 ## Worker protocol
 
 `src/worker/protocol.ts` types every request and response (`boot`, `newWorld`, `advance`, `dispatch`,
@@ -141,7 +174,15 @@ worker threads on every core) and the tests.
 `Snapshot` projection (header facts, the last 300 visible log lines, counts), which keeps messages small
 when the world has thousands of entities.
 
-## Performance
+## Performance (Phase 3)
+
+A full world has about 2,000 Tier 2 people and 2 MB of state. A month takes about 25 ms in Node
+(Tier 2 choices are quarterly), a year's skip about 0.3 s, and a whole 39-year world with every
+person about 7 s (0.2 s without them). Building the world layer for a life entered in Year 30 (the
+past and the people) takes about 0.25 s. A save of that world gzips to about 320 KB. Headless lives
+and the page's tests use worlds without Tier 2 people (`population: "none"`).
+
+## Performance (Phase 0)
 
 468 months with no NPCs take 4 to 8 ms in a cold process (the target was under 2 seconds). 1,000 worlds
 take about 1.4 seconds. Today `runTick` copies the state with `structuredClone`; with ~2,200 entities

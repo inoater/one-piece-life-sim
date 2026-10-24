@@ -24,6 +24,11 @@ import { ID_FORMAT_HINT, isEntityId } from './ids';
  *  - `character` on entities (save version 2): race, birth, family, appearance, hidden potential.
  *  - `character.life` (save version 3): health, injuries, routine, job, debt and the recap's
  *    memory, for the person being played.
+ *  - Save version 4 (Phase 3, the world): `character.place` and `character.travel` (where people
+ *    are, and the player's voyage), `character.npc` (a Tier 2 person's goal), the `place`, `org`
+ *    and `ship` blocks of location, organization and ship entities, `canon` (each beat's fate and
+ *    the divergence log), `eventState` (cooldowns), news with a place and a delivery month, and
+ *    decisions that remember the people an event cast.
  */
 
 export const ENTITY_TYPES = [
@@ -218,6 +223,69 @@ export const LifeSchema = z.strictObject({
 });
 export type LifeData = z.infer<typeof LifeSchema>;
 
+export const TRAVEL_MODE_IDS = ['own', 'crew', 'passenger', 'stowaway', 'marine', 'foot'] as const;
+export const ORDER_IDS = ['hold', 'push', 'resupply', 'detour', 'turn_back'] as const;
+
+/** The state of a vessel at sea: a hired ship's, or a snapshot of the player's own (Phase 3). */
+export const VesselStateSchema = z.strictObject({
+  /** "the Gull's Rest" */
+  name: z.string().min(1),
+  /** A vessel id from data/vessels. */
+  vessel: z.string().min(1),
+  hull: z.number(),
+  maxHull: z.number(),
+  speed: z.number(),
+  /** Hired hands aboard (not counting the player). */
+  crew: z.number().int().min(0),
+  morale: z.number(),
+  /** Person-months of stores. */
+  supplies: z.number(),
+  /** Who commands her, when it is not the player. */
+  captain: z.string().optional(),
+});
+export type VesselState = z.infer<typeof VesselStateSchema>;
+
+/** A trip between two places along one lane (Phase 3). */
+export const VoyageSchema = z.strictObject({
+  lane: z.string().min(1),
+  from: z.string().min(1),
+  to: z.string().min(1),
+  mode: z.enum(TRAVEL_MODE_IDS),
+  /** Total sea miles, and how many are behind the ship. */
+  miles: z.number().min(0),
+  done: z.number().min(0),
+  startTick: z.number().int(),
+  /** Months the planner estimated at departure, and months sailed so far. */
+  estimate: z.number().int().min(1),
+  months: z.number().int().min(0),
+  /** The captain's standing order (own ship); others follow their captain. */
+  order: z.enum(ORDER_IDS),
+  /** The ship carrying a passenger, hand, stowaway or recruit. Null on the player's own ship. */
+  vessel: VesselStateSchema.nullable(),
+  /** The player's own ship entity, when they captain it. */
+  shipId: z.string().nullable(),
+  /** Fare a month (passenger). */
+  fare: z.number().min(0),
+  /** A stowaway who has been found out. */
+  discovered: z.boolean(),
+});
+export type Voyage = z.infer<typeof VoyageSchema>;
+
+/** Where the person being played has been, and what they carry to find their way (Phase 3). */
+export const TravelSchema = z.strictObject({
+  /** The month they reached the place they are at (the Log Pose sets from then). */
+  arrivedTick: z.number().int(),
+  /** Places they have stood on, in order of first visit. */
+  visited: z.array(z.string()),
+  logPose: z.boolean(),
+  /** Places an Eternal Pose of theirs points to. */
+  eternalPoses: z.array(z.string()),
+  voyage: VoyageSchema.nullable(),
+  /** The name of the last ship they sailed in ({ship} in text after arriving). */
+  lastShip: z.string().optional(),
+});
+export type TravelData = z.infer<typeof TravelSchema>;
+
 /**
  * What makes an entity a person. Present on every `character` entity created from Phase 1 on.
  *
@@ -259,8 +327,69 @@ export const CharacterSchema = z.strictObject({
     .optional(),
   /** The life loop (save version 3): present on the person being played, and on past players. */
   life: LifeSchema.optional(),
+  /** Where they are (save version 4): a location id. Absent: their birthplace's place on the map. */
+  place: z.string().min(1).optional(),
+  /** The player's travels (save version 4). */
+  travel: TravelSchema.optional(),
+  /** A Tier 2 person's goal in life, and what they last chose to do (save version 4). */
+  npc: z
+    .strictObject({
+      goal: z.string().min(1),
+      last: z.string().optional(),
+      crewId: z.string().optional(),
+    })
+    .optional(),
 });
 export type CharacterData = z.infer<typeof CharacterSchema>;
+
+/** A place on the map, as it stands in the world (save version 4): who holds it, who lives there. */
+export const PlaceStateSchema = z.strictObject({
+  /** The faction that holds it, or null. */
+  controller: z.string().nullable(),
+  /** 0 to 100: prices, wages and the mood of the place (rule 3: a Stat with its causes). */
+  prosperity: StatSchema,
+  /** Tier 3: everyone not individually simulated, as numbers. */
+  residents: z.strictObject({
+    children: z.number().min(0),
+    adults: z.number().min(0),
+    elders: z.number().min(0),
+  }),
+  /** Tier 3 adults by occupation id. */
+  jobs: z.record(z.string(), z.number().min(0)),
+});
+export type PlaceState = z.infer<typeof PlaceStateSchema>;
+
+/** A faction or crew as it stands (save version 4). Its strength is the entity's `strength` stat. */
+export const OrgStateSchema = z.strictObject({
+  kind: z.string().min(1),
+  active: z.boolean(),
+  /** The captain or leader (a character id), when it has one. */
+  leaderId: z.string().nullable(),
+  /** Named members (generated crews). */
+  members: z.array(z.string()),
+  /** Its opinion of other factions: base plus modifiers (rule 3). */
+  opinions: z.record(z.string(), StatSchema),
+  umbrella: z.string().nullable(),
+  home: z.string().nullable(),
+  foundedTick: z.number().int(),
+  endedTick: z.number().int().nullable(),
+});
+export type OrgState = z.infer<typeof OrgStateSchema>;
+
+/** A ship as it stands (save version 4). Speed, hull and cargo are the entity's stats. */
+export const ShipStateSchema = z.strictObject({
+  vessel: z.string().min(1),
+  ownerId: z.string().nullable(),
+  /** Where it is moored; null while at sea. */
+  place: z.string().nullable(),
+  hull: z.number(),
+  crew: z.number().int().min(0),
+  morale: z.number(),
+  supplies: z.number(),
+  coated: z.boolean(),
+  sunk: z.boolean(),
+});
+export type ShipState = z.infer<typeof ShipStateSchema>;
 
 export const EntitySchema = z.strictObject({
   id: EntityIdSchema,
@@ -275,6 +404,10 @@ export const EntitySchema = z.strictObject({
   knownBy: KnownBySchema,
   /** Present on characters made by character genesis (Phase 1 on). */
   character: CharacterSchema.optional(),
+  /** Phase 3: present on locations, organizations and ships. */
+  place: PlaceStateSchema.optional(),
+  org: OrgStateSchema.optional(),
+  ship: ShipStateSchema.optional(),
 });
 export type Entity = z.infer<typeof EntitySchema>;
 
@@ -287,6 +420,11 @@ export const WorldConfigSchema = z.strictObject({
   difficulty: z.string().min(1),
   /** Whether rare races (Lunarians) could be chosen when this world was made. */
   rareRaces: z.boolean(),
+  /**
+   * Phase 3: "full" fills the world with about 2,000 named Tier 2 people; "none" keeps only the
+   * canon cast and the places' numbers (headless balancing runs, and tests of other systems).
+   */
+  population: z.enum(['full', 'none']),
 });
 export type WorldConfig = z.infer<typeof WorldConfigSchema>;
 
@@ -295,6 +433,7 @@ export const DEFAULT_WORLD_CONFIG: WorldConfig = {
   canonMode: 'canon',
   difficulty: 'normal',
   rareRaces: false,
+  population: 'full',
 };
 
 export const EventRecordSchema = z.strictObject({
@@ -321,6 +460,10 @@ export const NewsItemSchema = z.strictObject({
   text: z.string(),
   tags: z.array(z.string()),
   sourceSeq: z.number().int().min(0).optional(),
+  /** Where it happened (save version 4). Absent: news without a place, heard at once. */
+  place: z.string().nullable().optional(),
+  /** The month the player hears it; null while they are at sea and it has not reached them. */
+  reachTick: z.number().int().nullable().optional(),
 });
 export type NewsItem = z.infer<typeof NewsItemSchema>;
 
@@ -352,8 +495,51 @@ export const PendingDecisionSchema = z.strictObject({
       }),
     )
     .min(1),
+  /** Who the event cast in its roles, and where it happened (save version 4). */
+  roles: z.record(z.string(), z.string()).optional(),
+  place: z.string().optional(),
+  /** A canon beat waiting on the player's part in it (save version 4). */
+  beat: z.boolean().optional(),
 });
 export type PendingDecision = z.infer<typeof PendingDecisionSchema>;
+
+export const BeatStateSchema = z.strictObject({
+  status: z.enum(['pending', 'fired', 'diverged']),
+  /** When it fired or diverged. */
+  tick: z.number().int().optional(),
+  /** A role-holder is on the way: the beat waits until this month. */
+  delayedTo: z.number().int().optional(),
+  /** Who stood in for whom: role -> character id. */
+  cast: z.record(z.string(), z.string()).optional(),
+  /** The log record of its firing or divergence. */
+  seq: z.number().int().min(0).optional(),
+});
+export type BeatState = z.infer<typeof BeatStateSchema>;
+
+/** One line of the Divergence Log: how and why the world left the story. */
+export const DivergenceSchema = z.strictObject({
+  tick: z.number().int(),
+  kind: z.enum([
+    'cancelled',
+    'missed',
+    'player',
+    'substituted',
+    'delayed',
+    'early-death',
+    'requirement',
+  ]),
+  beat: z.string().optional(),
+  entity: z.string().optional(),
+  text: z.string(),
+  causeSeq: z.number().int().min(0).optional(),
+});
+export type Divergence = z.infer<typeof DivergenceSchema>;
+
+export const CanonStateSchema = z.strictObject({
+  beats: z.record(z.string(), BeatStateSchema),
+  divergences: z.array(DivergenceSchema),
+});
+export type CanonState = z.infer<typeof CanonStateSchema>;
 
 export const QueuedActionSchema = z.strictObject({
   kind: z.string().min(1),
@@ -385,6 +571,13 @@ export const WorldStateSchema = z
     pending: z.array(PendingDecisionSchema),
     queue: z.array(QueuedActionSchema),
     flags: z.record(z.string(), FlagValueSchema),
+    /** The canon layer (save version 4). */
+    canon: CanonStateSchema,
+    /** Event id -> the month it last fired and how often (save version 4). */
+    eventState: z.record(
+      z.string(),
+      z.strictObject({ last: z.number().int(), count: z.number().int().min(0) }),
+    ),
   })
   .superRefine((state, ctx) => {
     for (const [key, entity] of Object.entries(state.entities)) {

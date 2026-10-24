@@ -1,0 +1,75 @@
+[
+  {
+    "id": "vessel_dinghy",
+    "name": "Dinghy",
+    "description": "A one-mast boat with oars for when the wind fails. Enough for one or two, a barrel of water and a lot of optimism.",
+    "speed": 90,
+    "hull": 20,
+    "minCrew": 1,
+    "maxCrew": 3,
+    "cargo": 5,
+    "cost": 5000,
+    "soldAt": "docks"
+  },
+  {
+    "id": "vessel_fishing_boat",
+    "name": "Fishing boat",
+    "description": "A sturdy working boat with a hold that smells of yesterday's catch. Slow, honest and hard to sink.",
+    "speed": 110,
+    "hull": 40,
+    "minCrew": 2,
+    "maxCrew": 6,
+    "cargo": 20,
+    "cost": 40000,
+    "soldAt": "docks"
+  },
+  {
+    "id": "vessel_merchant_sloop",
+    "name": "Merchant sloop",
+    "description": "A fast single-masted trader with room below for cargo and a few passengers.",
+    "speed": 140,
+    "hull": 60,
+    "minCrew": 4,
+    "maxCrew": 12,
+    "cargo": 60,
+    "cost": 150000,
+    "soldAt": "shipyard"
+  },
+  {
+    "id": "vessel_caravel",
+    "name": "Caravel",
+    "description": "A three-masted ship built for long voyages: the classic pirate ship, with a figurehead to taste.",
+    "speed": 170,
+    "hull": 90,
+    "minCrew": 8,
+    "maxCrew": 30,
+    "cargo": 40,
+    "cost": 500000,
+    "soldAt": "shipyard"
+  },
+  {
+    "id": "vessel_galleon",
+    "name": "Galleon",
+    "description": "A great warship of the high seas, with cannon decks and a crew of dozens. Commands respect in any harbour.",
+    "speed": 200,
+    "hull": 150,
+    "minCrew": 20,
+    "maxCrew": 100,
+    "cargo": 100,
+    "cost": 2000000,
+    "soldAt": "shipyard"
+  },
+  {
+    "id": "vessel_warship",
+    "name": "Marine warship",
+    "description": "A Marine battleship with a seastone-lined hull that sea kings cannot sense. Issued by the Marines, or taken from them.",
+    "speed": 220,
+    "hull": 220,
+    "minCrew": 40,
+    "maxCrew": 200,
+    "cargo": 60,
+    "cost": null,
+    "soldAt": "marine_base",
+    "tags": ["coated"]
+  }
+]

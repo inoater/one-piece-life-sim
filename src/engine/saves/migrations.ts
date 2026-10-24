@@ -46,6 +46,27 @@ export const MIGRATIONS: Readonly<Record<number, Migration>> = {
    * Rules decide what "fresh" means, and migrations do not read game data.
    */
   2: (envelope) => ({ ...envelope, saveVersion: 3, state: { ...stateOf(envelope) } }),
+  /**
+   * 3 -> 4 (Phase 3, the world): worlds gain the canon layer's state (no beat has a fate yet), the
+   * event engine's cooldowns, and a population setting. Places, factions, the canon cast and the
+   * Tier 2 people are built from game data the first month the world runs (migrations do not read
+   * data), with the canon history up to the save's month; a player with no `place` is wherever
+   * their birthplace is on the map.
+   */
+  3: (envelope) => {
+    const state = stateOf(envelope);
+    const config = (state['config'] ?? {}) as Record<string, unknown>;
+    return {
+      ...envelope,
+      saveVersion: 4,
+      state: {
+        ...state,
+        config: { ...config, population: 'full' },
+        canon: { beats: {}, divergences: [] },
+        eventState: {},
+      },
+    };
+  },
 };
 
 export interface MigrationResult {

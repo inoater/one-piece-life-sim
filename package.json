@@ -1,8 +1,8 @@
 {
   "name": "one-piece-life-sim",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
-  "description": "One Piece Life Sim: a static-site life simulation. Phase 2: the life loop, on character genesis and the Phase 0 engine.",
+  "description": "One Piece Life Sim: a static-site life simulation. Phase 3: the world, travel, events and canon, on the life loop, character genesis and the Phase 0 engine.",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -18,6 +18,7 @@
     "sim": "tsx tools/headless-sim.ts",
     "genesis": "tsx tools/genesis.ts",
     "lives": "tsx tools/lives.ts",
+    "world": "tsx tools/world.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "golden:update": "tsx tools/update-golden.ts",

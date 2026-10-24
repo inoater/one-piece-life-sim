@@ -1,0 +1,352 @@
+[
+  {
+    "id": "evt_voyage_storytelling",
+    "type": "voyage",
+    "title": "A night of stories",
+    "text": "Somebody broke out a fiddle, somebody broke out the rum, and the whole {ship} sat up till dawn telling lies about sea kings.",
+    "trigger": "voyage",
+    "weight": 1.5,
+    "effects": [
+      { "kind": "morale", "value": 12 },
+      { "kind": "train", "stats": { "charisma": 1 } }
+    ],
+    "tags": ["voyage", "social"]
+  },
+  {
+    "id": "evt_voyage_argument",
+    "type": "voyage",
+    "title": "Words on deck",
+    "text": "{role.stranger.name}, who had been needling everyone since the last port, finally picked on you.",
+    "trigger": "voyage",
+    "weight": 1,
+    "roles": { "stranger": { "kind": "stranger", "ageOffset": { "min": -5, "max": 10 } } },
+    "choices": [
+      {
+        "id": "fists",
+        "label": "Settle it with fists",
+        "check": {
+          "stat": "strength",
+          "difficulty": 45,
+          "success": {
+            "text": "You knocked {role.stranger.name} flat, and after that {role.stranger.they} kept a respectful distance.",
+            "effects": [
+              { "kind": "meet", "role": "stranger", "as": "rival", "opinion": -20 },
+              { "kind": "fame", "value": 1 }
+            ]
+          },
+          "failure": {
+            "text": "{role.stranger.name} knocked you flat in front of everyone.",
+            "effects": [
+              { "kind": "meet", "role": "stranger", "as": "rival", "opinion": -30 },
+              { "kind": "injury", "severity": "minor", "cause": "violence" }
+            ]
+          }
+        }
+      },
+      {
+        "id": "talk",
+        "label": "Talk it out",
+        "check": {
+          "stat": "charisma",
+          "difficulty": 40,
+          "success": {
+            "text": "It turned out {role.stranger.name} was scared of the open sea. You talked half the night.",
+            "effects": [{ "kind": "meet", "role": "stranger", "as": "friend", "opinion": 30 }]
+          },
+          "failure": {
+            "text": "Talking made it worse.",
+            "effects": [{ "kind": "morale", "value": -5 }]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "social", "people"]
+  },
+  {
+    "id": "evt_voyage_card_game",
+    "type": "voyage",
+    "title": "Cards in the fo'c'sle",
+    "text": "There was a card game in the fo'c'sle every night, and tonight the pot was worth having.",
+    "trigger": "voyage",
+    "weight": 1,
+    "conditions": [{ "kind": "berries", "min": 2000 }],
+    "choices": [
+      {
+        "id": "play",
+        "label": "Deal yourself in",
+        "check": {
+          "stat": "luck",
+          "difficulty": 50,
+          "criticalSuccess": {
+            "text": "Four kings. You cleaned out the whole table.",
+            "effects": [{ "kind": "berries", "min": 6000, "max": 10000 }]
+          },
+          "success": {
+            "text": "You came out a little ahead.",
+            "effects": [{ "kind": "berries", "min": 1000, "max": 3000 }]
+          },
+          "failure": {
+            "text": "You lost, gracefully.",
+            "effects": [{ "kind": "berries", "min": -3000, "max": -1000 }]
+          },
+          "criticalFailure": {
+            "text": "You lost your purse, then accused the dealer of cheating. You were right, which did not help.",
+            "effects": [
+              { "kind": "berries", "min": -6000, "max": -3000 },
+              { "kind": "injury", "severity": "minor", "area": "head", "cause": "violence" }
+            ]
+          }
+        }
+      },
+      {
+        "id": "watch",
+        "label": "Just watch",
+        "effects": [{ "kind": "train", "stats": { "perception": 0.5 } }]
+      }
+    ],
+    "tags": ["voyage", "social"]
+  },
+  {
+    "id": "evt_voyage_old_salt",
+    "type": "voyage",
+    "title": "An old salt",
+    "text": "{role.stranger.name}, the oldest hand aboard, took a liking to you and began to teach you the stars.",
+    "trigger": "voyage",
+    "weight": 0.8,
+    "conditions": [{ "kind": "noRelation", "relation": "mentor" }],
+    "roles": {
+      "stranger": {
+        "kind": "stranger",
+        "occupation": "occ_old_sailor",
+        "ageOffset": { "min": 25, "max": 45 }
+      }
+    },
+    "effects": [
+      { "kind": "meet", "role": "stranger", "as": "mentor", "opinion": 30 },
+      { "kind": "train", "stats": { "intellect": 1.5, "perception": 1 } }
+    ],
+    "tags": ["voyage", "social", "people"]
+  },
+  {
+    "id": "evt_voyage_stowaway_found",
+    "type": "voyage",
+    "title": "Found out",
+    "text": "A deckhand moved a crate, found you behind it, and started shouting. Within a minute you were standing in front of the captain.",
+    "conditions": [{ "kind": "atSea" }],
+    "choices": [
+      {
+        "id": "work",
+        "label": "Offer to work off your passage",
+        "effects": [
+          { "kind": "train", "stats": { "strength": 1.5, "endurance": 1.5 } },
+          { "kind": "health", "fraction": -0.1 },
+          {
+            "kind": "log",
+            "text": "You scrubbed decks and hauled lines from dawn to dark for the rest of the voyage.",
+            "tags": ["voyage"]
+          }
+        ]
+      },
+      {
+        "id": "talk",
+        "label": "Talk your way out of it",
+        "check": {
+          "stat": "charisma",
+          "difficulty": 50,
+          "success": {
+            "text": "By the end of it the captain was laughing and you had a hammock of your own.",
+            "effects": [{ "kind": "train", "stats": { "charisma": 1 } }]
+          },
+          "failure": {
+            "text": "The captain was not amused. Two hands threw you over the rail.",
+            "effects": [{ "kind": "overboard" }]
+          }
+        }
+      },
+      {
+        "id": "jump",
+        "label": "Jump for it",
+        "effects": [{ "kind": "overboard" }]
+      }
+    ],
+    "tags": ["voyage", "stowaway"]
+  },
+  {
+    "id": "evt_voyage_reverse_mountain",
+    "type": "voyage",
+    "title": "The climb up Reverse Mountain",
+    "text": "The current took the {ship} into the canal up the face of the Red Line, and up, and up, and over the top: and then the long way down into the Grand Line.",
+    "trigger": "voyage",
+    "weight": 200,
+    "conditions": [{ "kind": "lane", "lanes": ["lane_reverse_mountain_twin_cape"] }],
+    "choices": [
+      {
+        "id": "steer",
+        "label": "Hold her straight",
+        "check": {
+          "stat": "navigation",
+          "difficulty": 45,
+          "criticalSuccess": {
+            "text": "You threaded the canal like a needle and shot out onto the Grand Line cheering.",
+            "effects": [
+              { "kind": "fame", "value": 2 },
+              { "kind": "morale", "value": 15 }
+            ]
+          },
+          "success": {
+            "text": "You scraped a wall or two on the way down, and then you were on the Grand Line.",
+            "effects": [{ "kind": "hull", "value": -3 }]
+          },
+          "failure": {
+            "text": "The {ship} slammed into the canal wall halfway down.",
+            "effects": [{ "kind": "hull", "value": -15 }]
+          },
+          "criticalFailure": {
+            "text": "The current threw the {ship} against the rock at the bottom and something important snapped.",
+            "effects": [
+              { "kind": "hull", "value": -30 },
+              { "kind": "injury", "severity": "serious", "cause": "accident" }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "landmark", "grand_line"]
+  },
+  {
+    "id": "evt_voyage_knock_up",
+    "type": "voyage",
+    "title": "The Knock Up Stream",
+    "text": "The sea under the {ship} began to boil and rise. Then the whole ocean went straight up, with you on it.",
+    "trigger": "voyage",
+    "weight": 200,
+    "conditions": [{ "kind": "lane", "lanes": ["lane_jaya_skypiea"] }],
+    "choices": [
+      {
+        "id": "sails",
+        "label": "Spread every sail and fly",
+        "check": {
+          "stat": "navigation",
+          "difficulty": 55,
+          "success": {
+            "text": "The {ship} rode the column of water into the clouds and sailed out onto a sea of white.",
+            "effects": [
+              { "kind": "fame", "value": 3 },
+              { "kind": "morale", "value": 20 }
+            ]
+          },
+          "failure": {
+            "text": "Halfway up the {ship} slipped off the column. She hit the clouds hard and lost her rudder.",
+            "effects": [
+              { "kind": "hull", "value": -20 },
+              { "kind": "injury", "severity": "serious", "cause": "accident" }
+            ]
+          },
+          "criticalFailure": {
+            "text": "The stream threw the {ship} up, then dropped her.",
+            "effects": [
+              { "kind": "hull", "value": -50 },
+              { "kind": "injury", "severity": "severe", "cause": "accident" }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "landmark", "sky"]
+  },
+  {
+    "id": "evt_voyage_deep_sea",
+    "type": "voyage",
+    "title": "Into the deep sea",
+    "text": "In her coating bubble the {ship} sank past the light, past the cold, down along the wall of the Red Line toward Fish-Man Island.",
+    "trigger": "voyage",
+    "weight": 200,
+    "conditions": [{ "kind": "lane", "lanes": ["lane_sabaody_fishman_island"] }],
+    "choices": [
+      {
+        "id": "currents",
+        "label": "Ride the downflows",
+        "check": {
+          "stat": "navigation",
+          "difficulty": 50,
+          "success": {
+            "text": "You rode the cold currents down through the dark, and saw the bubble of Fish-Man Island glowing below.",
+            "effects": [{ "kind": "morale", "value": 10 }]
+          },
+          "failure": {
+            "text": "A deep-sea monster bumped the bubble and something the size of a house tried to eat the rudder.",
+            "effects": [
+              { "kind": "hull", "value": -15 },
+              { "kind": "injury", "severity": "minor", "cause": "accident" }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "landmark"]
+  },
+  {
+    "id": "evt_voyage_wild_beast",
+    "type": "voyage",
+    "title": "Something in the trees",
+    "text": "A beast twice your size stepped out onto the path and looked at you as if you were lunch.",
+    "trigger": "voyage",
+    "weight": 2,
+    "conditions": [{ "kind": "travelMode", "modes": ["foot"] }],
+    "choices": [
+      {
+        "id": "fight",
+        "label": "Fight",
+        "check": {
+          "stat": "combatPower",
+          "difficulty": 160,
+          "success": {
+            "text": "You won, and ate well for a week.",
+            "effects": [
+              { "kind": "supplies", "months": 1 },
+              { "kind": "train", "stats": { "strength": 1 } }
+            ]
+          },
+          "failure": {
+            "text": "It won, but decided you were not worth finishing.",
+            "effects": [{ "kind": "injury", "severity": "serious", "cause": "violence" }]
+          }
+        }
+      },
+      {
+        "id": "detour",
+        "label": "Back away slowly",
+        "effects": [{ "kind": "delay", "months": 0.5 }]
+      }
+    ],
+    "tags": ["voyage", "foot"]
+  },
+  {
+    "id": "evt_voyage_lost_path",
+    "type": "voyage",
+    "title": "Lost",
+    "text": "The path forked, and forked again, and then there was no path at all.",
+    "trigger": "voyage",
+    "weight": 1.5,
+    "conditions": [{ "kind": "travelMode", "modes": ["foot"] }],
+    "choices": [
+      {
+        "id": "track",
+        "label": "Find the way by the sun",
+        "check": {
+          "stat": "perception",
+          "difficulty": 40,
+          "success": {
+            "text": "You found the road again by noon.",
+            "effects": [{ "kind": "train", "stats": { "perception": 1 } }]
+          },
+          "failure": {
+            "text": "You walked in circles for days.",
+            "effects": [{ "kind": "delay", "months": 0.7 }]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "foot"]
+  }
+]

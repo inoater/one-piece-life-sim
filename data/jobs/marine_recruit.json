@@ -29,6 +29,7 @@
   "grants": {
     "marine.enlisted": true
   },
+  "travels": true,
   "risk": {
     "injury": 0.03,
     "cause": "violence"

@@ -6,8 +6,8 @@ import { makeStyle, shouldColor } from './lib/report';
 /**
  * npm run canon-lint
  *
- * Lints data/canon. With no canon files yet it reports that and succeeds; it starts to matter
- * the moment lore is added. Exit code 1 on any problem.
+ * Lints the canon: the cast, the factions, the places and the beats (tools/lib/canon-lint.ts).
+ * Exit code 1 on any problem.
  */
 
 const args = process.argv.slice(2);

@@ -1,0 +1,299 @@
+[
+  {
+    "id": "loc_fishman_island",
+    "name": "Fish-Man Island",
+    "home": "Fish-Man Island",
+    "kind": "undersea",
+    "region": "fishman_island",
+    "climate": "undersea",
+    "description": "A city in a bubble ten thousand metres under the sea, lit by sunlight carried down by a great tree, and ruled by the Ryugu Kingdom. The gateway to the New World.",
+    "population": "capital",
+    "wealth": "medium",
+    "danger": 2,
+    "controller": "org_ryugu_kingdom",
+    "features": ["deep_sea", "coast", "docks", "dojo", "market", "school", "doctor", "ruins"],
+    "eventTags": {
+      "fishman": 2,
+      "trade": 1.3
+    },
+    "culture": "bp_fishman_island",
+    "logPose": 0,
+    "map": {
+      "x": 57,
+      "y": 681
+    }
+  },
+  {
+    "id": "loc_punk_hazard",
+    "name": "Punk Hazard",
+    "home": "Punk Hazard",
+    "kind": "island",
+    "region": "new_world",
+    "climate": "volatile",
+    "description": "An island half on fire and half frozen, once a Government laboratory, now shunned by everyone with a sense of self-preservation.",
+    "population": "hamlet",
+    "wealth": "low",
+    "danger": 5,
+    "controller": "org_world_government",
+    "features": ["coast", "ruins", "cold", "mountains"],
+    "eventTags": {
+      "eerie": 2,
+      "hardship": 2
+    },
+    "culture": "bp_new_world_island",
+    "logPose": 1,
+    "map": {
+      "x": 143,
+      "y": 727
+    }
+  },
+  {
+    "id": "loc_dressrosa",
+    "name": "Dressrosa",
+    "home": "Dressrosa",
+    "kind": "kingdom",
+    "region": "new_world",
+    "climate": "temperate",
+    "description": "A kingdom of love, passion and toys, with a colosseum where gladiators fight for a crowd that never tires of blood, and a palace on a plateau high above it all.",
+    "population": "capital",
+    "wealth": "high",
+    "danger": 3,
+    "controller": "org_kingdom_dressrosa",
+    "features": [
+      "coast",
+      "docks",
+      "market",
+      "dojo",
+      "smithy",
+      "school",
+      "doctor",
+      "farmland",
+      "underworld"
+    ],
+    "eventTags": {
+      "fight": 2,
+      "noble": 1.3
+    },
+    "culture": "bp_new_world_island",
+    "logPose": 1,
+    "map": {
+      "x": 233,
+      "y": 736
+    }
+  },
+  {
+    "id": "loc_green_bit",
+    "name": "Green Bit",
+    "home": "Green Bit",
+    "kind": "island",
+    "region": "new_world",
+    "climate": "temperate",
+    "description": "A forested island joined to Dressrosa by an iron bridge, home to the Tontatta dwarves and to fighting fish that make sailing round it a gamble.",
+    "population": "village",
+    "wealth": "low",
+    "danger": 2,
+    "features": ["forest", "jungle", "farmland", "ruins", "market"],
+    "eventTags": {
+      "wild": 1.5
+    },
+    "culture": "bp_green_bit",
+    "map": {
+      "x": 235,
+      "y": 679
+    }
+  },
+  {
+    "id": "loc_whole_cake",
+    "name": "Whole Cake Island",
+    "home": "Whole Cake Island",
+    "kind": "kingdom",
+    "region": "new_world",
+    "climate": "temperate",
+    "description": "The heart of Totto Land, where the houses are cakes, the trees talk, and every resident pays a monthly tax in sweets or in years of life.",
+    "population": "capital",
+    "wealth": "high",
+    "danger": 4,
+    "features": ["coast", "docks", "market", "forest", "farmland", "smithy"],
+    "eventTags": {
+      "pirate": 2,
+      "trade": 1.5
+    },
+    "culture": "bp_new_world_island",
+    "logPose": 1,
+    "map": {
+      "x": 513,
+      "y": 599
+    }
+  },
+  {
+    "id": "loc_new_world_island",
+    "name": "Ironsong Island",
+    "home": "the island",
+    "kind": "island",
+    "region": "new_world",
+    "climate": "volatile",
+    "origin": "generated",
+    "description": "A New World island under an Emperor's flag one decade and another's the next, where children learn to tell the pirates apart by their colours.",
+    "population": "town",
+    "wealth": "low",
+    "danger": 4,
+    "features": ["coast", "docks", "jungle", "ruins", "market", "smithy", "underworld"],
+    "eventTags": {
+      "pirate": 2,
+      "fight": 1.5
+    },
+    "culture": "bp_new_world_island",
+    "logPose": 2,
+    "map": {
+      "x": 560,
+      "y": 690
+    }
+  },
+  {
+    "id": "loc_zou",
+    "name": "Zou",
+    "home": "Zou",
+    "kind": "island",
+    "region": "new_world",
+    "climate": "tropical",
+    "description": "A forest on the back of an elephant a thousand years old, walking the sea forever. The Mink Tribe lives here, and its rulers guard a secret older than the Government.",
+    "population": "town",
+    "wealth": "medium",
+    "danger": 2,
+    "controller": "org_mokomo_dukedom",
+    "features": ["jungle", "forest", "ruins", "dojo", "market", "school", "doctor"],
+    "eventTags": {
+      "wild": 1.3,
+      "fight": 1.3
+    },
+    "culture": "bp_zou",
+    "logPose": 2,
+    "map": {
+      "x": 665,
+      "y": 733
+    }
+  },
+  {
+    "id": "loc_wano",
+    "name": "Wano Country",
+    "home": "Wano",
+    "kind": "kingdom",
+    "region": "wano",
+    "climate": "temperate",
+    "description": "A country of samurai behind waterfalls and sheer cliffs, closed to the world for centuries. Its swords are the finest anywhere, and its rulers have not always deserved them.",
+    "population": "capital",
+    "wealth": "medium",
+    "danger": 2,
+    "controller": "org_kingdom_wano",
+    "features": [
+      "coast",
+      "docks",
+      "mountains",
+      "farmland",
+      "forest",
+      "dojo",
+      "smithy",
+      "market",
+      "school",
+      "doctor"
+    ],
+    "eventTags": {
+      "fight": 1.5,
+      "honor": 2
+    },
+    "culture": "bp_wano",
+    "logPose": 1,
+    "map": {
+      "x": 853,
+      "y": 616
+    }
+  },
+  {
+    "id": "loc_egghead",
+    "name": "Egghead",
+    "home": "Egghead",
+    "kind": "island",
+    "region": "new_world",
+    "climate": "volatile",
+    "description": "The island of the future: a laboratory city where it is always summer above the clouds and always winter below, and machines walk the streets.",
+    "population": "village",
+    "wealth": "high",
+    "danger": 3,
+    "controller": "org_world_government",
+    "features": ["coast", "docks", "library", "school", "doctor"],
+    "eventTags": {
+      "study": 2.5
+    },
+    "culture": "bp_new_world_island",
+    "logPose": 1,
+    "map": {
+      "x": 906,
+      "y": 713
+    }
+  },
+  {
+    "id": "loc_sphinx",
+    "name": "Sphinx",
+    "home": "Sphinx",
+    "kind": "island",
+    "region": "new_world",
+    "climate": "temperate",
+    "description": "A poor, kind island of farmers and fishers, protected for decades by the flag of the man who was born there.",
+    "population": "village",
+    "wealth": "low",
+    "danger": 1,
+    "features": ["coast", "docks", "farmland", "market"],
+    "eventTags": {
+      "quiet": 2,
+      "farm": 1.5
+    },
+    "culture": "bp_new_world_island",
+    "logPose": 1,
+    "map": {
+      "x": 949,
+      "y": 694
+    }
+  },
+  {
+    "id": "loc_elbaf",
+    "name": "Elbaf",
+    "home": "Elbaf",
+    "kind": "kingdom",
+    "region": "new_world",
+    "climate": "cold",
+    "description": "The land of giants, its trees so tall they hold up a second country above the clouds. Warriors here are judged by how they live and how they die.",
+    "population": "city",
+    "wealth": "medium",
+    "danger": 3,
+    "controller": "org_kingdom_elbaf",
+    "features": ["coast", "mountains", "forest", "cold", "dojo", "smithy", "farmland", "docks"],
+    "eventTags": {
+      "fight": 2,
+      "honor": 1.5
+    },
+    "culture": "bp_elbaf_highlands",
+    "logPose": 2,
+    "map": {
+      "x": 975,
+      "y": 643
+    }
+  },
+  {
+    "id": "loc_laugh_tale",
+    "name": "Laugh Tale",
+    "home": "Laugh Tale",
+    "kind": "landmark",
+    "region": "new_world",
+    "climate": "volatile",
+    "description": "The last island of the Grand Line, found once in living memory. What waits there made the man who found it laugh.",
+    "population": "none",
+    "wealth": "low",
+    "danger": 5,
+    "features": ["coast", "ruins"],
+    "culture": "bp_new_world_island",
+    "map": {
+      "x": 1180,
+      "y": 650
+    }
+  }
+]

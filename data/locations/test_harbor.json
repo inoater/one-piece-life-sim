@@ -1,7 +1,15 @@
 {
   "id": "loc_test_harbor",
   "name": "Test Harbor",
+  "kind": "port",
   "region": "east_blue",
+  "origin": "generated",
   "description": "Dev fixture island. Exists so events can name a place and the cross-reference check has a target.",
+  "population": "none",
+  "wealth": "low",
+  "danger": 0,
+  "features": ["coast", "docks"],
+  "culture": "bp_east_blue_village",
+  "map": { "x": 2400, "y": 330 },
   "tags": ["dev"]
 }

@@ -273,7 +273,7 @@ describe('Done when: lifespans by race', () => {
           const q = mortalityChance({
             data,
             state: t.state,
-            p: { race, home, c },
+            p: { race, c, place: { safety: home.safety } },
             tick: c.birthTick + age * 12,
             healthRatio: 1,
           });

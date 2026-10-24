@@ -7,6 +7,7 @@ import { compileNews } from './news';
 import { npcDecisions } from './population';
 import { advanceVoyages } from './travel';
 import { updateWorld } from './world';
+import { setHistoryPipeline } from './places/history';
 
 /**
  * The tick pipeline, in order. A new system is one line added here (and, if it needs a new slot,
@@ -24,4 +25,16 @@ export const PIPELINE: readonly TickStep[] = [
 ];
 
 export const PIPELINE_IDS: readonly string[] = PIPELINE.map((s) => s.id);
+
+/**
+ * The world's past (Phase 3, places/history.ts): the same steps without the player's actions,
+ * voyages, aging or autosaves, played from Year 0 up to the month a life begins.
+ */
+export const HISTORY_PIPELINE: readonly TickStep[] = [
+  npcDecisions,
+  updateWorld,
+  rollEvents,
+  compileNews,
+];
+setHistoryPipeline(HISTORY_PIPELINE);
 export { PIPELINE_ORDER };

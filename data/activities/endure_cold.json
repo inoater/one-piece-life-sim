@@ -10,7 +10,7 @@
     "endurance": 0.4,
     "durability": 0.2
   },
-  "tags": ["spirit"],
+  "tags": ["spirit", "at_sea"],
   "outcomes": [
     {
       "id": "plunge",

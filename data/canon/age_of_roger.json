@@ -1,0 +1,351 @@
+[
+  {
+    "id": "beat_god_valley",
+    "name": "The God Valley incident",
+    "text": "On God Valley, the Rocks Pirates came for the World Nobles' hunt, and {role.roger.name} and {role.garp.name} fought side by side to stop them. {role.xebec.name} fell, and the Rocks Pirates were finished.",
+    "news": "Strange silence from the West Blue: an island has vanished from the charts, and the Rocks Pirates are spoken of in the past tense.",
+    "divergeText": "The Rocks Pirates left God Valley as they had come, and the World Nobles' hunt became something nobody would speak of.",
+    "divergeNews": "Rumours from the West Blue: the Rocks Pirates have humbled the World Government at a place called God Valley.",
+    "window": { "from": { "year": 0, "month": 1 }, "to": { "year": 0, "month": 3 } },
+    "anchor": "hard",
+    "place": "loc_god_valley",
+    "roles": {
+      "roger": { "char": "char_gol_d_roger" },
+      "garp": { "char": "char_monkey_d_garp" },
+      "xebec": { "char": "char_rocks_d_xebec" }
+    },
+    "outcomes": [
+      { "kind": "death", "role": "xebec", "cause": "fell at God Valley" },
+      { "kind": "crew", "org": "org_rocks_pirates", "active": false },
+      { "kind": "faction", "org": "org_marines", "strength": 5, "source": "God Valley" },
+      { "kind": "control", "place": "loc_god_valley", "org": null },
+      { "kind": "flag", "flag": "canon.god_valley", "value": true }
+    ],
+    "onDiverge": [
+      {
+        "kind": "faction",
+        "org": "org_world_government",
+        "strength": -6,
+        "months": 60,
+        "source": "Humbled at God Valley"
+      },
+      {
+        "kind": "faction",
+        "org": "org_rocks_pirates",
+        "strength": 10,
+        "source": "Victory at God Valley"
+      }
+    ],
+    "dependents": ["beat_garp_hero"],
+    "tags": ["roger", "rocks"]
+  },
+  {
+    "id": "beat_garp_hero",
+    "name": "Garp, Hero of the Marines",
+    "text": "{role.garp.name} was hailed across every Marine base as the Hero of the Marines, and turned down the admiral's coat that came with it.",
+    "news": "Marine Headquarters honours Vice Admiral Garp as the Hero of the Marines. He is said to have refused promotion again.",
+    "window": { "from": { "year": 0, "month": 4 }, "to": { "year": 1, "month": 12 } },
+    "anchor": "soft",
+    "place": "loc_marineford",
+    "roles": { "garp": { "char": "char_monkey_d_garp" } },
+    "requires": ["beat_god_valley"],
+    "outcomes": [
+      {
+        "kind": "faction",
+        "org": "org_marines",
+        "strength": 3,
+        "source": "The Hero of the Marines"
+      }
+    ],
+    "tags": ["marines"]
+  },
+  {
+    "id": "beat_totto_land",
+    "name": "Totto Land is founded",
+    "text": "{role.linlin.name} claimed a cluster of islands in the New World, made them sweet, and called the country Totto Land.",
+    "news": "Big Mom has a country of her own now. Its taxes are paid in sweets, and its citizens include every race she can find.",
+    "window": { "from": { "year": 10, "month": 1 }, "to": { "year": 12, "month": 12 } },
+    "anchor": "soft",
+    "place": "loc_whole_cake",
+    "roles": { "linlin": { "char": "char_charlotte_linlin" } },
+    "outcomes": [
+      { "kind": "control", "place": "loc_whole_cake", "org": "org_big_mom_pirates" },
+      { "kind": "faction", "org": "org_big_mom_pirates", "strength": 6, "source": "Totto Land" }
+    ],
+    "tags": ["emperor"]
+  },
+  {
+    "id": "beat_edd_war",
+    "name": "The Battle of Edd War",
+    "text": "In a storm off a New World island, the fleets of {role.shiki.name} and {role.roger.name} met. A storm sank half the Golden Lion's ships, and Roger's crew did the rest.",
+    "news": "The Golden Lion's fleet is broken: Roger's pirates beat Shiki at Edd War, with a storm on their side.",
+    "divergeNews": "Shiki's great fleet sails on unbroken. Captains in the New World are learning to dip their flags to the Golden Lion.",
+    "window": { "from": { "year": 12, "month": 1 }, "to": { "year": 12, "month": 12 } },
+    "anchor": "soft",
+    "place": "loc_new_world_island",
+    "roles": {
+      "roger": { "char": "char_gol_d_roger" },
+      "shiki": { "char": "char_shiki" }
+    },
+    "outcomes": [
+      {
+        "kind": "faction",
+        "org": "org_golden_lion_pirates",
+        "strength": -12,
+        "source": "Defeat at Edd War"
+      },
+      {
+        "kind": "faction",
+        "org": "org_roger_pirates",
+        "strength": 4,
+        "source": "Victory at Edd War"
+      }
+    ],
+    "onDiverge": [
+      {
+        "kind": "faction",
+        "org": "org_golden_lion_pirates",
+        "strength": 8,
+        "source": "Unbeaten fleet"
+      }
+    ],
+    "tags": ["roger"]
+  },
+  {
+    "id": "beat_laugh_tale",
+    "name": "Roger reaches Laugh Tale",
+    "text": "{role.roger.name}'s crew sailed past the end of every chart and landed on the last island of the Grand Line. What they found there made {role.roger.name} laugh until he cried.",
+    "news": "Is it true? Sailors swear Gol D. Roger has sailed the whole Grand Line. They are calling him the King of the Pirates.",
+    "divergeNews": "Gol D. Roger's crew turned back from the end of the Grand Line, the sailors say, empty-handed or keeping very quiet.",
+    "window": { "from": { "year": 13, "month": 1 }, "to": { "year": 13, "month": 6 } },
+    "anchor": "hard",
+    "place": "loc_laugh_tale",
+    "roles": {
+      "roger": { "char": "char_gol_d_roger" },
+      "rayleigh": { "char": "char_silvers_rayleigh" },
+      "oden": { "char": "char_kozuki_oden", "present": false }
+    },
+    "outcomes": [
+      { "kind": "flag", "flag": "canon.laugh_tale_reached", "value": true },
+      {
+        "kind": "faction",
+        "org": "org_roger_pirates",
+        "strength": 8,
+        "source": "King of the Pirates"
+      }
+    ],
+    "dependents": ["beat_roger_disbands"],
+    "tags": ["roger"]
+  },
+  {
+    "id": "beat_roger_disbands",
+    "name": "The Roger Pirates disband",
+    "text": "{role.roger.name} gathered his crew one last time and sent them home. Few of them knew why, and {role.rayleigh.name} kept it to himself.",
+    "news": "The Roger Pirates have broken up. Nobody knows where the King of the Pirates has gone.",
+    "window": { "from": { "year": 13, "month": 7 }, "to": { "year": 13, "month": 12 } },
+    "anchor": "hard",
+    "place": "loc_sabaody",
+    "roles": {
+      "roger": { "char": "char_gol_d_roger" },
+      "rayleigh": { "char": "char_silvers_rayleigh" }
+    },
+    "requires": ["beat_laugh_tale"],
+    "outcomes": [{ "kind": "crew", "org": "org_roger_pirates", "active": false }],
+    "tags": ["roger"]
+  },
+  {
+    "id": "beat_roger_execution",
+    "name": "The execution of Gol D. Roger",
+    "text": "In the square at {place}, the King of the Pirates climbed the scaffold. Asked where his treasure was, {role.roger.name} told the whole world to go and find it, and the blades fell. The Great Pirate Era began that afternoon.",
+    "news": "GOL D. ROGER EXECUTED AT LOGUETOWN. His last words: his treasure is out there for anyone who wants it. Every harbour in the world is buying ships.",
+    "divergeText": "The scaffold in {place} stood empty: the King of the Pirates was never executed.",
+    "divergeNews": "The Pirate King has slipped the Government's grasp. Nobody knows where he is, and the Marines are not saying.",
+    "window": { "from": { "year": 14, "month": 6 }, "to": { "year": 14, "month": 12 } },
+    "anchor": "hard",
+    "place": "loc_loguetown",
+    "roles": { "roger": { "char": "char_gol_d_roger" } },
+    "outcomes": [
+      { "kind": "death", "role": "roger", "cause": "executed at Loguetown" },
+      { "kind": "flag", "flag": "canon.great_pirate_era", "value": true },
+      {
+        "kind": "faction",
+        "org": "org_pirates",
+        "strength": 15,
+        "source": "The Great Pirate Era"
+      },
+      {
+        "kind": "faction",
+        "org": "org_marines",
+        "strength": 4,
+        "source": "The Pirate King's execution"
+      }
+    ],
+    "onDiverge": [
+      {
+        "kind": "faction",
+        "org": "org_world_government",
+        "strength": -5,
+        "months": 36,
+        "source": "The Pirate King escaped"
+      }
+    ],
+    "dependents": ["beat_shiki_escape"],
+    "participate": { "combatPower": 0 },
+    "instigate": { "combatPower": 900 },
+    "choices": [
+      {
+        "id": "watch",
+        "label": "Watch in silence",
+        "text": "You watched with the crowd, and you never forgot his grin."
+      },
+      {
+        "id": "cheer",
+        "label": "Cheer the Pirate King",
+        "text": "Your shout was one of thousands, and the Marines noted none of them.",
+        "effects": [{ "kind": "count", "flag": "dream.sea", "by": 1 }]
+      },
+      {
+        "id": "storm",
+        "label": "Storm the scaffold",
+        "text": "You went over the barricade with half the crowd behind you, and the blades never fell.",
+        "diverge": true,
+        "instigator": true,
+        "effects": [
+          { "kind": "infamy", "value": 30 },
+          { "kind": "bounty", "value": 50000000 },
+          { "kind": "injury", "severity": "serious", "cause": "violence" }
+        ]
+      }
+    ],
+    "tags": ["roger", "loguetown"]
+  },
+  {
+    "id": "beat_shiki_escape",
+    "name": "The Golden Lion escapes Impel Down",
+    "text": "{role.shiki.name} cut off his own legs to slip his chains and walked out of Impel Down on swords. He was the first ever to escape.",
+    "news": "IMPEL DOWN BREACHED. Shiki the Golden Lion has escaped the Government's great prison, the first man ever to do so.",
+    "divergeNews": "The Golden Lion remains a prisoner of Impel Down. The Government lets the papers say so as often as possible.",
+    "window": { "from": { "year": 14, "month": 9 }, "to": { "year": 14, "month": 10 } },
+    "anchor": "soft",
+    "place": "loc_impel_down",
+    "roles": { "shiki": { "char": "char_shiki" } },
+    "requires": ["beat_roger_execution"],
+    "outcomes": [
+      {
+        "kind": "faction",
+        "org": "org_world_government",
+        "strength": -3,
+        "months": 24,
+        "source": "Impel Down breached"
+      }
+    ],
+    "onDiverge": [{ "kind": "imprison", "role": "shiki", "place": "loc_impel_down" }],
+    "tags": ["impel_down"]
+  },
+  {
+    "id": "beat_ohara",
+    "name": "The Buster Call on Ohara",
+    "text": "The World Government called down a Buster Call on {place} for the crime of reading history. The great library burned with its scholars, {role.clover.name} and {role.olvia.name} among them. One child, {role.robin.name}, was let go.",
+    "news": "Ohara wiped from the map by a Buster Call. The Government says its scholars were reviving an ancient weapon. A bounty of 79 million Berries is posted on an eight-year-old girl.",
+    "divergeNews": "Warships were seen off Ohara, then seen leaving. The scholars are still reading.",
+    "window": { "from": { "year": 16, "month": 5 }, "to": { "year": 16, "month": 6 } },
+    "anchor": "hard",
+    "place": "loc_ohara",
+    "roles": {
+      "clover": { "char": "char_clover" },
+      "olvia": { "char": "char_nico_olvia" },
+      "robin": { "char": "char_nico_robin" },
+      "sakazuki": { "char": "char_sakazuki", "substitutes": ["char_borsalino"] }
+    },
+    "outcomes": [
+      { "kind": "death", "role": "clover", "cause": "killed in the Buster Call on Ohara" },
+      { "kind": "death", "role": "olvia", "cause": "killed in the Buster Call on Ohara" },
+      { "kind": "bounty", "role": "robin", "value": 79000000 },
+      { "kind": "control", "place": "loc_ohara", "org": "org_world_government" },
+      {
+        "kind": "prosperity",
+        "place": "loc_ohara",
+        "value": -40,
+        "source": "Buster Call"
+      },
+      { "kind": "flag", "flag": "canon.ohara_destroyed", "value": true }
+    ],
+    "participate": { "combatPower": 0 },
+    "instigate": { "combatPower": 700 },
+    "choices": [
+      {
+        "id": "flee",
+        "label": "Run for the boats",
+        "text": "You ran with everyone who could, and looked back only once.",
+        "effects": [{ "kind": "health", "fraction": -0.2 }]
+      },
+      {
+        "id": "books",
+        "label": "Save what books you can",
+        "text": "You carried armfuls of books into the lake and watched the tree burn above them.",
+        "effects": [
+          { "kind": "train", "stats": { "intellect": 2, "willpower": 2 } },
+          { "kind": "injury", "severity": "serious", "area": "arms", "cause": "accident" }
+        ]
+      },
+      {
+        "id": "defend",
+        "label": "Stand against the warships",
+        "text": "You stood on the shore and made the warships pay for every yard, and the Buster Call broke off.",
+        "diverge": true,
+        "instigator": true,
+        "effects": [
+          { "kind": "bounty", "value": 120000000 },
+          { "kind": "injury", "severity": "severe", "cause": "violence" }
+        ]
+      }
+    ],
+    "tags": ["ohara", "government"]
+  },
+  {
+    "id": "beat_rouge_death",
+    "name": "Portgas D. Rouge dies",
+    "text": "After twenty months, {role.rouge.name} gave birth to a son on {place} and named him Ace with her last breath.",
+    "window": { "from": { "year": 16, "month": 1 }, "to": { "year": 16, "month": 1 } },
+    "anchor": "hard",
+    "place": "loc_baterilla",
+    "roles": { "rouge": { "char": "char_portgas_d_rouge" } },
+    "outcomes": [{ "kind": "death", "role": "rouge", "cause": "died giving birth" }],
+    "tags": ["roger"]
+  },
+  {
+    "id": "beat_oden_execution",
+    "name": "The fall of the Kozuki",
+    "text": "In the Flower Capital, {role.oden.name} was boiled alive on {role.orochi.name}'s order, holding his retainers up above the oil for an hour. {role.kaido.name} shot him before the hour was out, and the Kozuki castle burned.",
+    "news": "Wano, closed to the world, is said to have a new shogun and a new master. Ships that come near its waterfalls do not come back.",
+    "divergeNews": "Strange word from Wano: the Kozuki family still holds the Flower Capital, and the pirates who came to take it have gone.",
+    "window": { "from": { "year": 18, "month": 1 }, "to": { "year": 18, "month": 12 } },
+    "anchor": "hard",
+    "place": "loc_wano",
+    "roles": {
+      "oden": { "char": "char_kozuki_oden" },
+      "kaido": { "char": "char_kaido" },
+      "orochi": { "char": "char_kurozumi_orochi" }
+    },
+    "outcomes": [
+      { "kind": "death", "role": "oden", "cause": "boiled alive in the Flower Capital" },
+      { "kind": "control", "place": "loc_wano", "org": "org_beasts_pirates" },
+      {
+        "kind": "faction",
+        "org": "org_beasts_pirates",
+        "strength": 10,
+        "source": "Wano's weapons"
+      },
+      {
+        "kind": "faction",
+        "org": "org_kingdom_wano",
+        "strength": -12,
+        "source": "The fall of the Kozuki"
+      },
+      { "kind": "prosperity", "place": "loc_wano", "value": -20, "source": "Orochi's rule" },
+      { "kind": "flag", "flag": "canon.kozuki_fallen", "value": true }
+    ],
+    "dependents": ["beat_wano_liberated"],
+    "tags": ["wano", "emperor"]
+  }
+]

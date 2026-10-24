@@ -1,0 +1,369 @@
+/*
+ * The world (Phase 3): travel in the Actions tab, the powers in the World tab, headlines with
+ * where they came from, the canon timeline and its Divergence Log, and the Map page's lanes, pins
+ * and place panel. Same register as the rest of the log: rules and type, tide for what is open,
+ * squall for trouble, brass only for the decision rule. No new colour tokens; the map keeps its
+ * own sea colours, which do not change with the theme (the chart is the chart).
+ */
+
+@layer components {
+  /* ---- Meters: progress at sea, hull, morale ------------------------------------------- */
+  .travel-meter {
+    position: relative;
+    display: block;
+    height: 6px;
+    margin: var(--s-1) 0 var(--s-2);
+    border-radius: 3px;
+    background: var(--tide-soft);
+    overflow: hidden;
+  }
+  .travel-meter__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--tide);
+    transition: width 0.3s ease;
+  }
+  .travel-meter[data-tone='bad'] .travel-meter__fill {
+    background: var(--squall);
+  }
+  .facts__row dd .travel-meter {
+    margin: 2px 0 0;
+  }
+
+  /* ---- Routes and orders --------------------------------------------------------------- */
+  .routes {
+    display: grid;
+    gap: var(--s-3);
+    margin: var(--s-2) 0 var(--s-3);
+    padding: 0;
+    list-style: none;
+  }
+  .route {
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--rule);
+  }
+  .route:last-child {
+    border-bottom: 0;
+  }
+  .route__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--s-2);
+  }
+  .route__to {
+    font-family: var(--font-text);
+    font-size: var(--text-2);
+  }
+  .route__meta {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .route__text {
+    margin: 2px 0 0;
+    color: var(--mist);
+    font-size: var(--text-0);
+    font-style: italic;
+  }
+  .route__modes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+    margin-top: var(--s-2);
+  }
+  .route__modes .planner__more {
+    flex-basis: 100%;
+  }
+  .route__shut {
+    margin: var(--s-1) 0 0;
+    padding-left: var(--s-4);
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .orders__label {
+    margin: var(--s-3) 0 var(--s-1);
+    font-weight: 650;
+  }
+
+  /* ---- The powers ---------------------------------------------------------------------- */
+  .powers__list {
+    display: grid;
+    gap: var(--s-2);
+    margin: var(--s-2) 0 var(--s-4);
+    padding: 0;
+    list-style: none;
+  }
+  .power__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+  }
+  .power__name {
+    font-weight: 650;
+  }
+  .power__kind {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .power__value {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .power__bar {
+    position: relative;
+    display: block;
+    height: 4px;
+    margin-top: 3px;
+    border-radius: 2px;
+    background: var(--tide-soft);
+    overflow: hidden;
+  }
+  .power__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--cat-world);
+  }
+  .power[data-kind='marines'] .power__fill,
+  .power[data-kind='government'] .power__fill {
+    background: var(--tide);
+  }
+  .power[data-kind='pirates'] .power__fill,
+  .power[data-kind='crew'] .power__fill {
+    background: var(--cat-family);
+  }
+  .power[data-active='false'] {
+    opacity: 0.6;
+  }
+  .power__meta {
+    display: block;
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+
+  /* ---- Headlines: where from, how late --------------------------------------------------- */
+  .headline__meta {
+    grid-column: 2;
+    color: var(--mist);
+    font-size: var(--text-0);
+    font-style: italic;
+  }
+  .headline[data-hidden='true'] {
+    opacity: 0.6;
+  }
+
+  /* ---- The canon page ------------------------------------------------------------------- */
+  .canon-page {
+    max-width: 52rem;
+    margin: 0 auto;
+  }
+  .canon-page__title {
+    font-family: var(--font-text);
+    font-size: var(--text-4);
+    font-weight: 650;
+    line-height: 1.15;
+  }
+  .canon-page__lead,
+  .canon-page__counts {
+    margin-top: var(--s-2);
+    max-width: var(--measure);
+    font-family: var(--font-text);
+    line-height: 1.55;
+  }
+  .canon-page__counts {
+    color: var(--mist);
+  }
+  .canon-page__section {
+    margin-top: var(--s-6);
+  }
+  .canon-page__heading {
+    padding-bottom: var(--s-1);
+    border-bottom: 1px solid var(--rule-strong);
+    font-family: var(--font-text);
+    font-size: var(--text-3);
+    font-weight: 650;
+  }
+  .beats,
+  .divergences {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .beat,
+  .divergence {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: 2px var(--s-3);
+    padding: var(--s-2) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .beat__when,
+  .divergence__date {
+    grid-row: span 2;
+    color: var(--mist);
+    font-size: var(--text-0);
+    font-variant-numeric: tabular-nums;
+  }
+  .beat__name {
+    font-family: var(--font-text);
+    font-weight: 600;
+  }
+  .beat__place {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .beat__status {
+    grid-column: 2;
+    justify-self: start;
+    padding: 0 var(--s-2);
+    border-radius: 999px;
+    background: var(--tide-soft);
+    color: var(--ink);
+    font-size: var(--text-0);
+  }
+  .beat[data-status='diverged'] .beat__status {
+    background: var(--squall-soft);
+    color: var(--ink);
+  }
+  .beat[data-status='pending'] .beat__status,
+  .beat[data-status='beyond'] .beat__status {
+    background: transparent;
+    color: var(--mist);
+    border: 1px solid var(--rule);
+  }
+  .beat[data-status='pending'] .beat__name,
+  .beat[data-status='beyond'] .beat__name {
+    color: var(--mist);
+  }
+  .divergence__kind {
+    color: var(--squall);
+    font-size: var(--text-0);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .divergence__text {
+    grid-column: 2;
+    font-family: var(--font-text);
+  }
+  @media (max-width: 520px) {
+    .beat,
+    .divergence {
+      grid-template-columns: 1fr;
+    }
+    .beat__when,
+    .divergence__date {
+      grid-row: auto;
+    }
+    .beat__status,
+    .divergence__text {
+      grid-column: 1;
+    }
+  }
+
+  /* ---- The Map page: lanes, pins, the place panel --------------------------------------- */
+  .map-page__map {
+    position: relative;
+  }
+  .atlas-route {
+    stroke: rgb(255 255 255 / 0.32);
+    stroke-width: 1.2;
+    stroke-dasharray: 5 4;
+    vector-effect: non-scaling-stroke;
+    fill: none;
+  }
+  .atlas-route[data-land='true'] {
+    stroke-dasharray: 1 3;
+  }
+  .atlas-route[data-kind='reachable'] {
+    stroke: #fff6c8;
+    stroke-width: 2;
+    stroke-dasharray: none;
+  }
+  .atlas-route[data-kind='voyage'] {
+    stroke: #f3c93a;
+    stroke-width: 3;
+    stroke-dasharray: none;
+  }
+  .atlas-pin[data-kind='place'] .atlas-pin__mark {
+    fill: rgb(255 246 200 / 0.75);
+    stroke-width: 1.5;
+  }
+  .atlas-pin[data-kind='visited'] .atlas-pin__mark {
+    fill: #9fd8d0;
+  }
+  .atlas-pin[data-kind='reachable'] .atlas-pin__halo {
+    stroke: #fff6c8;
+  }
+  .atlas-pin[data-kind='target'] .atlas-pin__mark,
+  .atlas-pin[data-kind='here'] .atlas-pin__mark {
+    fill: #f3c93a;
+    stroke: #3a2a00;
+    stroke-width: 1.6;
+  }
+  .atlas-pin[data-kind='target'] .atlas-pin__halo {
+    fill: rgb(243 201 58 / 0.3);
+    stroke: #f3c93a;
+  }
+  .atlas-pin[data-kind='ship'] {
+    cursor: default;
+  }
+  .atlas-pin[data-kind='ship'] .atlas-pin__mark {
+    fill: #ffffff;
+    stroke: #10232c;
+    stroke-width: 1.4;
+  }
+  .place-panel {
+    position: absolute;
+    top: var(--s-3);
+    right: var(--s-3);
+    z-index: 2;
+    width: min(24rem, calc(100% - 4.5rem));
+    max-height: calc(100% - 2 * var(--s-3));
+    overflow: auto;
+    padding: var(--s-3) var(--s-4) var(--s-4);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    animation: rise 0.2s ease both;
+  }
+  .place-panel[hidden] {
+    display: none;
+  }
+  .place-panel__here {
+    margin-bottom: var(--s-2);
+    color: var(--tide);
+    font-weight: 650;
+  }
+  .place-panel__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+    margin: var(--s-2) 0;
+  }
+  .place-panel__heading {
+    margin: var(--s-3) 0 var(--s-1);
+    font-weight: 650;
+  }
+  .place-panel__list {
+    margin: 0;
+    padding-left: var(--s-4);
+    font-size: var(--text-0);
+    line-height: 1.5;
+  }
+  .place-panel__route {
+    margin-top: var(--s-3);
+    padding-top: var(--s-2);
+    border-top: 1px solid var(--rule);
+  }
+  @media (max-width: 699px) {
+    .place-panel {
+      top: auto;
+      right: var(--s-2);
+      bottom: var(--s-2);
+      left: var(--s-2);
+      width: auto;
+      max-height: 60%;
+    }
+  }
+}

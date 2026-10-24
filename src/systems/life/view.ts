@@ -21,6 +21,7 @@ import { continueOptions, lifeRecap, type ContinueOption, type LifeRecap } from 
 import type { LifeEnv } from './env';
 import { jobLock } from './jobs';
 import { loanLock } from './money';
+import { priceMult } from '../places/place';
 
 /**
  * What the page sees of the life being played (Phase 2): plain data for the header bars, the
@@ -258,7 +259,9 @@ export function lifeView(state: WorldState, data: GameData): LifeView | null {
       berries: p.c.berries,
       debt: life.debt,
       interestPct: m.interestPct,
-      livingCost: m.livingCost[p.home.wealth],
+      livingCost: p.place.atSea
+        ? 0
+        : Math.round(m.livingCost[p.place.wealth] * priceMult(state, data, p.place.id)),
       paysOwnWay: humanAgeOf(data, p, tick) >= m.independentAge,
       loans: m.loans.map((amount) => ({
         amount,

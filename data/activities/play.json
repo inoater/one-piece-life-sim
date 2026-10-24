@@ -10,7 +10,7 @@
     "dexterity": 0.2,
     "charisma": 0.2
   },
-  "tags": ["childhood"],
+  "tags": ["childhood", "at_sea"],
   "outcomes": [
     {
       "id": "footrace",
