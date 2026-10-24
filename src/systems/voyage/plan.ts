@@ -1,5 +1,6 @@
 import type { GameData, Lane, TravelMode } from '../../engine/data/schemas';
 import { TRAVEL_MODES } from '../../engine/data/schemas';
+import { entityIds } from '../../engine/entities';
 import type { Entity, WorldState } from '../../engine/state';
 import { formatBerries } from '../genesis/text';
 import {
@@ -57,7 +58,7 @@ export interface RouteOption {
 export function shipHere(state: WorldState, p: Person): Entity | null {
   const here = p.place.location?.id;
   if (!here) return null;
-  for (const id of Object.keys(state.entities).sort()) {
+  for (const id of entityIds(state)) {
     const e = state.entities[id];
     if (e?.ship && e.ship.ownerId === p.entity.id && !e.ship.sunk && e.ship.place === here)
       return e;
@@ -67,8 +68,7 @@ export function shipHere(state: WorldState, p: Person): Entity | null {
 
 /** Every ship the player owns, afloat. */
 export function shipsOf(state: WorldState, ownerId: string): Entity[] {
-  return Object.keys(state.entities)
-    .sort()
+  return entityIds(state)
     .map((id) => state.entities[id] as Entity)
     .filter((e) => e.ship && e.ship.ownerId === ownerId && !e.ship.sunk);
 }

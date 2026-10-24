@@ -5,6 +5,7 @@ import { factionsMonth } from './factions';
 import { peopleYear } from './places/people';
 import { epidemicsMonth, residentsYear } from './places/residents';
 import { worldBuilt } from './places/setup';
+import { fruitsMonth } from './powers/fruits';
 
 /**
  * Step 4: update world state (factions, territory, economy).
@@ -45,6 +46,8 @@ export const worldMonth: WorldSystem = (state, ctx) => {
   residentsYear(state, data, tick);
   epidemicsMonth(state, data, tick, ctx.rng.fork('epidemic'), ctx.newsDrafts);
   peopleYear({ state, data, tick, rng: ctx.rng.fork('people'), newsDrafts: ctx.newsDrafts });
+  // Phase 4: canon users take their fruits on their dates; wild fruits are found, markets sell.
+  fruitsMonth(state, data, tick, ctx.rng.fork('fruits'), ctx.newsDrafts);
 };
 
 export const WORLD_SYSTEMS: readonly WorldSystem[] = [entropyProbe, worldMonth];

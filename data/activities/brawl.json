@@ -37,17 +37,57 @@
         {
           "kind": "fame",
           "value": 0.3
+        },
+        {
+          "kind": "behaviour",
+          "counter": "fights",
+          "by": 1
+        },
+        {
+          "kind": "drift",
+          "tags": ["rash"]
         }
       ]
     },
     {
       "id": "thrown_out",
-      "text": "You were thrown out of the tavern, then out of the next one."
+      "text": "You were thrown out of the tavern, then out of the next one.",
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["rash"]
+        }
+      ]
     },
     {
       "id": "broken_up",
       "text": "The fight was broken up before it was properly started.",
       "weight": 0.8
+    },
+    {
+      "id": "outclassed",
+      "text": "You picked a fight with someone far stronger, and {technique} was not nearly enough.",
+      "weight": 0.3,
+      "effects": [
+        {
+          "kind": "behaviour",
+          "counter": "fights",
+          "by": 1
+        },
+        {
+          "kind": "powerEvent",
+          "event": "stronger_foe"
+        },
+        {
+          "kind": "injury",
+          "severity": "roll",
+          "area": "roll",
+          "cause": "violence"
+        }
+      ]
     }
-  ]
+  ],
+  "practice": {
+    "kind": "fight"
+  }
 }

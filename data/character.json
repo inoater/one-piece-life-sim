@@ -1,13 +1,27 @@
 {
   "baseCap": 100,
   "naturalCeiling": 0.5,
-  "birthFraction": { "min": 0.03, "max": 0.06 },
-  "potentialRoll": { "min": 0.85, "max": 1.15 },
-  "softCap": { "above": 0.9, "factor": 0.1 },
+  "birthFraction": {
+    "min": 0.03,
+    "max": 0.06
+  },
+  "potentialRoll": {
+    "min": 0.85,
+    "max": 1.15
+  },
+  "softCap": {
+    "above": 0.9,
+    "factor": 0.1
+  },
   "decimals": 1,
   "physical": ["strength", "speed", "endurance", "durability", "dexterity"],
   "mental": ["intellect", "willpower", "charisma", "perception"],
-  "luck": { "mean": 50, "sd": 12, "min": 1, "max": 99 },
+  "luck": {
+    "mean": 50,
+    "sd": 12,
+    "min": 1,
+    "max": 99
+  },
   "talentTiers": [
     {
       "id": "ordinary",
@@ -95,7 +109,11 @@
       }
     }
   ],
-  "humanAnchors": { "childEnds": 12, "primeStarts": 20, "elderStarts": 60 },
+  "humanAnchors": {
+    "childEnds": 12,
+    "primeStarts": 20,
+    "elderStarts": 60
+  },
   "stages": [
     {
       "id": "infant",
@@ -171,32 +189,78 @@
       "name": "Max Health",
       "constant": 50,
       "terms": [
-        { "stat": "durability", "factor": 1.2 },
-        { "stat": "endurance", "factor": 0.8 }
+        {
+          "stat": "durability",
+          "factor": 1.2
+        },
+        {
+          "stat": "endurance",
+          "factor": 0.8
+        }
       ],
-      "round": "round"
+      "round": "round",
+      "bonusStat": "healthBonus"
     },
     {
       "id": "vigor",
       "name": "Vigor per month",
       "constant": 6,
-      "terms": [{ "stat": "endurance", "divide": 20 }],
-      "round": "floor"
+      "terms": [
+        {
+          "stat": "endurance",
+          "divide": 20
+        }
+      ],
+      "round": "floor",
+      "bonusStat": "vigorBonus"
     },
     {
       "id": "combatPower",
       "name": "Combat Power",
       "constant": 0,
       "terms": [
-        { "stat": "strength", "factor": 1 },
-        { "stat": "speed", "factor": 0.8 },
-        { "stat": "durability", "factor": 0.8 },
-        { "stat": "dexterity", "factor": 0.6 },
-        { "stat": "willpower", "factor": 0.5 },
-        { "stat": "perception", "factor": 0.4 }
+        {
+          "stat": "strength",
+          "factor": 1
+        },
+        {
+          "stat": "speed",
+          "factor": 0.8
+        },
+        {
+          "stat": "durability",
+          "factor": 0.8
+        },
+        {
+          "stat": "dexterity",
+          "factor": 0.6
+        },
+        {
+          "stat": "willpower",
+          "factor": 0.5
+        },
+        {
+          "stat": "perception",
+          "factor": 0.4
+        }
       ],
       "round": "round",
-      "note": "Weapon, haki and Devil Fruit bonuses join this once those exist."
+      "note": "Plus haki, style and Devil Fruit bonuses (and weapons once Phase 6 makes them items).",
+      "bonusStat": "combatBonus"
+    },
+    {
+      "id": "hakiStamina",
+      "name": "Haki stamina",
+      "constant": 10,
+      "terms": [
+        {
+          "stat": "willpower",
+          "factor": 0.3
+        }
+      ],
+      "round": "floor",
+      "bonusStat": "staminaBonus",
+      "note": "Refills each month; haki training spends it, and past it costs Vigor."
     }
   ]
 }

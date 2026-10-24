@@ -35,7 +35,8 @@
         "approx": true
       }
     ],
-    "ties": ["char_portgas_d_ace"]
+    "ties": ["char_portgas_d_ace"],
+    "traits": ["trait_will_of_d"]
   },
   {
     "id": "char_portgas_d_ace",
@@ -134,7 +135,8 @@
         "approx": true
       }
     ],
-    "ties": ["char_monkey_d_luffy", "char_sabo"]
+    "ties": ["char_monkey_d_luffy", "char_sabo"],
+    "traits": ["trait_kings_qualities", "trait_will_of_d"]
   },
   {
     "id": "char_monkey_d_luffy",
@@ -335,7 +337,8 @@
         "approx": true
       }
     ],
-    "ties": ["char_portgas_d_ace", "char_sabo", "char_nami", "char_nico_robin", "char_jinbe"]
+    "ties": ["char_portgas_d_ace", "char_sabo", "char_nami", "char_nico_robin", "char_jinbe"],
+    "traits": ["trait_kings_qualities", "trait_voice_of_all_things", "trait_will_of_d"]
   },
   {
     "id": "char_nami",
@@ -605,7 +608,8 @@
         "bounty": 3996000000,
         "approx": true
       }
-    ]
+    ],
+    "traits": ["trait_will_of_d", "trait_anomalous_body"]
   },
   {
     "id": "char_donquixote_doflamingo",
@@ -691,7 +695,8 @@
         "status": "imprisoned",
         "approx": true
       }
-    ]
+    ],
+    "traits": ["trait_kings_qualities"]
   },
   {
     "id": "char_crocodile",
@@ -1009,7 +1014,8 @@
         "bounty": 3000000000,
         "approx": true
       }
-    ]
+    ],
+    "traits": ["trait_will_of_d"]
   },
   {
     "id": "char_nefertari_cobra",

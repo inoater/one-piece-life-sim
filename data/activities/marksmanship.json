@@ -35,5 +35,9 @@
       "text": "Bad powder: the shot went nowhere and your ears rang for a day.",
       "weight": 0.5
     }
-  ]
+  ],
+  "practice": {
+    "kind": "drill",
+    "tracks": ["track_gunmanship", "track_archery"]
+  }
 }

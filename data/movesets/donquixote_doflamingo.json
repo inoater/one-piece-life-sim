@@ -1,0 +1,27 @@
+{
+  "id": "moveset_donquixote_doflamingo",
+  "char": "char_donquixote_doflamingo",
+  "eras": [
+    {
+      "from": {
+        "year": 5,
+        "month": 1
+      },
+      "techniques": [
+        "tech_ito_ito_parasite",
+        "tech_ito_ito_overheat",
+        "tech_ito_ito_bird_cage",
+        "tech_ito_ito_god_thread"
+      ],
+      "tracks": {
+        "track_armament": "coat_weapon",
+        "track_observation": "read_intent",
+        "track_conqueror": "willed"
+      },
+      "approx": true,
+      "mastery": 85,
+      "signature": "tech_ito_ito_parasite",
+      "finisher": "tech_ito_ito_god_thread"
+    }
+  ]
+}

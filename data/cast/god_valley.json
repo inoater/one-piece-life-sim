@@ -58,7 +58,8 @@
         "bounty": 5600000000,
         "haki": ["observation", "armament", "conqueror"]
       }
-    ]
+    ],
+    "traits": ["trait_kings_qualities", "trait_will_of_d"]
   },
   {
     "id": "char_gol_d_roger",
@@ -170,7 +171,8 @@
       "char_crocus",
       "char_scopper_gaban",
       "char_portgas_d_rouge"
-    ]
+    ],
+    "traits": ["trait_kings_qualities", "trait_voice_of_all_things", "trait_will_of_d"]
   },
   {
     "id": "char_monkey_d_garp",
@@ -235,6 +237,7 @@
         "title": "Vice Admiral, Hero of the Marines"
       }
     ],
-    "ties": ["char_monkey_d_dragon", "char_monkey_d_luffy"]
+    "ties": ["char_monkey_d_dragon", "char_monkey_d_luffy"],
+    "traits": ["trait_will_of_d"]
   }
 ]

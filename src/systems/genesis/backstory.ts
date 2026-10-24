@@ -159,7 +159,7 @@ export function applyEvent(
         break;
       }
       case 'trait':
-        giveTrait(ctx, effect.trait);
+        giveTrait(ctx, effect.trait, tick);
         break;
       case 'scar':
         ctx.pc.scars.push({ area: effect.area, text: effect.text, tick });
@@ -297,7 +297,7 @@ function birthSentence(ctx: GenesisCtx): string {
   }
   const beforeGodValley =
     date.year < 0 ? `, ${numberWords(-date.year)} years before God Valley` : '';
-  return `You were born in ${date.monthName} of Year ${date.year}${beforeGodValley}, ${place}${family}.`;
+  return `You were born in ${date.monthName} ${date.canonYear} ${date.era}${beforeGodValley}, ${place}${family}.`;
 }
 
 /** Up to `paragraphEvents` of the most notable moments, told in order. */

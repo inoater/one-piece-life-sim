@@ -8,6 +8,7 @@ import { renderTemplate } from '../engine/template';
 import { orderedBeats, resolveBeatChoice, runBeats, type BeatSite } from './canon/beats';
 import { ensureLife, isJailed, livingRelations, relationKind } from './life/body';
 import { applyLifeEffect } from './life/effects';
+import { firstImpressions } from './life/traits';
 import type { LifeEnv } from './life/env';
 import { relate } from './life/people';
 import { locations, withDevFixtures } from './places/graph';
@@ -227,6 +228,7 @@ function applyEffects(
           site.tick,
           Rng.root(state.seed).fork('meet', site.causeSeq, index),
         );
+        firstImpressions(data, p.entity, other);
         break;
       }
       default: {

@@ -1,0 +1,26 @@
+{
+  "id": "moveset_dracule_mihawk",
+  "char": "char_dracule_mihawk",
+  "eras": [
+    {
+      "from": {
+        "year": 20,
+        "month": 1
+      },
+      "techniques": [
+        "tech_mihawk_slash",
+        "tech_sword_shishi_sonson",
+        "tech_sword_36_pound",
+        "tech_sword_daishinkan"
+      ],
+      "tracks": {
+        "track_swordsmanship": "black_blade",
+        "track_armament": "black_blade",
+        "track_observation": "track_crowds"
+      },
+      "approx": true,
+      "signature": "tech_mihawk_slash",
+      "finisher": "tech_sword_daishinkan"
+    }
+  ]
+}

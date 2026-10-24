@@ -1,0 +1,27 @@
+{
+  "id": "moveset_shiki",
+  "char": "char_shiki",
+  "eras": [
+    {
+      "from": {
+        "year": -20,
+        "month": 1
+      },
+      "techniques": [
+        "tech_fuwa_fuwa_lift",
+        "tech_fuwa_fuwa_island_raise",
+        "tech_shiki_shishi_shigure"
+      ],
+      "tracks": {
+        "track_swordsmanship": "flying_slash",
+        "track_armament": "coat_weapon",
+        "track_observation": "read_intent",
+        "track_conqueror": "willed"
+      },
+      "approx": true,
+      "mastery": 85,
+      "signature": "tech_shiki_shishi_shigure",
+      "finisher": "tech_fuwa_fuwa_island_raise"
+    }
+  ]
+}

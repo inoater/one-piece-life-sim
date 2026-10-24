@@ -20,12 +20,22 @@
           "stats": {
             "perception": 0.2
           }
+        },
+        {
+          "kind": "drift",
+          "tags": ["sly"]
         }
       ]
     },
     {
       "id": "crab",
-      "text": "You met your first crab under the porch, and the crab won."
+      "text": "You met your first crab under the porch, and the crab won.",
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["brave"]
+        }
+      ]
     },
     {
       "id": "old_things",
@@ -38,7 +48,13 @@
     {
       "id": "lost",
       "text": "You wandered off and had half of {home} out looking for you before supper.",
-      "weight": 0.5
+      "weight": 0.5,
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["careful"]
+        }
+      ]
     }
   ]
 }

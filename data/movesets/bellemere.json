@@ -1,0 +1,23 @@
+{
+  "id": "moveset_bellemere",
+  "char": "char_bellemere",
+  "eras": [
+    {
+      "from": {
+        "year": -2,
+        "month": 1
+      },
+      "techniques": ["tech_bellemere_shot", "tech_brawl_haymaker", "tech_gun_shot"],
+      "tracks": {
+        "track_gunmanship": "trick",
+        "track_brawling": "street"
+      },
+      "approx": true,
+      "to": {
+        "year": 27,
+        "month": 6
+      },
+      "signature": "tech_bellemere_shot"
+    }
+  ]
+}

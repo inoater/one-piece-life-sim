@@ -1,0 +1,128 @@
+[
+  {
+    "id": "tech_sword_slash",
+    "name": "Clean Cut",
+    "form": "strike",
+    "tags": ["sword", "slash"],
+    "named": false
+  },
+  {
+    "id": "tech_sword_shishi_sonson",
+    "name": "Shishi Sonson",
+    "form": "strike",
+    "tags": ["sword", "slash"],
+    "effects": ["pierce_guard"],
+    "description": "A lion's cut: one stroke, drawn and finished in a breath."
+  },
+  {
+    "id": "tech_sword_36_pound",
+    "name": "Sanjuroku Pound Ho",
+    "form": "projectile",
+    "tags": ["sword", "slash", "wind"],
+    "effects": ["bleed"],
+    "description": "A flying slash of compressed air."
+  },
+  {
+    "id": "tech_sword_daishinkan",
+    "name": "Ittoryu: Daishinkan",
+    "form": "strike",
+    "tags": ["sword", "slash", "armament"],
+    "effects": ["ignore_logia", "pierce_guard"],
+    "description": "A great coated cut."
+  },
+  {
+    "id": "tech_sword_kamusari",
+    "name": "Kamusari",
+    "form": "strike",
+    "tags": ["sword", "slash", "conqueror"],
+    "effects": ["ignore_logia", "knockout"],
+    "finisher": true,
+    "description": "Divine Departure: a slash carried on Conqueror's Haki."
+  },
+  {
+    "id": "tech_nitoryu_taka_nami",
+    "name": "Nitoryu: Taka Nami",
+    "form": "area",
+    "tags": ["sword", "slash", "wind"],
+    "effects": ["knockback"],
+    "description": "Two swords swept like a hawk's wave."
+  },
+  {
+    "id": "tech_nitoryu_rashomon",
+    "name": "Nitoryu Iai: Rashomon",
+    "form": "strike",
+    "tags": ["sword", "slash"],
+    "effects": ["pierce_guard"],
+    "description": "Two swords drawn and crossed through the target."
+  },
+  {
+    "id": "tech_santoryu_oni_giri",
+    "name": "Oni Giri",
+    "form": "strike",
+    "tags": ["sword", "slash"],
+    "effects": ["pierce_guard"],
+    "description": "Three swords crossed in a demon's cut."
+  },
+  {
+    "id": "tech_santoryu_tora_gari",
+    "name": "Tora Gari",
+    "form": "strike",
+    "tags": ["sword", "slash"],
+    "effects": ["bleed"],
+    "description": "A tiger hunt: three swords brought down from above."
+  },
+  {
+    "id": "tech_santoryu_ushi_bari",
+    "name": "Santoryu: Ushi Bari",
+    "form": "strike",
+    "tags": ["sword", "pierce"],
+    "effects": ["pierce_guard"]
+  },
+  {
+    "id": "tech_santoryu_sanzen_sekai",
+    "name": "Santoryu Ogi: Sanzen Sekai",
+    "form": "strike",
+    "tags": ["sword", "slash"],
+    "effects": ["pierce_guard", "bleed"],
+    "finisher": true,
+    "description": "Three Thousand Worlds: the secret cut of three swords."
+  },
+  {
+    "id": "tech_oden_togen_totsuka",
+    "name": "Oden Nitoryu: Togen Totsuka",
+    "form": "strike",
+    "tags": ["sword", "slash", "armament"],
+    "effects": ["pierce_guard", "knockback"]
+  },
+  {
+    "id": "tech_oden_falling_heaven",
+    "name": "Oden's Falling Heaven",
+    "form": "area",
+    "tags": ["sword", "slash", "armament"],
+    "effects": ["knockback"],
+    "named": false
+  },
+  {
+    "id": "tech_iai_draw",
+    "name": "Iai: First Draw",
+    "form": "counter",
+    "tags": ["sword", "slash"],
+    "effects": ["pierce_guard"],
+    "named": false
+  },
+  {
+    "id": "tech_iai_shishi",
+    "name": "Iai: Shishi Sonson",
+    "form": "strike",
+    "tags": ["sword", "slash"],
+    "effects": ["pierce_guard"]
+  },
+  {
+    "id": "tech_asura_ichibugin",
+    "name": "Kyutoryu Asura: Ichibugin",
+    "form": "area",
+    "tags": ["sword", "slash"],
+    "effects": ["pierce_guard", "fear"],
+    "finisher": true
+  }
+]

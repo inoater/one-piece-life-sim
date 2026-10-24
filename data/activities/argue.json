@@ -20,6 +20,10 @@
           "kind": "opinion",
           "target": "parent",
           "value": -10
+        },
+        {
+          "kind": "drift",
+          "tags": ["rash"]
         }
       ]
     },
@@ -34,6 +38,10 @@
           "kind": "opinion",
           "target": "sibling",
           "value": -10
+        },
+        {
+          "kind": "drift",
+          "tags": ["rash", "proud"]
         }
       ]
     },
@@ -52,6 +60,10 @@
             "min": -5,
             "max": 5
           }
+        },
+        {
+          "kind": "drift",
+          "tags": ["proud"]
         }
       ]
     },
@@ -67,6 +79,10 @@
           "kind": "opinion",
           "target": "friend",
           "value": -12
+        },
+        {
+          "kind": "drift",
+          "tags": ["rash"]
         }
       ]
     }

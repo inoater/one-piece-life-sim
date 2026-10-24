@@ -2,6 +2,7 @@ import type { GameData } from '../engine/data/schemas';
 import type { Entity, WorldState } from '../engine/state';
 import { addMod, makeStat, pruneExpired, removeModsBySource, statValue } from '../engine/stats';
 import { spawnDueFactions } from './places/setup';
+import { entityIds } from '../engine/entities';
 
 /**
  * Factions, territory and the economy (Phase 3), a world system in step 4.
@@ -17,8 +18,7 @@ export const MEMBERS = 'Member crews and kingdoms';
 export const TERRITORY = 'Territory held';
 
 export function orgEntities(state: WorldState): Entity[] {
-  return Object.keys(state.entities)
-    .sort()
+  return entityIds(state)
     .map((id) => state.entities[id] as Entity)
     .filter((e) => e.org !== undefined);
 }
@@ -31,7 +31,7 @@ export function strengthOf(entity: Entity, tick: number): number {
 /** Places held by each faction now. */
 export function territory(state: WorldState): Map<string, string[]> {
   const out = new Map<string, string[]>();
-  for (const id of Object.keys(state.entities).sort()) {
+  for (const id of entityIds(state)) {
     const controller = state.entities[id]?.place?.controller;
     if (!controller) continue;
     const list = out.get(controller) ?? [];
@@ -83,7 +83,7 @@ export function factionsMonth(state: WorldState, data: GameData, tick: number): 
     setMod(entity, TERRITORY, entity.org?.active ? places * per.territoryStrength : 0);
   }
 
-  for (const id of Object.keys(state.entities).sort()) {
+  for (const id of entityIds(state)) {
     const place = state.entities[id]?.place;
     if (place) pruneExpired(place.prosperity, tick);
   }

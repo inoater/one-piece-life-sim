@@ -79,7 +79,7 @@ describe('New Life', () => {
     await goToStep('Race');
     pick('race_giant');
     await goToStep('Entry');
-    type('entryYear', '0');
+    type('entryYear', '1486');
     type('entryAge', '0');
     await until(() => text(q('.warnings')).includes('child until 40'), 'the giant warning');
     const warning = q('.warning[data-id="child-at-present"]');

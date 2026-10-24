@@ -3,12 +3,16 @@ import type { Calendar } from './data/schemas';
 /**
  * Clock and calendar. One tick is one month.
  *
- * Tick 0 is Year 0, month 1. The last tick inside the canon span closes Year 38 (tick 467) and
- * "the present" begins at tick 468 (Year 39). `presentTick` and `canonYearOffset` live in
- * data/calendar.json so the endpoint can move when the manga advances.
+ * Tick 0 is Year 0, month 1: January 1486 SC (Sea Circle), the year of the God Valley incident.
+ * The last tick inside the canon span closes Year 38 (1524 SC, tick 467) and "the present" begins
+ * at tick 468 (1525 SC). `presentTick` and `canonYearOffset` live in data/calendar.json so the
+ * endpoint can move when the manga advances.
+ *
+ * Saves, logs and the engine count ticks and game years; only the display uses Sea Circle years
+ * (Phase 4: Phases 0 to 3 showed "Year 0" to "Year 38").
  *
  * Negative ticks are valid (characters can be born before Year 0) and use floor division, so
- * tick -1 is Year -1, month 12.
+ * tick -1 is Year -1, month 12 (December 1485 SC).
  */
 
 export const MONTHS_PER_YEAR = 12;
@@ -23,6 +27,8 @@ export interface DateInfo {
   seasonName: string;
   /** In-universe calendar year (Year + canonYearOffset). Display only. */
   canonYear: number;
+  /** "SC". */
+  era: string;
 }
 
 const seasonLookups = new WeakMap<Calendar, Map<number, { id: string; name: string }>>();
@@ -54,6 +60,7 @@ export function dateOf(cal: Calendar, tick: number): DateInfo {
     seasonId: season.id,
     seasonName: season.name,
     canonYear: year + cal.canonYearOffset,
+    era: cal.era,
   };
 }
 
@@ -62,16 +69,21 @@ export function tickOf(year: number, month = 1): number {
   return year * MONTHS_PER_YEAR + (month - 1);
 }
 
-/** "March, Year 12" */
+/** "March 1497 SC" */
 export function formatDate(date: DateInfo): string {
-  return `${date.monthName}, Year ${date.year}`;
+  return `${date.monthName} ${date.canonYear} ${date.era}`;
+}
+
+/** A game year as people read it: Year 11 -> "1497 SC". */
+export function formatYear(cal: Calendar, year: number): string {
+  return `${year + cal.canonYearOffset} ${cal.era}`;
 }
 
 /** Values for text templates (see template.ts). */
 export function templateVarsFor(date: DateInfo): Record<string, string> {
   return {
     date: formatDate(date),
-    year: String(date.year),
+    year: `${date.canonYear} ${date.era}`,
     month: String(date.month),
     monthName: date.monthName,
     season: date.seasonName,

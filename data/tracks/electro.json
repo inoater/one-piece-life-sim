@@ -1,0 +1,59 @@
+{
+  "id": "track_electro",
+  "name": "Electro",
+  "family": "style",
+  "description": "The Minks' electricity, from a spark to a field of lightning.",
+  "stages": [
+    {
+      "id": "spark",
+      "name": "A spark",
+      "level": "novice",
+      "at": 0,
+      "description": "Let a spark jump from your fur.",
+      "text": "A spark jumped from your fur to the iron door.",
+      "techniques": ["tech_electro"],
+      "combat": 6
+    },
+    {
+      "id": "charged",
+      "name": "Charged strikes",
+      "level": "adept",
+      "at": 50,
+      "description": "Strike with lightning held in the fist.",
+      "text": "Your strike crackled as it landed.",
+      "requires": {
+        "stats": {
+          "willpower": 40
+        }
+      },
+      "techniques": ["tech_electro_claw"],
+      "combat": 18
+    },
+    {
+      "id": "discharge",
+      "name": "A discharge field",
+      "level": "expert",
+      "at": 140,
+      "description": "Let it all go at once.",
+      "text": "Lightning burst out of you in every direction.",
+      "requires": {
+        "stats": {
+          "willpower": 55
+        }
+      },
+      "techniques": ["tech_electro_discharge"],
+      "combat": 32
+    }
+  ],
+  "learn": {
+    "how": "innate",
+    "requires": {
+      "races": ["race_mink"]
+    }
+  },
+  "speedStats": {
+    "willpower": 0.4
+  },
+  "word": "Electro",
+  "tags": ["lightning"]
+}

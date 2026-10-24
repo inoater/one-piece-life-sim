@@ -1,0 +1,31 @@
+{
+  "id": "act_naval_drills",
+  "name": "Study naval tactics",
+  "category": "train_mind",
+  "description": "Charts, wind and the movements of ships in a fight.",
+  "minAge": 12,
+  "physical": false,
+  "usesMentor": true,
+  "requires": {
+    "tracks": {
+      "track_naval_tactics": "open"
+    }
+  },
+  "gains": {
+    "intellect": 0.5,
+    "perception": 0.2
+  },
+  "practice": {
+    "kind": "drill",
+    "tracks": ["track_naval_tactics"]
+  },
+  "tags": ["study", "at_sea"],
+  "outcomes": [
+    {
+      "id": "charts",
+      "text": "You worked a battle between two fleets out on paper, twice.",
+      "weight": 1.5,
+      "quiet": true
+    }
+  ]
+}

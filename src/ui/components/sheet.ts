@@ -237,6 +237,16 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
               null,
               h('strong', null, formatValue(d.value)),
               h('span', { class: 'derived__formula' }, d.formula.replace(/^[^=]*= /, '= ')),
+              // Phase 4: the bonus stack, each line named (rule 3).
+              d.bonus && !compact
+                ? h(
+                    'span',
+                    { class: 'derived__bonus' },
+                    d.bonus.lines
+                      .map((l) => `${l.value >= 0 ? '+' : ''}${formatValue(l.value)} ${l.source}`)
+                      .join(', '),
+                  )
+                : null,
             ),
           ),
         ),
@@ -276,12 +286,29 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
         sheet.traits.map((t) =>
           h(
             'li',
-            { class: 'trait', dataset: { category: t.category }, title: t.description },
+            {
+              class: 'trait',
+              dataset: { category: t.category, kind: t.kind, hidden: String(t.hidden) },
+              title: [t.description, ...t.effects].join('. '),
+            },
             h('span', { class: 'trait__name' }, t.name),
+            compact ? null : h('span', { class: 'trait__kind' }, t.kind),
             compact ? null : h('span', { class: 'trait__description' }, t.description),
+            // Phase 4: everything it does, and where it came from.
+            compact || t.effects.length === 0
+              ? null
+              : h('span', { class: 'trait__effects' }, t.effects.join('; ')),
+            compact ? null : h('span', { class: 'trait__origin' }, t.origin),
           ),
         ),
       ),
+      sheet.traitHints.length > 0 && !compact
+        ? h(
+            'ul',
+            { class: 'trait-hints' },
+            sheet.traitHints.map((hint) => h('li', null, hint)),
+          )
+        : null,
     ),
     sheet.hidden
       ? section(

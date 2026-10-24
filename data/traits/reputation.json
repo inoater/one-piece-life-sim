@@ -1,0 +1,155 @@
+[
+  {
+    "id": "trait_pirate_slayer",
+    "name": "Pirate Slayer",
+    "description": "Has brought down pirate after pirate.",
+    "category": "reputation",
+    "earn": {
+      "counters": {
+        "pirates_beaten": 5
+      }
+    },
+    "opinion": [
+      {
+        "group": "marines",
+        "value": 10
+      },
+      {
+        "group": "pirates",
+        "value": -15
+      },
+      {
+        "group": "commoners",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": "trait_oath_breaker",
+    "name": "Oath-Breaker",
+    "description": "Broke their word, and the seas heard.",
+    "category": "reputation",
+    "earn": {
+      "counters": {
+        "broken_oaths": 1
+      }
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -10
+      }
+    ]
+  },
+  {
+    "id": "trait_folk_hero",
+    "name": "Folk Hero",
+    "description": "Saved enough people that they tell stories.",
+    "category": "reputation",
+    "earn": {
+      "counters": {
+        "rescues": 3
+      }
+    },
+    "opinion": [
+      {
+        "group": "commoners",
+        "value": 12
+      },
+      {
+        "group": "everyone",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "trait_feared",
+    "name": "Feared",
+    "description": "People get out of the way.",
+    "category": "reputation",
+    "earn": {
+      "counters": {
+        "kills": 5
+      }
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -8
+      },
+      {
+        "group": "criminals",
+        "value": 8
+      }
+    ],
+    "checkBonuses": {
+      "charisma": 3
+    }
+  },
+  {
+    "id": "trait_notorious",
+    "name": "Notorious",
+    "description": "Five years of crime, and a name for it.",
+    "category": "reputation",
+    "earn": {
+      "counters": {
+        "crime_months": 60
+      }
+    },
+    "opinion": [
+      {
+        "group": "marines",
+        "value": -12
+      },
+      {
+        "group": "criminals",
+        "value": 10
+      }
+    ]
+  },
+  {
+    "id": "trait_old_salt",
+    "name": "Old Salt",
+    "description": "Has spent so long at sea that sailors take them for one of their own.",
+    "category": "reputation",
+    "earn": {
+      "counters": {
+        "months_at_sea": 60
+      }
+    },
+    "immunities": ["seasickness"],
+    "opinion": [
+      {
+        "group": "pirates",
+        "value": 5
+      },
+      {
+        "group": "marines",
+        "value": 3
+      }
+    ],
+    "gainText": "Five years of salt in your skin. Sailors stopped asking where you came from."
+  },
+  {
+    "id": "trait_underworld_name",
+    "name": "Underworld Name",
+    "description": "Fences, smugglers and bookmakers know who they are, and so do the Marines.",
+    "category": "reputation",
+    "earn": {
+      "counters": {
+        "crime_months": 36
+      }
+    },
+    "opinion": [
+      {
+        "group": "criminals",
+        "value": 12
+      },
+      {
+        "group": "marines",
+        "value": -10
+      }
+    ],
+    "gainText": "Three years on the wrong side of the law, and the back rooms know your name."
+  }
+]

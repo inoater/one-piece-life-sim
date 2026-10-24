@@ -73,10 +73,10 @@ describe('calendar', () => {
 
   it('formats dates and template variables', () => {
     const d = dateOf(cal, tickOf(12, 3));
-    expect(formatDate(d)).toBe('March, Year 12');
+    expect(formatDate(d)).toBe('March 1498 SC');
     expect(templateVarsFor(d)).toEqual({
-      date: 'March, Year 12',
-      year: '12',
+      date: 'March 1498 SC',
+      year: '1498 SC',
       month: '3',
       monthName: 'March',
       season: 'Spring',

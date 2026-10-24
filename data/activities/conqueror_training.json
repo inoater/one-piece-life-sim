@@ -1,0 +1,44 @@
+{
+  "id": "act_conqueror_training",
+  "name": "Hold the King's will",
+  "category": "special",
+  "description": "Conqueror's Haki cannot be drilled, only steadied: standing before a crowd and holding the surge back.",
+  "minAge": 14,
+  "physical": true,
+  "usesMentor": true,
+  "requires": {
+    "tracks": {
+      "track_conqueror": "open"
+    }
+  },
+  "gains": {
+    "willpower": 0.6,
+    "charisma": 0.2
+  },
+  "practice": {
+    "kind": "drill",
+    "tracks": ["track_conqueror"],
+    "stamina": true,
+    "points": 0.2
+  },
+  "tags": ["spirit", "haki"],
+  "outcomes": [
+    {
+      "id": "steady",
+      "text": "You held the surge in check while the crowd shouted around you.",
+      "weight": 1.5,
+      "quiet": true
+    },
+    {
+      "id": "slipped",
+      "text": "It slipped out of you; three people fainted in the square.",
+      "weight": 0.4,
+      "effects": [
+        {
+          "kind": "infamy",
+          "value": 1
+        }
+      ]
+    }
+  ]
+}

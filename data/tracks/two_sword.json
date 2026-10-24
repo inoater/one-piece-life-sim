@@ -1,0 +1,107 @@
+{
+  "id": "track_two_sword",
+  "name": "Two-sword style",
+  "family": "sword",
+  "description": "Nitoryu: two blades, paired cuts.",
+  "stages": [
+    {
+      "id": "ambidexterity",
+      "name": "Ambidexterity drills",
+      "level": "novice",
+      "at": 0,
+      "description": "Two blades, one mind.",
+      "text": "You drew both swords and neither got in the other's way.",
+      "requires": {
+        "gear": {
+          "swords": 2
+        }
+      },
+      "techniques": ["tech_nitoryu_taka_nami"],
+      "combat": 6
+    },
+    {
+      "id": "paired_cuts",
+      "name": "Paired cuts",
+      "level": "adept",
+      "at": 40,
+      "description": "Two cuts that land as one.",
+      "text": "Two cuts landed as one.",
+      "requires": {
+        "stats": {
+          "dexterity": 50
+        }
+      },
+      "techniques": ["tech_nitoryu_rashomon"],
+      "combat": 16
+    },
+    {
+      "id": "crossing",
+      "name": "Crossing storm",
+      "level": "expert",
+      "at": 100,
+      "description": "A flurry of crossing cuts.",
+      "text": "Your two blades became a storm.",
+      "requires": {
+        "stats": {
+          "dexterity": 60,
+          "speed": 55
+        }
+      },
+      "combat": 26
+    },
+    {
+      "id": "two_master",
+      "name": "Master of two swords",
+      "level": "master",
+      "at": 180,
+      "description": "Two blades as natural as two hands.",
+      "text": "Two swords were as natural to you as two hands.",
+      "requires": {
+        "breakthrough": true,
+        "stats": {
+          "dexterity": 70
+        }
+      },
+      "combat": 38
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a dojo master",
+        "features": ["dojo"],
+        "fee": 20000
+      },
+      {
+        "name": "a wandering master of Wano",
+        "places": ["loc_wano"],
+        "fee": 50000,
+        "mult": 1.35
+      },
+      {
+        "name": "Dracule Mihawk, if he finds you worth it",
+        "places": ["loc_kuraigana"],
+        "mult": 1.5,
+        "requires": {
+          "stats": {
+            "dexterity": 60
+          }
+        }
+      }
+    ],
+    "requires": {
+      "tracks": {
+        "track_swordsmanship": "cut_wood"
+      },
+      "gear": {
+        "swords": 2
+      }
+    }
+  },
+  "speedStats": {
+    "dexterity": 0.6
+  },
+  "word": "Twin",
+  "tags": ["sword", "slash"]
+}

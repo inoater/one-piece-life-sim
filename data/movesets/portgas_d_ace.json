@@ -1,0 +1,33 @@
+{
+  "id": "moveset_portgas_d_ace",
+  "char": "char_portgas_d_ace",
+  "eras": [
+    {
+      "from": {
+        "year": 34,
+        "month": 1
+      },
+      "techniques": [
+        "tech_mera_mera_hiken",
+        "tech_mera_mera_higan",
+        "tech_mera_mera_hibashira",
+        "tech_mera_mera_kagero",
+        "tech_mera_mera_enkai_hibashira",
+        "tech_mera_mera_dai_enkai_entei"
+      ],
+      "tracks": {
+        "track_observation": "read_intent",
+        "track_armament": "coat",
+        "track_conqueror": "unwilled"
+      },
+      "approx": true,
+      "to": {
+        "year": 36,
+        "month": 9
+      },
+      "mastery": 70,
+      "signature": "tech_mera_mera_hiken",
+      "finisher": "tech_mera_mera_dai_enkai_entei"
+    }
+  ]
+}

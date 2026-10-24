@@ -52,5 +52,16 @@
         }
       ]
     }
-  ]
+  ],
+  "practice": {
+    "kind": "drill",
+    "tracks": [
+      "track_swordsmanship",
+      "track_two_sword",
+      "track_three_sword",
+      "track_iai",
+      "track_oden_two_sword",
+      "track_asura"
+    ]
+  }
 }

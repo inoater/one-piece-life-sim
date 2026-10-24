@@ -19,6 +19,8 @@ import { lifeLog, renderLife, reportLine, withCause, type LifeEnv } from './env'
 import { catchIllnesses, die, healMonth, mortalityCause, mortalityChance } from './health';
 import { monthOfMoney } from './money';
 import { makePerson, relate, relationWords } from './people';
+import { releaseFruitOf } from '../powers/fruits';
+import { powersMonth } from '../powers/month';
 
 /**
  * The passing of a month for the person being played and the people around them (step 7):
@@ -163,6 +165,7 @@ function relativesAge(env: LifeEnv, rng: Rng): void {
     const cause = mortalityCause(input, roll.fork('cause'));
     oc.alive = false;
     oc.death = { tick, cause };
+    releaseFruitOf(state, data, other, tick, roll.fork('fruit'));
     if (rel.kind === 'sweetheart') {
       delete other.flags['married'];
       delete p.entity.flags['married'];
@@ -215,6 +218,9 @@ export function liveMonth(env: LifeEnv): void {
   siblingsDue(withCause(env, 'sys:birth'), rng.fork('siblings'));
   childrenDue(withCause(env, 'sys:birth'), rng.fork('children'));
   relativesAge(withCause(env, 'sys:mortality'), rng.fork('relatives'));
+  // Phase 4: haki stamina, rust and fading, a fruit being understood, personality and behaviour.
+  powersMonth(withCause(env, 'sys:powers', undefined, rng.fork('powers')));
+  if (!p.c.alive) return;
   recordPeaks(env);
   const max = maxHealthOf(data, p.entity, tick + 1);
   if (env.life.health > max) env.life.health = max;

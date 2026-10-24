@@ -1,0 +1,95 @@
+[
+  {
+    "id": "trait_superstitious",
+    "name": "Superstitious",
+    "description": "Knocks on wood, salts the doorstep.",
+    "category": "quirk",
+    "eventWeights": {
+      "eerie": 1.5
+    },
+    "checkBonuses": {
+      "willpower": -2
+    }
+  },
+  {
+    "id": "trait_gambler",
+    "name": "Gambler",
+    "description": "Cannot walk past a game of dice.",
+    "category": "quirk",
+    "eventWeights": {
+      "money": 1.3
+    },
+    "checkBonuses": {
+      "luck": 3
+    }
+  },
+  {
+    "id": "trait_show_off",
+    "name": "Show-Off",
+    "description": "Cannot do anything quietly.",
+    "category": "quirk",
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": 3,
+        "firstImpression": true
+      },
+      {
+        "group": "nobles",
+        "value": -3
+      }
+    ],
+    "checkBonuses": {
+      "charisma": 3
+    }
+  },
+  {
+    "id": "trait_loudmouth",
+    "name": "Loudmouth",
+    "description": "Says it loudly, and first.",
+    "category": "quirk",
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -4
+      }
+    ],
+    "checkBonuses": {
+      "charisma": 2
+    }
+  },
+  {
+    "id": "trait_storyteller",
+    "name": "Storyteller",
+    "description": "Turns every voyage into a tale.",
+    "category": "quirk",
+    "checkBonuses": {
+      "charisma": 5
+    },
+    "eventWeights": {
+      "social": 1.3
+    }
+  },
+  {
+    "id": "trait_bookish",
+    "name": "Bookish",
+    "description": "Always has a book in a pocket.",
+    "category": "quirk",
+    "trainingMods": {
+      "intellect": 10
+    },
+    "checkBonuses": {
+      "combatPower": -3
+    }
+  },
+  {
+    "id": "trait_sweet_tooth",
+    "name": "Sweet Tooth",
+    "description": "Will trade anything for cake.",
+    "category": "quirk",
+    "derivedMods": {
+      "maxHealth": -2,
+      "vigor": 1
+    }
+  }
+]

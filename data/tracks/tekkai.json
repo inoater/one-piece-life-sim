@@ -1,0 +1,60 @@
+{
+  "id": "track_tekkai",
+  "name": "Tekkai",
+  "family": "six_powers",
+  "description": "One of the Six Powers (Rokushiki): rooted hardening, then moving while hardened, then hardening as a counter.",
+  "stages": [
+    {
+      "id": "first",
+      "name": "Rooted hardening",
+      "level": "novice",
+      "at": 0,
+      "description": "Tekkai: rooted hardening.",
+      "text": "You managed Tekkai for the first time: rooted hardening.",
+      "techniques": ["tech_tekkai"],
+      "combat": 6
+    },
+    {
+      "id": "second",
+      "name": "Moving while hardened",
+      "level": "adept",
+      "at": 40,
+      "description": "Tekkai: moving while hardened.",
+      "text": "Tekkai came to you without thinking now: moving while hardened.",
+      "requires": {
+        "stats": {
+          "durability": 60
+        }
+      },
+      "combat": 14
+    },
+    {
+      "id": "mastered",
+      "name": "Hardening as a counter",
+      "level": "master",
+      "at": 100,
+      "description": "Tekkai mastered: hardening as a counter.",
+      "text": "You had mastered Tekkai: hardening as a counter.",
+      "requires": {
+        "stats": {
+          "durability": 75
+        },
+        "teacher": true
+      },
+      "techniques": ["tech_tekkai_2"],
+      "combat": 24,
+      "flags": {
+        "six_powers.tekkai": true
+      }
+    }
+  ],
+  "learn": {
+    "how": "event"
+  },
+  "group": "six_powers",
+  "speedStats": {
+    "durability": 0.5
+  },
+  "word": "Tekkai",
+  "tags": ["body"]
+}

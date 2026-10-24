@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { FRUIT_CONTAINERS, FruitDefSchema, TechniqueDefSchema } from './data/defs';
 import { ID_FORMAT_HINT, isEntityId } from './ids';
 
 /**
@@ -29,6 +30,10 @@ import { ID_FORMAT_HINT, isEntityId } from './ids';
  *    and `ship` blocks of location, organization and ship entities, `canon` (each beat's fate and
  *    the divergence log), `eventState` (cooldowns), news with a place and a delivery month, and
  *    decisions that remember the people an event cast.
+ *  - Save version 5 (Phase 4, powers): `character.powers` (power tracks, the Devil Fruit eaten,
+ *    haki stamina, the moveset, technique drafts, fruits and gear carried, fruit knowledge),
+ *    `character.personality` (hidden counters), `character.traitInfo` (when and how each trait
+ *    was gained), and the `fruit` block of fruit entities (one entity per fruit in the world).
  */
 
 export const ENTITY_TYPES = [
@@ -286,6 +291,109 @@ export const TravelSchema = z.strictObject({
 });
 export type TravelData = z.infer<typeof TravelSchema>;
 
+/** A power track as one person stands on it (Phase 4): the stage reached and the progress made. */
+export const TrackStateSchema = z.strictObject({
+  /** Index of the stage reached (0: the first). */
+  stage: z.number().int().min(0),
+  /** Cumulative progress: practice points, or fruit mastery (0 to 100). */
+  progress: z.number().min(0),
+  /** A breakthrough is banked: the next plateau may open. */
+  breakthrough: z.boolean(),
+  since: z.number().int(),
+  lastUsed: z.number().int(),
+  /** Months practised, all told. */
+  months: z.number().int().min(0),
+  /** The teacher multiplier of whoever took them on (absent: self-taught). */
+  teacherMult: z.number().min(1).optional(),
+  /** Where they were taught (a location id): a stage that needs a teacher can be reached there. */
+  taughtAt: z.string().optional(),
+});
+export type TrackState = z.infer<typeof TrackStateSchema>;
+
+/** One technique a fighter knows, with its own mastery and use (Phase 4). */
+export const MoveSchema = z.strictObject({
+  /** A technique id from data, a fruit's, or an invented one's ("tech_custom_000003"). */
+  id: z.string().min(1),
+  /** The player's own name for it, when renamed. */
+  name: z.string().min(1).max(60).optional(),
+  /** "fruit", "track:track_swordsmanship", "custom", "combo". */
+  source: z.string().min(1),
+  /** 0 to 100: how sharp it is. */
+  mastery: z.number().min(0).max(100),
+  uses: z.number().int().min(0),
+  learnedTick: z.number().int(),
+  lastUsed: z.number().int().nullable(),
+  /** Unused for years: forgotten until practised again. */
+  faded: z.boolean(),
+  /** Invented, combined and generated techniques carry their whole definition. */
+  def: TechniqueDefSchema.optional(),
+  /** A combination technique's partner. */
+  partnerId: z.string().optional(),
+});
+export type Move = z.infer<typeof MoveSchema>;
+
+/** Everything about a person's powers (Phase 4, save version 5). */
+export const PowersSchema = z.strictObject({
+  /** Open power tracks: haki colours, the fruit's type, styles, swords. */
+  tracks: z.record(z.string(), TrackStateSchema),
+  /** The track open practice and sparring go to. */
+  focus: z.string().nullable(),
+  /** The Devil Fruit eaten (a fruit entity id), and how well it is known. */
+  fruit: z
+    .strictObject({
+      id: z.string().min(1),
+      eatenTick: z.number().int(),
+      /** They know which fruit it is (by name). */
+      identified: z.boolean(),
+      /** The month they finally understand what it does (an unknown fruit: 1 to 6 months). */
+      knownAt: z.number().int().nullable(),
+      awakened: z.boolean(),
+      /** Its deeper truth found (another name, a new branch). */
+      secret: z.boolean(),
+      /** A SMILE that did not work: they can only smile. */
+      dud: z.boolean(),
+    })
+    .nullable(),
+  /** Haki stamina left this month (the pool is a derived value). */
+  stamina: z.number().min(0),
+  moves: z.array(MoveSchema),
+  /** Techniques being invented: each month of practice rolls for success, like a breakthrough. */
+  drafts: z.array(
+    z.strictObject({
+      def: TechniqueDefSchema,
+      source: z.string().min(1),
+      attempts: z.number().int().min(0),
+      sinceTick: z.number().int(),
+    }),
+  ),
+  /** Power events (POWER_EVENTS) and the month each last happened. */
+  events: z.record(z.string(), z.number().int()),
+  /** Entities carried: uneaten fruits, the fruit encyclopedia. */
+  items: z.array(z.string()),
+  /** Simple gear (swords, a gun, a bow): Phase 6 turns these into items. */
+  gear: z.record(z.string(), z.number().int().min(0)),
+  /** What they know of fruits: entity id -> what, where, whose (rule 4: knowledge, not truth). */
+  known: z.record(
+    z.string(),
+    z.strictObject({
+      tick: z.number().int(),
+      place: z.string().nullable(),
+      userId: z.string().nullable(),
+      identified: z.boolean(),
+    }),
+  ),
+  /** Rumours heard. `fruitId` is the truth behind it, or null for a false one (never shown). */
+  rumours: z.array(
+    z.strictObject({
+      tick: z.number().int(),
+      fruitId: z.string().nullable(),
+      name: z.string().min(1),
+      place: z.string().min(1),
+    }),
+  ),
+});
+export type PowersData = z.infer<typeof PowersSchema>;
+
 /**
  * What makes an entity a person. Present on every `character` entity created from Phase 1 on.
  *
@@ -339,6 +447,19 @@ export const CharacterSchema = z.strictObject({
       crewId: z.string().optional(),
     })
     .optional(),
+  /** When and how each trait was gained (save version 5): "Born with it", "A brawl in 1497 SC". */
+  traitInfo: z
+    .record(z.string(), z.strictObject({ tick: z.number().int(), source: z.string().min(1) }))
+    .optional(),
+  /** Hidden personality counters and behaviour counters (save version 5; rule 4: never shown). */
+  personality: z
+    .strictObject({
+      axes: z.record(z.string(), z.number()),
+      counters: z.record(z.string(), z.number()),
+    })
+    .optional(),
+  /** Haki, the Devil Fruit, styles and techniques (save version 5). */
+  powers: PowersSchema.optional(),
 });
 export type CharacterData = z.infer<typeof CharacterSchema>;
 
@@ -391,6 +512,40 @@ export const ShipStateSchema = z.strictObject({
 });
 export type ShipState = z.infer<typeof ShipStateSchema>;
 
+/**
+ * A Devil Fruit as it stands in the world (save version 5): one entity per fruit (rule 2), so only
+ * one copy of a fruit can exist. Where it is and whose it is are truths; who knows them is the
+ * entity's `knownBy` and each person's `powers.known` (rule 4).
+ */
+export const FruitStateSchema = z.strictObject({
+  /** The catalogue fruit (data/fruits). A generated fruit carries its whole `def` instead. */
+  defId: z.string().min(1),
+  def: FruitDefSchema.optional(),
+  container: z.enum(FRUIT_CONTAINERS),
+  /** Who ate it: an entity (a person, or an object or animal with a body). */
+  userId: z.string().nullable(),
+  /** A canon user the world does not simulate, known only by name. */
+  userName: z.string().nullable(),
+  /** Who carries it uneaten. */
+  holderId: z.string().nullable(),
+  /** Where it lies (a location id) when nobody has it. */
+  place: z.string().nullable(),
+  /** On a black market: its price in Berries. */
+  price: z.number().int().nullable(),
+  /** Canon fruits: the next canon holder in data/fruits whose turn has not come. */
+  canonNext: z.number().int().min(0),
+  /** The month it last grew again in an ordinary fruit (rebirth), or was made. */
+  bornTick: z.number().int(),
+  /** An unnamed or off-screen user dies this month, and the fruit returns to the world. */
+  userUntil: z.number().int().nullable(),
+  /** A canon handover waiting for the fruit to come free, since this month. */
+  waitingSince: z.number().int().nullable(),
+  /** What it looks like, swirls and all. */
+  look: z.string().min(1),
+  history: z.array(z.strictObject({ tick: z.number().int(), text: z.string().min(1) })),
+});
+export type FruitState = z.infer<typeof FruitStateSchema>;
+
 export const EntitySchema = z.strictObject({
   id: EntityIdSchema,
   type: EntityTypeSchema,
@@ -408,6 +563,8 @@ export const EntitySchema = z.strictObject({
   place: PlaceStateSchema.optional(),
   org: OrgStateSchema.optional(),
   ship: ShipStateSchema.optional(),
+  /** Phase 4: present on fruit entities. */
+  fruit: FruitStateSchema.optional(),
 });
 export type Entity = z.infer<typeof EntitySchema>;
 
@@ -527,6 +684,8 @@ export const DivergenceSchema = z.strictObject({
     'delayed',
     'early-death',
     'requirement',
+    /** Phase 4: a canon user did not get their Devil Fruit (someone else ate it first). */
+    'fruit',
   ]),
   beat: z.string().optional(),
   entity: z.string().optional(),

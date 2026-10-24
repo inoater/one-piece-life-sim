@@ -16,7 +16,10 @@
         "kind": "flat"
       }
     ],
-    "excludes": ["trait_frail"]
+    "excludes": ["trait_frail"],
+    "derivedMods": {
+      "maxHealth": 10
+    }
   },
   {
     "id": "trait_frail",
@@ -44,6 +47,9 @@
     "excludes": ["trait_sturdy"],
     "eventWeights": {
       "illness": 2
+    },
+    "derivedMods": {
+      "maxHealth": -10
     }
   },
   {
@@ -117,7 +123,13 @@
         "stat": "perception",
         "pct": 5
       }
-    ]
+    ],
+    "checkBonuses": {
+      "perception": 8
+    },
+    "powerMods": {
+      "track_observation": 10
+    }
   },
   {
     "id": "trait_lucky",
@@ -133,8 +145,8 @@
     ],
     "excludes": ["trait_unlucky"],
     "eventWeights": {
-      "luck": 2,
-      "hardship": 0.8
+      "misfortune": 0.6,
+      "fortune": 1.5
     }
   },
   {
@@ -151,8 +163,8 @@
     ],
     "excludes": ["trait_lucky"],
     "eventWeights": {
-      "hardship": 1.4,
-      "luck": 0.5
+      "misfortune": 2,
+      "fortune": 0.6
     }
   },
   {
@@ -170,7 +182,13 @@
     "excludes": ["trait_sea_legs"],
     "eventWeights": {
       "sea": 0.6
-    }
+    },
+    "locks": [
+      {
+        "activity": "act_work_rigging",
+        "months": 12
+      }
+    ]
   },
   {
     "id": "trait_iron_lungs",
@@ -183,7 +201,11 @@
         "value": 3,
         "kind": "flat"
       }
-    ]
+    ],
+    "immunities": ["chest_cough"],
+    "trainingMods": {
+      "endurance": 10
+    }
   },
   {
     "id": "trait_nimble",
@@ -201,7 +223,11 @@
         "value": 3,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "dexterity": 5,
+      "speed": 3
+    }
   },
   {
     "id": "trait_sharp_mind",
@@ -220,7 +246,13 @@
         "stat": "intellect",
         "pct": 5
       }
-    ]
+    ],
+    "checkBonuses": {
+      "intellect": 6
+    },
+    "powerMods": {
+      "track_paramecia": 10
+    }
   },
   {
     "id": "trait_strong_willed",
@@ -239,6 +271,12 @@
         "stat": "willpower",
         "pct": 5
       }
-    ]
+    ],
+    "checkBonuses": {
+      "willpower": 6
+    },
+    "powerMods": {
+      "family:haki": 10
+    }
   }
 ]

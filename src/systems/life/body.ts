@@ -99,6 +99,8 @@ export function derivedValue(def: DerivedDef, totals: Readonly<Record<string, nu
     const stat = totals[term.stat] ?? 0;
     value += 'factor' in term ? stat * term.factor : stat / term.divide;
   }
+  // Phase 4: the bonus stack (traits, haki stages, a fruit), each modifier named (rule 3).
+  if (def.bonusStat) value += totals[def.bonusStat] ?? 0;
   return def.round === 'floor'
     ? Math.floor(value)
     : def.round === 'round'
@@ -316,6 +318,30 @@ function baseReason(
   if (req.unwell === false && life && isUnwell(life, tick)) return 'Not while hurt or ill';
   if (req.berries !== undefined && p.c.berries < req.berries) {
     return `Needs ${formatBerries(req.berries)} Berries`;
+  }
+  // Phase 4: powers.
+  for (const [trackId, stageId] of Object.entries(req.tracks)) {
+    const track = data.tracks[trackId];
+    const ts = p.c.powers?.tracks[trackId];
+    if (!track) continue;
+    if (!ts) return `Needs ${track.name}`;
+    if (stageId !== 'open') {
+      const want = track.stages.findIndex((s) => s.id === stageId);
+      if (want >= 0 && ts.stage < want)
+        return `Needs ${track.name} at ${track.stages[want]?.name ?? stageId}`;
+    }
+  }
+  if (req.fruitUser !== undefined) {
+    const user = typeof p.entity.flags['fruit'] === 'string';
+    if (req.fruitUser && !user) return 'Needs a Devil Fruit power';
+    if (!req.fruitUser && user) return 'A Devil Fruit user cannot';
+  }
+  for (const [kind, count] of Object.entries(req.gear)) {
+    if ((p.c.powers?.gear[kind] ?? 0) < (count ?? 1)) {
+      return kind === 'swords'
+        ? `Needs ${count === 1 ? 'a sword' : `${count} swords`}`
+        : `Needs a ${kind}`;
+    }
   }
   return null;
 }

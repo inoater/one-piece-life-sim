@@ -90,6 +90,28 @@ describe('golden saves: every old save version must keep loading', () => {
     expect(player?.character?.life?.health).toBeGreaterThan(0);
   });
 
+  it('world_v4.opsim, saved before powers, gets its Devil Fruits, its canon cast by era and its fighters', async () => {
+    const bytes = new Uint8Array(readFileSync(join(dir, 'world_v4.opsim')));
+    const { state, report } = await deserializeSave(bytes, { dataHash, limits: LIMITS });
+    expect(report.migratedFrom).toBe(4);
+    expect(state.flags['fruits.built']).toBeUndefined();
+    advance(state, data, Rng.root(state.seed), { kind: 'months', count: 1 }, 'auto-random');
+    expect(state.flags['fruits.built']).toBe(true);
+    const fruits = Object.values(state.entities).filter((e) => e.type === 'fruit');
+    expect(fruits.length).toBeGreaterThanOrEqual(Object.keys(data.fruits).length);
+    // One entity per canon fruit, and the canon users of the save's month hold theirs.
+    expect(state.entities['fruit_gura_gura']?.fruit?.userId).toBe('char_edward_newgate');
+    expect(
+      state.entities['char_edward_newgate']?.character?.powers?.tracks['track_armament'],
+    ).toBeDefined();
+    // Generated fighters were given their powers.
+    expect(
+      Object.values(state.entities).some(
+        (e) => e.tier === 2 && Object.keys(e.character?.powers?.tracks ?? {}).length > 0,
+      ),
+    ).toBe(true);
+  });
+
   it('world_v3.opsim, saved before the world, gets its map, factions, canon cast and past', async () => {
     const bytes = new Uint8Array(readFileSync(join(dir, 'world_v3.opsim')));
     const { state, report } = await deserializeSave(bytes, { dataHash, limits: LIMITS });

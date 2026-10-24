@@ -24,6 +24,8 @@ import { injure, restore, setExhausted, speedHealing } from './health';
 import { advanceJob } from './jobs';
 import { childWords, parentWords, siblingWords } from './people';
 import { breakthrough, trainStat } from './training';
+import { tagWeight, traitLock } from './traits';
+import { practise } from '../powers/practice';
 import { monthsLeft } from '../voyage/progress';
 
 /**
@@ -75,6 +77,8 @@ export function lockReason(env: LifeEnv, act: Activity): string | null {
   }
   const reason = requirementReason(state, data, p, act.requires, tick);
   if (reason) return reason;
+  const locked = traitLock(data, p.c, act.id, tick);
+  if (locked) return locked;
   if (act.worksJob && life.job) {
     const job = data.jobs[life.job.id];
     if (job?.physical && isBedRest(data, life, tick)) return 'On bed rest';
@@ -160,9 +164,12 @@ export function outcomeAllowed(
   return true;
 }
 
-/** Weight times how much the character's stats favour it: (1 + f x (stat - 50) / 50) per stat. */
+/**
+ * Weight times how much the character's stats favour it: (1 + f x (stat - 50) / 50) per stat, and
+ * (Phase 4) how their traits weigh its tags ("misfortune" x2 for the Unlucky).
+ */
 function outcomeWeight(env: LifeEnv, outcome: Outcome): number {
-  let weight = outcome.weight;
+  let weight = outcome.weight * tagWeight(env.data, env.p.c, outcome.tags);
   for (const [stat, factor] of Object.entries(outcome.statWeights)) {
     const value = statTotal(env.p.entity, stat, env.tick);
     weight *= Math.max(0.1, 1 + (factor ?? 0) * ((value - 50) / 50));
@@ -382,6 +389,17 @@ export function runActivity(
   if (act.fame) reputation(p.entity, 'fame').base += act.fame;
   if (act.infamy) reputation(p.entity, 'infamy').base += act.infamy;
 
+  // Phase 4: practice for a power track (drills, sparring, a real fight), and the technique used.
+  const practised = act.practice
+    ? practise(
+        actEnv,
+        act,
+        effort,
+        eff.gain * stageOf(data, p, tick).training,
+        rng.fork('practice'),
+      )
+    : null;
+
   let outcomes: readonly Outcome[] = act.outcomes;
   let source: OutcomeSource = {
     id: act.id,
@@ -389,6 +407,7 @@ export function runActivity(
     category: act.category,
     tags: act.tags,
     effort,
+    vars: { technique: practised?.technique ?? 'a plain punch' },
   };
   let risk = act.risk;
   let chosen: Outcome | undefined;
@@ -417,7 +436,7 @@ export function runActivity(
   chosen ??= pickOutcome(actEnv, outcomes, cast, rng.fork('outcome'));
   if (chosen) runOutcome(actEnv, source, chosen, cast, rng.fork('apply'));
   if (p.c.alive) rollRisk(actEnv, risk, eff.risk, rng.fork('risk'));
-  return { ran: true, vigor, restful: act.restful };
+  return { ran: true, vigor: vigor + (practised?.vigor ?? 0), restful: act.restful };
 }
 
 // ---- The month ----------------------------------------------------------------------------------

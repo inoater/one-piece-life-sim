@@ -1,7 +1,7 @@
 import type { Category, DecisionView, FeedEntry } from '../../worker/protocol';
 import type { App } from '../app';
 import { h, srOnly } from '../dom';
-import { formatInteger } from '../format';
+import { dateLabel, formatInteger } from '../format';
 import { FEED_THEMES, type FeedFilter, type UiState } from '../store';
 
 /**
@@ -34,7 +34,7 @@ export function matchesFeedFilter(entry: FeedEntry, filter: FeedFilter): boolean
 }
 
 /**
- * "Age 7 · March, Year 12": the plan's life log reads by age first. Lines from the backstory
+ * "Age 7 · March 1497 SC": the plan's life log reads by age first. Lines from the backstory
  * already begin "Age 7:", so a month made only of those keeps its plain date.
  */
 function monthLabel(
@@ -161,7 +161,7 @@ function renderEpilogue(state: UiState, app: App): HTMLElement | null {
     h(
       'ul',
       { class: 'epilogue__facts' },
-      h('li', null, `Year ${s.date.year} (${s.date.canonYear} on the old calendar).`),
+      h('li', null, `${dateLabel(s.date)}, ${s.date.year} years after God Valley.`),
       life
         ? h(
             'li',
@@ -264,7 +264,7 @@ export function renderFeed(
       ? h(
           'p',
           { class: 'feed__hint' },
-          'Nothing has happened yet. Press Next month to start the clock at Year 0.',
+          'Nothing has happened yet. Press Next month to start the clock in January 1486 SC.',
         )
       : null,
     renderEnded(state),

@@ -1,0 +1,91 @@
+{
+  "id": "track_conqueror",
+  "name": "Conqueror's Haki",
+  "family": "haki",
+  "description": "Haoshoku: the will of a king, given to about one in a few million. It cannot be drilled; it leaps in crises and clashes.",
+  "stages": [
+    {
+      "id": "unwilled",
+      "name": "Unwilled burst",
+      "level": "novice",
+      "at": 0,
+      "description": "A surge of will that bursts out with no aim.",
+      "text": "A surge left you, and weak-willed people around you dropped.",
+      "techniques": ["tech_haki_burst"],
+      "combat": 10
+    },
+    {
+      "id": "willed",
+      "name": "Willed burst",
+      "level": "trained",
+      "at": 20,
+      "description": "Call the surge on purpose.",
+      "text": "This time you chose to let it out, and the crowd went down.",
+      "requires": {
+        "stats": {
+          "willpower": 60
+        }
+      },
+      "combat": 24
+    },
+    {
+      "id": "selective",
+      "name": "Selective burst",
+      "level": "adept",
+      "at": 50,
+      "description": "Choose who falls and who stands.",
+      "text": "Your enemies fell and your friends kept their feet.",
+      "requires": {
+        "stats": {
+          "willpower": 70
+        },
+        "event": "crisis"
+      },
+      "combat": 40
+    },
+    {
+      "id": "coating",
+      "name": "Conqueror's coating",
+      "level": "expert",
+      "at": 100,
+      "description": "Wrap attacks in Conqueror's Haki: they crack the air before they land.",
+      "text": "Black lightning crackled around your fist before it ever touched.",
+      "requires": {
+        "stats": {
+          "willpower": 85
+        },
+        "event": "stronger_foe"
+      },
+      "techniques": ["tech_haki_conqueror_coat"],
+      "combat": 62
+    },
+    {
+      "id": "clash",
+      "name": "A clash of Conquerors",
+      "level": "master",
+      "at": 160,
+      "description": "Meet another Conqueror's will, and not give way.",
+      "text": "Two wills met and the sky split above you.",
+      "requires": {
+        "stats": {
+          "willpower": 95
+        },
+        "event": "clash",
+        "breakthrough": true
+      },
+      "combat": 85
+    }
+  ],
+  "learn": {
+    "how": "wake",
+    "requires": {
+      "anyTraits": ["trait_kings_qualities"]
+    }
+  },
+  "speedStats": {
+    "willpower": 0.8
+  },
+  "hidden": true,
+  "word": "King",
+  "tags": ["conqueror", "haki"]
+}

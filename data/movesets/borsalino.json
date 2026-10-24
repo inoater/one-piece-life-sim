@@ -1,0 +1,27 @@
+{
+  "id": "moveset_borsalino",
+  "char": "char_borsalino",
+  "eras": [
+    {
+      "from": {
+        "year": 0,
+        "month": 1
+      },
+      "techniques": [
+        "tech_pika_pika_yasakani_no_magatama",
+        "tech_pika_pika_ama_no_murakumo",
+        "tech_pika_pika_yata_no_kagami",
+        "tech_pika_pika_light_speed_kick",
+        "tech_haki_coat"
+      ],
+      "tracks": {
+        "track_armament": "full_body",
+        "track_observation": "track_crowds"
+      },
+      "approx": true,
+      "mastery": 85,
+      "signature": "tech_pika_pika_yasakani_no_magatama",
+      "finisher": "tech_pika_pika_light_speed_kick"
+    }
+  ]
+}

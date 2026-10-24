@@ -14,6 +14,7 @@ import type {
   EventDef,
   Faction,
   Focus,
+  FruitDef,
   Job,
   Lane,
   Legacy,
@@ -22,8 +23,13 @@ import type {
   Location,
   Requires,
   Risk,
+  Moveset,
   Occupation,
+  PersonalityRules,
+  PowerRules,
   Race,
+  Technique,
+  Track,
   Trait,
   TravelRules,
   WorldRules,
@@ -56,7 +62,14 @@ export type RefTarget =
   | 'severities'
   | 'illnesses'
   | 'seasons'
-  | 'npcGoals';
+  | 'npcGoals'
+  // Phase 4
+  | 'axes'
+  | 'driftTags'
+  | 'counters'
+  | 'groups'
+  | 'primitives'
+  | 'immunities';
 
 export interface Ref {
   /** Where the reference was written: the field path inside the file. */
@@ -95,6 +108,16 @@ export const TARGET_LABEL: Record<RefTarget, string> = {
   factions: 'faction',
   cast: 'canon character',
   canon: 'canon beat',
+  fruits: 'Devil Fruit',
+  tracks: 'power track',
+  techniques: 'technique',
+  movesets: 'canon moveset',
+  axes: 'personality axis',
+  driftTags: 'personality tag',
+  counters: 'behaviour counter',
+  groups: 'opinion group',
+  primitives: 'power primitive',
+  immunities: 'immunity ("seasickness" or an illness)',
 };
 
 /** Where an author fixes a missing id of this kind. */
@@ -127,6 +150,16 @@ export const TARGET_HOME: Record<RefTarget, string> = {
   factions: 'data/factions/',
   cast: 'data/cast/',
   canon: 'data/canon/',
+  fruits: 'data/fruits/',
+  tracks: 'data/tracks/',
+  techniques: 'data/techniques/',
+  movesets: 'data/movesets/',
+  axes: 'data/personality.json (axes)',
+  driftTags: 'data/personality.json (tags)',
+  counters: 'data/personality.json (counters)',
+  groups: 'data/personality.json (groups)',
+  primitives: 'data/powers.json (primitives)',
+  immunities: 'data/life.json (illnesses), or "seasickness"',
 };
 
 const each = (target: RefTarget, ids: readonly string[], field: string): Ref[] =>
@@ -170,6 +203,26 @@ function effectRefs(effects: readonly (Effect | LifeEffect)[], base: string): Re
       case 'prosperity':
         refs.push(...one('locations', effect.location, `${at}.location`));
         break;
+      // Phase 4
+      case 'drift':
+        refs.push(...each('driftTags', effect.tags, `${at}.tags`));
+        break;
+      case 'behaviour':
+        refs.push({ field: `${at}.counter`, target: 'counters', id: effect.counter });
+        break;
+      case 'loseTrait':
+        refs.push({ field: `${at}.trait`, target: 'traits', id: effect.trait });
+        break;
+      case 'powerPoints':
+      case 'powerBreakthrough':
+        refs.push(...one('tracks', effect.track, `${at}.track`));
+        break;
+      case 'learnTrack':
+        refs.push({ field: `${at}.track`, target: 'tracks', id: effect.track });
+        break;
+      case 'findFruit':
+        refs.push(...one('fruits', effect.fruit, `${at}.fruit`));
+        break;
     }
   });
   return refs;
@@ -202,6 +255,17 @@ function conditionRefs(conditions: readonly Condition[], base: string): Ref[] {
       case 'lane':
         refs.push(...each('lanes', condition.lanes, `${at}.lanes`));
         break;
+      // Phase 4
+      case 'track':
+      case 'notTrack':
+        refs.push({ field: `${at}.track`, target: 'tracks', id: condition.track });
+        break;
+      case 'personality':
+        refs.push({ field: `${at}.axis`, target: 'axes', id: condition.axis });
+        break;
+      case 'counter':
+        refs.push({ field: `${at}.counter`, target: 'counters', id: condition.counter });
+        break;
     }
   });
   return refs;
@@ -213,6 +277,7 @@ function requiresRefs(req: Requires, base: string): Ref[] {
     ...each('races', req.notRaces, `${base}.notRaces`),
     ...each('traits', req.anyTraits, `${base}.anyTraits`),
     ...each('traits', req.notTraits, `${base}.notTraits`),
+    ...keys('tracks', req.tracks, `${base}.tracks`),
   ];
   req.anyOf.forEach((alt, i) => {
     refs.push(
@@ -220,6 +285,7 @@ function requiresRefs(req: Requires, base: string): Ref[] {
       ...each('races', alt.notRaces, `${base}.anyOf[${i}].notRaces`),
       ...each('traits', alt.anyTraits, `${base}.anyOf[${i}].anyTraits`),
       ...each('traits', alt.notTraits, `${base}.anyOf[${i}].notTraits`),
+      ...keys('tracks', alt.tracks, `${base}.anyOf[${i}].tracks`),
     );
   });
   return refs;
@@ -238,6 +304,7 @@ function activityRefs(act: Activity): Ref[] {
     ...requiresRefs(act.requires, 'requires'),
     ...riskRefs(act.risk, 'risk'),
     ...outcomeRefs(act.outcomes, 'outcomes'),
+    ...each('tracks', act.practice?.tracks ?? [], 'practice.tracks'),
   ];
 }
 
@@ -311,6 +378,7 @@ function castRefs(cast: CastMember): Ref[] {
     { field: 'race', target: 'races', id: cast.race },
     { field: 'birthplace', target: 'locations', id: cast.birthplace },
     ...each('cast', cast.ties, 'ties'),
+    ...each('traits', cast.traits, 'traits'),
   ];
   cast.keyframes.forEach((k, i) => {
     refs.push({ field: `keyframes[${i}].place`, target: 'locations', id: k.place });
@@ -386,7 +454,111 @@ export function canonRulesRefs(canon: CanonRules): Ref[] {
 }
 
 function traitRefs(trait: Trait): Ref[] {
-  return each('traits', trait.excludes, 'excludes');
+  const refs: Ref[] = [
+    ...each('traits', trait.excludes, 'excludes'),
+    ...trait.locks.map((l, i) => ({
+      field: `locks[${i}].activity`,
+      target: 'activities' as const,
+      id: l.activity,
+    })),
+    ...each('immunities', trait.immunities, 'immunities'),
+    ...trait.opinion.map((o, i) => ({
+      field: `opinion[${i}].group`,
+      target: 'groups' as const,
+      id: o.group,
+    })),
+    ...one('axes', trait.drift?.axis, 'drift.axis'),
+    ...keys('counters', trait.earn?.counters ?? {}, 'earn.counters'),
+  ];
+  if (trait.evolves) {
+    refs.push({ field: 'evolves.to', target: 'traits', id: trait.evolves.to });
+    refs.push(...keys('counters', trait.evolves.when.counters, 'evolves.when.counters'));
+  }
+  for (const key of Object.keys(trait.powerMods)) {
+    if (key.startsWith('track_'))
+      refs.push({ field: `powerMods.${key}`, target: 'tracks', id: key });
+  }
+  return refs;
+}
+
+// ---- Powers (Phase 4) -------------------------------------------------------------------------
+
+function trackRefs(track: Track): Ref[] {
+  const refs: Ref[] = [
+    ...requiresRefs(track.learn.requires, 'learn.requires'),
+    ...keys('races', track.learn.raceRates, 'learn.raceRates'),
+    ...each('tracks', track.learn.opens, 'learn.opens'),
+  ];
+  track.learn.teachers.forEach((t, i) => {
+    const at = `learn.teachers[${i}]`;
+    refs.push(...each('locations', t.places, `${at}.places`));
+    refs.push(...requiresRefs(t.requires, `${at}.requires`));
+    refs.push(...one('occupations', t.occupation, `${at}.occupation`));
+  });
+  track.stages.forEach((stage, i) => {
+    const at = `stages[${i}]`;
+    refs.push(...each('techniques', stage.techniques, `${at}.techniques`));
+    refs.push(...keys('tracks', stage.requires.tracks, `${at}.requires.tracks`));
+    refs.push(...each('locations', stage.requires.places, `${at}.requires.places`));
+    refs.push(...each('traits', stage.requires.anyTraits, `${at}.requires.anyTraits`));
+    refs.push(...each('traits', stage.requires.notTraits, `${at}.requires.notTraits`));
+    refs.push(...each('races', stage.requires.races, `${at}.requires.races`));
+  });
+  track.ceilings.forEach((c, i) => {
+    refs.push(...each('races', c.races, `ceilings[${i}].races`));
+    refs.push(...each('traits', c.traits, `ceilings[${i}].traits`));
+  });
+  return refs;
+}
+
+function techniqueRefs(tech: Technique): Ref[] {
+  return one('tracks', tech.stage?.track, 'stage.track');
+}
+
+function movesetRefs(moveset: Moveset): Ref[] {
+  const refs: Ref[] = [{ field: 'char', target: 'cast', id: moveset.char }];
+  moveset.eras.forEach((era, i) => refs.push(...keys('tracks', era.tracks, `eras[${i}].tracks`)));
+  return refs;
+}
+
+function fruitRefs(fruit: FruitDef): Ref[] {
+  const refs: Ref[] = [
+    ...each('primitives', fruit.primitives, 'primitives'),
+    ...one('locations', fruit.start?.place, 'start.place'),
+  ];
+  fruit.holders.forEach((h, i) => refs.push(...one('cast', h.char, `holders[${i}].char`)));
+  return refs;
+}
+
+export function powerRulesRefs(powers: PowerRules): Ref[] {
+  const refs: Ref[] = [
+    { field: 'haki.kingsQualitiesTrait', target: 'traits', id: powers.haki.kingsQualitiesTrait },
+    { field: 'haki.voiceTrait', target: 'traits', id: powers.haki.voiceTrait },
+    { field: 'fruit.cursedTrait', target: 'traits', id: powers.fruit.cursedTrait },
+  ];
+  powers.fruit.bodies.forEach((b, i) =>
+    refs.push({ field: `fruit.bodies[${i}].place`, target: 'locations', id: b.place }),
+  );
+  for (const key of Object.keys(powers.generator.grammars)) {
+    if (key !== 'default')
+      refs.push({ field: `generator.grammars.${key}`, target: 'birthplaces', id: key });
+  }
+  return refs;
+}
+
+export function personalityRefs(rules: PersonalityRules): Ref[] {
+  const refs: Ref[] = [];
+  for (const [tag, rule] of Object.entries(rules.tags)) {
+    refs.push({ field: `tags.${tag}.axis`, target: 'axes', id: rule.axis });
+  }
+  rules.counters.forEach((c, i) =>
+    refs.push(...each('activities', c.activities, `counters[${i}].activities`)),
+  );
+  for (const [name, group] of Object.entries(rules.groups)) {
+    refs.push(...each('occupations', group.occupations, `groups.${name}.occupations`));
+    refs.push(...each('races', group.races, `groups.${name}.races`));
+  }
+  return refs;
 }
 
 function raceRefs(race: Race): Ref[] {
@@ -431,7 +603,10 @@ function occupationRefs(occupation: Occupation): Ref[] {
 }
 
 function focusRefs(focus: Focus): Ref[] {
-  return keys('appearanceKeys', focus.appearanceWeights, 'appearanceWeights');
+  return [
+    ...keys('appearanceKeys', focus.appearanceWeights, 'appearanceWeights'),
+    ...keys('tracks', focus.tracks, 'tracks'),
+  ];
 }
 
 function backstoryRefs(event: BackstoryEvent): Ref[] {
@@ -472,6 +647,10 @@ export const REF_EXTRACTORS: Partial<Record<CollectionKind, (item: never) => Ref
   backstory: backstoryRefs as (item: never) => Ref[],
   activities: activityRefs as (item: never) => Ref[],
   jobs: jobRefs as (item: never) => Ref[],
+  tracks: trackRefs as (item: never) => Ref[],
+  techniques: techniqueRefs as (item: never) => Ref[],
+  movesets: movesetRefs as (item: never) => Ref[],
+  fruits: fruitRefs as (item: never) => Ref[],
 };
 
 export function lifeRefs(life: LifeRules): Ref[] {
@@ -520,14 +699,24 @@ export function singletonTargets(singletons: {
   life?: LifeRules;
   seasonIds?: readonly string[];
   npcGoalIds?: readonly string[];
+  personality?: PersonalityRules;
+  powers?: PowerRules;
 }): Partial<Record<RefTarget, Set<string>>> {
   const out: Partial<Record<RefTarget, Set<string>>> = {};
   if (singletons.npcGoalIds) out.npcGoals = new Set(singletons.npcGoalIds);
-  const { creation, appearance, life } = singletons;
+  const { creation, appearance, life, personality, powers } = singletons;
   if (life) {
     out.severities = new Set(life.injuries.severities.map((s) => s.id));
     out.illnesses = new Set(life.illnesses.map((i) => i.id));
+    out.immunities = new Set(['seasickness', ...life.illnesses.map((i) => i.id)]);
   }
+  if (personality) {
+    out.axes = new Set(personality.axes.map((a) => a.id));
+    out.driftTags = new Set(Object.keys(personality.tags));
+    out.counters = new Set(personality.counters.map((c) => c.id));
+    out.groups = new Set(['everyone', ...Object.keys(personality.groups)]);
+  }
+  if (powers) out.primitives = new Set(powers.primitives.map((p) => p.id));
   if (singletons.seasonIds) out.seasons = new Set(singletons.seasonIds);
   if (creation) {
     out.wealthTiers = new Set(creation.wealthTiers.map((t) => t.id));

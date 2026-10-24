@@ -58,9 +58,9 @@ describe('the Log Pose dial', () => {
   it('describes itself for screen readers, and says when the present has arrived', () => {
     const dial = createDial();
     expect(dial.el.getAttribute('role')).toBe('img');
-    dial.update({ month: 3, year: 12, progress: 0.31, atPresent: false });
+    dial.update({ month: 3, year: 12, yearLabel: '1498 SC', progress: 0.31, atPresent: false });
     expect(dial.el.getAttribute('aria-label')).toBe(
-      'Month 3 of Year 12. 31 percent of the way to the present.',
+      'Month 3 of 1498 SC. 31 percent of the way to the present.',
     );
     dial.update({ month: 1, year: 39, progress: 1, atPresent: true });
     expect(dial.el.getAttribute('aria-label')).toContain('The present has arrived');

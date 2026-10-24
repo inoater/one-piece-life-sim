@@ -1,0 +1,57 @@
+{
+  "id": "track_mantra",
+  "name": "Mantra",
+  "family": "style",
+  "description": "The Skypiean road into Observation Haki, starting at sense presence.",
+  "stages": [
+    {
+      "id": "listen",
+      "name": "Listen",
+      "level": "novice",
+      "at": 0,
+      "description": "The Skypiean road into Observation: listen to everything.",
+      "text": "You heard the voices of the island in the quiet.",
+      "combat": 3
+    },
+    {
+      "id": "voices",
+      "name": "Hear the voices",
+      "level": "adept",
+      "at": 40,
+      "description": "Hear what people are about to do.",
+      "text": "You heard what they were about to do, and stepped aside.",
+      "requires": {
+        "stats": {
+          "perception": 40
+        }
+      },
+      "techniques": ["tech_mantra"],
+      "combat": 10
+    },
+    {
+      "id": "mantra_master",
+      "name": "Mantra mastered",
+      "level": "expert",
+      "at": 120,
+      "description": "Hear a whole island.",
+      "text": "You heard a whole island at once.",
+      "requires": {
+        "stats": {
+          "perception": 60
+        }
+      },
+      "combat": 18
+    }
+  ],
+  "learn": {
+    "how": "innate",
+    "requires": {
+      "races": ["race_skypiean"]
+    }
+  },
+  "speedStats": {
+    "perception": 0.5
+  },
+  "word": "Mantra",
+  "tags": ["observation"]
+}

@@ -1,5 +1,6 @@
 import type { Check, CheckBand } from '../../engine/data/schemas';
 import type { Rng } from '../../engine/rng';
+import { checkBonus } from '../life/traits';
 import { statForCheck } from './conditions';
 import type { StoryCtx } from './context';
 
@@ -34,7 +35,8 @@ export interface CheckResult {
 }
 
 export function rollCheck(ctx: StoryCtx, check: Check, rng: Rng): CheckResult {
-  const value = statForCheck(ctx, check.stat);
+  // Phase 4: traits add to the value tested ("Silver-Tongued: +10 on Charisma checks").
+  const value = statForCheck(ctx, check.stat) + checkBonus(ctx.data, ctx.p?.c, check.stat);
   const danger = ctx.lane?.danger ?? ctx.place?.danger ?? 0;
   const difficulty = check.difficulty + check.perDanger * danger;
   const chance = successChance(value, difficulty);

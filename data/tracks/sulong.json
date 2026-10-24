@@ -1,0 +1,63 @@
+{
+  "id": "track_sulong",
+  "name": "Sulong",
+  "family": "style",
+  "description": "The Minks' moon form: it needs a full moon and a Willpower that holds.",
+  "stages": [
+    {
+      "id": "rite",
+      "name": "Surviving the moon rite",
+      "level": "adept",
+      "at": 0,
+      "description": "Look at the full moon and come back.",
+      "text": "You looked at the full moon and changed, and came back.",
+      "requires": {
+        "event": "moon"
+      },
+      "techniques": ["tech_sulong"],
+      "combat": 30
+    },
+    {
+      "id": "hold",
+      "name": "Holding the form",
+      "level": "expert",
+      "at": 60,
+      "description": "Hold the moon form and keep your mind.",
+      "text": "You held the moon form and kept your mind.",
+      "requires": {
+        "event": "moon",
+        "stats": {
+          "willpower": 50
+        }
+      },
+      "techniques": ["tech_sulong_luna"],
+      "combat": 46
+    },
+    {
+      "id": "longer",
+      "name": "Longer forms",
+      "level": "master",
+      "at": 150,
+      "description": "Longer in the form, and fewer after-effects.",
+      "text": "The moon form left you tired, not broken.",
+      "requires": {
+        "stats": {
+          "willpower": 65
+        },
+        "breakthrough": true
+      },
+      "combat": 62
+    }
+  ],
+  "learn": {
+    "how": "event",
+    "requires": {
+      "races": ["race_mink"]
+    }
+  },
+  "speedStats": {
+    "willpower": 0.5
+  },
+  "word": "Moon",
+  "tags": ["beast", "lightning"]
+}

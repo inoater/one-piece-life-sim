@@ -13,6 +13,8 @@ import { mortalityCause, mortalityChance } from '../life/health';
 import { relate } from '../life/people';
 import { lanesFrom, locations, withDevFixtures } from './graph';
 import { priceMult } from './place';
+import { armFighter } from '../powers/month';
+import { entityIds } from '../../engine/entities';
 
 /**
  * Tier 2 (Phase 3): about two thousand named people, made once when the world is populated, who
@@ -109,6 +111,8 @@ export function makeNpc(
   };
   if (occupation) character.occupation = occupation;
   entity.character = character;
+  // Phase 4: a fighter has a style, perhaps haki, now and then a fruit.
+  armFighter(state, data, entity, tick, rng.fork('powers'));
   return entity;
 }
 
@@ -137,7 +141,7 @@ function peopleAt(state: WorldState, tick: number): Map<string, string[]> {
   const cached = indexes.get(state);
   if (cached?.tick === tick) return cached.byPlace;
   const byPlace = new Map<string, string[]>();
-  for (const id of Object.keys(state.entities).sort()) {
+  for (const id of entityIds(state)) {
     const c = state.entities[id]?.character;
     if (!c?.npc || !c.alive || !c.place) continue;
     const list = byPlace.get(c.place) ?? [];
@@ -240,8 +244,7 @@ function turnPirate(site: NpcSite, entity: Entity, rng: Rng): void {
   const { state, data, tick } = site;
   const c = entity.character as CharacterData;
   const region = c.place ? data.locations[c.place]?.region : undefined;
-  const crews = Object.keys(state.entities)
-    .sort()
+  const crews = entityIds(state)
     .map((id) => state.entities[id] as Entity)
     .filter(
       (e) =>
@@ -442,11 +445,11 @@ export function peopleYear(site: NpcSite): void {
   const protect = data.canonRules.modes[state.config.canonMode]?.protectCast ?? true;
   const pastCutoff = tick > cutoffTick(data);
   const named = new Map<string, number>();
-  for (const id of Object.keys(state.entities).sort()) {
+  for (const id of entityIds(state)) {
     const c = state.entities[id]?.character;
     if (c?.npc && c.alive && c.place) named.set(c.place, (named.get(c.place) ?? 0) + 1);
   }
-  for (const id of Object.keys(state.entities).sort()) {
+  for (const id of entityIds(state)) {
     const entity = state.entities[id] as Entity;
     const c = entity.character;
     if (!c?.alive || id === state.playerId) continue;

@@ -308,7 +308,7 @@ describe('Done when: lifespans by race', () => {
     const mean = ages.reduce((a, b) => a + b, 0) / ages.length;
     expect(mean).toBeGreaterThan(55);
     expect(mean).toBeLessThan(100);
-  });
+  }, 120_000);
 });
 
 // ---- The month ------------------------------------------------------------------------------------

@@ -755,7 +755,7 @@ describe('saving, loading, exporting', () => {
     const { core } = await started();
     await core.handle('advance', months(14));
     const { slots } = await core.handle('saves/save', { slot: 'manual-1' });
-    expect(slots.find((s) => s.slot === 'manual-1')?.label).toBe('March, Year 1');
+    expect(slots.find((s) => s.slot === 'manual-1')?.label).toBe('March 1487 SC');
   });
 
   it('deletes a slot', async () => {

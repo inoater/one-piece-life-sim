@@ -11,7 +11,12 @@ import { PUBLIC_KNOWLEDGE, type Entity, type WorldState } from '../../engine/sta
 import { makeStat, STAT_IDS } from '../../engine/stats';
 import { renderTemplate } from '../../engine/template';
 import { humanAgeFor } from '../genesis/stages';
+import { reapplyTraits } from '../life/traits';
 import { withDevFixtures } from '../places/graph';
+import { releaseFruitOf } from '../powers/fruits';
+import { applyCanonEra } from '../powers/movesets';
+import { Rng } from '../../engine/rng';
+import { entityIds } from '../../engine/entities';
 
 /**
  * The canon cast (Phase 3): about forty famous people from data/cast, each spawned on their birth
@@ -85,7 +90,7 @@ export function applyKeyframe(entity: Entity, k: Keyframe | null, fallbackPlace:
   set('bounty', k?.bounty);
   set('status', k?.status ?? 'active');
   set('haki', k?.haki?.join(','));
-  set('fruit', k?.fruit);
+  // Phase 4: a fruit is the fruit entity's record (data/fruits holders), not a keyframe's name.
   set('approx', k?.approx ? 1 : undefined);
 }
 
@@ -116,7 +121,7 @@ function makeCastEntity(
       birthTick: tickOfWhen(cast.born),
       birthplace: birthplace.culture,
       alive: true,
-      traits: [...race.innateTraits],
+      traits: [...race.innateTraits, ...cast.traits.filter((t) => !race.innateTraits.includes(t))],
       appearance: {},
       scars: [],
       relationships: [],
@@ -128,6 +133,9 @@ function makeCastEntity(
   setStats(data, entity, cast, tick);
   applyKeyframe(entity, keyframeAt(cast, tick), cast.birthplace);
   state.entities[entity.id] = entity;
+  // Phase 4: traits' modifiers (King's Qualities is hidden), and their powers by era.
+  reapplyTraits(data, entity);
+  applyCanonEra(state, data, entity, tick);
   return entity;
 }
 
@@ -150,13 +158,19 @@ export function spawnDueCast(state: WorldState, data: GameData, tick: number): E
  * The Tier 1 behaviour of a canon character, every month: follow the keyframes while still on the
  * story's path (and before the cutoff); on each birthday, grow into (or out of) their prime.
  */
-export function followCanon(data: GameData, entity: Entity, tick: number): void {
+export function followCanon(
+  data: GameData,
+  entity: Entity,
+  tick: number,
+  state?: WorldState,
+): void {
   const cast = data.cast[entity.id];
   const c = entity.character;
   if (!cast || !c?.alive) return;
   if (tick > c.birthTick && (tick - c.birthTick) % 12 === 0) setStats(data, entity, cast, tick);
   if (entity.origin !== 'canon' || tick > cutoffTick(data)) return;
   applyKeyframe(entity, keyframeAt(cast, tick), c.place ?? cast.birthplace);
+  if (state) applyCanonEra(state, data, entity, tick);
 }
 
 // ---- Deaths -------------------------------------------------------------------------------------
@@ -224,7 +238,7 @@ export function crewSuccession(
   deadId: string,
   ctx: DeathContext,
 ): void {
-  for (const id of Object.keys(state.entities).sort()) {
+  for (const id of entityIds(state)) {
     const org = state.entities[id];
     if (!org?.org || org.org.leaderId !== deadId || !org.org.active) continue;
     const order = [...(data.factions[id]?.succession ?? []), ...org.org.members];
@@ -290,6 +304,15 @@ export function killCharacter(
     knownBy: [],
   });
   crewSuccession(state, data, entity.id, { ...ctx, causeSeq: record.seq });
+  // Phase 4: whoever dies, their fruit grows again somewhere (canon deaths included).
+  releaseFruitOf(
+    state,
+    data,
+    entity,
+    ctx.tick,
+    Rng.root(state.seed).fork('fruit-death', entity.id, ctx.tick),
+    record.seq,
+  );
   if (!cast || ctx.canon || entity.origin === 'canon-diverged') return;
 
   // An early death: the story has lost someone it was counting on.
@@ -301,19 +324,6 @@ export function killCharacter(
     text: canonLine(data, lines.earlyDeath, ctx.tick, { name: entity.name, cause: ctx.cause }),
     causeSeq: record.seq,
   });
-  const fruit = entity.flags['fruit'];
-  if (typeof fruit === 'string') {
-    state.flags[`fruit.free.${fruit.toLowerCase().replace(/[^a-z0-9]+/g, '_')}`] = ctx.tick;
-    appendLog(state, ctx.tick, {
-      kind: 'world',
-      summary: canonLine(data, lines.fruitReturns, ctx.tick, { name: entity.name, fruit }),
-      tags: ['world', 'canon', 'fruit'],
-      actorIds: [entity.id],
-      cause: 'sys:death',
-      causeSeq: record.seq,
-      knownBy: [],
-    });
-  }
   ctx.newsDrafts?.push({
     text: canonLine(data, lines.earlyDeathNews, ctx.tick, { name: entity.name }),
     tags: ['news', 'canon', 'death'],

@@ -1,0 +1,48 @@
+{
+  "id": "act_six_powers",
+  "name": "Train the Six Powers",
+  "category": "train_body",
+  "description": "Soru, Geppo, Tekkai, Shigan, Rankyaku, Kami-e: the Rokushiki, a step at a time.",
+  "minAge": 12,
+  "physical": true,
+  "usesMentor": true,
+  "requires": {
+    "tracks": {
+      "track_soru": "open"
+    }
+  },
+  "gains": {
+    "strength": 0.4,
+    "speed": 0.5,
+    "durability": 0.3
+  },
+  "practice": {
+    "kind": "drill",
+    "tracks": [
+      "track_soru",
+      "track_geppo",
+      "track_tekkai",
+      "track_shigan",
+      "track_rankyaku",
+      "track_kami_e"
+    ]
+  },
+  "tags": ["training", "fight"],
+  "outcomes": [
+    {
+      "id": "drill",
+      "text": "You kicked the ground ten times in a blink, and moved.",
+      "weight": 1.5,
+      "quiet": true
+    },
+    {
+      "id": "air",
+      "text": "For a moment you stood on the air, and the instructor nodded.",
+      "weight": 0.4,
+      "statWeights": {
+        "speed": 0.5
+      }
+    }
+  ],
+  "extraVigor": 1
+}

@@ -1,0 +1,99 @@
+{
+  "id": "track_logia",
+  "name": "Logia mastery",
+  "family": "fruit",
+  "description": "Become and produce an element: Willpower speeds the control.",
+  "stages": [
+    {
+      "id": "making",
+      "name": "Making the element",
+      "level": "novice",
+      "at": 0,
+      "description": "Make a little of it, on purpose.",
+      "text": "A little of the element came from your hand when you wanted it to.",
+      "combat": 8
+    },
+    {
+      "id": "controlled",
+      "name": "Controlled intangibility",
+      "level": "trained",
+      "at": 15,
+      "description": "Let a blow pass through on purpose.",
+      "text": "A blade went through you and you let it.",
+      "combat": 18
+    },
+    {
+      "id": "reflex",
+      "name": "Reflex intangibility",
+      "level": "adept",
+      "at": 35,
+      "description": "Turn to the element without thinking.",
+      "text": "You were hit from behind and did not even notice: your body had turned on its own.",
+      "requires": {
+        "stats": {
+          "perception": 40
+        }
+      },
+      "combat": 28
+    },
+    {
+      "id": "large_scale",
+      "name": "Large-scale element",
+      "level": "expert",
+      "at": 55,
+      "description": "Fill a battlefield with it.",
+      "text": "You covered the whole field in it.",
+      "requires": {
+        "stats": {
+          "willpower": 50
+        }
+      },
+      "combat": 40
+    },
+    {
+      "id": "element_haki",
+      "name": "Element and haki together",
+      "level": "master",
+      "at": 75,
+      "description": "Coat the element in haki.",
+      "text": "Your element and your haki moved as one.",
+      "requires": {
+        "tracks": {
+          "track_armament": "harden"
+        }
+      },
+      "combat": 54
+    },
+    {
+      "id": "awakening",
+      "name": "Awakening",
+      "level": "grandmaster",
+      "at": 90,
+      "description": "The element spreads into the world and stays there a while.",
+      "text": "The element poured out of you into the world, and stayed: you had awakened.",
+      "requires": {
+        "stats": {
+          "willpower": 70
+        },
+        "breakthrough": true
+      },
+      "combat": 72,
+      "flags": {
+        "fruit.awakened": true
+      }
+    }
+  ],
+  "learn": {
+    "how": "fruit"
+  },
+  "fruitType": "logia",
+  "mode": "mastery",
+  "speedStats": {
+    "willpower": 0.5,
+    "perception": 0.2
+  },
+  "rust": {
+    "afterMonths": 36,
+    "perYear": 0.1
+  }
+}

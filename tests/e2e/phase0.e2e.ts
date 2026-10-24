@@ -132,7 +132,7 @@ describe('starting up', () => {
     const { page, problems, context } = await open();
     await page.getByRole('link', { name: 'World' }).click();
     await eventually(page, '.panel--side').toContain('a Web Worker');
-    expect(await title(page)).toBe('January, Year 0');
+    expect(await title(page)).toBe('January 1486 SC');
     expect(problems).toEqual([]);
     await context.close();
   });
@@ -142,7 +142,7 @@ describe('starting up', () => {
     await page.locator('button', { hasText: 'Next month' }).focus();
     await page.keyboard.press('Enter');
     await page.waitForFunction(
-      () => document.querySelector('.masthead__title')?.textContent === 'February, Year 0',
+      () => document.querySelector('.masthead__title')?.textContent === 'February 1486 SC',
     );
     expect(await page.locator('.controls__status').textContent()).toBe('Advanced 1 month.');
     await context.close();
@@ -205,7 +205,7 @@ describe('saving (Phase 0 "done when")', () => {
     await tick(page, 12);
     const before = await stateHash(page);
     const dateBefore = await title(page);
-    expect(dateBefore).toBe('January, Year 1');
+    expect(dateBefore).toBe('January 1487 SC');
 
     await page.reload();
     await ready(page);
@@ -274,11 +274,11 @@ describe('saving (Phase 0 "done when")', () => {
 
     // A different browser profile: nothing in storage.
     const target = await open();
-    expect(await title(target.page)).toBe('January, Year 0');
+    expect(await title(target.page)).toBe('January 1486 SC');
     await target.page.getByRole('button', { name: 'Menu' }).click();
     await target.page.locator('.modal input[type="file"]').setInputFiles(path);
     await target.page.waitForSelector('.modal', { state: 'detached' });
-    expect(await title(target.page)).toBe('January, Year 2');
+    expect(await title(target.page)).toBe('January 1488 SC');
     await openDebug(target.page);
     expect(await stateHash(target.page)).toBe(hash);
     expect(await target.page.locator('#dbg-seed').textContent()).toBe('e2e-export');
@@ -301,7 +301,7 @@ describe('saving (Phase 0 "done when")', () => {
       'not an .opsim save file',
     );
     await page.keyboard.press('Escape');
-    expect(await title(page)).toBe('January, Year 0');
+    expect(await title(page)).toBe('January 1486 SC');
     await context.close();
   });
 
@@ -317,14 +317,14 @@ describe('saving (Phase 0 "done when")', () => {
     await eventually(page, '.menu__message').toBe('Saved to Slot 2.');
     await page.keyboard.press('Escape');
     await tick(page, 12);
-    expect(await title(page)).toBe('January, Year 2');
+    expect(await title(page)).toBe('January 1488 SC');
 
     await page.reload();
     await ready(page);
     await page.getByRole('button', { name: 'Menu' }).click();
     await confirm(page, '.slot:has-text("Slot 2")', 'Load');
     await page.waitForSelector('.modal', { state: 'detached' });
-    expect(await title(page)).toBe('January, Year 1');
+    expect(await title(page)).toBe('January 1487 SC');
     await context.close();
   });
 });

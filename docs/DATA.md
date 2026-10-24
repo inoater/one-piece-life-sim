@@ -6,21 +6,23 @@ checked against a schema when the game starts, in `npm run validate`, in the pre
 
 ## Layout
 
-| Path                                                 | Holds                                                           | Status                                            |
-| ---------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------- |
-| `data/calendar.json`                                 | `canonYearOffset`, `presentTick`, months, seasons               | required                                          |
-| `data/settings.json`                                 | tier cadence, save slots, skip lengths, UI tails                | required                                          |
-| `data/character.json`                                | caps, growth, talent tiers, life stages, derived                | required (Phase 1)                                |
-| `data/creation.json`                                 | entry limits, canon modes, difficulty, wealth, family, backfill | required (Phase 1)                                |
-| `data/appearance.json`                               | appearance fields, options, the sentence                        | required (Phase 1)                                |
-| `data/traits/`, `weapons/`, `events/`                | one item per file, or an array of items                         | schemas exist                                     |
-| `data/races/`, `birthplaces/`, `legacies/`           | character genesis                                               | schemas exist (Phase 1)                           |
-| `data/occupations/`, `names/`, `foci/`, `backstory/` | character genesis                                               | schemas exist (Phase 1)                           |
-| `data/life.json`, `activities/`, `jobs/`             | the life loop                                                   | required (Phase 2)                                |
-| `data/locations/`, `lanes/`, `vessels/`              | the map's places, the sea lanes between them, ships             | required (Phase 3)                                |
-| `data/travel.json`, `world.json`, `canon.json`       | voyages; factions, people, economy, news; the canon modes       | required (Phase 3)                                |
-| `data/factions/`, `cast/`, `canon/`                  | factions and crews; the canon cast; the canon beats             | schemas exist (Phase 3)                           |
-| `data/fruits/`, `news/`                              | _reserved_                                                      | **files here are rejected until a schema exists** |
+| Path                                                         | Holds                                                           | Status                                            |
+| ------------------------------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------- |
+| `data/calendar.json`                                         | `canonYearOffset`, `presentTick`, months, seasons               | required                                          |
+| `data/settings.json`                                         | tier cadence, save slots, skip lengths, UI tails                | required                                          |
+| `data/character.json`                                        | caps, growth, talent tiers, life stages, derived                | required (Phase 1)                                |
+| `data/creation.json`                                         | entry limits, canon modes, difficulty, wealth, family, backfill | required (Phase 1)                                |
+| `data/appearance.json`                                       | appearance fields, options, the sentence                        | required (Phase 1)                                |
+| `data/traits/`, `weapons/`, `events/`                        | one item per file, or an array of items                         | schemas exist                                     |
+| `data/races/`, `birthplaces/`, `legacies/`                   | character genesis                                               | schemas exist (Phase 1)                           |
+| `data/occupations/`, `names/`, `foci/`, `backstory/`         | character genesis                                               | schemas exist (Phase 1)                           |
+| `data/life.json`, `activities/`, `jobs/`                     | the life loop                                                   | required (Phase 2)                                |
+| `data/locations/`, `lanes/`, `vessels/`                      | the map's places, the sea lanes between them, ships             | required (Phase 3)                                |
+| `data/travel.json`, `world.json`, `canon.json`               | voyages; factions, people, economy, news; the canon modes       | required (Phase 3)                                |
+| `data/factions/`, `cast/`, `canon/`                          | factions and crews; the canon cast; the canon beats             | schemas exist (Phase 3)                           |
+| `data/powers.json`, `personality.json`, `fruitMatchups.json` | power rules; personality and behaviour; fruit matchups          | required (Phase 4)                                |
+| `data/fruits/`, `tracks/`, `techniques/`, `movesets/`        | Devil Fruits; power tracks; techniques; canon movesets by era   | schemas exist (Phase 4)                           |
+| `data/news/`                                                 | _reserved_                                                      | **files here are rejected until a schema exists** |
 
 A file may hold one object or an array of objects. Subfolders are fine. By convention a single-item file
 is named after its id without the prefix: `data/traits/test_brawler.json` defines `trait_test_brawler`
@@ -195,6 +197,43 @@ How the files fit together, and the rules the loader enforces beyond each schema
   `control`, `prosperity`, `population`, `localFlag`, `news`, `meet`).
 - New text variables: `{place}`, `{destination}`, `{ship}` everywhere, and the canon lines' own
   (`CANON_VARS`: `{name}`, `{title}`, `{beat}`, `{cause}`, `{successor}`, `{crew}`, `{fruit}`).
+
+## Powers (Phase 4)
+
+- **Traits** now carry their mechanics: `statMods`, `potentialMods`, `trainingGainPct` and
+  `trainingMods` (per stat), `derivedMods` (Max Health, Vigor, haki stamina, Combat Power),
+  `checkBonuses`, `eventWeights` (also weighs activity outcomes by their tags), `immunities`
+  ("seasickness" or an illness), `locks` (an activity, for good or for some months), `opinion` (what
+  people of a group in personality.json feel; `firstImpression` only on meeting), `powerMods`
+  (practice of a track, or `family:sword`), `flags`, `excludes`, `evolves` (into another trait when
+  counters and stats are reached), `earn` (gained by itself), `drift` (a personality trait held while
+  its hidden axis is past `gainAt`, lost back past `loseAt`), `hidden` with a `hint`, and the lines
+  for gaining and losing it. The loader rejects a trait that does nothing, and two traits with one
+  name (names label the modifiers).
+- **data/personality.json**: the axes (courage, temper, honesty, mercy, generosity, pride, caution),
+  the tags that nudge them (`{"kind": "drift", "tags": ["brave"]}` in any outcome, choice or check
+  band), behaviour counters (by activity, category, tag, effort, at sea, or counted by effects), and
+  the groups opinions are felt by.
+- **Tracks** (`data/tracks/`): stages with `at`, `level`, `requires`, `techniques`, `combat`,
+  `statMods`, `flags` and the chronicle line; `learn` (teacher at places, features or regions, with
+  a fee and a multiplier; wake; fruit; innate; event), race rates and an outsider flag, `opens`,
+  `speedStats`, `rust`, `ceilings`, `hidden`, `group`.
+- **Techniques** (`data/techniques/`, and inside each fruit): form, tags, range, effects, the mastery
+  or stage that teaches them; cost, power and accuracy may be left to the pricer in powers.json.
+- **Fruits** (`data/fruits/`): type and Zoan kind, rarity, a unique `power` key, primitives,
+  weaknesses, boosts, techniques, a `secret`, an awakening sentence, a Mythical Zoan's `will`,
+  canon `holders` by date (a cast member, an object or animal with a body, or a name), and `start`.
+- **Movesets** (`data/movesets/`): a canon character's eras, each with its techniques, signature,
+  finisher, the stages of their tracks then, and their fruit's mastery.
+- **data/powers.json**: practice weights, rust, talent ceilings, haki waking, fruit rules (curse,
+  rebirth, prices, discovery, handover per canon mode, bodies), primitives, the generator's concepts,
+  animals and naming grammars per culture, the pricer, the technique creator, movesets, generated
+  fighters by occupation, and every line the powers write (the loader checks they are all there).
+- New effects: `drift`, `behaviour`, `loseTrait`, `powerEvent`, `powerPoints`, `powerBreakthrough`,
+  `learnTrack`, `findFruit`, `immerse`, `fruitSecret`, `fruitRumour`, `wakeHaki`. New conditions:
+  `track`, `notTrack`, `fruitUser`, `mastery`, `fruitUnknown`, `fruitHasSecret`, `wildFruitHere`,
+  `personality`, `counter`, `haki`. Requirements gain `tracks`, `fruitUser` and `gear`. Activities
+  gain `practice`. Outcome text may use `{technique}`.
 
 ## Dev fixtures
 

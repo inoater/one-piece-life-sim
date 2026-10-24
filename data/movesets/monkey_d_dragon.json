@@ -1,0 +1,25 @@
+{
+  "id": "moveset_monkey_d_dragon",
+  "char": "char_monkey_d_dragon",
+  "eras": [
+    {
+      "from": {
+        "year": 5,
+        "month": 1
+      },
+      "techniques": [
+        "tech_dragon_wind",
+        "tech_dragon_claw",
+        "tech_dragon_breath",
+        "tech_haki_internal"
+      ],
+      "tracks": {
+        "track_dragon_claw": "haki_crush",
+        "track_armament": "internal",
+        "track_observation": "future_sight"
+      },
+      "approx": true,
+      "signature": "tech_dragon_wind"
+    }
+  ]
+}

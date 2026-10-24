@@ -1,0 +1,52 @@
+{
+  "id": "moveset_marshall_d_teach",
+  "char": "char_marshall_d_teach",
+  "eras": [
+    {
+      "from": {
+        "year": 35,
+        "month": 10
+      },
+      "techniques": [
+        "tech_yami_yami_black_hole",
+        "tech_yami_yami_kurouzu",
+        "tech_yami_yami_liberation",
+        "tech_yami_yami_dark_touch"
+      ],
+      "tracks": {
+        "track_armament": "harden",
+        "track_observation": "wider_range"
+      },
+      "approx": true,
+      "to": {
+        "year": 36,
+        "month": 8
+      },
+      "mastery": 40,
+      "signature": "tech_yami_yami_black_hole",
+      "finisher": "tech_yami_yami_liberation"
+    },
+    {
+      "from": {
+        "year": 36,
+        "month": 9
+      },
+      "techniques": [
+        "tech_yami_yami_black_hole",
+        "tech_yami_yami_kurouzu",
+        "tech_yami_yami_liberation",
+        "tech_yami_yami_dark_touch",
+        "tech_gura_gura_quake_punch",
+        "tech_gura_gura_kabutowari"
+      ],
+      "tracks": {
+        "track_armament": "coat_weapon",
+        "track_observation": "read_intent"
+      },
+      "approx": true,
+      "mastery": 55,
+      "signature": "tech_yami_yami_black_hole",
+      "finisher": "tech_gura_gura_kabutowari"
+    }
+  ]
+}

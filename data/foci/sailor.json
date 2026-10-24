@@ -20,5 +20,8 @@
   "savingsPerYear": {
     "min": 1000,
     "max": 3500
+  },
+  "tracks": {
+    "track_naval_tactics": 1
   }
 }

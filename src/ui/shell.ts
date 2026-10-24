@@ -5,7 +5,7 @@ import { openModal } from './components/modal';
 import { h, clear, isTypingTarget } from './dom';
 import { countTo, flash, resetCount } from './motion';
 import type { App } from './app';
-import { formatInteger } from './format';
+import { dateLabel, formatInteger } from './format';
 import { openMenu } from './menu';
 import {
   isPageRoute,
@@ -20,6 +20,8 @@ import { renderActions } from './screens/actions';
 import { renderCharacter } from './screens/character';
 import { renderFeed } from './screens/feed';
 import { createCanonPage } from './screens/canon';
+import { createFruitsPage } from './screens/fruits';
+import { createPowersPage } from './screens/powers';
 import { createMapPage } from './screens/map';
 import { renderEnd } from './screens/end';
 import { createNewLife } from './screens/new-life';
@@ -108,7 +110,12 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     );
   }
   const mapLink = h('a', { class: 'tab tab--map', href: '#/map' }, ROUTE_LABELS.map);
-  const nav = h('nav', { class: 'tabs', 'aria-label': 'Sections' }, [...links.values(), mapLink]);
+  const powersLink = h('a', { class: 'tab tab--powers', href: '#/powers' }, ROUTE_LABELS.powers);
+  const nav = h('nav', { class: 'tabs', 'aria-label': 'Sections' }, [
+    ...links.values(),
+    mapLink,
+    powersLink,
+  ]);
 
   // ---- Panels
   const banner = h('div', { class: 'banner-slot' });
@@ -133,6 +140,19 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   const endPageEl = h('div', { class: 'end-page-slot', hidden: true });
   const canonPage = createCanonPage(app);
   const canonPageEl = h('div', { class: 'canon-page-slot', hidden: true }, canonPage.el);
+  // Phase 4: the Powers page (drawn from the snapshot) and the Devil Fruit page (asked for).
+  const powersPage = createPowersPage(app);
+  const powersPageEl = h(
+    'div',
+    { class: 'canon-page-slot powers-page-slot', hidden: true },
+    powersPage.el,
+  );
+  const fruitsPage = createFruitsPage(app);
+  const fruitsPageEl = h(
+    'div',
+    { class: 'canon-page-slot fruits-page-slot', hidden: true },
+    fruitsPage.el,
+  );
 
   // ---- Controls
   const nextButton = h('button', { class: 'button button--primary', type: 'button' }, 'Next month');
@@ -225,6 +245,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     mapPageEl,
     endPageEl,
     canonPageEl,
+    powersPageEl,
+    fruitsPageEl,
     controls,
     toasts,
   );
@@ -265,7 +287,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     { keys: 'N', does: 'Next month' },
     { keys: 'S', does: 'Skip a few months' },
     { keys: 'E', does: 'Skip to the next event' },
-    { keys: '1 to 6', does: 'Feed, Character, Actions, World, News, Map' },
+    { keys: '1 to 8', does: 'Feed, Character, Actions, World, News, Map, Powers, Devil Fruits' },
     { keys: 'L', does: 'Start a new life' },
     { keys: 'M', does: 'Menu: saves and appearance' },
     { keys: '?', does: 'This list' },
@@ -299,14 +321,23 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       if (!button.disabled) button.click();
     };
     const key = event.key.toLowerCase();
-    const sections: Route[] = ['feed', 'character', 'actions', 'world', 'news', 'map'];
+    const sections: Route[] = [
+      'feed',
+      'character',
+      'actions',
+      'world',
+      'news',
+      'map',
+      'powers',
+      'fruits',
+    ];
     if (key === 'n') press(nextButton);
     else if (key === 's') press(skipButton);
     else if (key === 'e') press(eventButton);
     else if (key === 'm') menuButton.click();
     else if (key === 'l') navigate('new');
     else if (key === '?' || (key === '/' && event.shiftKey)) openShortcuts();
-    else if (/^[1-6]$/.test(key)) navigate(sections[Number(key) - 1] as Route);
+    else if (/^[1-8]$/.test(key)) navigate(sections[Number(key) - 1] as Route);
     else return;
     event.preventDefault();
   };
@@ -338,7 +369,10 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   function renderNav(state: UiState): void {
     // On the Map page only the Map link is current (it is set where the page is shown).
     const current: Route | null =
-      state.route === 'map' || state.route === 'canon'
+      state.route === 'map' ||
+      state.route === 'canon' ||
+      state.route === 'powers' ||
+      state.route === 'fruits'
         ? null
         : isWide() && !isSideRoute(state.route)
           ? state.sideTab
@@ -357,12 +391,13 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   function renderHeader(state: UiState): void {
     const s = state.snapshot;
     if (!s) return;
-    title.textContent = `${s.date.monthName}, Year ${s.date.year}`;
+    title.textContent = dateLabel(s.date);
     season.textContent = s.date.seasonName;
     shell.dataset['season'] = s.date.seasonId;
     dial.update({
       month: s.date.month,
       year: s.date.year,
+      yearLabel: `${s.date.canonYear} ${s.date.era}`,
       progress: s.progress,
       atPresent: s.atPresent,
     });
@@ -510,6 +545,21 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       void canonPage.show();
     if (mapping) mapLink.setAttribute('aria-current', 'page');
     else mapLink.removeAttribute('aria-current');
+    const powering = state.route === 'powers';
+    if (powering !== !powersPageEl.hidden) powersPageEl.hidden = !powering;
+    if (
+      powering &&
+      (previous?.route !== 'powers' ||
+        state.snapshot !== previous.snapshot ||
+        state.busy !== previous.busy)
+    )
+      powersPage.show(state);
+    if (powering) powersLink.setAttribute('aria-current', 'page');
+    else powersLink.removeAttribute('aria-current');
+    const fruiting = state.route === 'fruits';
+    if (fruiting !== !fruitsPageEl.hidden) fruitsPageEl.hidden = !fruiting;
+    if (fruiting && (previous?.route !== 'fruits' || state.snapshot !== previous.snapshot))
+      void fruitsPage.show(state);
     const ending = state.route === 'end';
     if (ending !== !endPageEl.hidden) endPageEl.hidden = !ending;
     if (
@@ -569,7 +619,10 @@ export function mountShell(root: HTMLElement, app: App): Shell {
         jumpButton.hidden = false;
       }
       jumpCount.textContent = unseen > 0 ? `(${unseen} new)` : '';
-      rail.refresh({ birthTick: state.snapshot?.sheet?.born.tick ?? null });
+      rail.refresh({
+        birthTick: state.snapshot?.sheet?.born.tick ?? null,
+        calendar: state.snapshot?.calendar ?? null,
+      });
       const summary =
         previous?.snapshot && state.snapshot && snapshotChanged && previous.busy !== null
           ? summarizeAdvance(previous.snapshot, state.snapshot)
@@ -591,13 +644,19 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     }
     // A phone shows one section at a time: the chronicle may just have become visible.
     if (previous && state.route !== previous.route) {
-      rail.refresh({ birthTick: state.snapshot?.sheet?.born.tick ?? null });
+      rail.refresh({
+        birthTick: state.snapshot?.sheet?.born.tick ?? null,
+        calendar: state.snapshot?.calendar ?? null,
+      });
     }
     // Coming back from New Life or the Map: the chronicle was laid out while hidden, so put it at
     // the latest line.
     if (previous && isPageRoute(previous.route) && !isPageRoute(state.route)) {
       feedPanel.scrollTop = feedPanel.scrollHeight;
-      rail.refresh({ birthTick: state.snapshot?.sheet?.born.tick ?? null });
+      rail.refresh({
+        birthTick: state.snapshot?.sheet?.born.tick ?? null,
+        calendar: state.snapshot?.calendar ?? null,
+      });
       unseen = 0;
       jumpButton.hidden = true;
     }

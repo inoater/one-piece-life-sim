@@ -1,0 +1,98 @@
+{
+  "id": "track_paramecia",
+  "name": "Paramecia mastery",
+  "family": "fruit",
+  "description": "A superhuman property of the body, or power over something: Intellect speeds the insight.",
+  "stages": [
+    {
+      "id": "basic_control",
+      "name": "Basic control",
+      "level": "novice",
+      "at": 0,
+      "description": "Use the power on purpose, a little.",
+      "text": "You did it on purpose for the first time.",
+      "combat": 4
+    },
+    {
+      "id": "first_techniques",
+      "name": "First techniques",
+      "level": "trained",
+      "at": 15,
+      "description": "Shape the power into moves of your own.",
+      "text": "The power did what you asked, and you gave the move a name.",
+      "combat": 10
+    },
+    {
+      "id": "combat_style",
+      "name": "A combat style",
+      "level": "adept",
+      "at": 35,
+      "description": "Build a way of fighting around the power.",
+      "text": "You stopped fighting with the power and started fighting through it.",
+      "requires": {
+        "stats": {
+          "intellect": 30
+        }
+      },
+      "combat": 18
+    },
+    {
+      "id": "haki_synergy",
+      "name": "Haki synergy",
+      "level": "expert",
+      "at": 55,
+      "description": "Wrap the power in haki.",
+      "text": "Your power and your will moved together.",
+      "requires": {
+        "tracks": {
+          "track_armament": "coat"
+        }
+      },
+      "combat": 28
+    },
+    {
+      "id": "creative_leaps",
+      "name": "Creative leaps",
+      "level": "master",
+      "at": 75,
+      "description": "Find uses nobody has found.",
+      "text": "You found a use for the power nobody had ever thought of.",
+      "requires": {
+        "stats": {
+          "intellect": 50
+        }
+      },
+      "combat": 40
+    },
+    {
+      "id": "awakening",
+      "name": "Awakening",
+      "level": "grandmaster",
+      "at": 90,
+      "description": "The power reaches beyond the body: the ground, the walls, other people.",
+      "text": "The power left your body and took hold of the world around you: you had awakened.",
+      "requires": {
+        "stats": {
+          "willpower": 70
+        },
+        "breakthrough": true
+      },
+      "combat": 60,
+      "flags": {
+        "fruit.awakened": true
+      }
+    }
+  ],
+  "learn": {
+    "how": "fruit"
+  },
+  "fruitType": "paramecia",
+  "mode": "mastery",
+  "speedStats": {
+    "intellect": 0.6
+  },
+  "rust": {
+    "afterMonths": 36,
+    "perYear": 0.1
+  }
+}

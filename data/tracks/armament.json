@@ -1,0 +1,161 @@
+{
+  "id": "track_armament",
+  "name": "Armament Haki",
+  "family": "haki",
+  "description": "Busoshoku: invisible armour of will, for striking, guarding and, at its height, breaking from within.",
+  "stages": [
+    {
+      "id": "coat",
+      "name": "Coat the body",
+      "level": "novice",
+      "at": 0,
+      "description": "Wrap a limb in an invisible armour of will.",
+      "text": "Your fist struck as if wrapped in iron, though nothing was there.",
+      "techniques": ["tech_haki_coat"],
+      "combat": 6
+    },
+    {
+      "id": "harden",
+      "name": "Harden",
+      "level": "trained",
+      "at": 30,
+      "description": "The coating turns black and hard.",
+      "text": "Your arm went black as lacquer and the blade bounced off it.",
+      "requires": {
+        "stats": {
+          "willpower": 30,
+          "durability": 30
+        }
+      },
+      "techniques": ["tech_haki_harden"],
+      "combat": 14
+    },
+    {
+      "id": "coat_weapon",
+      "name": "Coat a weapon",
+      "level": "adept",
+      "at": 70,
+      "description": "Extend the armour into a blade, a bullet, a staff.",
+      "text": "Your weapon went black in your hands, and cut what it should not have.",
+      "requires": {
+        "stats": {
+          "willpower": 40,
+          "dexterity": 35
+        }
+      },
+      "techniques": ["tech_haki_coat_weapon"],
+      "combat": 22
+    },
+    {
+      "id": "full_body",
+      "name": "Full-body coating",
+      "level": "expert",
+      "at": 130,
+      "description": "Coat the whole body, and hold it.",
+      "text": "You held the black over your whole body for an hour.",
+      "requires": {
+        "stats": {
+          "willpower": 50,
+          "durability": 55,
+          "endurance": 50
+        }
+      },
+      "combat": 34
+    },
+    {
+      "id": "emission",
+      "name": "Emission",
+      "level": "master",
+      "at": 220,
+      "description": "Strike from within, without touching: the Wano tradition calls it Ryuo.",
+      "text": "Your strike landed before your fist did: the air between went black.",
+      "requires": {
+        "stats": {
+          "willpower": 65,
+          "strength": 65
+        },
+        "teacher": true,
+        "event": "stronger_foe"
+      },
+      "techniques": ["tech_haki_ryuo"],
+      "combat": 48
+    },
+    {
+      "id": "internal",
+      "name": "Internal destruction",
+      "level": "master",
+      "at": 320,
+      "description": "Send the will inside the target and break it from within.",
+      "text": "You laid a hand on the wall and it burst from the inside.",
+      "requires": {
+        "stats": {
+          "willpower": 75,
+          "strength": 75
+        },
+        "breakthrough": true
+      },
+      "techniques": ["tech_haki_internal"],
+      "combat": 62
+    },
+    {
+      "id": "black_blade",
+      "name": "Imbue a blade until it turns black",
+      "level": "grandmaster",
+      "at": 450,
+      "description": "Years of coating one blade until it stays black for good.",
+      "text": "After years of coating it, your blade stayed black when you let go.",
+      "requires": {
+        "stats": {
+          "willpower": 80
+        },
+        "gear": {
+          "swords": 1
+        }
+      },
+      "combat": 72,
+      "flags": {
+        "blade.black": true
+      }
+    }
+  ],
+  "learn": {
+    "how": "wake",
+    "teachers": [
+      {
+        "name": "Silvers Rayleigh, if he is willing",
+        "places": ["loc_sabaody"],
+        "mult": 1.5
+      },
+      {
+        "name": "the warriors of Amazon Lily",
+        "places": ["loc_amazon_lily"],
+        "mult": 1.3
+      },
+      {
+        "name": "the Ryuo masters of Wano",
+        "places": ["loc_wano"],
+        "mult": 1.4
+      },
+      {
+        "name": "Marine instructors",
+        "places": ["loc_marineford"],
+        "requires": {
+          "flags": {
+            "marine.enlisted": true
+          }
+        }
+      },
+      {
+        "name": "the warriors of Elbaf",
+        "places": ["loc_elbaf"],
+        "mult": 1.3
+      }
+    ]
+  },
+  "speedStats": {
+    "willpower": 0.6,
+    "durability": 0.3
+  },
+  "word": "Black",
+  "tags": ["armament", "haki"]
+}

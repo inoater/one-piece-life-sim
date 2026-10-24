@@ -1,0 +1,29 @@
+{
+  "id": "moveset_kaido",
+  "char": "char_kaido",
+  "eras": [
+    {
+      "from": {
+        "year": -11,
+        "month": 1
+      },
+      "techniques": [
+        "tech_uo_uo_seiryu_boro_breath",
+        "tech_uo_uo_seiryu_kaifu",
+        "tech_uo_uo_seiryu_kaen_kumo",
+        "tech_uo_uo_seiryu_raimei_hakke_dragon",
+        "tech_kaido_thunder_bagua",
+        "tech_kaido_club"
+      ],
+      "tracks": {
+        "track_observation": "future_sight",
+        "track_armament": "internal",
+        "track_conqueror": "clash"
+      },
+      "approx": true,
+      "mastery": 90,
+      "signature": "tech_kaido_thunder_bagua",
+      "finisher": "tech_uo_uo_seiryu_raimei_hakke_dragon"
+    }
+  ]
+}

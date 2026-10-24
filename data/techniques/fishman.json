@@ -1,0 +1,85 @@
+[
+  {
+    "id": "tech_karate_seiken",
+    "name": "Gyojin Karate: Water-Shock Strike",
+    "form": "strike",
+    "tags": ["blunt", "water"],
+    "effects": ["knockback"],
+    "named": false,
+    "description": "A strike that sends the water in the air ahead of it."
+  },
+  {
+    "id": "tech_karate_senmaigawara",
+    "name": "Senmaigawara Seiken",
+    "form": "strike",
+    "tags": ["blunt", "water"],
+    "effects": ["pierce_guard"],
+    "description": "The Thousand-Brick Fist."
+  },
+  {
+    "id": "tech_karate_samehada",
+    "name": "Samehada Shotei",
+    "form": "counter",
+    "tags": ["blunt", "water"],
+    "effects": ["reflect"],
+    "description": "Shark Skin Palm: a guard that strikes back."
+  },
+  {
+    "id": "tech_karate_inner_water",
+    "name": "Through-Water Strike",
+    "form": "strike",
+    "tags": ["blunt", "water"],
+    "effects": ["internal"],
+    "named": false,
+    "description": "Strike through the water inside a body."
+  },
+  {
+    "id": "tech_karate_uchimizu",
+    "name": "Uchimizu",
+    "form": "projectile",
+    "tags": ["water"],
+    "effects": ["knockback"],
+    "description": "Flicked drops of water that hit like bullets."
+  },
+  {
+    "id": "tech_karate_buraikan",
+    "name": "Buraikan",
+    "form": "projectile",
+    "tags": ["water", "blunt"],
+    "effects": ["knockback"],
+    "description": "A shockwave sent through the sea at range."
+  },
+  {
+    "id": "tech_jujutsu_grip",
+    "name": "Gyojin Jujutsu: Water Grip",
+    "form": "grapple",
+    "tags": ["water", "grip"],
+    "effects": ["bind"],
+    "named": false
+  },
+  {
+    "id": "tech_jujutsu_yarinami",
+    "name": "Yarinami",
+    "form": "projectile",
+    "tags": ["water"],
+    "effects": ["knockback"],
+    "description": "A spear of sea water."
+  },
+  {
+    "id": "tech_jujutsu_kairyu",
+    "name": "Kairyu Ippon Zeoi",
+    "form": "grapple",
+    "tags": ["water", "grip"],
+    "effects": ["knockback"],
+    "description": "A sea-dragon throw of the water itself."
+  },
+  {
+    "id": "tech_jujutsu_wave",
+    "name": "Gyojin Jujutsu: Commanding Wave",
+    "form": "area",
+    "tags": ["water", "sea"],
+    "effects": ["knockback", "terrain"],
+    "finisher": true,
+    "named": false
+  }
+]

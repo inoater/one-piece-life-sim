@@ -34,6 +34,7 @@ import { newsHeard } from '../systems/news';
 import { ensureWorldLayer } from '../systems/places/history';
 import { canonView, factionViews, mapView, placeView, worldSummary } from '../systems/places/view';
 import { travelView } from '../systems/voyage/view';
+import { fruitsView, powersView } from '../systems/powers/view';
 import { entryWarnings } from '../systems/genesis/warnings';
 import type {
   AdvanceReport,
@@ -189,6 +190,7 @@ export class SimCore {
       'world/place': (req) => placeView(this.state, this.deps.data, req.id, req.view.omniscient),
       'world/canon': () => canonView(this.state, this.deps.data),
       'world/factions': (req) => factionViews(this.state, this.deps.data, req.generated ?? false),
+      'powers/fruits': (req) => fruitsView(this.state, this.deps.data, req.view.omniscient),
     };
   }
 
@@ -412,6 +414,7 @@ export class SimCore {
       defaults: defaultOptions(data, this.newSeed()),
       presentYear: Math.floor(data.calendar.presentTick / 12),
       canonYearOffset: data.calendar.canonYearOffset,
+      era: data.calendar.era,
       appearanceFields: data.appearance.fields.map((f) => ({ id: f.id, label: f.label })),
       months: [...data.calendar.months],
     };
@@ -687,6 +690,7 @@ export class SimCore {
       tick: state.tick,
       date: dateOf(cal, state.tick),
       presentTick: cal.presentTick,
+      calendar: { yearOffset: cal.canonYearOffset, era: cal.era },
       progress: progressToPresent(cal, state.tick),
       atPresent: !state.openEnded && hasReachedPresent(cal, state.tick),
       openEnded: state.openEnded,
@@ -697,6 +701,7 @@ export class SimCore {
         : null,
       life: lifeView(state, data),
       travel: travelView(state, data),
+      powers: powersView(state, data),
       world: worldSummary(state, data),
       epilogue:
         !state.openEnded && hasReachedPresent(cal, state.tick)

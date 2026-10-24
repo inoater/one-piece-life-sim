@@ -1,4 +1,4 @@
-import { dateOf, formatDate } from '../../engine/calendar';
+import { dateOf, formatDate, formatYear } from '../../engine/calendar';
 import type { DerivedDef, GameData } from '../../engine/data/schemas';
 import { Rng } from '../../engine/rng';
 import type {
@@ -16,6 +16,8 @@ import {
   statValue,
   type BreakdownLine,
 } from '../../engine/stats';
+import { traitKind } from '../../engine/data/schemas';
+import { describeTrait } from '../life/traits';
 import { appearanceSentence, heightFraction } from './appearance';
 import { ageAt, humanAgeFor, stageAt } from './stages';
 import { formatBerries } from './text';
@@ -51,6 +53,8 @@ export interface SheetDerived {
   /** "Max Health 139 = 50 + 1.2 x Durability 44 + 0.8 x Endurance 45.6" */
   formula: string;
   note?: string;
+  /** Phase 4: the bonus stack added on top (traits, haki stages, a fruit), each named (rule 3). */
+  bonus?: { total: number; lines: { source: string; value: number }[] };
 }
 
 export interface SheetPerson {
@@ -61,7 +65,7 @@ export interface SheetPerson {
   kind: string;
   age: number | null;
   alive: boolean;
-  /** "Died in Year 3 (lost at sea)". */
+  /** "Died in 1489 SC (lost at sea)". */
   death?: string;
   occupation?: string;
   traits: string[];
@@ -107,7 +111,22 @@ export interface CharacterSheet {
     /** Omniscient only: the hidden talent's multiplier. */
     talentMult?: number;
   };
-  traits: { id: string; name: string; description: string; category: string }[];
+  traits: {
+    id: string;
+    name: string;
+    description: string;
+    category: string;
+    /** The plan's kind (Phase 4): innate, upbringing, personality, earned, scar, reputation, hidden. */
+    kind: string;
+    /** Everything it does, in short lines: "+10 on Charisma checks", "nobles -5 opinion". */
+    effects: string[];
+    /** Where it came from: "Born with it", "Earned by what you kept doing (March 1505 SC)". */
+    origin: string;
+    /** A hidden trait (omniscient views only). */
+    hidden: boolean;
+  }[];
+  /** Hints of hidden traits, in their stead (rule 4): "Some days a room goes quiet when you are angry." */
+  traitHints: string[];
   /** What the player is told instead of their talent tier. */
   talentHint: string;
   hidden: null | {
@@ -147,7 +166,12 @@ export interface SheetOptions {
   omniscient: boolean;
 }
 
-function derive(def: DerivedDef, totals: Readonly<Record<string, number>>): SheetDerived {
+function derive(
+  def: DerivedDef,
+  totals: Readonly<Record<string, number>>,
+  entity: Entity,
+  tick: number,
+): SheetDerived {
   let value = def.constant;
   const parts: string[] = def.constant !== 0 ? [formatNumber(def.constant)] : [];
   for (const term of def.terms) {
@@ -161,6 +185,20 @@ function derive(def: DerivedDef, totals: Readonly<Record<string, number>>): Shee
       parts.push(`${label} / ${formatNumber(term.divide)}`);
     }
   }
+  const bonusStat = def.bonusStat ? entity.stats[def.bonusStat] : undefined;
+  let bonus: SheetDerived['bonus'];
+  if (bonusStat) {
+    const b = statBreakdown(bonusStat, tick);
+    value += b.total;
+    if (b.total !== 0) parts.push(`${formatNumber(Math.round(b.total * 10) / 10)} bonuses`);
+    bonus = {
+      total: Math.round(b.total * 10) / 10,
+      lines: b.lines.map((l) => ({
+        source: l.source.replace(/ \((power|trait)\)$/, ''),
+        value: Math.round(l.contribution * 10) / 10,
+      })),
+    };
+  }
   const rounded =
     def.round === 'floor' ? Math.floor(value) : def.round === 'round' ? Math.round(value) : value;
   const rounding =
@@ -172,6 +210,7 @@ function derive(def: DerivedDef, totals: Readonly<Record<string, number>>): Shee
     formula: `${def.name} ${formatNumber(rounded)} = ${parts.join(' + ')}${rounding}`,
   };
   if (def.note) out.note = def.note;
+  if (bonus && bonus.lines.length > 0) out.bonus = bonus;
   return out;
 }
 
@@ -240,8 +279,8 @@ function person(
     opinion: Math.round(statValue(rel.opinion, state.tick)),
   };
   if (oc.death) {
-    const year = dateOf(data.calendar, oc.death.tick).year;
-    out.death = `Died in Year ${year} (${oc.death.cause}), aged ${ageAt(oc.birthTick, oc.death.tick)}`;
+    const year = formatYear(data.calendar, dateOf(data.calendar, oc.death.tick).year);
+    out.death = `Died in ${year} (${oc.death.cause}), aged ${ageAt(oc.birthTick, oc.death.tick)}`;
   }
   if (oc.occupation && typeof title !== 'string') {
     out.occupation = data.occupations[oc.occupation]?.name ?? oc.occupation;
@@ -364,21 +403,38 @@ export function characterSheet(
       }),
     },
     stats,
-    derived: rules.derived.map((def) => derive(def, totals)),
+    derived: rules.derived.map((def) => derive(def, totals, entity, state.tick)),
     growth: {
       traitPct: growthLines.reduce((sum, l) => sum + l.pct, 0),
       lines: growthLines,
       ...(options.omniscient && talent ? { talentMult: talent.growthMult } : {}),
     },
-    traits: c.traits.map((id) => {
-      const t = data.traits[id];
-      return {
-        id,
-        name: t?.name ?? id,
-        description: t?.description ?? '',
-        category: t?.category ?? '',
-      };
-    }),
+    traits: c.traits
+      .filter((id) => options.omniscient || data.traits[id]?.hidden !== true)
+      .map((id) => {
+        const t = data.traits[id];
+        const info = c.traitInfo?.[id];
+        const when =
+          info && info.tick !== c.birthTick
+            ? ` (${formatDate(dateOf(data.calendar, info.tick))})`
+            : '';
+        return {
+          id,
+          name: t?.name ?? id,
+          description: t?.description ?? '',
+          category: t?.category ?? '',
+          kind: t ? traitKind(t) : 'innate',
+          effects: t ? describeTrait(data, { ...t, hidden: false }) : [],
+          origin: info ? `${info.source}${when}` : 'Since before the records',
+          hidden: t?.hidden === true,
+        };
+      }),
+    traitHints: options.omniscient
+      ? []
+      : c.traits.flatMap((id) => {
+          const t = data.traits[id];
+          return t?.hidden && t.hint ? [t.hint] : [];
+        }),
     talentHint,
     hidden:
       options.omniscient && talent
@@ -435,7 +491,7 @@ function lifeSection(data: GameData, entity: Entity, tick: number): CharacterShe
   return {
     health: {
       current: Math.round(life.health),
-      max: maxDef ? derive(maxDef, totals).value : Math.round(life.health),
+      max: maxDef ? derive(maxDef, totals, entity, tick).value : Math.round(life.health),
     },
     exhausted: life.exhausted,
     injuries: life.injuries

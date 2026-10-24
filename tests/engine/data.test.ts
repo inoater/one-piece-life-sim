@@ -255,7 +255,7 @@ describe('whole-file problems', () => {
   });
 
   it('rejects content in folders that have no schema yet', () => {
-    for (const dir of ['fruits', 'news']) {
+    for (const dir of ['news']) {
       const files = clone();
       files.push({ path: `data/${dir}/thing.json`, content: { id: 'x' } });
       const issue = errors(files).find((i) => i.file === `data/${dir}/thing.json`);

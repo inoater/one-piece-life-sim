@@ -1,0 +1,105 @@
+{
+  "id": "moveset_monkey_d_luffy",
+  "char": "char_monkey_d_luffy",
+  "eras": [
+    {
+      "from": {
+        "year": 26,
+        "month": 1
+      },
+      "techniques": ["tech_gomu_gomu_gomu_gomu_no_pistol", "tech_gomu_gomu_gomu_gomu_no_gatling"],
+      "tracks": {
+        "track_brawling": "street"
+      },
+      "approx": true,
+      "to": {
+        "year": 35,
+        "month": 11
+      },
+      "mastery": 15,
+      "signature": "tech_gomu_gomu_gomu_gomu_no_pistol"
+    },
+    {
+      "from": {
+        "year": 35,
+        "month": 12
+      },
+      "techniques": [
+        "tech_gomu_gomu_gomu_gomu_no_pistol",
+        "tech_gomu_gomu_gomu_gomu_no_gatling",
+        "tech_gomu_gomu_gomu_gomu_no_bazooka",
+        "tech_gomu_gomu_gomu_gomu_no_fusen",
+        "tech_gomu_gomu_gear_second",
+        "tech_gomu_gomu_gear_third_gigant_pistol"
+      ],
+      "tracks": {
+        "track_brawling": "brawler",
+        "track_conqueror": "unwilled"
+      },
+      "approx": true,
+      "to": {
+        "year": 36,
+        "month": 9
+      },
+      "mastery": 50,
+      "signature": "tech_gomu_gomu_gomu_gomu_no_gatling",
+      "finisher": "tech_gomu_gomu_gear_third_gigant_pistol"
+    },
+    {
+      "from": {
+        "year": 36,
+        "month": 10
+      },
+      "techniques": [
+        "tech_gomu_gomu_gomu_gomu_no_pistol",
+        "tech_gomu_gomu_gomu_gomu_no_gatling",
+        "tech_gomu_gomu_gomu_gomu_no_bazooka",
+        "tech_gomu_gomu_gomu_gomu_no_fusen",
+        "tech_gomu_gomu_gear_second",
+        "tech_gomu_gomu_gear_third_gigant_pistol",
+        "tech_gomu_gomu_gomu_gomu_no_red_hawk",
+        "tech_gomu_gomu_gear_fourth_kong_gun"
+      ],
+      "tracks": {
+        "track_observation": "track_crowds",
+        "track_armament": "full_body",
+        "track_conqueror": "willed"
+      },
+      "approx": true,
+      "to": {
+        "year": 38,
+        "month": 7
+      },
+      "mastery": 75,
+      "signature": "tech_gomu_gomu_gomu_gomu_no_red_hawk",
+      "finisher": "tech_gomu_gomu_gear_fourth_kong_gun"
+    },
+    {
+      "from": {
+        "year": 38,
+        "month": 8
+      },
+      "techniques": [
+        "tech_gomu_gomu_gomu_gomu_no_pistol",
+        "tech_gomu_gomu_gomu_gomu_no_gatling",
+        "tech_gomu_gomu_gomu_gomu_no_bazooka",
+        "tech_gomu_gomu_gomu_gomu_no_fusen",
+        "tech_gomu_gomu_gear_second",
+        "tech_gomu_gomu_gear_third_gigant_pistol",
+        "tech_gomu_gomu_gomu_gomu_no_red_hawk",
+        "tech_gomu_gomu_gear_fourth_kong_gun",
+        "tech_gomu_gomu_gear_fifth",
+        "tech_gomu_gomu_gomu_gomu_no_bajrang_gun"
+      ],
+      "tracks": {
+        "track_observation": "future_sight",
+        "track_armament": "emission",
+        "track_conqueror": "coating"
+      },
+      "approx": true,
+      "mastery": 92,
+      "signature": "tech_gomu_gomu_gomu_gomu_no_red_hawk",
+      "finisher": "tech_gomu_gomu_gomu_gomu_no_bajrang_gun"
+    }
+  ]
+}

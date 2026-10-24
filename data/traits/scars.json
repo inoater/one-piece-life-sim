@@ -5,10 +5,24 @@
     "description": "An old head wound. People look twice, and you learned not to flinch.",
     "category": "scar",
     "statMods": [
-      { "stat": "charisma", "value": -1, "kind": "flat" },
-      { "stat": "willpower", "value": 2, "kind": "flat" }
+      {
+        "stat": "charisma",
+        "value": -1,
+        "kind": "flat"
+      },
+      {
+        "stat": "willpower",
+        "value": 2,
+        "kind": "flat"
+      }
     ],
-    "weight": 0
+    "weight": 0,
+    "opinion": [
+      {
+        "group": "pirates",
+        "value": 3
+      }
+    ]
   },
   {
     "id": "trait_scar_torso",
@@ -16,34 +30,72 @@
     "description": "It aches before a storm, and on long days.",
     "category": "scar",
     "statMods": [
-      { "stat": "endurance", "value": -2, "kind": "flat" },
-      { "stat": "willpower", "value": 1, "kind": "flat" }
+      {
+        "stat": "endurance",
+        "value": -2,
+        "kind": "flat"
+      },
+      {
+        "stat": "willpower",
+        "value": 1,
+        "kind": "flat"
+      }
     ],
-    "weight": 0
+    "weight": 0,
+    "derivedMods": {
+      "maxHealth": -3
+    }
   },
   {
     "id": "trait_scar_arms",
     "name": "Scarred Arm",
     "description": "The arm healed crooked and stiff in the cold.",
     "category": "scar",
-    "statMods": [{ "stat": "dexterity", "value": -2, "kind": "flat" }],
-    "weight": 0
+    "statMods": [
+      {
+        "stat": "dexterity",
+        "value": -2,
+        "kind": "flat"
+      }
+    ],
+    "weight": 0,
+    "checkBonuses": {
+      "dexterity": -2
+    }
   },
   {
     "id": "trait_scar_legs",
     "name": "Bad Leg",
     "description": "A limp that comes and goes with the weather.",
     "category": "scar",
-    "statMods": [{ "stat": "speed", "value": -3, "kind": "flat" }],
-    "weight": 0
+    "statMods": [
+      {
+        "stat": "speed",
+        "value": -3,
+        "kind": "flat"
+      }
+    ],
+    "weight": 0,
+    "checkBonuses": {
+      "speed": -2
+    }
   },
   {
     "id": "trait_scar_eyes",
     "name": "Scarred Eye",
     "description": "The eye still works, mostly, behind the scar.",
     "category": "scar",
-    "statMods": [{ "stat": "perception", "value": -2, "kind": "flat" }],
-    "weight": 0
+    "statMods": [
+      {
+        "stat": "perception",
+        "value": -2,
+        "kind": "flat"
+      }
+    ],
+    "weight": 0,
+    "checkBonuses": {
+      "perception": -3
+    }
   },
   {
     "id": "trait_lost_eye",
@@ -51,11 +103,36 @@
     "description": "The eye is gone. You judge distance by habit now.",
     "category": "scar",
     "statMods": [
-      { "stat": "perception", "value": -15, "kind": "pct" },
-      { "stat": "dexterity", "value": -8, "kind": "pct" },
-      { "stat": "willpower", "value": 2, "kind": "flat" }
+      {
+        "stat": "perception",
+        "value": -15,
+        "kind": "pct"
+      },
+      {
+        "stat": "dexterity",
+        "value": -8,
+        "kind": "pct"
+      },
+      {
+        "stat": "willpower",
+        "value": 2,
+        "kind": "flat"
+      }
     ],
-    "weight": 0
+    "weight": 0,
+    "checkBonuses": {
+      "perception": -8
+    },
+    "opinion": [
+      {
+        "group": "pirates",
+        "value": 5
+      },
+      {
+        "group": "nobles",
+        "value": -5
+      }
+    ]
   },
   {
     "id": "trait_lost_arm",
@@ -63,11 +140,35 @@
     "description": "You lost an arm, and learned to do with one what others do with two.",
     "category": "scar",
     "statMods": [
-      { "stat": "strength", "value": -20, "kind": "pct" },
-      { "stat": "dexterity", "value": -25, "kind": "pct" },
-      { "stat": "willpower", "value": 3, "kind": "flat" }
+      {
+        "stat": "strength",
+        "value": -20,
+        "kind": "pct"
+      },
+      {
+        "stat": "dexterity",
+        "value": -25,
+        "kind": "pct"
+      },
+      {
+        "stat": "willpower",
+        "value": 3,
+        "kind": "flat"
+      }
     ],
-    "weight": 0
+    "weight": 0,
+    "locks": [
+      {
+        "activity": "act_blade_drills",
+        "months": 6
+      }
+    ],
+    "opinion": [
+      {
+        "group": "pirates",
+        "value": 3
+      }
+    ]
   },
   {
     "id": "trait_lost_leg",
@@ -75,10 +176,30 @@
     "description": "A wooden leg where a real one used to be. It thumps on the deck.",
     "category": "scar",
     "statMods": [
-      { "stat": "speed", "value": -35, "kind": "pct" },
-      { "stat": "endurance", "value": -10, "kind": "pct" },
-      { "stat": "willpower", "value": 3, "kind": "flat" }
+      {
+        "stat": "speed",
+        "value": -35,
+        "kind": "pct"
+      },
+      {
+        "stat": "endurance",
+        "value": -10,
+        "kind": "pct"
+      },
+      {
+        "stat": "willpower",
+        "value": 3,
+        "kind": "flat"
+      }
     ],
-    "weight": 0
+    "weight": 0,
+    "checkBonuses": {
+      "speed": -8
+    },
+    "locks": [
+      {
+        "activity": "act_run_laps"
+      }
+    ]
   }
 ]

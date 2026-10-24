@@ -1,0 +1,60 @@
+{
+  "id": "track_kami_e",
+  "name": "Kami-e",
+  "family": "six_powers",
+  "description": "One of the Six Powers (Rokushiki): bending with blows, then slipping through crowds, then a body that flows past anything.",
+  "stages": [
+    {
+      "id": "first",
+      "name": "Bending with blows",
+      "level": "novice",
+      "at": 0,
+      "description": "Kami-e: bending with blows.",
+      "text": "You managed Kami-e for the first time: bending with blows.",
+      "techniques": ["tech_kami_e"],
+      "combat": 6
+    },
+    {
+      "id": "second",
+      "name": "Slipping through crowds",
+      "level": "adept",
+      "at": 40,
+      "description": "Kami-e: slipping through crowds.",
+      "text": "Kami-e came to you without thinking now: slipping through crowds.",
+      "requires": {
+        "stats": {
+          "dexterity": 60
+        }
+      },
+      "combat": 14
+    },
+    {
+      "id": "mastered",
+      "name": "A body that flows past anything",
+      "level": "master",
+      "at": 100,
+      "description": "Kami-e mastered: a body that flows past anything.",
+      "text": "You had mastered Kami-e: a body that flows past anything.",
+      "requires": {
+        "stats": {
+          "dexterity": 75
+        },
+        "teacher": true
+      },
+      "techniques": ["tech_kami_e_2"],
+      "combat": 24,
+      "flags": {
+        "six_powers.kami_e": true
+      }
+    }
+  ],
+  "learn": {
+    "how": "event"
+  },
+  "group": "six_powers",
+  "speedStats": {
+    "dexterity": 0.5
+  },
+  "word": "Kami-e",
+  "tags": ["body"]
+}

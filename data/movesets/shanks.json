@@ -1,0 +1,46 @@
+{
+  "id": "moveset_shanks",
+  "char": "char_shanks",
+  "eras": [
+    {
+      "from": {
+        "year": 13,
+        "month": 7
+      },
+      "techniques": ["tech_sword_shishi_sonson", "tech_sword_36_pound"],
+      "tracks": {
+        "track_swordsmanship": "flying_slash",
+        "track_armament": "coat_weapon",
+        "track_observation": "read_intent",
+        "track_conqueror": "willed"
+      },
+      "approx": true,
+      "to": {
+        "year": 25,
+        "month": 12
+      },
+      "signature": "tech_sword_36_pound"
+    },
+    {
+      "from": {
+        "year": 26,
+        "month": 1
+      },
+      "techniques": [
+        "tech_sword_shishi_sonson",
+        "tech_sword_36_pound",
+        "tech_shanks_divine_departure",
+        "tech_haki_ryuo"
+      ],
+      "tracks": {
+        "track_swordsmanship": "conqueror_slash",
+        "track_armament": "emission",
+        "track_observation": "future_sight",
+        "track_conqueror": "coating"
+      },
+      "approx": true,
+      "signature": "tech_shanks_divine_departure",
+      "finisher": "tech_shanks_divine_departure"
+    }
+  ]
+}

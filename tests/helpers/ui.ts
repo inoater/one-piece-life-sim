@@ -21,6 +21,12 @@ export async function settle(times = 6): Promise<void> {
   for (let i = 0; i < times; i++) await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
+/** Wait until `done()` holds, for work a click starts without awaiting (a save's compression). */
+export async function until(done: () => boolean, ms = 10_000): Promise<void> {
+  const end = Date.now() + ms;
+  while (!done() && Date.now() < end) await new Promise((resolve) => setTimeout(resolve, 5));
+}
+
 /** Mount the real shell over the real engine, in the happy-dom document. */
 export async function mountUi(
   options: {

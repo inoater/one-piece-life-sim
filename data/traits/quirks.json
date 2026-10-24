@@ -19,7 +19,19 @@
     "excludes": ["trait_patient"],
     "eventWeights": {
       "fight": 2
-    }
+    },
+    "drift": {
+      "axis": "temper",
+      "gainAt": 6,
+      "loseAt": 2
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -3
+      }
+    ],
+    "loseText": "You no longer flare up at every slight."
   },
   {
     "id": "trait_patient",
@@ -33,7 +45,15 @@
         "kind": "flat"
       }
     ],
-    "excludes": ["trait_hot_headed"]
+    "excludes": ["trait_hot_headed"],
+    "drift": {
+      "axis": "temper",
+      "gainAt": -6,
+      "loseAt": -2
+    },
+    "checkBonuses": {
+      "willpower": 3
+    }
   },
   {
     "id": "trait_charming",
@@ -50,6 +70,16 @@
     "excludes": ["trait_surly"],
     "eventWeights": {
       "social": 1.5
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": 10,
+        "firstImpression": true
+      }
+    ],
+    "checkBonuses": {
+      "charisma": 5
     }
   },
   {
@@ -69,7 +99,14 @@
         "kind": "flat"
       }
     ],
-    "excludes": ["trait_charming"]
+    "excludes": ["trait_charming"],
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -8,
+        "firstImpression": true
+      }
+    ]
   },
   {
     "id": "trait_curious",
@@ -90,6 +127,9 @@
     ],
     "eventWeights": {
       "explore": 2
+    },
+    "trainingMods": {
+      "intellect": 5
     }
   },
   {
@@ -113,6 +153,14 @@
     "eventWeights": {
       "hardship": 1.3,
       "fight": 1.3
+    },
+    "drift": {
+      "axis": "caution",
+      "gainAt": -6,
+      "loseAt": -2
+    },
+    "checkBonuses": {
+      "combatPower": 3
     }
   },
   {
@@ -130,6 +178,14 @@
     "excludes": ["trait_reckless"],
     "eventWeights": {
       "hardship": 0.8
+    },
+    "drift": {
+      "axis": "caution",
+      "gainAt": 6,
+      "loseAt": 2
+    },
+    "checkBonuses": {
+      "perception": 3
     }
   },
   {
@@ -143,7 +199,11 @@
         "value": 2,
         "kind": "flat"
       }
-    ]
+    ],
+    "derivedMods": {
+      "vigor": 1,
+      "maxHealth": 5
+    }
   },
   {
     "id": "trait_dreamer",
@@ -161,7 +221,13 @@
         "value": -1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "willpower": 3
+    },
+    "eventWeights": {
+      "discovery": 1.3
+    }
   },
   {
     "id": "trait_night_owl",
@@ -179,6 +245,12 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "perception": 3
+    },
+    "trainingMods": {
+      "intellect": 5
+    }
   }
 ]

@@ -1,0 +1,75 @@
+{
+  "id": "track_gunmanship",
+  "name": "Gunmanship",
+  "family": "weapon",
+  "description": "From steady aim to trick shots to bullets coated with haki.",
+  "stages": [
+    {
+      "id": "steady",
+      "name": "Steady aim",
+      "level": "novice",
+      "at": 0,
+      "description": "Hit what you aim at.",
+      "text": "You hit the bottle at thirty paces.",
+      "requires": {
+        "gear": {
+          "gun": 1
+        }
+      },
+      "techniques": ["tech_gun_shot"],
+      "combat": 6
+    },
+    {
+      "id": "trick",
+      "name": "Trick shots",
+      "level": "adept",
+      "at": 60,
+      "description": "Shots that bend around cover.",
+      "text": "Your bullet glanced off the bell and hit the man behind the wall.",
+      "requires": {
+        "stats": {
+          "dexterity": 50,
+          "perception": 45
+        }
+      },
+      "techniques": ["tech_gun_trick"],
+      "combat": 18
+    },
+    {
+      "id": "coated",
+      "name": "Shots coated with haki",
+      "level": "expert",
+      "at": 150,
+      "description": "Bullets that carry Armament.",
+      "text": "Your coated bullet hit a Logia, and he bled.",
+      "requires": {
+        "tracks": {
+          "track_armament": "coat_weapon"
+        }
+      },
+      "techniques": ["tech_gun_coated"],
+      "combat": 32
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a gunsmith who shoots",
+        "features": ["marine_base", "underworld"],
+        "fee": 10000
+      }
+    ],
+    "requires": {
+      "gear": {
+        "gun": 1
+      }
+    }
+  },
+  "speedStats": {
+    "dexterity": 0.4,
+    "perception": 0.3
+  },
+  "word": "Shot",
+  "tags": ["gun"]
+}

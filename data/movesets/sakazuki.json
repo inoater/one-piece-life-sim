@@ -1,0 +1,26 @@
+{
+  "id": "moveset_sakazuki",
+  "char": "char_sakazuki",
+  "eras": [
+    {
+      "from": {
+        "year": -2,
+        "month": 1
+      },
+      "techniques": [
+        "tech_magu_magu_dai_funka",
+        "tech_magu_magu_meigo",
+        "tech_magu_magu_ryusei_kazan",
+        "tech_haki_harden"
+      ],
+      "tracks": {
+        "track_armament": "full_body",
+        "track_observation": "track_crowds"
+      },
+      "approx": true,
+      "mastery": 85,
+      "signature": "tech_magu_magu_meigo",
+      "finisher": "tech_magu_magu_ryusei_kazan"
+    }
+  ]
+}

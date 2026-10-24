@@ -1,6 +1,13 @@
 import { h, type Child } from '../dom';
 import { copyButton } from '../components/copy-button';
-import { formatInteger, formatPercent, plural, shortHash } from '../format';
+import {
+  dateLabel,
+  formatInteger,
+  formatPercent,
+  plural,
+  presentYearLabel,
+  shortHash,
+} from '../format';
 import type { UiState } from '../store';
 import type { Snapshot } from '../../worker/protocol';
 
@@ -142,7 +149,12 @@ export function renderWorld(state: UiState): HTMLElement {
     'div',
     { class: 'side-screen' },
     h('h2', { class: 'side-screen__title' }, 'The clock'),
-    h('p', { class: 'clock-line' }, h('strong', null, `Year ${s.date.year}`), ` of ${presentYear}`),
+    h(
+      'p',
+      { class: 'clock-line' },
+      h('strong', null, dateLabel(s.date)),
+      ` (year ${s.date.year} of ${presentYear} since God Valley)`,
+    ),
     tide,
     h(
       'p',
@@ -153,7 +165,7 @@ export function renderWorld(state: UiState): HTMLElement {
     ),
     facts([
       ['Calendar', `${s.date.monthName}, ${s.date.seasonName.toLowerCase()}`],
-      ['Canon year', String(s.date.canonYear)],
+      ['Era', `Sea Circle (${s.date.era}); the present begins in ${presentYearLabel(s)}`],
     ]),
 
     powers(s.world),

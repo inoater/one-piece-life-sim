@@ -1,0 +1,56 @@
+{
+  "id": "track_okama_kenpo",
+  "name": "Okama Kenpo",
+  "family": "style",
+  "description": "Dance-kicks and stance changes, from the Kamabakka Kingdom: only an invitation opens it.",
+  "stages": [
+    {
+      "id": "stances",
+      "name": "Dance stances",
+      "level": "novice",
+      "at": 0,
+      "description": "Ballet stances that are also guards.",
+      "text": "You took a ballet stance, and it was a fighting stance too.",
+      "techniques": ["tech_okama_arabesque"],
+      "combat": 6
+    },
+    {
+      "id": "ballet_kicks",
+      "name": "Ballet kicks",
+      "level": "adept",
+      "at": 60,
+      "description": "Kicks from a dancer's turn.",
+      "text": "You spun on one toe and kicked a man off his feet.",
+      "requires": {
+        "stats": {
+          "dexterity": 45,
+          "speed": 45
+        }
+      },
+      "techniques": ["tech_okama_pirouette"],
+      "combat": 18
+    },
+    {
+      "id": "angles",
+      "name": "Impossible angles",
+      "level": "expert",
+      "at": 150,
+      "description": "Kicks that come from where no kick can.",
+      "text": "Your kick came from an angle nobody could have guarded.",
+      "requires": {
+        "stats": {
+          "dexterity": 60
+        }
+      },
+      "combat": 30
+    }
+  ],
+  "learn": {
+    "how": "event"
+  },
+  "speedStats": {
+    "dexterity": 0.5
+  },
+  "word": "Swan",
+  "tags": ["kick", "dance"]
+}

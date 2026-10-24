@@ -17,6 +17,8 @@ import {
 import { formatBerries } from '../genesis/text';
 import { relationTitle } from './people';
 import { reapplyTraits } from './traits';
+import { entityIds } from '../../engine/entities';
+import { passCarriedFruits } from '../powers/fruits';
 
 /**
  * When the person being played dies (Phase 2): the life recap, and carrying on as someone else.
@@ -30,8 +32,8 @@ import { reapplyTraits } from './traits';
  *
  * Inheritance: Berries pass to an heir, protégé, crewmate or sibling; debts die with the debtor;
  * the bounty does not pass; half the fame (life.json) becomes the heir's Legacy; command of the
- * crew passes to a crewmate. Ships and Devil Fruits arrive in Phases 3 and 4 and will follow the
- * same rules (a fruit returns to the world).
+ * crew passes to a crewmate. Ships pass on too (Phase 3); an eaten Devil Fruit returns to the world
+ * when its user dies, and an uneaten one is carried and passes like Berries (Phase 4).
  */
 
 export const CONTINUE_MODES = ['heir', 'protege', 'crewmate', 'sibling', 'newborn', 'new'] as const;
@@ -374,7 +376,7 @@ export function continueAs(
       dead.c.berries = 0;
     }
     // Phase 3: ships, and the command of their crews, pass on too.
-    for (const id of Object.keys(state.entities).sort()) {
+    for (const id of entityIds(state)) {
       const ship = state.entities[id]?.ship;
       if (!ship || ship.ownerId !== dead.entity.id || ship.sunk) continue;
       ship.ownerId = target.id;
@@ -382,6 +384,11 @@ export function continueAs(
         `the ship ${state.entities[id]?.name ?? id}${ship.crew > 0 ? ` and her ${ship.crew} hands` : ''}`,
       );
     }
+    // Phase 4: an uneaten Devil Fruit (and the encyclopedia) are things, and pass like Berries;
+    // an eaten fruit returned to the world the moment its user died.
+    const carried = passCarriedFruits(state, dead.entity, target, state.tick);
+    if (carried > 0)
+      notes.push(carried === 1 ? 'something they carried' : `${carried} things they carried`);
     const fame = statValue(reputation(dead.entity, 'fame'), state.tick);
     const legacy = Math.round(fame * data.life.fame.legacyPct) / 100;
     if (legacy > 0) {

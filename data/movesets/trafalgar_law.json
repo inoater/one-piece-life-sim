@@ -1,0 +1,72 @@
+{
+  "id": "moveset_trafalgar_law",
+  "char": "char_trafalgar_law",
+  "eras": [
+    {
+      "from": {
+        "year": 23,
+        "month": 6
+      },
+      "techniques": ["tech_ope_ope_room", "tech_ope_ope_shambles", "tech_ope_ope_amputate"],
+      "tracks": {
+        "track_swordsmanship": "cut_steel"
+      },
+      "approx": true,
+      "to": {
+        "year": 35,
+        "month": 12
+      },
+      "mastery": 30,
+      "signature": "tech_ope_ope_shambles"
+    },
+    {
+      "from": {
+        "year": 36,
+        "month": 1
+      },
+      "techniques": [
+        "tech_ope_ope_room",
+        "tech_ope_ope_shambles",
+        "tech_ope_ope_amputate",
+        "tech_ope_ope_counter_shock",
+        "tech_ope_ope_gamma_knife"
+      ],
+      "tracks": {
+        "track_swordsmanship": "breath",
+        "track_armament": "coat",
+        "track_observation": "wider_range"
+      },
+      "approx": true,
+      "to": {
+        "year": 37,
+        "month": 12
+      },
+      "mastery": 65,
+      "signature": "tech_ope_ope_shambles",
+      "finisher": "tech_ope_ope_gamma_knife"
+    },
+    {
+      "from": {
+        "year": 38,
+        "month": 1
+      },
+      "techniques": [
+        "tech_ope_ope_room",
+        "tech_ope_ope_shambles",
+        "tech_ope_ope_amputate",
+        "tech_ope_ope_counter_shock",
+        "tech_ope_ope_gamma_knife",
+        "tech_ope_ope_k_room_shock_wille"
+      ],
+      "tracks": {
+        "track_swordsmanship": "coated",
+        "track_armament": "coat_weapon",
+        "track_observation": "read_intent"
+      },
+      "approx": true,
+      "mastery": 90,
+      "signature": "tech_ope_ope_shambles",
+      "finisher": "tech_ope_ope_k_room_shock_wille"
+    }
+  ]
+}

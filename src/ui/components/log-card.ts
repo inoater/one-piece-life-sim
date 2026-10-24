@@ -1,6 +1,6 @@
 import type { Snapshot } from '../../worker/protocol';
 import { h } from '../dom';
-import { formatInteger, formatValue, plural } from '../format';
+import { dateLabel, formatInteger, formatValue, plural } from '../format';
 
 /**
  * The log card: after time moves, a short entry in the ship's log saying what changed. Months
@@ -24,8 +24,8 @@ export function summarizeAdvance(before: Snapshot, after: Snapshot): LogCardSumm
   const to = after.date;
   const span =
     months === 1
-      ? `${to.monthName}, Year ${to.year}`
-      : `${from.monthName}${from.year !== to.year ? `, Year ${from.year}` : ''} to ${to.monthName}, Year ${to.year}`;
+      ? dateLabel(to)
+      : `${from.year !== to.year ? dateLabel(from) : from.monthName} to ${dateLabel(to)}`;
 
   const was = before.player;
   const now = after.player;

@@ -1,3 +1,4 @@
+import { formatYear } from '../../engine/calendar';
 import type { GameData, Race } from '../../engine/data/schemas';
 import { humanAgeFor, raceAgeFor, stageAt } from './stages';
 import { numberWords } from './text';
@@ -36,13 +37,14 @@ export function entryWarnings(
   const { entry } = data.creation;
   const rules = data.character;
   const presentYear = Math.floor(data.calendar.presentTick / 12);
+  const sc = (year: number) => formatYear(data.calendar, year);
   const warnings: EntryWarning[] = [];
 
   if (entryYear < entry.minYear || entryYear > entry.maxYear) {
     warnings.push({
       id: 'year-range',
       level: 'error',
-      text: `The entry year must be between Year ${entry.minYear} and Year ${entry.maxYear}.`,
+      text: `The entry year must be between ${sc(entry.minYear)} and ${sc(entry.maxYear)}.`,
       suggestions: [],
     });
   }
@@ -81,7 +83,7 @@ export function entryWarnings(
     warnings.push({
       id: 'outlive',
       level: 'warn',
-      text: `Entering at ${entryAge} in Year ${entryYear}, you would turn ${ageAtPresent} in Year ${presentYear}, when the present arrives: past the ${lifespan.max} years a ${race.name} can live. You will not see the present.`,
+      text: `Entering at ${entryAge} in ${sc(entryYear)}, you would turn ${ageAtPresent} in ${sc(presentYear)}, when the present arrives: past the ${lifespan.max} years a ${race.name} can live. You will not see the present.`,
       suggestions: [{ label: `Enter at ${latest} instead`, entryAge: clampAge(latest) }],
     });
   }
@@ -101,7 +103,7 @@ export function entryWarnings(
     warnings.push({
       id: 'child-at-present',
       level: 'warn',
-      text: `A ${race.name} is a child until ${anchors.childEnds}. Born in Year ${birthYear}, you would only turn ${ageAtPresent} in Year ${presentYear}, still a child when the present arrives. An older entry age gives you a grown life to play.`,
+      text: `A ${race.name} is a child until ${anchors.childEnds}. Born in ${sc(birthYear)}, you would only turn ${ageAtPresent} in ${sc(presentYear)}, still a child when the present arrives. An older entry age gives you a grown life to play.`,
       suggestions,
     });
   }
@@ -111,7 +113,7 @@ export function entryWarnings(
     warnings.push({
       id: 'before-god-valley',
       level: 'info',
-      text: `Born in Year ${birthYear}: ${plural(yearsBefore, 'year')} before God Valley.`,
+      text: `Born in ${sc(birthYear)}: ${plural(yearsBefore, 'year')} before God Valley.`,
       suggestions: [],
     });
   }

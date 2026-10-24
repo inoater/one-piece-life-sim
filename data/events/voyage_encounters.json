@@ -6,15 +6,37 @@
     "text": "A fat merchant ship hove into view, flying a guild flag and nervous signals.",
     "trigger": "voyage",
     "weight": 2,
-    "weightMods": [{ "when": [{ "kind": "danger", "max": 2 }], "mult": 1.5 }],
+    "weightMods": [
+      {
+        "when": [
+          {
+            "kind": "danger",
+            "max": 2
+          }
+        ],
+        "mult": 1.5
+      }
+    ],
     "choices": [
       {
         "id": "trade",
         "label": "Trade for stores",
-        "requires": [{ "kind": "berries", "min": 2000 }],
+        "requires": [
+          {
+            "kind": "berries",
+            "min": 2000
+          }
+        ],
         "effects": [
-          { "kind": "berries", "min": -2000, "max": -2000 },
-          { "kind": "supplies", "months": 3 },
+          {
+            "kind": "berries",
+            "min": -2000,
+            "max": -2000
+          },
+          {
+            "kind": "supplies",
+            "months": 3
+          },
           {
             "kind": "log",
             "text": "You bought biscuit, salt fish and fresh water at a fair price.",
@@ -26,7 +48,10 @@
         "id": "news",
         "label": "Swap news and sail on",
         "effects": [
-          { "kind": "morale", "value": 3 },
+          {
+            "kind": "morale",
+            "value": 3
+          },
           {
             "kind": "log",
             "text": "They gave you the news from the last port and you told them about the weather ahead.",
@@ -37,7 +62,12 @@
       {
         "id": "raid",
         "label": "Raid them",
-        "requires": [{ "kind": "travelMode", "modes": ["own"] }],
+        "requires": [
+          {
+            "kind": "travelMode",
+            "modes": ["own"]
+          }
+        ],
         "check": {
           "stat": "combatPower",
           "difficulty": 220,
@@ -45,18 +75,41 @@
           "success": {
             "text": "Their guards threw down their weapons and you emptied the hold.",
             "effects": [
-              { "kind": "berries", "min": 20000, "max": 45000 },
-              { "kind": "supplies", "months": 3 },
-              { "kind": "infamy", "value": 10 },
-              { "kind": "bounty", "value": 3000000 }
+              {
+                "kind": "berries",
+                "min": 20000,
+                "max": 45000
+              },
+              {
+                "kind": "supplies",
+                "months": 3
+              },
+              {
+                "kind": "infamy",
+                "value": 10
+              },
+              {
+                "kind": "bounty",
+                "value": 3000000
+              }
             ]
           },
           "failure": {
             "text": "Their guards were better than they looked. You got away with nothing but holes.",
             "effects": [
-              { "kind": "hull", "value": -10 },
-              { "kind": "injury", "severity": "minor", "cause": "violence" },
-              { "kind": "infamy", "value": 5 }
+              {
+                "kind": "hull",
+                "value": -10
+              },
+              {
+                "kind": "injury",
+                "severity": "minor",
+                "cause": "violence"
+              },
+              {
+                "kind": "infamy",
+                "value": 5
+              }
             ]
           }
         }
@@ -72,8 +125,24 @@
     "trigger": "voyage",
     "weight": 2,
     "weightMods": [
-      { "when": [{ "kind": "danger", "min": 3 }], "mult": 2 },
-      { "when": [{ "kind": "travelMode", "modes": ["marine"] }], "mult": 0.5 }
+      {
+        "when": [
+          {
+            "kind": "danger",
+            "min": 3
+          }
+        ],
+        "mult": 2
+      },
+      {
+        "when": [
+          {
+            "kind": "travelMode",
+            "modes": ["marine"]
+          }
+        ],
+        "mult": 0.5
+      }
     ],
     "choices": [
       {
@@ -86,33 +155,73 @@
           "criticalSuccess": {
             "text": "You boarded them first and took their whole hold as a prize.",
             "effects": [
-              { "kind": "berries", "min": 15000, "max": 40000 },
-              { "kind": "fame", "value": 8 },
-              { "kind": "morale", "value": 15 }
+              {
+                "kind": "berries",
+                "min": 15000,
+                "max": 40000
+              },
+              {
+                "kind": "fame",
+                "value": 8
+              },
+              {
+                "kind": "morale",
+                "value": 15
+              }
             ]
           },
           "success": {
             "text": "You beat off the boarders and the pirates sheered away.",
             "effects": [
-              { "kind": "hull", "value": -6 },
-              { "kind": "fame", "value": 3 }
+              {
+                "kind": "hull",
+                "value": -6
+              },
+              {
+                "kind": "fame",
+                "value": 3
+              }
             ]
           },
           "failure": {
             "text": "The pirates took what they wanted and left you bleeding on the deck.",
             "effects": [
-              { "kind": "hull", "value": -15 },
-              { "kind": "berries", "min": -8000, "max": -2000 },
-              { "kind": "injury", "severity": "serious", "cause": "violence" }
+              {
+                "kind": "hull",
+                "value": -15
+              },
+              {
+                "kind": "berries",
+                "min": -8000,
+                "max": -2000
+              },
+              {
+                "kind": "injury",
+                "severity": "serious",
+                "cause": "violence"
+              }
             ]
           },
           "criticalFailure": {
             "text": "They swept the deck with grapeshot and took everything that was not nailed down.",
             "effects": [
-              { "kind": "hull", "value": -25 },
-              { "kind": "crew", "value": -2 },
-              { "kind": "supplies", "months": -2 },
-              { "kind": "injury", "severity": "severe", "cause": "violence" }
+              {
+                "kind": "hull",
+                "value": -25
+              },
+              {
+                "kind": "crew",
+                "value": -2
+              },
+              {
+                "kind": "supplies",
+                "months": -2
+              },
+              {
+                "kind": "injury",
+                "severity": "severe",
+                "cause": "violence"
+              }
             ]
           }
         }
@@ -120,8 +229,19 @@
       {
         "id": "pay",
         "label": "Pay them off",
-        "requires": [{ "kind": "berries", "min": 10000 }],
-        "effects": [{ "kind": "berries", "min": -10000, "max": -10000 }]
+        "requires": [
+          {
+            "kind": "berries",
+            "min": 10000
+          }
+        ],
+        "effects": [
+          {
+            "kind": "berries",
+            "min": -10000,
+            "max": -10000
+          }
+        ]
       },
       {
         "id": "run",
@@ -136,7 +256,12 @@
           },
           "failure": {
             "text": "Their chasers raked your stern before you lost them.",
-            "effects": [{ "kind": "hull", "value": -12 }]
+            "effects": [
+              {
+                "kind": "hull",
+                "value": -12
+              }
+            ]
           }
         }
       }
@@ -150,9 +275,23 @@
     "text": "A Marine cutter ran up the signal to heave to for inspection.",
     "trigger": "voyage",
     "weight": 1.5,
-    "conditions": [{ "kind": "travelMode", "modes": ["own", "crew", "passenger", "stowaway"] }],
+    "conditions": [
+      {
+        "kind": "travelMode",
+        "modes": ["own", "crew", "passenger", "stowaway"]
+      }
+    ],
     "weightMods": [
-      { "when": [{ "kind": "flagAtLeast", "flag": "bounty", "value": 1 }], "mult": 3 }
+      {
+        "when": [
+          {
+            "kind": "flagAtLeast",
+            "flag": "bounty",
+            "value": 1
+          }
+        ],
+        "mult": 3
+      }
     ],
     "choices": [
       {
@@ -170,8 +309,14 @@
             "effects": [
               {
                 "kind": "arrest",
-                "fine": { "min": 2000, "max": 8000 },
-                "months": { "min": 1, "max": 2 }
+                "fine": {
+                  "min": 2000,
+                  "max": 8000
+                },
+                "months": {
+                  "min": 1,
+                  "max": 2
+                }
               }
             ]
           }
@@ -180,24 +325,47 @@
       {
         "id": "bribe",
         "label": "Bribe the inspector",
-        "requires": [{ "kind": "berries", "min": 5000 }],
+        "requires": [
+          {
+            "kind": "berries",
+            "min": 5000
+          }
+        ],
         "effects": [
-          { "kind": "berries", "min": -5000, "max": -5000 },
-          { "kind": "infamy", "value": 1 }
+          {
+            "kind": "berries",
+            "min": -5000,
+            "max": -5000
+          },
+          {
+            "kind": "infamy",
+            "value": 1
+          }
         ]
       },
       {
         "id": "run",
         "label": "Make a run for it",
-        "requires": [{ "kind": "travelMode", "modes": ["own"] }],
+        "requires": [
+          {
+            "kind": "travelMode",
+            "modes": ["own"]
+          }
+        ],
         "check": {
           "stat": "navigation",
           "difficulty": 55,
           "success": {
             "text": "You showed the Marines your stern and kept showing it until dark.",
             "effects": [
-              { "kind": "infamy", "value": 5 },
-              { "kind": "bounty", "value": 1000000 }
+              {
+                "kind": "infamy",
+                "value": 5
+              },
+              {
+                "kind": "bounty",
+                "value": 1000000
+              }
             ]
           },
           "failure": {
@@ -205,8 +373,14 @@
             "effects": [
               {
                 "kind": "arrest",
-                "fine": { "min": 10000, "max": 30000 },
-                "months": { "min": 2, "max": 6 }
+                "fine": {
+                  "min": 10000,
+                  "max": 30000
+                },
+                "months": {
+                  "min": 2,
+                  "max": 6
+                }
               }
             ]
           }
@@ -222,23 +396,48 @@
     "text": "Someone was clinging to a spar in the swell, waving with the last of their strength: {role.stranger.name}.",
     "trigger": "voyage",
     "weight": 1,
-    "roles": { "stranger": { "kind": "stranger", "ageOffset": { "min": -8, "max": 12 } } },
+    "roles": {
+      "stranger": {
+        "kind": "stranger",
+        "ageOffset": {
+          "min": -8,
+          "max": 12
+        }
+      }
+    },
     "choices": [
       {
         "id": "haul",
         "label": "Haul them aboard",
         "effects": [
-          { "kind": "meet", "role": "stranger", "as": "friend", "opinion": 35 },
-          { "kind": "supplies", "months": -0.5 },
-          { "kind": "crew", "value": 1 },
-          { "kind": "fame", "value": 1 }
+          {
+            "kind": "meet",
+            "role": "stranger",
+            "as": "friend",
+            "opinion": 35
+          },
+          {
+            "kind": "supplies",
+            "months": -0.5
+          },
+          {
+            "kind": "crew",
+            "value": 1
+          },
+          {
+            "kind": "fame",
+            "value": 1
+          }
         ]
       },
       {
         "id": "leave",
         "label": "Sail on",
         "effects": [
-          { "kind": "morale", "value": -8 },
+          {
+            "kind": "morale",
+            "value": -8
+          },
           {
             "kind": "log",
             "text": "You sailed on, and did not look back, and thought about it for years.",
@@ -256,8 +455,23 @@
     "text": "Out of the mist came a ship with rotten sails and nobody at the wheel, drifting straight for you.",
     "trigger": "voyage",
     "weight": 0.6,
-    "conditions": [{ "kind": "danger", "min": 2 }],
-    "weightMods": [{ "when": [{ "kind": "climate", "climates": ["volatile"] }], "mult": 2 }],
+    "conditions": [
+      {
+        "kind": "danger",
+        "min": 2
+      }
+    ],
+    "weightMods": [
+      {
+        "when": [
+          {
+            "kind": "climate",
+            "climates": ["volatile"]
+          }
+        ],
+        "mult": 2
+      }
+    ],
     "choices": [
       {
         "id": "board",
@@ -268,15 +482,31 @@
           "success": {
             "text": "Below decks, among the skeletons, was a strongbox nobody had needed for a century.",
             "effects": [
-              { "kind": "berries", "min": 5000, "max": 20000 },
-              { "kind": "train", "stats": { "willpower": 1 } }
+              {
+                "kind": "berries",
+                "min": 5000,
+                "max": 20000
+              },
+              {
+                "kind": "train",
+                "stats": {
+                  "willpower": 1
+                }
+              }
             ]
           },
           "failure": {
             "text": "Something moved in the dark below decks. You did not stay to see what.",
             "effects": [
-              { "kind": "injury", "severity": "minor", "cause": "accident" },
-              { "kind": "morale", "value": -10 }
+              {
+                "kind": "injury",
+                "severity": "minor",
+                "cause": "accident"
+              },
+              {
+                "kind": "morale",
+                "value": -10
+              }
             ]
           }
         }
@@ -284,7 +514,12 @@
       {
         "id": "clear",
         "label": "Steer well clear",
-        "effects": [{ "kind": "delay", "months": 0.2 }]
+        "effects": [
+          {
+            "kind": "delay",
+            "months": 0.2
+          }
+        ]
       }
     ],
     "tags": ["voyage", "encounter", "eerie"]
@@ -296,10 +531,21 @@
     "text": "You sailed into the middle of a fishing fleet working a great shoal, and they waved you in to share it.",
     "trigger": "voyage",
     "weight": 1.5,
-    "conditions": [{ "kind": "danger", "max": 2 }],
+    "conditions": [
+      {
+        "kind": "danger",
+        "max": 2
+      }
+    ],
     "effects": [
-      { "kind": "supplies", "months": 2 },
-      { "kind": "morale", "value": 8 }
+      {
+        "kind": "supplies",
+        "months": 2
+      },
+      {
+        "kind": "morale",
+        "value": 8
+      }
     ],
     "tags": ["voyage", "encounter"]
   },
@@ -310,7 +556,12 @@
     "text": "The lookout spotted an island that was on none of the charts aboard: a green hump of jungle with a beach of black sand.",
     "trigger": "voyage",
     "weight": 1.2,
-    "conditions": [{ "kind": "travelMode", "modes": ["own"] }],
+    "conditions": [
+      {
+        "kind": "travelMode",
+        "modes": ["own"]
+      }
+    ],
     "choices": [
       {
         "id": "explore",
@@ -321,23 +572,46 @@
           "criticalSuccess": {
             "text": "Under a ruined shrine you found a chest of old gold coins.",
             "effects": [
-              { "kind": "berries", "min": 30000, "max": 80000 },
-              { "kind": "delay", "months": 0.3 },
-              { "kind": "fame", "value": 2 }
+              {
+                "kind": "berries",
+                "min": 30000,
+                "max": 80000
+              },
+              {
+                "kind": "delay",
+                "months": 0.3
+              },
+              {
+                "kind": "fame",
+                "value": 2
+              }
             ]
           },
           "success": {
             "text": "Fresh water, fruit and wild pig: you filled the hold.",
             "effects": [
-              { "kind": "supplies", "months": 3 },
-              { "kind": "delay", "months": 0.3 }
+              {
+                "kind": "supplies",
+                "months": 3
+              },
+              {
+                "kind": "delay",
+                "months": 0.3
+              }
             ]
           },
           "failure": {
             "text": "The jungle bit back.",
             "effects": [
-              { "kind": "injury", "severity": "minor", "cause": "accident" },
-              { "kind": "delay", "months": 0.3 }
+              {
+                "kind": "injury",
+                "severity": "minor",
+                "cause": "accident"
+              },
+              {
+                "kind": "delay",
+                "months": 0.3
+              }
             ]
           }
         }
@@ -345,10 +619,16 @@
       {
         "id": "sail",
         "label": "Mark it and sail on",
-        "effects": [{ "kind": "count", "flag": "chart.islands", "by": 1 }]
+        "effects": [
+          {
+            "kind": "count",
+            "flag": "chart.islands",
+            "by": 1
+          }
+        ]
       }
     ],
-    "tags": ["voyage", "discovery"]
+    "tags": ["voyage", "discovery", "fortune"]
   },
   {
     "id": "evt_voyage_treasure_map",
@@ -367,23 +647,45 @@
           "success": {
             "text": "The X was real. You marked it on your own charts for another day.",
             "effects": [
-              { "kind": "count", "flag": "treasure.maps", "by": 1 },
-              { "kind": "train", "stats": { "intellect": 1 } }
+              {
+                "kind": "count",
+                "flag": "treasure.maps",
+                "by": 1
+              },
+              {
+                "kind": "train",
+                "stats": {
+                  "intellect": 1
+                }
+              }
             ]
           },
           "failure": {
             "text": "It was a map of an island that sank fifty years ago. Probably.",
-            "effects": [{ "kind": "train", "stats": { "intellect": 0.5 } }]
+            "effects": [
+              {
+                "kind": "train",
+                "stats": {
+                  "intellect": 0.5
+                }
+              }
+            ]
           }
         }
       },
       {
         "id": "sell",
         "label": "Sell it at the next port",
-        "effects": [{ "kind": "berries", "min": 500, "max": 3000 }]
+        "effects": [
+          {
+            "kind": "berries",
+            "min": 500,
+            "max": 3000
+          }
+        ]
       }
     ],
-    "tags": ["voyage", "discovery"]
+    "tags": ["voyage", "discovery", "fortune"]
   },
   {
     "id": "evt_voyage_floating_crate",
@@ -401,11 +703,22 @@
           "difficulty": 50,
           "criticalSuccess": {
             "text": "Silk, spices and a purse of Berries, dry as the day they were packed.",
-            "effects": [{ "kind": "berries", "min": 8000, "max": 20000 }]
+            "effects": [
+              {
+                "kind": "berries",
+                "min": 8000,
+                "max": 20000
+              }
+            ]
           },
           "success": {
             "text": "Ship's biscuit, still sealed. Better than gold, at sea.",
-            "effects": [{ "kind": "supplies", "months": 2 }]
+            "effects": [
+              {
+                "kind": "supplies",
+                "months": 2
+              }
+            ]
           },
           "failure": {
             "text": "Rocks. Somebody had wanted it to sink.",
@@ -414,7 +727,12 @@
           "criticalFailure": {
             "text": "It was a smuggler's trap: the lid sprang and the blade inside caught your hand.",
             "effects": [
-              { "kind": "injury", "severity": "minor", "area": "arms", "cause": "accident" }
+              {
+                "kind": "injury",
+                "severity": "minor",
+                "area": "arms",
+                "cause": "accident"
+              }
             ]
           }
         }
@@ -425,7 +743,7 @@
         "effects": []
       }
     ],
-    "tags": ["voyage", "discovery"]
+    "tags": ["voyage", "discovery", "fortune"]
   },
   {
     "id": "evt_voyage_fruit_rumour",
@@ -435,14 +753,18 @@
     "trigger": "voyage",
     "weight": 0.7,
     "effects": [
-      { "kind": "count", "flag": "rumours.fruit", "by": 1 },
+      {
+        "kind": "count",
+        "flag": "rumours.fruit",
+        "by": 1
+      },
       {
         "kind": "log",
         "text": "You filed it away. Devil Fruits are only stories, until they are not.",
         "tags": ["voyage", "fruit"]
       }
     ],
-    "tags": ["voyage", "discovery", "fruit"]
+    "tags": ["voyage", "discovery", "fruit", "fortune"]
   },
   {
     "id": "evt_voyage_sea_creatures",
@@ -452,9 +774,15 @@
     "trigger": "voyage",
     "weight": 1,
     "effects": [
-      { "kind": "morale", "value": 10 },
-      { "kind": "health", "fraction": 0.05 }
+      {
+        "kind": "morale",
+        "value": 10
+      },
+      {
+        "kind": "health",
+        "fraction": 0.05
+      }
     ],
-    "tags": ["voyage", "discovery"]
+    "tags": ["voyage", "discovery", "fortune"]
   }
 ]

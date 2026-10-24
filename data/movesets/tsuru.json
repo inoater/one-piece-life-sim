@@ -1,0 +1,20 @@
+{
+  "id": "moveset_tsuru",
+  "char": "char_tsuru",
+  "eras": [
+    {
+      "from": {
+        "year": -10,
+        "month": 1
+      },
+      "techniques": ["tech_woshu_woshu_washing_line", "tech_woshu_woshu_clean_heart"],
+      "tracks": {
+        "track_naval_tactics": "admiral",
+        "track_observation": "read_intent",
+        "track_armament": "coat"
+      },
+      "approx": true,
+      "mastery": 85
+    }
+  ]
+}

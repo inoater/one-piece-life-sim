@@ -1,7 +1,23 @@
+import type { DateInfo } from '../engine/calendar';
 import { shortHash } from '../engine/hash';
-import type { AdvanceReport } from '../worker/protocol';
+import type { AdvanceReport, Snapshot } from '../worker/protocol';
 
 export { shortHash };
+
+/** "March 1497 SC": the month and the Sea Circle year (the engine counts game years from 0). */
+export function dateLabel(date: Pick<DateInfo, 'monthName' | 'canonYear' | 'era'>): string {
+  return `${date.monthName} ${date.canonYear} ${date.era}`;
+}
+
+/** A game year as people read it: 11 -> "1497 SC". */
+export function yearLabel(year: number, calendar: Snapshot['calendar']): string {
+  return `${year + calendar.yearOffset} ${calendar.era}`;
+}
+
+/** The year the present begins, written the same way ("1525 SC"). */
+export function presentYearLabel(s: Pick<Snapshot, 'presentTick' | 'calendar'>): string {
+  return yearLabel(Math.floor(s.presentTick / 12), s.calendar);
+}
 
 export function plural(count: number, one: string, many = `${one}s`): string {
   return `${count} ${count === 1 ? one : many}`;
@@ -55,10 +71,10 @@ export function describeAdvance(
   report: Pick<AdvanceReport, 'ticksRun' | 'stop'> & {
     snapshot: Pick<AdvanceReport['snapshot'], 'atPresent'>;
   },
-  presentYear: number,
+  presentYear: string,
 ): string {
   const moved = report.ticksRun;
-  const reachedPresent = `Reached the present (Year ${presentYear}) after ${plural(moved, 'month')}.`;
+  const reachedPresent = `Reached the present (${presentYear}) after ${plural(moved, 'month')}.`;
   switch (report.stop) {
     case 'completed':
       return report.snapshot.atPresent && moved > 0
@@ -71,7 +87,7 @@ export function describeAdvance(
     case 'event':
       return `Stopped at an event after ${plural(moved, 'month')}.`;
     case 'present':
-      return moved === 0 ? `Already at the present (Year ${presentYear}).` : reachedPresent;
+      return moved === 0 ? `Already at the present (${presentYear}).` : reachedPresent;
     case 'cancelled':
       return `Cancelled after ${plural(moved, 'month')}.`;
     case 'ended':

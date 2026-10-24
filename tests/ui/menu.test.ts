@@ -115,7 +115,7 @@ describe('save slots', () => {
     await open();
     const first = slot('Autosave 1');
     expect(first.getAttribute('data-filled')).toBe('true');
-    expect(text(first.querySelector('.slot__label'))).toBe('March, Year 1 (autosave)');
+    expect(text(first.querySelector('.slot__label'))).toBe('March 1487 SC (autosave)');
     expect(text(first.querySelector('.slot__meta'))).toMatch(
       /^Saved just now, seed ui-seed, hash [0-9a-f]{8}, \d/,
     );
@@ -127,7 +127,7 @@ describe('save slots', () => {
     await press(slot('Slot 3'), 'Save here');
     expect(text(document.querySelector('.menu__message'))).toBe('Saved to Slot 3.');
     expect(slot('Slot 3').getAttribute('data-filled')).toBe('true');
-    expect(text(slot('Slot 3').querySelector('.slot__label'))).toBe('June, Year 0');
+    expect(text(slot('Slot 3').querySelector('.slot__label'))).toBe('June 1486 SC');
     expect(slot('Slot 1').getAttribute('data-filled')).toBe('false');
   });
 
@@ -149,9 +149,9 @@ describe('save slots', () => {
     await press(slot('Slot 1'), /Press again to replace this world/);
     expect(ui.core.peekState().tick).toBe(5);
     expect(dialog()).toBeNull(); // the menu closes after a load
-    expect(text(ui.root.querySelector('.masthead__title'))).toBe('June, Year 0');
+    expect(text(ui.root.querySelector('.masthead__title'))).toBe('June 1486 SC');
     expect(text(ui.root.querySelector('.controls__status'))).toMatch(
-      /^Loaded June, Year 0\. The state hash [0-9a-f]{10} matches the save\.$/,
+      /^Loaded June 1486 SC\. The state hash [0-9a-f]{10} matches the save\.$/,
     );
   });
 
@@ -164,9 +164,9 @@ describe('save slots', () => {
     await open();
 
     await press(slot('Slot 2'), 'Overwrite');
-    expect(text(slot('Slot 2').querySelector('.slot__label'))).toBe('March, Year 0'); // not yet
+    expect(text(slot('Slot 2').querySelector('.slot__label'))).toBe('March 1486 SC'); // not yet
     await press(slot('Slot 2'), /Press again to overwrite/);
-    expect(text(slot('Slot 2').querySelector('.slot__label'))).toBe('May, Year 0');
+    expect(text(slot('Slot 2').querySelector('.slot__label'))).toBe('May 1486 SC');
 
     await press(slot('Slot 2'), 'Delete');
     expect(slot('Slot 2').getAttribute('data-filled')).toBe('true');
@@ -261,7 +261,7 @@ describe('describing a load', () => {
   const load = (report: Partial<LoadInfo['report']>): LoadInfo => ({
     source: 'manual-1',
     report: {
-      label: 'March, Year 3',
+      label: 'March 1489 SC',
       seed: 's',
       tick: 39,
       savedAt: 0,
@@ -280,7 +280,7 @@ describe('describing a load', () => {
   it('is plain good news when everything matches', () => {
     expect(describeLoad(load({}))).toEqual({
       kind: 'info',
-      text: 'Loaded March, Year 3. The state hash aaaaaaaaaa matches the save.',
+      text: 'Loaded March 1489 SC. The state hash aaaaaaaaaa matches the save.',
     });
   });
 

@@ -8,16 +8,25 @@
   "usesMentor": true,
   "teacher": 1.1,
   "requires": {
-    "flags": {
-      "unlock.fishman_karate": true
-    }
+    "anyOf": [
+      {
+        "flags": {
+          "unlock.fishman_karate": true
+        }
+      },
+      {
+        "tracks": {
+          "track_fishman_karate": "open"
+        }
+      }
+    ]
   },
   "gains": {
     "strength": 0.6,
     "dexterity": 0.5,
     "durability": 0.3
   },
-  "tags": ["fight", "training"],
+  "tags": ["fight", "training", "water"],
   "outcomes": [
     {
       "id": "forms",
@@ -40,5 +49,9 @@
         }
       ]
     }
-  ]
+  ],
+  "practice": {
+    "kind": "drill",
+    "tracks": ["track_fishman_karate", "track_fishman_jujutsu"]
+  }
 }

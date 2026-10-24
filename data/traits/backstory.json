@@ -15,7 +15,10 @@
         "value": 2,
         "kind": "flat"
       }
-    ]
+    ],
+    "derivedMods": {
+      "maxHealth": 5
+    }
   },
   {
     "id": "trait_street_fighter",
@@ -33,7 +36,24 @@
         "value": 2,
         "kind": "flat"
       }
-    ]
+    ],
+    "powerMods": {
+      "track_brawling": 15
+    },
+    "checkBonuses": {
+      "combatPower": 5
+    },
+    "evolves": {
+      "to": "trait_iron_fist",
+      "when": {
+        "counters": {
+          "fights": 60
+        },
+        "stats": {
+          "strength": 80
+        }
+      }
+    }
   },
   {
     "id": "trait_bookworm",
@@ -51,7 +71,18 @@
         "value": -1,
         "kind": "flat"
       }
-    ]
+    ],
+    "trainingMods": {
+      "intellect": 15
+    },
+    "evolves": {
+      "to": "trait_learned",
+      "when": {
+        "counters": {
+          "study_months": 60
+        }
+      }
+    }
   },
   {
     "id": "trait_seasoned_sailor",
@@ -72,6 +103,15 @@
     ],
     "flags": {
       "sea_legs": true
+    },
+    "immunities": ["seasickness"],
+    "checkBonuses": {
+      "navigation": 6
+    },
+    "earn": {
+      "counters": {
+        "months_at_sea": 36
+      }
     }
   },
   {
@@ -90,7 +130,10 @@
         "value": -1,
         "kind": "flat"
       }
-    ]
+    ],
+    "powerMods": {
+      "family:haki": 5
+    }
   },
   {
     "id": "trait_well_travelled",
@@ -113,7 +156,11 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "navigation": 3,
+      "charisma": 3
+    }
   },
   {
     "id": "trait_wanted",
@@ -129,6 +176,16 @@
     ],
     "flags": {
       "infamy.wanted": true
-    }
+    },
+    "opinion": [
+      {
+        "group": "marines",
+        "value": -10
+      },
+      {
+        "group": "pirates",
+        "value": 5
+      }
+    ]
   }
 ]

@@ -1,0 +1,115 @@
+[
+  {
+    "id": "trait_salt_blooded",
+    "name": "Salt-Blooded",
+    "description": "Grew up on boats more than on land.",
+    "category": "birth",
+    "immunities": ["seasickness"],
+    "checkBonuses": {
+      "navigation": 4
+    },
+    "weight": 0.6
+  },
+  {
+    "id": "trait_mountain_born",
+    "name": "Mountain-Born",
+    "description": "Grew up where the air is thin.",
+    "category": "birth",
+    "immunities": ["chest_cough"],
+    "trainingMods": {
+      "endurance": 10
+    },
+    "weight": 0.6
+  },
+  {
+    "id": "trait_city_rat",
+    "name": "City Rat",
+    "description": "Grew up in alleys and on rooftops.",
+    "category": "birth",
+    "checkBonuses": {
+      "perception": 4,
+      "dexterity": 3
+    },
+    "eventWeights": {
+      "crime": 1.4
+    },
+    "weight": 0.6
+  },
+  {
+    "id": "trait_jungle_raised",
+    "name": "Jungle-Raised",
+    "description": "Grew up among vines and wild things.",
+    "category": "birth",
+    "checkBonuses": {
+      "perception": 4
+    },
+    "eventWeights": {
+      "explore": 1.3
+    },
+    "weight": 0.6
+  },
+  {
+    "id": "trait_noble_manners",
+    "name": "Noble Manners",
+    "description": "Taught to bow and to be bowed to.",
+    "category": "family",
+    "checkBonuses": {
+      "charisma": 5
+    },
+    "opinion": [
+      {
+        "group": "nobles",
+        "value": 10
+      },
+      {
+        "group": "pirates",
+        "value": -5
+      }
+    ],
+    "weight": 0.6
+  },
+  {
+    "id": "trait_marine_upbringing",
+    "name": "Marine Upbringing",
+    "description": "Grew up around barracks and bugles.",
+    "category": "family",
+    "opinion": [
+      {
+        "group": "marines",
+        "value": 10
+      },
+      {
+        "group": "pirates",
+        "value": -10
+      }
+    ],
+    "checkBonuses": {
+      "willpower": 3
+    },
+    "weight": 0.6
+  },
+  {
+    "id": "trait_orphans_grit",
+    "name": "Orphan's Grit",
+    "description": "Learned early that nobody was coming.",
+    "category": "family",
+    "checkBonuses": {
+      "willpower": 6
+    },
+    "derivedMods": {
+      "maxHealth": 3
+    },
+    "weight": 0.6
+  },
+  {
+    "id": "trait_dojo_raised",
+    "name": "Dojo-Raised",
+    "description": "Grew up on the floor of a dojo.",
+    "category": "family",
+    "powerMods": {
+      "family:sword": 10,
+      "family:style": 10
+    },
+    "weight": 0.6
+  }
+]

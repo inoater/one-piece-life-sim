@@ -36,6 +36,11 @@
           "stats": {
             "willpower": 0.1
           }
+        },
+        {
+          "kind": "behaviour",
+          "counter": "fights",
+          "by": 1
         }
       ]
     },
@@ -106,6 +111,24 @@
           }
         }
       ]
+    },
+    {
+      "id": "technique",
+      "text": "Your {technique} decided bout after bout this month.",
+      "weight": 0.8,
+      "statWeights": {
+        "dexterity": 0.3
+      },
+      "effects": [
+        {
+          "kind": "behaviour",
+          "counter": "fights",
+          "by": 1
+        }
+      ]
     }
-  ]
+  ],
+  "practice": {
+    "kind": "spar"
+  }
 }

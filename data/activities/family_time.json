@@ -22,6 +22,10 @@
           "kind": "opinion",
           "target": "parent",
           "value": 6
+        },
+        {
+          "kind": "drift",
+          "tags": ["kind"]
         }
       ]
     },
@@ -37,6 +41,10 @@
           "kind": "opinion",
           "target": "sibling",
           "value": 6
+        },
+        {
+          "kind": "drift",
+          "tags": ["generous"]
         }
       ]
     },
@@ -81,6 +89,10 @@
           "kind": "opinion",
           "target": "child",
           "value": 6
+        },
+        {
+          "kind": "drift",
+          "tags": ["kind"]
         }
       ]
     },
@@ -88,7 +100,13 @@
       "id": "quiet_home",
       "text": "A quiet month at home.",
       "weight": 0.5,
-      "quiet": true
+      "quiet": true,
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["calm"]
+        }
+      ]
     }
   ]
 }

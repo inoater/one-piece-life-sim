@@ -1,7 +1,7 @@
 # One Piece Life Sim
 
 A static-site life simulation. **Phase 0** (the bones) gives a world that ticks through 468 months
-(Year 0 to Year 38, then the present), saves, reloads and replays identically, behind a UI shell and a
+(January 1486 SC to December 1524 SC, then the present), saves, reloads and replays identically, behind a UI shell and a
 debug panel. **Phase 1** (character genesis) adds New Life: race, birthplace, family, hidden potential,
 an entry year and age with a simulated backstory, and a written appearance, as a full character
 sheet. **Phase 2** (the life loop) lets that character live month by month: a routine of activities
@@ -10,15 +10,19 @@ illness and healing, relationships, aging and death, and carrying on as an heir.
 world) puts that life on a map of 55 places joined by sea lanes: voyages that take whole months in
 six ways of travelling, ships to buy and crew, factions, territory and an economy, two thousand
 named people living by their goals, a random-event engine with skill checks, and the canon story,
-pushed by the canon mode, with a Divergence Log of every way the world leaves it. Status reports:
-`docs/PHASE0.md` to `docs/PHASE3.md`.
+pushed by the canon mode, with a Divergence Log of every way the world leaves it. **Phase 4**
+(muscle) gives that life powers: 150 traits with real mechanics, personality that drifts with the
+choices made, the three colours of haki, 136 canon Devil Fruits (one entity each, reborn when a user
+dies) and a generator for new ones, fighting styles from Rokushiki to Fish-Man Karate, one engine
+of power tracks that every power climbs, techniques and movesets (40 canon fighters by era), and a
+technique creator. Status reports: `docs/PHASE0.md` to `docs/PHASE4.md`.
 
 ## Quick start
 
 ```bash
 npm install          # also points git at .githooks (the pre-commit data check)
 npm run dev          # http://localhost:5173 opens New Life; debug panel on (press ` to toggle)
-npm test             # 621 unit and integration tests, about a minute
+npm test             # 960 unit and integration tests, a few minutes
 npm run check        # typecheck, validate data, source rules, tests, formatting
 ```
 
@@ -26,20 +30,21 @@ Node 20 or newer (`.nvmrc` pins 22).
 
 ## Scripts
 
-| Command                 | What it does                                                                                                                               |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run dev`           | Dev server. Validates `/data` at start and on every change; problems show in the browser overlay.                                          |
-| `npm run build`         | Typecheck, then a production build in `dist/`. **Fails if any data file is invalid.** No debug panel.                                      |
-| `npm run build:preview` | One self-contained HTML file with the debug panel: `dist-preview/opsim-preview.html`.                                                      |
-| `npm run validate`      | Every JSON file against its schema, plus references between files; then canon lint. Exit 1 on any problem.                                 |
-| `npm run lint:sim`      | Determinism and layering rules (see below).                                                                                                |
-| `npm run sim -- ...`    | Headless simulation: `--seed s --ticks 468 --worlds 1000 --verify --probe --json`.                                                         |
-| `npm run genesis`       | Phase 1 checks: 1,000 potential rolls per race against the cap table, New Life timing. `-- --sample` prints a character.                   |
-| `npm run lives`         | Phase 2 balance: whole headless lives per race on every core: `-- --lives 1000 --race all`. Lifespans, causes, outcomes.                   |
-| `npm run world`         | Phase 3: Year 0 to the present with nobody in it; prints the world's timeline. `-- --rates 100`: how often each beat fires per canon mode. |
-| `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                                                      |
-| `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                                                       |
-| `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                                                     |
+| Command                 | What it does                                                                                                                                        |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`           | Dev server. Validates `/data` at start and on every change; problems show in the browser overlay.                                                   |
+| `npm run build`         | Typecheck, then a production build in `dist/`. **Fails if any data file is invalid.** No debug panel.                                               |
+| `npm run build:preview` | One self-contained HTML file with the debug panel: `dist-preview/opsim-preview.html`.                                                               |
+| `npm run validate`      | Every JSON file against its schema, plus references between files; then canon lint. Exit 1 on any problem.                                          |
+| `npm run lint:sim`      | Determinism and layering rules (see below).                                                                                                         |
+| `npm run sim -- ...`    | Headless simulation: `--seed s --ticks 468 --worlds 1000 --verify --probe --json`.                                                                  |
+| `npm run genesis`       | Phase 1 checks: 1,000 potential rolls per race against the cap table, New Life timing. `-- --sample` prints a character.                            |
+| `npm run lives`         | Phase 2 balance: whole headless lives per race on every core: `-- --lives 1000 --race all`. Lifespans, causes, outcomes.                            |
+| `npm run world`         | Phase 3: Year 0 to the present with nobody in it; prints the world's timeline. `-- --rates 100`: how often each beat fires per canon mode.          |
+| `npm run powers`        | Phase 4 evidence: the catalogue, 1,000 generated fruits, `-- --kings 10000` (Conqueror's Haki only with King's Qualities), `--drift 20`, `--world`. |
+| `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                                                               |
+| `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                                                                |
+| `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                                                              |
 
 ## Where things live
 
@@ -48,15 +53,17 @@ index.html
 src/engine/    clock, rng, tick runner, modifier stacks, event log, saves, data loading, the autosave step  (no game rules)
 src/systems/   seven of the eight pipeline steps (actions, travel, population, world, events, news, aging)  (game rules)
 src/systems/genesis/  character genesis: New Life options, family, backfill, appearance, the sheet
-src/systems/life/     the life loop: routine, training, health, jobs, money, family, death, the page's view
+src/systems/life/     the life loop: routine, training, health, jobs, money, family, death, traits, personality
+src/systems/powers/   power tracks, haki, Devil Fruits (catalogue, world, generator), techniques, movesets, views
 src/core.ts    wires engine + systems: tick(state, data, rng) -> state
 src/worker/    runs the simulation off the main thread; the typed message protocol
 src/ui/        hash router, shell, screens (New Life at #/new), menu, debug panel (vanilla DOM)
 src/styles/    design tokens and CSS (cascade layers)
 data/          calendar, settings, character (growth, talent, stages), creation (entry, wealth, family), appearance,
                life (slots, effort, health, money, death); races/ birthplaces/ legacies/ occupations/ names/ foci/
-               backstory/ activities/ jobs/ traits/ events/ weapons/ locations/
-               (canon/ fruits/ news/ reserved)
+               backstory/ activities/ jobs/ traits/ events/ weapons/ locations/ lanes/ vessels/ factions/ cast/ canon/
+               powers.json personality.json fruitMatchups.json; fruits/ tracks/ techniques/ movesets/ (Phase 4)
+               (news/ reserved)
 tools/         validate-data, headless-sim, canon-lint, lint-sim, update-golden, build helpers
 tests/         engine/ worker/ ui/ tools/ e2e/ fixtures/golden/
 docs/          ARCHITECTURE, DATA, SAVES, DESIGN, PHASE0 and PHASE1 (status reports)

@@ -20,5 +20,8 @@
   "savingsPerYear": {
     "min": 800,
     "max": 3000
+  },
+  "tracks": {
+    "track_brawling": 2
   }
 }

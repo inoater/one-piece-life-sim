@@ -1,0 +1,26 @@
+{
+  "id": "moveset_marco",
+  "char": "char_marco",
+  "eras": [
+    {
+      "from": {
+        "year": 8,
+        "month": 1
+      },
+      "techniques": [
+        "tech_tori_tori_phoenix_phoenix_flight",
+        "tech_tori_tori_phoenix_phoenix_brand",
+        "tech_tori_tori_phoenix_blue_flames_of_regeneration",
+        "tech_tori_tori_phoenix_phoenix_pyreapple"
+      ],
+      "tracks": {
+        "track_armament": "full_body",
+        "track_observation": "track_crowds"
+      },
+      "approx": true,
+      "mastery": 85,
+      "signature": "tech_tori_tori_phoenix_phoenix_brand",
+      "finisher": "tech_tori_tori_phoenix_phoenix_pyreapple"
+    }
+  ]
+}

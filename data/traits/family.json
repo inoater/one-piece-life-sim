@@ -15,7 +15,13 @@
         "value": 2,
         "kind": "flat"
       }
-    ]
+    ],
+    "powerMods": {
+      "family:style": 5
+    },
+    "checkBonuses": {
+      "combatPower": 3
+    }
   },
   {
     "id": "trait_sense_of_justice",
@@ -31,7 +37,17 @@
     ],
     "flags": {
       "code.justice": true
-    }
+    },
+    "opinion": [
+      {
+        "group": "marines",
+        "value": 8
+      },
+      {
+        "group": "criminals",
+        "value": -8
+      }
+    ]
   },
   {
     "id": "trait_pirates_blood",
@@ -52,7 +68,17 @@
     ],
     "flags": {
       "family.infamy": true
-    }
+    },
+    "opinion": [
+      {
+        "group": "pirates",
+        "value": 8
+      },
+      {
+        "group": "marines",
+        "value": -5
+      }
+    ]
   },
   {
     "id": "trait_restless",
@@ -71,7 +97,11 @@
         "kind": "flat"
       }
     ],
-    "excludes": ["trait_homesick"]
+    "excludes": ["trait_homesick"],
+    "eventWeights": {
+      "explore": 1.5,
+      "voyage": 1.2
+    }
   },
   {
     "id": "trait_well_bred",
@@ -89,7 +119,20 @@
         "value": 2,
         "kind": "flat"
       }
-    ]
+    ],
+    "opinion": [
+      {
+        "group": "nobles",
+        "value": 10
+      },
+      {
+        "group": "pirates",
+        "value": -3
+      }
+    ],
+    "checkBonuses": {
+      "charisma": 3
+    }
   },
   {
     "id": "trait_entitled",
@@ -106,6 +149,16 @@
         "stat": "willpower",
         "value": -1,
         "kind": "flat"
+      }
+    ],
+    "opinion": [
+      {
+        "group": "commoners",
+        "value": -8
+      },
+      {
+        "group": "nobles",
+        "value": 5
       }
     ]
   },
@@ -125,7 +178,13 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "willpower": 5
+    },
+    "derivedMods": {
+      "vigor": 1
+    }
   },
   {
     "id": "trait_guarded",
@@ -143,7 +202,17 @@
         "value": -1,
         "kind": "flat"
       }
-    ]
+    ],
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -5,
+        "firstImpression": true
+      }
+    ],
+    "checkBonuses": {
+      "perception": 5
+    }
   },
   {
     "id": "trait_net_hands",
@@ -161,7 +230,10 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "trainingMods": {
+      "dexterity": 10
+    }
   },
   {
     "id": "trait_fishers_patience",
@@ -179,7 +251,13 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "willpower": 3
+    },
+    "trainingMods": {
+      "perception": 10
+    }
   },
   {
     "id": "trait_steady_hands",
@@ -192,7 +270,14 @@
         "value": 3,
         "kind": "flat"
       }
-    ]
+    ],
+    "powerMods": {
+      "track_gunmanship": 10,
+      "track_archery": 10
+    },
+    "checkBonuses": {
+      "dexterity": 3
+    }
   },
   {
     "id": "trait_eye_for_detail",
@@ -210,6 +295,12 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "perception": 6
+    },
+    "trainingMods": {
+      "intellect": 5
+    }
   }
 ]

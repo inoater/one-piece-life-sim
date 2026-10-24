@@ -11,6 +11,8 @@ import { lanesFrom, withDevFixtures } from '../places/graph';
 import { placeOf, priceMult } from '../places/place';
 import { deliverWaitingNews } from '../news';
 import { fareFor, sailLock, shipHere, shipsOf } from './plan';
+import { fruitUserOverboard } from '../powers/fruits';
+import { immuneTo } from '../life/traits';
 import {
   changeVessel,
   monthsToCover,
@@ -285,6 +287,10 @@ export function wreck(env: LifeEnv, voyage: Voyage): void {
 /** Over the side: an Endurance check against the sea (Phase 4 adds the Devil Fruit users' sinking). */
 export function overboard(env: LifeEnv): void {
   const { data, p, rng } = env;
+  // Phase 4: a Devil Fruit user sinks like a stone; only someone diving after them saves them.
+  const voyage = p.c.travel?.voyage;
+  const vessel = voyage ? vesselNow(env.state, voyage) : null;
+  if (fruitUserOverboard(env, vessel?.crew ?? 0)) return;
   const rule = data.travel.overboard;
   const stat = p.entity.stats[rule.stat];
   const value = stat ? stat.base : 0;
@@ -391,7 +397,7 @@ function payTheMonth(env: LifeEnv, voyage: Voyage): void {
 function sicknessAtSea(env: LifeEnv, voyage: Voyage): void {
   const { data, p, rng } = env;
   const rules = data.travel;
-  if (voyage.months === 1 && voyage.mode !== 'foot' && !p.c.traits.includes('trait_sea_legs')) {
+  if (voyage.months === 1 && voyage.mode !== 'foot' && !immuneTo(data, p.c, 'seasickness')) {
     const mult = p.c.traits.includes(rules.seasickness.trait) ? 2 : 1;
     if (rng.fork('seasick').chance(Math.min(1, rules.seasickness.chance * mult))) {
       fallIll(env, 'seasickness');

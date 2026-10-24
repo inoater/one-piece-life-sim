@@ -165,6 +165,46 @@ player's doing) its survivors leave the story. Every non-player death goes throu
 **Knowledge** (rule 4): world events and beats are logged known to nobody, unless the player is
 there; the news carries them, late by distance, and not at all at sea until landfall.
 
+## Powers (Phase 4)
+
+`src/systems/powers/` holds every power as one kind of thing: a **track** (data/tracks) of named
+stages, each with a level (Novice to Grandmaster), a cumulative progress threshold, requirements
+(stats, other tracks, a teacher, a place, gear, an event since the last stage, a breakthrough at a
+plateau, hidden conditions) and what it unlocks (techniques, Combat Power, stat modifiers, flags).
+`tracks.ts` is the one engine: opening a track, practice (`addProgress`: drills x1, sparring x1.5,
+real fights x3, teaching x0.5, times the practice rate from race, stats, talent and traits, and the
+teacher; fruit tracks count mastery 0 to 100 through the training formula's diminishing returns),
+entering stages, breakthroughs, rust, and ceilings by race, body and talent. Activities practise a
+track through their `practice` field (`practice.ts`), so a new style is data, not code.
+
+**Haki** (`haki.ts`) is three tracks that open by waking, not by teaching: Train Spirit seeds, a
+near-death moment, a crisis, a teacher's push. Conqueror's needs the hidden King's Qualities trait and
+only wakes in a surge. **Devil Fruits** (`fruits.ts`, `catalogue.ts`) are entities (rule 2), one per
+fruit, built with the world layer from data/fruits; canon users take theirs on their dates, pushed by
+the canon mode like the beats; a death releases the fruit into an ordinary fruit somewhere, known to
+nobody (rule 4); wild fruits are found or sold to black markets once a year. A generator builds new
+fruits from power concepts no canon fruit uses. **Techniques** (`techniques.ts`) share one schema;
+the pricer turns a technique's form, tags, effects and required mastery into cost, power and
+accuracy, for data and for the technique creator alike. `battleActions` is the list Phase 5's battle
+engine will read. **Movesets** (`movesets.ts`): the canon cast's by era (data/movesets), generated
+fighters' built on demand from their tracks, fruit and temperament (rule 6: the same every time).
+
+Every number a power changes is a modifier with a readable source (rule 3): stage Combat Power goes
+on the `combatBonus` stat, which character.json's Combat Power adds through its `bonusStat`; traits'
+changes to Max Health, Vigor and haki stamina go on their own bonus stats the same way.
+
+**Traits** (`life/traits.ts`) are their mechanics: stat, potential and training modifiers, derived
+bonuses, check bonuses (read by `story/checks.ts`), event and outcome weights, immunities, locks,
+opinions others feel (on meeting someone), practice speed, conflicts and evolutions, each recorded
+with where it came from. `life/personality.ts` keeps hidden counters that choices and outcomes tagged
+"brave", "greedy" and so on nudge, and behaviour counters (months of Hard training, fights): crossing
+a threshold grants or removes a personality trait, earns an earned trait, or evolves one.
+
+The player's month runs the powers in step 1 (practice, inside the routine) and step 7 (stamina,
+rust, fading moves, an eaten fruit being understood, haki seeds, personality); the world's fruits
+move in step 4. The Powers page (`#/powers`) reads `snapshot.powers`; the Devil Fruit page
+(`#/fruits`) asks `powers/fruits`, which shows only what the player knows unless omniscient.
+
 ## Worker protocol
 
 `src/worker/protocol.ts` types every request and response (`boot`, `newWorld`, `advance`, `dispatch`,
@@ -173,6 +213,14 @@ there; the news carries them, late by distance, and not at all at sea until land
 (even one that fails halfway) leaves the world untouched. The UI never receives the whole state, only a
 `Snapshot` projection (header facts, the last 300 visible log lines, counts), which keeps messages small
 when the world has thousands of entities.
+
+## Performance (Phase 4)
+
+Phase 4 adds about 160 fruit entities to every world and a few hundred powers blocks. A 40-year
+headless life went from 0.9 s to about 1.4 s; most of the rise was systems that sort every entity id
+each month, which `entityIds` now caches (exactly: reused only while the key list is identical). A
+full world's month is about 30 ms. Generated fighters' movesets are built when looked at, not
+stored, so a full world's save grows by little.
 
 ## Performance (Phase 3)
 

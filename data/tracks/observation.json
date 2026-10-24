@@ -1,0 +1,139 @@
+{
+  "id": "track_observation",
+  "name": "Observation Haki",
+  "family": "haki",
+  "description": "Kenbunshoku: the sense of others' presence, intent and, for a rare few, the future.",
+  "stages": [
+    {
+      "id": "sense",
+      "name": "Sense presence",
+      "level": "novice",
+      "at": 0,
+      "description": "Feel where living things are without seeing them.",
+      "text": "You knew someone was behind you before you turned.",
+      "techniques": ["tech_haki_sense"],
+      "combat": 5
+    },
+    {
+      "id": "wider_range",
+      "name": "Wider range",
+      "level": "trained",
+      "at": 30,
+      "description": "Sense people across a whole village.",
+      "text": "You could feel the whole harbour breathing around you.",
+      "requires": {
+        "stats": {
+          "willpower": 30,
+          "perception": 30
+        }
+      },
+      "techniques": ["tech_haki_read_strike"],
+      "combat": 12
+    },
+    {
+      "id": "read_intent",
+      "name": "Read emotion and intent",
+      "level": "adept",
+      "at": 80,
+      "description": "Hear what people feel, and what they mean to do.",
+      "text": "Anger, fear, a lie: you felt them as plainly as heat.",
+      "requires": {
+        "stats": {
+          "willpower": 40,
+          "perception": 45
+        }
+      },
+      "combat": 22
+    },
+    {
+      "id": "track_crowds",
+      "name": "Track through walls and crowds",
+      "level": "expert",
+      "at": 160,
+      "description": "Follow one voice through a city.",
+      "text": "You followed a single heartbeat through a crowd of thousands.",
+      "requires": {
+        "stats": {
+          "willpower": 55,
+          "perception": 60
+        },
+        "event": "stronger_foe"
+      },
+      "combat": 35
+    },
+    {
+      "id": "future_sight",
+      "name": "Future Sight",
+      "level": "master",
+      "at": 300,
+      "description": "See an attack before it starts.",
+      "text": "For a moment you saw what was going to happen, and stepped out of its way.",
+      "requires": {
+        "stats": {
+          "willpower": 70,
+          "perception": 80
+        },
+        "breakthrough": true
+      },
+      "techniques": ["tech_haki_future_sight"],
+      "combat": 55
+    },
+    {
+      "id": "voice",
+      "name": "The Voice of All Things",
+      "level": "grandmaster",
+      "at": 420,
+      "description": "Hear the voices of everything that lives: the sea, the ships, the beasts.",
+      "text": "You heard the ship you stood on speak, and the sea answer it.",
+      "requires": {
+        "stats": {
+          "willpower": 80,
+          "perception": 90
+        },
+        "anyTraits": ["trait_voice_of_all_things"],
+        "hidden": true
+      },
+      "combat": 70
+    }
+  ],
+  "learn": {
+    "how": "wake",
+    "teachers": [
+      {
+        "name": "Silvers Rayleigh, if he is willing",
+        "places": ["loc_sabaody"],
+        "mult": 1.5
+      },
+      {
+        "name": "the warriors of Amazon Lily",
+        "places": ["loc_amazon_lily"],
+        "mult": 1.3
+      },
+      {
+        "name": "the priests of Skypiea (Mantra)",
+        "places": ["loc_skypiea"],
+        "mult": 1.3
+      },
+      {
+        "name": "the masters of Wano",
+        "places": ["loc_wano"],
+        "mult": 1.3
+      },
+      {
+        "name": "Marine instructors",
+        "places": ["loc_marineford"],
+        "requires": {
+          "flags": {
+            "marine.enlisted": true
+          }
+        }
+      }
+    ]
+  },
+  "speedStats": {
+    "perception": 0.6,
+    "willpower": 0.4
+  },
+  "word": "Sense",
+  "tags": ["observation", "haki"]
+}

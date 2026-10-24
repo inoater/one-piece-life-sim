@@ -9,8 +9,8 @@ import {
 describe('templates', () => {
   it('fills variables', () => {
     expect(
-      renderTemplate('Posted in {monthName}, Year {year}.', { monthName: 'March', year: '12' }),
-    ).toBe('Posted in March, Year 12.');
+      renderTemplate('Posted in {monthName} {year}.', { monthName: 'March', year: '1498 SC' }),
+    ).toBe('Posted in March 1498 SC.');
   });
 
   it('supports literal braces by doubling them', () => {

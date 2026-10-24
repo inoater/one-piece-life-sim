@@ -1,5 +1,5 @@
 import { dateOf, formatDate } from '../../engine/calendar';
-import type { ActivityCategory, GameData } from '../../engine/data/schemas';
+import type { Activity, ActivityCategory, GameData } from '../../engine/data/schemas';
 import { Rng } from '../../engine/rng';
 import { EFFORTS, type Effort, type WorldState } from '../../engine/state';
 import { statLabel } from '../../engine/stats';
@@ -59,6 +59,34 @@ export interface ActivityView {
   crime: boolean;
   usesMentor: boolean;
   extraVigor: number;
+  /** Phase 4: the power it practises, as a phrase ("Swordsmanship (drill)"), or null. */
+  practice: string | null;
+}
+
+const PRACTICE_WORD: Record<string, string> = {
+  drill: 'drills',
+  spar: 'sparring x1.5',
+  fight: 'a real fight x3',
+  teach: 'teaching x0.5',
+};
+
+function practiceLabel(
+  data: GameData,
+  practice: NonNullable<Activity['practice']>,
+  c: { powers?: { tracks: Record<string, unknown>; focus: string | null } },
+): string {
+  const named = practice.tracks
+    .filter((t) => c.powers?.tracks[t] !== undefined)
+    .map((t) => data.tracks[t]?.name ?? t);
+  const what =
+    practice.tracks.length === 0
+      ? c.powers?.focus
+        ? (data.tracks[c.powers.focus]?.name ?? 'your focus')
+        : 'your fighting styles'
+      : named.length > 0
+        ? named.join(' or ')
+        : (data.tracks[practice.tracks[0] ?? '']?.name ?? 'a power');
+  return `${what} (${PRACTICE_WORD[practice.kind] ?? practice.kind})`;
 }
 
 export interface JobView {
@@ -187,6 +215,7 @@ export function lifeView(state: WorldState, data: GameData): LifeView | null {
       crime: a.category === 'crime' || a.infamy > 0,
       usesMentor: a.usesMentor,
       extraVigor: a.extraVigor,
+      practice: a.practice ? practiceLabel(data, a.practice, p.c) : null,
     }));
 
   const currentJob = life.job ? data.jobs[life.job.id] : undefined;

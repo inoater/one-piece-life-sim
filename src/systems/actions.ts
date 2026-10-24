@@ -10,7 +10,23 @@ import {
   type QueuedAction,
   type WorldState,
 } from '../engine/state';
-import { CAPTAIN_ORDERS, TRAVEL_MODES } from '../engine/data/schemas';
+import { CAPTAIN_ORDERS, TECH_FORMS, TECH_TAGS, TRAVEL_MODES } from '../engine/data/schemas';
+import {
+  abandonDraft,
+  buyEncyclopedia,
+  buyFruitCommand,
+  buyGear,
+  combineCommand,
+  debugGiveFruit,
+  debugPowerPoints,
+  debugWakeHaki,
+  eatCommand,
+  identifyCommand,
+  inventCommand,
+  learnTrackCommand,
+  renameMove,
+  setFocus,
+} from './powers/commands';
 import { addDebugModifier, spawnTestEntity } from './devtools';
 import { resolveDecision, scheduleEvent } from './events';
 import { livePlayerRoutine } from './life';
@@ -26,6 +42,7 @@ import {
 } from './life/commands';
 import { CONTINUE_MODES } from './life/death';
 import { ensureWorldLayer } from './places/history';
+import { ensureFruitLayer } from './powers/month';
 import {
   buyPose,
   buyShip,
@@ -127,6 +144,49 @@ export const ActionSchema = z.discriminatedUnion('type', [
     cause: z.string().min(1).max(80).default('a debug command'),
   }),
   z.strictObject({ type: z.literal('debug/teleport'), location: z.string().min(1) }),
+  // ---- Powers (Phase 4)
+  z.strictObject({ type: z.literal('powers/learn'), track: z.string().min(1) }),
+  z.strictObject({ type: z.literal('powers/focus'), track: z.string().min(1).nullable() }),
+  z.strictObject({ type: z.literal('powers/eat'), fruit: z.string().min(1) }),
+  z.strictObject({
+    type: z.literal('powers/identify'),
+    fruit: z.string().min(1),
+    how: z.enum(['encyclopedia', 'scholar']),
+  }),
+  z.strictObject({ type: z.literal('powers/buyFruit'), fruit: z.string().min(1) }),
+  z.strictObject({ type: z.literal('powers/buyGear'), weapon: z.string().min(1) }),
+  z.strictObject({ type: z.literal('powers/buyEncyclopedia') }),
+  z.strictObject({
+    type: z.literal('powers/invent'),
+    source: z.string().min(1),
+    form: z.enum(TECH_FORMS),
+    tag: z.enum(TECH_TAGS),
+    name: z.string().min(1).max(40),
+  }),
+  z.strictObject({ type: z.literal('powers/abandon'), draft: z.string().min(1) }),
+  z.strictObject({
+    type: z.literal('powers/rename'),
+    move: z.string().min(1),
+    name: z.string().max(40),
+  }),
+  z.strictObject({
+    type: z.literal('powers/combine'),
+    partner: z.string().min(1),
+    move: z.string().min(1),
+    partnerMove: z.string().min(1),
+    name: z.string().max(40),
+  }),
+  z.strictObject({ type: z.literal('debug/giveFruit'), fruit: z.string().min(1).optional() }),
+  z.strictObject({
+    type: z.literal('debug/wakeHaki'),
+    haki: z.enum(['observation', 'armament', 'conqueror']),
+  }),
+  z.strictObject({
+    type: z.literal('debug/powerPoints'),
+    track: z.string().min(1),
+    points: z.number().min(0).max(10000).default(0),
+    breakthrough: z.boolean().default(false),
+  }),
 ]);
 export type Action = z.infer<typeof ActionSchema>;
 
@@ -244,6 +304,30 @@ export function applyAction(
       if (action.type.startsWith('travel/')) effects.push({ kind: 'autosave' });
       break;
 
+    case 'powers/learn':
+    case 'powers/focus':
+    case 'powers/eat':
+    case 'powers/identify':
+    case 'powers/buyFruit':
+    case 'powers/buyGear':
+    case 'powers/buyEncyclopedia':
+    case 'powers/invent':
+    case 'powers/abandon':
+    case 'powers/rename':
+    case 'powers/combine':
+    case 'debug/giveFruit':
+    case 'debug/wakeHaki':
+    case 'debug/powerPoints':
+      try {
+        applyPowersAction(state, data, action);
+      } catch (error) {
+        if (error instanceof ActionError) throw error;
+        throw new ActionError(error instanceof Error ? error.message : String(error));
+      }
+      // Eating a fruit, choosing a style: decisions that survive closing the tab.
+      if (action.type.startsWith('powers/')) effects.push({ kind: 'autosave' });
+      break;
+
     case 'debug/setOpenEnded':
       state.openEnded = action.value;
       appendLog(state, state.tick, {
@@ -347,6 +431,63 @@ function applyTravelAction(state: WorldState, data: GameData, action: TravelActi
   }
 }
 
+type PowersAction = Extract<
+  Action,
+  { type: `powers/${string}` | 'debug/giveFruit' | 'debug/wakeHaki' | 'debug/powerPoints' }
+>;
+
+function applyPowersAction(state: WorldState, data: GameData, action: PowersAction): void {
+  switch (action.type) {
+    case 'powers/learn':
+      learnTrackCommand(state, data, action.track);
+      break;
+    case 'powers/focus':
+      setFocus(state, data, action.track);
+      break;
+    case 'powers/eat':
+      eatCommand(state, data, action.fruit);
+      break;
+    case 'powers/identify':
+      identifyCommand(state, data, action.fruit, action.how);
+      break;
+    case 'powers/buyFruit':
+      buyFruitCommand(state, data, action.fruit);
+      break;
+    case 'powers/buyGear':
+      buyGear(state, data, action.weapon);
+      break;
+    case 'powers/buyEncyclopedia':
+      buyEncyclopedia(state, data);
+      break;
+    case 'powers/invent':
+      inventCommand(state, data, {
+        source: action.source,
+        form: action.form,
+        tag: action.tag,
+        name: action.name,
+      });
+      break;
+    case 'powers/abandon':
+      abandonDraft(state, data, action.draft);
+      break;
+    case 'powers/rename':
+      renameMove(state, data, action.move, action.name);
+      break;
+    case 'powers/combine':
+      combineCommand(state, data, action.partner, action.move, action.partnerMove, action.name);
+      break;
+    case 'debug/giveFruit':
+      debugGiveFruit(state, data, action.fruit);
+      break;
+    case 'debug/wakeHaki':
+      debugWakeHaki(state, data, action.haki);
+      break;
+    case 'debug/powerPoints':
+      debugPowerPoints(state, data, action.track, action.points, action.breakthrough);
+      break;
+  }
+}
+
 export type QueuedActionHandler = (
   state: WorldState,
   ctx: TickContext,
@@ -395,7 +536,10 @@ export function createResolveActionsStep(
  * cast and people (Phase 3). A world saved before Phase 3 gets them, and its past, here.
  */
 function prepareWorld(state: WorldState, ctx: TickContext): void {
-  if (state.playerId !== null) ensureWorldLayer(state, ctx.data);
+  if (state.playerId !== null) {
+    ensureWorldLayer(state, ctx.data);
+    ensureFruitLayer(state, ctx.data);
+  }
 }
 
 export const resolveActions = createResolveActionsStep({}, livePlayerRoutine, prepareWorld);

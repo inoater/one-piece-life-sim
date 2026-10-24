@@ -9,6 +9,7 @@ import { storyVars } from '../events';
 import { lanesFrom, withDevFixtures } from './graph';
 import { prosperityOf } from './place';
 import { localFlagActive, populationChange, setLocalFlag } from '../story/world-effects';
+import { entityIds } from '../../engine/entities';
 
 /**
  * The places' own lives (Phase 3), world systems in step 4:
@@ -21,8 +22,7 @@ import { localFlagActive, populationChange, setLocalFlag } from '../story/world-
  */
 
 function placeEntities(state: WorldState): Entity[] {
-  return Object.keys(state.entities)
-    .sort()
+  return entityIds(state)
     .map((id) => state.entities[id] as Entity)
     .filter((e) => e.place !== undefined);
 }

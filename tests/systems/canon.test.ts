@@ -35,7 +35,7 @@ function runTo(state: WorldState, tick: number): void {
   );
 }
 
-const DUEL_END = 2 * 12 + 6; // the test duel's window closes in June, Year 2
+const DUEL_END = 2 * 12 + 6; // the test duel's window closes in June 1488 SC
 
 describe('Done when: a test beat fires ~100% (Canon), ~70% (Probable), under 20% (Random)', () => {
   const rates: Record<string, number> = {};

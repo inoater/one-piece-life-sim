@@ -49,5 +49,8 @@
       "text": "Nobody came. Young people want to learn from someone younger.",
       "weight": 0.5
     }
-  ]
+  ],
+  "practice": {
+    "kind": "teach"
+  }
 }

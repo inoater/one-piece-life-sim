@@ -1,0 +1,221 @@
+[
+  {
+    "id": "tech_black_leg_collier",
+    "name": "Collier Shoot",
+    "form": "strike",
+    "tags": ["kick", "blunt"],
+    "effects": ["knockback"]
+  },
+  {
+    "id": "tech_black_leg_epaule",
+    "name": "Epaule Shoot",
+    "form": "strike",
+    "tags": ["kick", "blunt"]
+  },
+  {
+    "id": "tech_black_leg_diable",
+    "name": "Diable Jambe",
+    "form": "boost",
+    "tags": ["kick", "fire"],
+    "effects": ["burn"],
+    "description": "A leg spun so fast it burns."
+  },
+  {
+    "id": "tech_black_leg_concasse",
+    "name": "Concasse",
+    "form": "strike",
+    "tags": ["kick", "blunt"],
+    "effects": ["knockback"]
+  },
+  {
+    "id": "tech_black_leg_hell_memories",
+    "name": "Hell Memories",
+    "form": "strike",
+    "tags": ["kick", "fire", "armament"],
+    "effects": ["burn"],
+    "finisher": true
+  },
+  {
+    "id": "tech_okama_arabesque",
+    "name": "Swan Arabesque",
+    "form": "strike",
+    "tags": ["kick", "dance"],
+    "effects": ["knockback"]
+  },
+  {
+    "id": "tech_okama_pirouette",
+    "name": "Ballerina Pirouette",
+    "form": "barrage",
+    "tags": ["kick", "dance"],
+    "named": false
+  },
+  {
+    "id": "tech_electro",
+    "name": "Electro",
+    "form": "strike",
+    "tags": ["lightning"],
+    "effects": ["shock"]
+  },
+  {
+    "id": "tech_electro_claw",
+    "name": "Electro Claw",
+    "form": "strike",
+    "tags": ["lightning", "pierce"],
+    "effects": ["shock"],
+    "named": false
+  },
+  {
+    "id": "tech_electro_discharge",
+    "name": "Electro Discharge",
+    "form": "area",
+    "tags": ["lightning"],
+    "effects": ["shock", "stun"],
+    "named": false
+  },
+  {
+    "id": "tech_sulong",
+    "name": "Sulong",
+    "form": "boost",
+    "tags": ["beast", "lightning"],
+    "effects": ["buff"],
+    "description": "The moon form: huge strength, a hard limit."
+  },
+  {
+    "id": "tech_sulong_luna",
+    "name": "Electrical Luna",
+    "form": "area",
+    "tags": ["lightning", "beast"],
+    "effects": ["shock"]
+  },
+  {
+    "id": "tech_life_return",
+    "name": "Life Return",
+    "form": "support",
+    "tags": ["body", "heal"],
+    "effects": ["heal"],
+    "description": "The body's own processes, put to work on purpose."
+  },
+  {
+    "id": "tech_life_return_hair",
+    "name": "Life Return: Hair Bind",
+    "form": "grapple",
+    "tags": ["body", "bind"],
+    "effects": ["bind"],
+    "named": false
+  },
+  {
+    "id": "tech_mantra",
+    "name": "Mantra",
+    "form": "counter",
+    "tags": ["observation"],
+    "effects": ["reflect"]
+  },
+  {
+    "id": "tech_dragon_claw",
+    "name": "Ryu no Kagizume",
+    "form": "grapple",
+    "tags": ["grip", "pierce"],
+    "effects": ["bind"],
+    "description": "Dragon Claw: a grip that tears."
+  },
+  {
+    "id": "tech_dragon_breath",
+    "name": "Ryu no Ibuki",
+    "form": "area",
+    "tags": ["grip", "earth"],
+    "effects": ["terrain"],
+    "description": "Dragon's Breath: a grip that shatters the ground."
+  },
+  {
+    "id": "tech_gun_shot",
+    "name": "Steady Shot",
+    "form": "projectile",
+    "tags": ["gun", "pierce"],
+    "named": false
+  },
+  {
+    "id": "tech_gun_trick",
+    "name": "Ricochet",
+    "form": "projectile",
+    "tags": ["gun", "pierce"],
+    "effects": ["pierce_guard"],
+    "named": false
+  },
+  {
+    "id": "tech_gun_coated",
+    "name": "Coated Round",
+    "form": "projectile",
+    "tags": ["gun", "armament"],
+    "effects": ["ignore_logia"],
+    "named": false
+  },
+  {
+    "id": "tech_bow_shot",
+    "name": "Clean Arrow",
+    "form": "projectile",
+    "tags": ["bow", "pierce"],
+    "named": false
+  },
+  {
+    "id": "tech_bow_volley",
+    "name": "Three-Arrow Volley",
+    "form": "barrage",
+    "tags": ["bow", "pierce"],
+    "named": false
+  },
+  {
+    "id": "tech_bow_coated",
+    "name": "Coated Arrow",
+    "form": "projectile",
+    "tags": ["bow", "armament"],
+    "effects": ["ignore_logia", "pierce_guard"],
+    "named": false
+  },
+  {
+    "id": "tech_brawl_haymaker",
+    "name": "Haymaker",
+    "form": "strike",
+    "tags": ["blunt"],
+    "effects": ["knockback"],
+    "named": false
+  },
+  {
+    "id": "tech_brawl_headbutt",
+    "name": "Headbutt",
+    "form": "strike",
+    "tags": ["blunt"],
+    "effects": ["stun"],
+    "named": false
+  },
+  {
+    "id": "tech_brawl_throw",
+    "name": "Shoulder Throw",
+    "form": "grapple",
+    "tags": ["blunt", "grip"],
+    "effects": ["knockback"],
+    "named": false
+  },
+  {
+    "id": "tech_brawl_rush",
+    "name": "Knuckle Rush",
+    "form": "barrage",
+    "tags": ["blunt"],
+    "named": false
+  },
+  {
+    "id": "tech_naval_broadside",
+    "name": "Broadside Order",
+    "form": "support",
+    "tags": ["sea"],
+    "effects": ["buff"],
+    "named": false
+  },
+  {
+    "id": "tech_naval_pincer",
+    "name": "Pincer Manoeuvre",
+    "form": "support",
+    "tags": ["sea"],
+    "effects": ["debuff"],
+    "named": false
+  }
+]

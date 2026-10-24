@@ -1,0 +1,90 @@
+{
+  "id": "track_black_leg",
+  "name": "Black Leg",
+  "family": "style",
+  "description": "Kicks only, from the kitchen masters of the seas: later heated kicks, then burning ones.",
+  "stages": [
+    {
+      "id": "kick_drills",
+      "name": "Kick drills",
+      "level": "novice",
+      "at": 0,
+      "description": "Legs only: hands are for cooking.",
+      "text": "You fought with your legs alone and kept your hands clean.",
+      "requires": {
+        "notTraits": ["trait_lost_leg"]
+      },
+      "techniques": ["tech_black_leg_collier", "tech_black_leg_epaule"],
+      "combat": 6
+    },
+    {
+      "id": "heated",
+      "name": "Heated kicks",
+      "level": "adept",
+      "at": 60,
+      "description": "Kicks so fast they burn from the friction.",
+      "text": "Your leg glowed red with the heat of your kicks.",
+      "requires": {
+        "stats": {
+          "speed": 50,
+          "strength": 45
+        }
+      },
+      "techniques": ["tech_black_leg_diable", "tech_black_leg_concasse"],
+      "combat": 20
+    },
+    {
+      "id": "burning",
+      "name": "Burning kicks with haki",
+      "level": "expert",
+      "at": 150,
+      "description": "Heat and Armament together.",
+      "text": "Your kicks burned and hardened at once.",
+      "requires": {
+        "tracks": {
+          "track_armament": "coat"
+        },
+        "stats": {
+          "speed": 60
+        }
+      },
+      "techniques": ["tech_black_leg_hell_memories"],
+      "combat": 34
+    },
+    {
+      "id": "black_leg_master",
+      "name": "Master of the Black Leg",
+      "level": "master",
+      "at": 240,
+      "description": "A cook's style, and a fighter's.",
+      "text": "No cook on the seas kicked like you.",
+      "requires": {
+        "breakthrough": true,
+        "stats": {
+          "speed": 70
+        }
+      },
+      "combat": 46
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "the head chef of the Baratie",
+        "places": ["loc_baratie"],
+        "mult": 1.4,
+        "occupation": "occ_cook"
+      }
+    ],
+    "requires": {
+      "notTraits": ["trait_lost_leg"]
+    }
+  },
+  "speedStats": {
+    "speed": 0.4,
+    "strength": 0.3
+  },
+  "word": "Shoot",
+  "tags": ["kick", "blunt"]
+}

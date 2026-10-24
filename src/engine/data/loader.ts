@@ -6,6 +6,8 @@ import {
   canonRulesRefs,
   creationRefs,
   lifeRefs,
+  personalityRefs,
+  powerRulesRefs,
   REF_EXTRACTORS,
   singletonTargets,
   TARGET_HOME,
@@ -29,6 +31,16 @@ import {
   type SingletonPath,
   type Calendar,
   type CanonRules,
+  ENGINE_TRACKS,
+  POWER_LINE_IDS,
+  TECH_TAGS,
+  type FruitDef,
+  type MatchupRules,
+  type Moveset,
+  type Track,
+  type Trait,
+  type PersonalityRules,
+  type PowerRules,
   type TravelRules,
   type WorldRules,
   tickOfWhen,
@@ -252,6 +264,8 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   const travel = singletons['data/travel.json'] as TravelRules | undefined;
   const worldRules = singletons['data/world.json'] as WorldRules | undefined;
   const canonRules = singletons['data/canon.json'] as CanonRules | undefined;
+  const powers = singletons['data/powers.json'] as PowerRules | undefined;
+  const personality = singletons['data/personality.json'] as PersonalityRules | undefined;
 
   // ---- Pass 2: references --------------------------------------------------------------------
 
@@ -262,6 +276,8 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     ...(life ? { life } : {}),
     ...(calendar ? { seasonIds: calendar.seasons.map((s) => s.id) } : {}),
     ...(worldRules ? { npcGoalIds: worldRules.npc.goals.map((g) => g.id) } : {}),
+    ...(personality ? { personality } : {}),
+    ...(powers ? { powers } : {}),
   });
   /** Is the target's id list available? If its file is broken, its references are not checked. */
   const has = (target: RefTarget, id: string): boolean | null => {
@@ -307,6 +323,8 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   if (travel) checkRefs('data/travel.json', '', travelRefs(travel));
   if (worldRules) checkRefs('data/world.json', '', worldRulesRefs(worldRules));
   if (canonRules) checkRefs('data/canon.json', '', canonRulesRefs(canonRules));
+  if (powers) checkRefs('data/powers.json', '', powerRulesRefs(powers));
+  if (personality) checkRefs('data/personality.json', '', personalityRefs(personality));
 
   // ---- Pass 3: coherence ---------------------------------------------------------------------
 
@@ -550,6 +568,179 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
       }
     }
   }
+
+  // ---- Powers (Phase 4) ----------------------------------------------------------------------
+
+  // Trait names are modifier sources ("Sturdy (trait)"), so two traits cannot share one.
+  const traitNames = new Map<string, string>();
+  for (const [id, entry] of parsed.traits) {
+    const name = (entry.value as Trait).name;
+    const twin = traitNames.get(name);
+    if (twin)
+      error(
+        entry.file,
+        fieldOf(entry, 'name'),
+        `"${id}" has the same name as "${twin}"`,
+        'trait names label their modifiers, so each must be unique',
+      );
+    traitNames.set(name, id);
+  }
+  // Every trait does something (rule 1: a trait is its mechanics).
+  for (const [id, entry] of parsed.traits) {
+    const t = entry.value as Trait;
+    const does =
+      t.statMods.length +
+        t.potentialMods.length +
+        t.immunities.length +
+        t.locks.length +
+        t.opinion.length >
+        0 ||
+      t.trainingGainPct !== 0 ||
+      Object.keys(t.trainingMods).length + Object.keys(t.derivedMods).length > 0 ||
+      Object.keys(t.checkBonuses).length + Object.keys(t.powerMods).length > 0 ||
+      Object.keys(t.flags).length + Object.keys(t.eventWeights).length > 0;
+    if (!does) {
+      error(
+        entry.file,
+        fieldOf(entry, 'id'),
+        `The trait "${id}" does nothing`,
+        'give it at least one mechanic (stat modifiers, check bonuses, opinions...)',
+      );
+    }
+    if (t.evolves?.to === id)
+      error(entry.file, fieldOf(entry, 'evolves.to'), 'A trait cannot evolve into itself');
+  }
+
+  // Fruits: one power each, technique ids unique across every fruit and data/techniques.
+  const techIds = new Map<string, string>();
+  for (const [id, entry] of parsed.techniques) techIds.set(id, entry.file);
+  const powerKeys = new Map<string, string>();
+  const bodyIds = new Set((powers?.fruit.bodies ?? []).map((b) => b.id));
+  for (const [id, entry] of parsed.fruits) {
+    const fruit = entry.value as FruitDef;
+    const twin = powerKeys.get(fruit.power);
+    if (twin)
+      error(
+        entry.file,
+        fieldOf(entry, 'power'),
+        `"${id}" has the same power as "${twin}": one power, one fruit`,
+      );
+    powerKeys.set(fruit.power, id);
+    for (const tech of [...fruit.techniques, ...(fruit.secret?.techniques ?? [])]) {
+      const other = techIds.get(tech.id);
+      if (other)
+        error(
+          entry.file,
+          fieldOf(entry, 'techniques'),
+          `Technique id "${tech.id}" is already used in ${other}`,
+        );
+      techIds.set(tech.id, entry.file);
+    }
+    fruit.holders.forEach((h, i) => {
+      if (h.body && !bodyIds.has(h.body)) {
+        error(
+          entry.file,
+          fieldOf(entry, `holders[${i}].body`),
+          `No body "${h.body}" in data/powers.json fruit.bodies`,
+        );
+      }
+    });
+  }
+  for (const [, entry] of parsed.movesets) {
+    const moveset = entry.value as Moveset;
+    moveset.eras.forEach((era, i) => {
+      for (const tech of [
+        ...era.techniques,
+        ...(era.signature ? [era.signature] : []),
+        ...(era.finisher ? [era.finisher] : []),
+      ]) {
+        if (!techIds.has(tech)) {
+          error(
+            entry.file,
+            fieldOf(entry, `eras[${i}]`),
+            `Unknown technique "${tech}"`,
+            'techniques live in data/techniques/ and in each fruit',
+          );
+        }
+      }
+    });
+  }
+  const movesetChars = new Map<string, string>();
+  for (const [id, entry] of parsed.movesets) {
+    const char = (entry.value as Moveset).char;
+    const twin = movesetChars.get(char);
+    if (twin)
+      error(entry.file, fieldOf(entry, 'char'), `"${char}" already has a moveset ("${twin}")`);
+    movesetChars.set(char, id);
+  }
+  // Tracks: a stage that needs another track names a stage that exists there.
+  for (const [, entry] of parsed.tracks) {
+    const track = entry.value as Track;
+    track.stages.forEach((stage, i) => {
+      for (const [other, stageId] of Object.entries(stage.requires.tracks)) {
+        const t = parsed.tracks.get(other)?.value as Track | undefined;
+        if (t && !t.stages.some((s) => s.id === stageId)) {
+          error(
+            entry.file,
+            fieldOf(entry, `stages[${i}].requires.tracks.${other}`),
+            `"${other}" has no stage "${stageId}"`,
+          );
+        }
+      }
+    });
+  }
+  if (parsed.tracks.size > 0) {
+    for (const id of ENGINE_TRACKS) {
+      if (!parsed.tracks.has(id))
+        error('data/tracks/', '(file)', `The haki track "${id}" is missing`);
+    }
+    for (const type of ['paramecia', 'zoan', 'logia'] as const) {
+      const n = [...parsed.tracks.values()].filter(
+        (e) => (e.value as Track).family === 'fruit' && (e.value as Track).fruitType === type,
+      ).length;
+      if (n !== 1)
+        error(
+          'data/tracks/',
+          '(file)',
+          `Exactly one fruit track is needed for ${type} fruits (found ${n})`,
+        );
+    }
+  }
+  if (powers) {
+    for (const id of POWER_LINE_IDS) {
+      if (!(id in powers.lines))
+        error('data/powers.json', `lines.${id}`, 'Missing line', 'the powers write this line');
+    }
+    const canonWords = new Set(
+      [...parsed.fruits.values()].map((e) =>
+        ((e.value as FruitDef).name.split(/[- ]/)[0] ?? '').toLowerCase(),
+      ),
+    );
+    powers.generator.concepts.forEach((c, i) => {
+      if (canonWords.has(c.word.toLowerCase())) {
+        warn(
+          'data/powers.json',
+          `generator.concepts[${i}].word`,
+          `"${c.word}" names a canon fruit; the generator will skip it`,
+        );
+      }
+    });
+  }
+  const matchups = singletons['data/fruitMatchups.json'] as MatchupRules | undefined;
+  matchups?.pairs.forEach((pair, i) => {
+    for (const side of [pair.attacker, pair.defender]) {
+      if (side.startsWith('power:') && !powerKeys.has(side.slice(6))) {
+        error(
+          'data/fruitMatchups.json',
+          `pairs[${i}]`,
+          `No fruit has the power "${side.slice(6)}"`,
+        );
+      }
+      if (side.startsWith('tag:') && !(TECH_TAGS as readonly string[]).includes(side.slice(4))) {
+        error('data/fruitMatchups.json', `pairs[${i}]`, `Unknown technique tag "${side.slice(4)}"`);
+      }
+    }
+  });
 
   const ok = !issues.some((i) => i.severity === 'error');
   const toRecord = <T>(kind: CollectionKind): Record<string, T> => {

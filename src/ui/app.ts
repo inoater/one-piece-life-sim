@@ -1,6 +1,6 @@
 import type { AdvancePlan } from '../engine/advance';
 import type { AdvanceReport, Snapshot, ViewOptions } from '../worker/protocol';
-import { describeAdvance, errorMessage } from './format';
+import { dateLabel, describeAdvance, errorMessage, presentYearLabel } from './format';
 import type { SimHost } from './host';
 import { applyTheme, saveTheme } from './theme';
 import type { Status, Store, Theme, UiState } from './store';
@@ -71,7 +71,7 @@ export function createApp(host: SimHost, store: Store<UiState>): App {
           status = report.hashMatches
             ? {
                 kind: 'info',
-                text: `Resumed your saved world (${resumed.source}, ${snapshot.date.monthName}, Year ${snapshot.date.year}). Its state hash matches the save.`,
+                text: `Resumed your saved world (${resumed.source}, ${dateLabel(snapshot.date)}). Its state hash matches the save.`,
               }
             : {
                 kind: 'warn',
@@ -94,7 +94,7 @@ export function createApp(host: SimHost, store: Store<UiState>): App {
     async advance(plan, label) {
       const state = store.get();
       if (state.busy || !state.snapshot) return null;
-      const presentYear = Math.floor(state.snapshot.presentTick / 12);
+      const presentYear = presentYearLabel(state.snapshot);
       store.update({ busy: { label, cancellable: true }, status: null });
       try {
         const report = await host.call(
@@ -169,7 +169,7 @@ export function createApp(host: SimHost, store: Store<UiState>): App {
           notice: null,
           status: {
             kind: 'info',
-            text: `${snapshot.player?.name ?? 'Your'}'s story begins, ${snapshot.date.monthName}, Year ${snapshot.date.year}.`,
+            text: `${snapshot.player?.name ?? 'Your'}'s story begins, ${dateLabel(snapshot.date)}.`,
           },
         });
         return true;

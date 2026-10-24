@@ -1,0 +1,97 @@
+[
+  {
+    "id": "tech_soru",
+    "name": "Soru",
+    "form": "movement",
+    "tags": ["body"],
+    "effects": ["buff"]
+  },
+  {
+    "id": "tech_soru_2",
+    "name": "Soru: Afterimage",
+    "form": "movement",
+    "tags": ["body", "illusion"],
+    "effects": ["blind"],
+    "named": false
+  },
+  {
+    "id": "tech_geppo",
+    "name": "Geppo",
+    "form": "movement",
+    "tags": ["sky", "kick"],
+    "effects": ["flight"]
+  },
+  {
+    "id": "tech_geppo_2",
+    "name": "Geppo: Sky Dance",
+    "form": "barrage",
+    "tags": ["sky", "kick"],
+    "effects": ["flight"],
+    "named": false
+  },
+  {
+    "id": "tech_tekkai",
+    "name": "Tekkai",
+    "form": "guard",
+    "tags": ["body"],
+    "effects": ["buff"]
+  },
+  {
+    "id": "tech_tekkai_2",
+    "name": "Tekkai Go",
+    "form": "counter",
+    "tags": ["body", "blunt"],
+    "effects": ["reflect"]
+  },
+  {
+    "id": "tech_shigan",
+    "name": "Shigan",
+    "form": "strike",
+    "tags": ["pierce"],
+    "effects": ["bleed"]
+  },
+  {
+    "id": "tech_shigan_2",
+    "name": "Tobu Shigan: Bachi",
+    "form": "projectile",
+    "tags": ["pierce", "wind"],
+    "effects": ["bleed"]
+  },
+  {
+    "id": "tech_rankyaku",
+    "name": "Rankyaku",
+    "form": "projectile",
+    "tags": ["kick", "slash", "wind"]
+  },
+  {
+    "id": "tech_rankyaku_2",
+    "name": "Rankyaku: Gaicho",
+    "form": "projectile",
+    "tags": ["kick", "slash", "wind"],
+    "effects": ["bleed"]
+  },
+  {
+    "id": "tech_kami_e",
+    "name": "Kami-e",
+    "form": "movement",
+    "tags": ["body"],
+    "effects": ["reflect"]
+  },
+  {
+    "id": "tech_kami_e_2",
+    "name": "Kami-e Bushin",
+    "form": "counter",
+    "tags": ["body", "illusion"],
+    "effects": ["reflect"],
+    "named": false
+  },
+  {
+    "id": "tech_rokuogan",
+    "name": "Rokuogan",
+    "form": "strike",
+    "tags": ["body", "blunt"],
+    "effects": ["internal", "knockback"],
+    "finisher": true,
+    "description": "The seventh power: a shockwave from both fists that only masters of all six can throw."
+  }
+]

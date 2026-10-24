@@ -1,0 +1,404 @@
+[
+  {
+    "id": "trait_iron_will",
+    "name": "Iron Will",
+    "description": "Twelve months of Hard training and it stuck.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "hard_training": 12
+      }
+    },
+    "checkBonuses": {
+      "willpower": 8
+    },
+    "powerMods": {
+      "family:haki": 10
+    },
+    "statMods": [
+      {
+        "stat": "willpower",
+        "value": 3,
+        "kind": "flat"
+      }
+    ],
+    "gainText": "A year of the hardest training had forged something in you: an iron will."
+  },
+  {
+    "id": "trait_workhorse",
+    "name": "Workhorse",
+    "description": "Three years of honest work.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "months_worked": 36
+      }
+    },
+    "derivedMods": {
+      "vigor": 1
+    },
+    "statMods": [
+      {
+        "stat": "endurance",
+        "value": 2,
+        "kind": "flat"
+      }
+    ],
+    "evolves": {
+      "to": "trait_tireless",
+      "when": {
+        "counters": {
+          "months_worked": 120
+        },
+        "stats": {
+          "endurance": 60
+        }
+      }
+    }
+  },
+  {
+    "id": "trait_tireless",
+    "name": "Tireless",
+    "description": "Ten years of work, and still the first up.",
+    "category": "earned",
+    "derivedMods": {
+      "vigor": 2
+    },
+    "statMods": [
+      {
+        "stat": "endurance",
+        "value": 3,
+        "kind": "flat"
+      }
+    ]
+  },
+  {
+    "id": "trait_sea_dog",
+    "name": "Sea Dog",
+    "description": "Six years at sea.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "months_at_sea": 72
+      }
+    },
+    "immunities": ["seasickness", "scurvy"],
+    "checkBonuses": {
+      "navigation": 8
+    }
+  },
+  {
+    "id": "trait_learned",
+    "name": "Learned",
+    "description": "Five years of study.",
+    "category": "earned",
+    "trainingMods": {
+      "intellect": 15
+    },
+    "checkBonuses": {
+      "intellect": 8
+    },
+    "powerMods": {
+      "track_paramecia": 10
+    }
+  },
+  {
+    "id": "trait_scholars_eye",
+    "name": "Scholar's Eye",
+    "description": "Three years of study.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "study_months": 36
+      }
+    },
+    "checkBonuses": {
+      "intellect": 5
+    },
+    "trainingMods": {
+      "intellect": 10
+    }
+  },
+  {
+    "id": "trait_well_liked",
+    "name": "Well-Liked",
+    "description": "Three years spent with people.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "social_months": 36
+      }
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": 5
+      }
+    ],
+    "checkBonuses": {
+      "charisma": 4
+    }
+  },
+  {
+    "id": "trait_pathfinder",
+    "name": "Pathfinder",
+    "description": "Two years of exploring.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "explore_months": 24
+      }
+    },
+    "checkBonuses": {
+      "perception": 5,
+      "navigation": 4
+    },
+    "eventWeights": {
+      "discovery": 1.4
+    }
+  },
+  {
+    "id": "trait_hardened_criminal",
+    "name": "Hardened Criminal",
+    "description": "Two years of crime.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "crime_months": 24
+      }
+    },
+    "checkBonuses": {
+      "dexterity": 5
+    },
+    "opinion": [
+      {
+        "group": "criminals",
+        "value": 10
+      },
+      {
+        "group": "marines",
+        "value": -8
+      }
+    ]
+  },
+  {
+    "id": "trait_swordsmans_calluses",
+    "name": "Swordsman's Calluses",
+    "description": "Two years of blade drills.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "blade_months": 24
+      }
+    },
+    "powerMods": {
+      "family:sword": 15
+    },
+    "trainingMods": {
+      "dexterity": 5
+    }
+  },
+  {
+    "id": "trait_sharpshooter",
+    "name": "Sharpshooter",
+    "description": "Two years at the targets.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "marksman_months": 24
+      }
+    },
+    "powerMods": {
+      "track_gunmanship": 15,
+      "track_archery": 15
+    },
+    "checkBonuses": {
+      "dexterity": 5
+    }
+  },
+  {
+    "id": "trait_angler",
+    "name": "Angler",
+    "description": "Five years of fishing.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "fishing_months": 60
+      }
+    },
+    "checkBonuses": {
+      "perception": 3
+    },
+    "trainingMods": {
+      "endurance": 5
+    }
+  },
+  {
+    "id": "trait_broad_back",
+    "name": "Broad Back",
+    "description": "Two years hauling cargo.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "hauling_months": 24
+      }
+    },
+    "statMods": [
+      {
+        "stat": "strength",
+        "value": 3,
+        "kind": "flat"
+      }
+    ],
+    "derivedMods": {
+      "maxHealth": 5
+    }
+  },
+  {
+    "id": "trait_calm_mind",
+    "name": "Calm Mind",
+    "description": "Two years of meditation.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "meditation_months": 24
+      }
+    },
+    "derivedMods": {
+      "hakiStamina": 5
+    },
+    "powerMods": {
+      "track_observation": 10
+    }
+  },
+  {
+    "id": "trait_field_medic",
+    "name": "Field Medic",
+    "description": "Two years learning medicine.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "medicine_months": 24
+      }
+    },
+    "checkBonuses": {
+      "intellect": 5
+    },
+    "immunities": ["bad_stomach"]
+  },
+  {
+    "id": "trait_idler",
+    "name": "Idler",
+    "description": "Two years mostly resting.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "rest_months": 24
+      }
+    },
+    "trainingGainPct": -5,
+    "derivedMods": {
+      "vigor": 1
+    }
+  },
+  {
+    "id": "trait_battle_hardened",
+    "name": "Battle-Hardened",
+    "description": "Twenty real fights.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "fights": 20
+      }
+    },
+    "checkBonuses": {
+      "combatPower": 8,
+      "willpower": 3
+    },
+    "powerMods": {
+      "family:style": 5
+    }
+  },
+  {
+    "id": "trait_tough_as_nails",
+    "name": "Tough as Nails",
+    "description": "Came back from three severe wounds.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "severe_injuries": 3
+      }
+    },
+    "derivedMods": {
+      "maxHealth": 12
+    }
+  },
+  {
+    "id": "trait_death_touched",
+    "name": "Death-Touched",
+    "description": "Has been at death's door twice, and walked away.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "near_death": 2
+      }
+    },
+    "checkBonuses": {
+      "willpower": 8
+    },
+    "powerMods": {
+      "family:haki": 10
+    }
+  },
+  {
+    "id": "trait_brawler",
+    "name": "Scrapper",
+    "description": "Has been in enough fights to know how they go.",
+    "category": "earned",
+    "earn": {
+      "counters": {
+        "fights": 6
+      }
+    },
+    "powerMods": {
+      "track_brawling": 10
+    },
+    "statMods": [
+      {
+        "stat": "strength",
+        "value": 1,
+        "kind": "flat"
+      }
+    ],
+    "evolves": {
+      "to": "trait_street_fighter",
+      "when": {
+        "counters": {
+          "fights": 20
+        },
+        "stats": {
+          "strength": 40
+        }
+      }
+    }
+  },
+  {
+    "id": "trait_iron_fist",
+    "name": "Iron Fist",
+    "description": "Sixty fights and fists like iron.",
+    "category": "earned",
+    "statMods": [
+      {
+        "stat": "strength",
+        "value": 4,
+        "kind": "flat"
+      }
+    ],
+    "checkBonuses": {
+      "combatPower": 10
+    },
+    "powerMods": {
+      "track_brawling": 20
+    }
+  }
+]

@@ -1,0 +1,85 @@
+{
+  "id": "act_style_drills",
+  "name": "Drill your fighting style",
+  "category": "train_body",
+  "description": "Forms, stances and kicks until they come without thinking: whichever style you are focused on.",
+  "minAge": 12,
+  "physical": true,
+  "usesMentor": true,
+  "requires": {
+    "anyOf": [
+      {
+        "tracks": {
+          "track_brawling": "open"
+        }
+      },
+      {
+        "tracks": {
+          "track_black_leg": "open"
+        }
+      },
+      {
+        "tracks": {
+          "track_okama_kenpo": "open"
+        }
+      },
+      {
+        "tracks": {
+          "track_dragon_claw": "open"
+        }
+      },
+      {
+        "tracks": {
+          "track_life_return": "open"
+        }
+      },
+      {
+        "tracks": {
+          "track_fishman_karate": "open"
+        }
+      },
+      {
+        "tracks": {
+          "track_electro": "open"
+        }
+      },
+      {
+        "tracks": {
+          "track_swordsmanship": "open"
+        }
+      }
+    ]
+  },
+  "gains": {
+    "strength": 0.4,
+    "speed": 0.3,
+    "dexterity": 0.3
+  },
+  "practice": {
+    "kind": "drill"
+  },
+  "tags": ["training", "fight", "at_sea"],
+  "outcomes": [
+    {
+      "id": "forms",
+      "text": "You drilled {technique} until the floor was slick with sweat.",
+      "weight": 1.5,
+      "quiet": true
+    },
+    {
+      "id": "sharp",
+      "text": "Something in your form clicked into place, and {technique} felt new.",
+      "weight": 0.4,
+      "statWeights": {
+        "dexterity": 0.4
+      },
+      "effects": [
+        {
+          "kind": "powerPoints",
+          "practice": "drill",
+          "points": 2
+        }
+      ]
+    }
+  ]
+}

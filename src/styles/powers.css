@@ -1,0 +1,268 @@
+@layer components {
+  /* ---- Phase 4: the Powers and Devil Fruit pages ---------------------------------------- */
+  .powers-page {
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+  .powers-page__title {
+    font-family: var(--font-text);
+    font-size: var(--text-4);
+    font-weight: 650;
+    line-height: 1.15;
+  }
+  .powers-page__lead {
+    margin-top: var(--s-2);
+    max-width: var(--measure);
+    font-family: var(--font-text);
+    line-height: 1.55;
+  }
+  .powers-page__bonus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    margin: var(--s-2) 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .powers-page__section {
+    margin-top: var(--s-6);
+  }
+  .powers-page__heading {
+    margin-bottom: var(--s-2);
+    padding-bottom: var(--s-1);
+    border-bottom: 1px solid var(--rule-strong);
+    font-family: var(--font-text);
+    font-size: var(--text-3);
+    font-weight: 650;
+  }
+  .power-tracks,
+  .power-learns,
+  .fruit-list,
+  .fight-actions,
+  .drafts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .power-track,
+  .power-learn,
+  .fruit-entry {
+    display: grid;
+    gap: var(--s-1);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .power-track__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-2) var(--s-3);
+  }
+  .power-track__name,
+  .power-learn__name,
+  .fruit-entry__name {
+    font-family: var(--font-text);
+    font-weight: 650;
+  }
+  .power-track__family,
+  .power-learn__where,
+  .fruit-entry__meta,
+  .power-track__where,
+  .stage__level,
+  .stage__techs,
+  .stage__combat {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .power-track__next {
+    display: grid;
+    grid-template-columns: minmax(6rem, 14rem) 1fr;
+    align-items: center;
+    gap: var(--s-1) var(--s-3);
+  }
+  .power-track__locks {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding-left: var(--s-4);
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .power-bar {
+    display: block;
+    height: 0.5rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .power-bar__fill {
+    display: block;
+    height: 100%;
+    background: var(--tide);
+  }
+  .power-track__stages ol {
+    margin: var(--s-2) 0 0;
+    padding-left: var(--s-5);
+  }
+  .power-track__stages li {
+    display: grid;
+    gap: 2px;
+    padding: var(--s-1) 0;
+  }
+  .power-track__stages li[data-reached='false'] .stage__name {
+    color: var(--mist);
+  }
+  .power-track__stages li[data-current='true'] .stage__name {
+    color: var(--tide);
+    font-weight: 650;
+  }
+  .stage__desc,
+  .power-learn__desc,
+  .fruit-entry__desc {
+    font-family: var(--font-text);
+    line-height: 1.5;
+  }
+  .power-learn__lock,
+  .moves__lock {
+    color: var(--squall);
+    font-size: var(--text-0);
+  }
+  .power-learn__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .power-warning {
+    padding: var(--s-2) var(--s-3);
+    border-left: 3px solid var(--squall);
+    background: var(--squall-soft);
+  }
+  .moves {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-0);
+  }
+  .moves th,
+  .moves td {
+    padding: var(--s-1) var(--s-2);
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    vertical-align: top;
+  }
+  .moves .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .moves tr[data-faded='true'] td,
+  .moves tr[data-locked='true'] .moves__name {
+    color: var(--mist);
+  }
+  .moves__name {
+    font-family: var(--font-text);
+    font-size: var(--text-1);
+    font-weight: 600;
+  }
+  .moves__lock {
+    display: block;
+  }
+  .moves__original {
+    color: var(--mist);
+  }
+  .moves__badge {
+    margin-left: var(--s-2);
+    padding: 0 var(--s-2);
+    border-radius: 999px;
+    background: var(--tide-soft);
+    font-size: var(--text-0);
+  }
+  .moves__badge--finisher {
+    background: var(--warn-soft);
+    color: var(--warn-ink);
+  }
+  .invent__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+  }
+  .invent__row select,
+  .invent__row input {
+    min-height: 2.25rem;
+    padding: 0 var(--s-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+  }
+  .drafts li {
+    padding: var(--s-2) 0;
+  }
+  .fight-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .fight-actions li {
+    padding: 2px var(--s-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+  .fruit-entry[data-hidden='true'] {
+    opacity: 0.65;
+  }
+  .fruit-entry__hidden {
+    color: var(--squall);
+    font-size: var(--text-0);
+  }
+  .fruit-entry__techs {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  /* The sheet's traits (Phase 4): what each does, and where it came from. */
+  .trait__kind,
+  .trait__origin {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .trait__effects {
+    font-size: var(--text-0);
+  }
+  .trait[data-hidden='true'] .trait__name {
+    color: var(--squall);
+  }
+  .trait-hints {
+    margin: var(--s-2) 0 0;
+    padding-left: var(--s-4);
+    color: var(--mist);
+    font-family: var(--font-text);
+    font-style: italic;
+  }
+  .derived__bonus {
+    display: block;
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+}
+
+@layer layout {
+  .shell[data-route='powers'] .panel,
+  .shell[data-route='powers'] .year-rail,
+  .shell[data-route='fruits'] .panel,
+  .shell[data-route='fruits'] .year-rail {
+    display: none !important;
+  }
+  @media (min-width: 700px) {
+    .shell[data-route='powers'] .tabs,
+    .shell[data-route='fruits'] .tabs {
+      grid-column: 1 / -1;
+      border-left: 0;
+    }
+    .shell[data-route='powers'] .tab--feed,
+    .shell[data-route='fruits'] .tab--feed {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,718 @@
+[
+  {
+    "id": "fruit_mera_mera",
+    "name": "Flame-Flame Fruit",
+    "japanese": "Mera Mera no Mi",
+    "type": "logia",
+    "rarity": "legendary",
+    "power": "fire",
+    "primitives": ["ignite"],
+    "description": "The user becomes and makes fire.",
+    "techniques": [
+      {
+        "id": "tech_mera_mera_hiken",
+        "name": "Hiken",
+        "form": "projectile",
+        "tags": ["fire"],
+        "mastery": 0,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_mera_mera_higan",
+        "name": "Higan",
+        "form": "barrage",
+        "tags": ["fire"],
+        "mastery": 20,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_mera_mera_hibashira",
+        "name": "Hibashira",
+        "form": "area",
+        "tags": ["fire"],
+        "mastery": 30,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_mera_mera_kagero",
+        "name": "Kagero",
+        "form": "area",
+        "tags": ["fire"],
+        "mastery": 45,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_mera_mera_enkai_hibashira",
+        "name": "Enkai: Hibashira",
+        "form": "area",
+        "tags": ["fire"],
+        "mastery": 60,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_mera_mera_dai_enkai_entei",
+        "name": "Dai Enkai: Entei",
+        "form": "area",
+        "tags": ["fire"],
+        "mastery": 80,
+        "effects": ["burn", "terrain"],
+        "finisher": true
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "magma",
+        "text": "Magma burns hotter than fire."
+      },
+      {
+        "against": "water",
+        "text": "Water dampens the flames."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Portgas D. Ace",
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "approx": true,
+        "to": {
+          "year": 36,
+          "month": 9
+        },
+        "char": "char_portgas_d_ace"
+      },
+      {
+        "name": "Sabo",
+        "from": {
+          "year": 38,
+          "month": 5
+        },
+        "approx": true,
+        "char": "char_sabo",
+        "how": "won it as the prize of the Corrida Colosseum"
+      }
+    ]
+  },
+  {
+    "id": "fruit_moku_moku",
+    "name": "Smoke-Smoke Fruit",
+    "japanese": "Moku Moku no Mi",
+    "type": "logia",
+    "rarity": "rare",
+    "power": "smoke",
+    "primitives": ["smoke"],
+    "description": "The user becomes and makes smoke.",
+    "techniques": [
+      {
+        "id": "tech_moku_moku_white_blow",
+        "name": "White Blow",
+        "form": "strike",
+        "tags": ["smoke"],
+        "mastery": 0,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_moku_moku_white_snake",
+        "name": "White Snake",
+        "form": "grapple",
+        "tags": ["smoke"],
+        "mastery": 20,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_moku_moku_white_launcher",
+        "name": "White Launcher",
+        "form": "movement",
+        "tags": ["smoke"],
+        "mastery": 30
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "water",
+        "text": "Smoke soaked through holds no shape."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Smoker",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_suna_suna",
+    "name": "Sand-Sand Fruit",
+    "japanese": "Suna Suna no Mi",
+    "type": "logia",
+    "rarity": "rare",
+    "power": "sand",
+    "primitives": ["dry"],
+    "description": "The user becomes and makes sand, and dries out whatever they touch.",
+    "techniques": [
+      {
+        "id": "tech_suna_suna_sables",
+        "name": "Sables",
+        "form": "area",
+        "tags": ["sand", "wind"],
+        "mastery": 0,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_suna_suna_desert_spada",
+        "name": "Desert Spada",
+        "form": "projectile",
+        "tags": ["sand", "slash"],
+        "mastery": 20
+      },
+      {
+        "id": "tech_suna_suna_desert_girasole",
+        "name": "Desert Girasole",
+        "form": "area",
+        "tags": ["sand", "earth"],
+        "mastery": 45,
+        "effects": ["terrain"]
+      },
+      {
+        "id": "tech_suna_suna_ground_death",
+        "name": "Ground Death",
+        "form": "area",
+        "tags": ["sand"],
+        "mastery": 70,
+        "effects": ["drain", "terrain"],
+        "finisher": true
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "water",
+        "text": "Wet sand cannot move."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Crocodile",
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_crocodile"
+      }
+    ]
+  },
+  {
+    "id": "fruit_goro_goro",
+    "name": "Rumble-Rumble Fruit",
+    "japanese": "Goro Goro no Mi",
+    "type": "logia",
+    "rarity": "legendary",
+    "power": "lightning",
+    "primitives": ["thunder"],
+    "description": "The user becomes and makes lightning, and hears everything on the island by it.",
+    "techniques": [
+      {
+        "id": "tech_goro_goro_el_thor",
+        "name": "El Thor",
+        "form": "projectile",
+        "tags": ["lightning"],
+        "mastery": 20,
+        "effects": ["shock"]
+      },
+      {
+        "id": "tech_goro_goro_vari",
+        "name": "Vari",
+        "form": "strike",
+        "tags": ["lightning"],
+        "mastery": 0,
+        "effects": ["shock"]
+      },
+      {
+        "id": "tech_goro_goro_raigo",
+        "name": "Raigo",
+        "form": "area",
+        "tags": ["lightning"],
+        "mastery": 70,
+        "effects": ["shock", "terrain"],
+        "finisher": true
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "concentration",
+        "text": "Rubber does not conduct, and a moment of fear breaks the user's focus."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Enel",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_hie_hie",
+    "name": "Ice-Ice Fruit",
+    "japanese": "Hie Hie no Mi",
+    "type": "logia",
+    "rarity": "legendary",
+    "power": "ice",
+    "primitives": ["freeze"],
+    "description": "The user becomes and makes ice, enough to freeze the sea.",
+    "techniques": [
+      {
+        "id": "tech_hie_hie_ice_time",
+        "name": "Ice Time",
+        "form": "strike",
+        "tags": ["ice"],
+        "mastery": 0,
+        "effects": ["freeze"]
+      },
+      {
+        "id": "tech_hie_hie_ice_saber",
+        "name": "Ice Saber",
+        "form": "strike",
+        "tags": ["ice", "slash"],
+        "mastery": 15
+      },
+      {
+        "id": "tech_hie_hie_ice_block_pheasant_beak",
+        "name": "Ice Block: Pheasant Beak",
+        "form": "projectile",
+        "tags": ["ice"],
+        "mastery": 30,
+        "effects": ["freeze"]
+      },
+      {
+        "id": "tech_hie_hie_ice_age",
+        "name": "Ice Age",
+        "form": "area",
+        "tags": ["ice", "sea"],
+        "mastery": 65,
+        "effects": ["freeze", "terrain"],
+        "finisher": true
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "heat",
+        "text": "Fire and magma melt the ice."
+      }
+    ],
+    "intangible": true,
+    "awakening": "The sea freezes for miles around and stays frozen for a month.",
+    "holders": [
+      {
+        "name": "Kuzan (Aokiji)",
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_kuzan"
+      }
+    ]
+  },
+  {
+    "id": "fruit_yami_yami",
+    "name": "Dark-Dark Fruit",
+    "japanese": "Yami Yami no Mi",
+    "type": "logia",
+    "rarity": "legendary",
+    "power": "darkness",
+    "primitives": ["dark", "gravity"],
+    "description": "The user becomes and makes darkness that pulls everything in, and can cancel other fruits' powers with a touch. They feel every blow twice.",
+    "techniques": [
+      {
+        "id": "tech_yami_yami_black_hole",
+        "name": "Black Hole",
+        "form": "area",
+        "tags": ["dark", "gravity"],
+        "mastery": 20,
+        "effects": ["absorb"]
+      },
+      {
+        "id": "tech_yami_yami_kurouzu",
+        "name": "Kurouzu",
+        "form": "grapple",
+        "tags": ["dark", "gravity"],
+        "mastery": 0,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_yami_yami_liberation",
+        "name": "Liberation",
+        "form": "projectile",
+        "tags": ["dark"],
+        "mastery": 30
+      },
+      {
+        "id": "tech_yami_yami_dark_touch",
+        "name": "Dark Touch",
+        "form": "grapple",
+        "tags": ["dark"],
+        "mastery": 40,
+        "effects": ["ignore_logia"],
+        "named": false
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "blunt",
+        "text": "Darkness draws pain in: the user feels every blow twice."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Marshall D. Teach",
+        "from": {
+          "year": 35,
+          "month": 10
+        },
+        "approx": true,
+        "char": "char_marshall_d_teach",
+        "how": "killed Thatch for it"
+      }
+    ],
+    "start": {
+      "place": "loc_new_world_island",
+      "container": "chest",
+      "note": "Found by Thatch of the Whitebeard Pirates"
+    }
+  },
+  {
+    "id": "fruit_pika_pika",
+    "name": "Glint-Glint Fruit",
+    "japanese": "Pika Pika no Mi",
+    "type": "logia",
+    "rarity": "legendary",
+    "power": "light",
+    "primitives": ["glow"],
+    "description": "The user becomes and makes light, and moves at the speed of light.",
+    "techniques": [
+      {
+        "id": "tech_pika_pika_yasakani_no_magatama",
+        "name": "Yasakani no Magatama",
+        "form": "barrage",
+        "tags": ["light"],
+        "mastery": 20,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_pika_pika_ama_no_murakumo",
+        "name": "Ama no Murakumo",
+        "form": "strike",
+        "tags": ["light", "slash"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_pika_pika_yata_no_kagami",
+        "name": "Yata no Kagami",
+        "form": "movement",
+        "tags": ["light"],
+        "mastery": 15,
+        "effects": ["flight"]
+      },
+      {
+        "id": "tech_pika_pika_light_speed_kick",
+        "name": "Light Speed Kick",
+        "form": "strike",
+        "tags": ["light", "kick"],
+        "mastery": 50,
+        "effects": ["knockback"],
+        "finisher": true,
+        "named": false
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "haki",
+        "text": "Haki strikes light as surely as flesh."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Borsalino (Kizaru)",
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_borsalino"
+      }
+    ]
+  },
+  {
+    "id": "fruit_magu_magu",
+    "name": "Magma-Magma Fruit",
+    "japanese": "Magu Magu no Mi",
+    "type": "logia",
+    "rarity": "legendary",
+    "power": "magma",
+    "primitives": ["melt"],
+    "description": "The user becomes and makes magma, hotter than any flame.",
+    "techniques": [
+      {
+        "id": "tech_magu_magu_dai_funka",
+        "name": "Dai Funka",
+        "form": "strike",
+        "tags": ["magma"],
+        "mastery": 0,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_magu_magu_meigo",
+        "name": "Meigo",
+        "form": "strike",
+        "tags": ["magma", "pierce"],
+        "mastery": 30,
+        "effects": ["burn", "pierce_guard"]
+      },
+      {
+        "id": "tech_magu_magu_ryusei_kazan",
+        "name": "Ryusei Kazan",
+        "form": "barrage",
+        "tags": ["magma"],
+        "mastery": 60,
+        "effects": ["burn", "terrain"],
+        "finisher": true
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "cold",
+        "text": "Ice cools magma to stone."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Sakazuki (Akainu)",
+        "from": {
+          "year": -2,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_sakazuki"
+      }
+    ]
+  },
+  {
+    "id": "fruit_numa_numa",
+    "name": "Swamp-Swamp Fruit",
+    "japanese": "Numa Numa no Mi",
+    "type": "logia",
+    "rarity": "rare",
+    "power": "swamp",
+    "primitives": ["sink"],
+    "description": "The user becomes a swamp with no bottom, and stores whatever sinks into it.",
+    "techniques": [
+      {
+        "id": "tech_numa_numa_swamp_pull",
+        "name": "Swamp Pull",
+        "form": "grapple",
+        "tags": ["earth", "water"],
+        "mastery": 0,
+        "effects": ["bind"],
+        "named": false
+      },
+      {
+        "id": "tech_numa_numa_swamp_store",
+        "name": "Swamp Store",
+        "form": "support",
+        "tags": ["earth"],
+        "mastery": 20,
+        "effects": ["absorb"],
+        "named": false
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "heat",
+        "text": "Heat dries the swamp."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Caribou",
+        "from": {
+          "year": 36,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_gasu_gasu",
+    "name": "Gas-Gas Fruit",
+    "japanese": "Gasu Gasu no Mi",
+    "type": "logia",
+    "rarity": "rare",
+    "power": "gas",
+    "primitives": ["gas"],
+    "description": "The user becomes and makes gas, poison or breathable, and can take the air from a room.",
+    "techniques": [
+      {
+        "id": "tech_gasu_gasu_gastanet",
+        "name": "Gastanet",
+        "form": "area",
+        "tags": ["gas", "explosive"],
+        "mastery": 0,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_gasu_gasu_shinokuni",
+        "name": "Shinokuni",
+        "form": "area",
+        "tags": ["gas", "poison"],
+        "mastery": 60,
+        "effects": ["poison"],
+        "finisher": true
+      },
+      {
+        "id": "tech_gasu_gasu_no_air",
+        "name": "No Air",
+        "form": "area",
+        "tags": ["gas"],
+        "mastery": 30,
+        "effects": ["drain"],
+        "named": false
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "fire",
+        "text": "Gas burns."
+      },
+      {
+        "against": "wind",
+        "text": "Wind blows it away."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Caesar Clown",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_yuki_yuki",
+    "name": "Snow-Snow Fruit",
+    "japanese": "Yuki Yuki no Mi",
+    "type": "logia",
+    "rarity": "rare",
+    "power": "snow",
+    "primitives": ["snow"],
+    "description": "The user becomes and makes snow.",
+    "techniques": [
+      {
+        "id": "tech_yuki_yuki_snow_rabbit",
+        "name": "Snow Rabbit",
+        "form": "projectile",
+        "tags": ["ice"],
+        "mastery": 0,
+        "effects": ["freeze"]
+      },
+      {
+        "id": "tech_yuki_yuki_kamakura",
+        "name": "Kamakura",
+        "form": "guard",
+        "tags": ["ice"],
+        "mastery": 20,
+        "effects": ["bind"]
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "heat",
+        "text": "Snow melts."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Monet",
+        "from": {
+          "year": 33,
+          "month": 1
+        },
+        "approx": true,
+        "to": {
+          "year": 38,
+          "month": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "fruit_mori_mori",
+    "name": "Forest-Forest Fruit",
+    "japanese": "Mori Mori no Mi",
+    "type": "logia",
+    "rarity": "legendary",
+    "power": "forest",
+    "primitives": ["grow"],
+    "description": "The user becomes and makes a forest, and draws the life out of whatever its roots touch.",
+    "techniques": [
+      {
+        "id": "tech_mori_mori_root_drain",
+        "name": "Root Drain",
+        "form": "grapple",
+        "tags": ["plant"],
+        "mastery": 0,
+        "effects": ["drain"],
+        "named": false
+      },
+      {
+        "id": "tech_mori_mori_forest_spread",
+        "name": "Forest Spread",
+        "form": "area",
+        "tags": ["plant", "earth"],
+        "mastery": 40,
+        "effects": ["terrain", "bind"],
+        "named": false
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "fire",
+        "text": "A forest burns."
+      }
+    ],
+    "intangible": true,
+    "holders": [
+      {
+        "name": "Aramaki (Ryokugyu)",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  }
+]

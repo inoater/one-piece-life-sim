@@ -1,0 +1,60 @@
+{
+  "id": "track_dragon_claw",
+  "name": "Dragon Claw Fist",
+  "family": "style",
+  "description": "Grip strikes that crush, taught by Revolutionary teachers to those with Strength 60.",
+  "stages": [
+    {
+      "id": "grip_strike",
+      "name": "Grip strikes",
+      "level": "novice",
+      "at": 0,
+      "description": "Strike with the fingers curled like a claw.",
+      "text": "Your fingers left marks in the stone.",
+      "techniques": ["tech_dragon_claw"],
+      "combat": 8
+    },
+    {
+      "id": "crushing",
+      "name": "Crushing grip",
+      "level": "adept",
+      "at": 60,
+      "description": "A grip that crushes iron.",
+      "text": "You crushed an iron bar in your hand.",
+      "requires": {
+        "stats": {
+          "strength": 60
+        }
+      },
+      "techniques": ["tech_dragon_breath"],
+      "combat": 22
+    },
+    {
+      "id": "haki_crush",
+      "name": "Crushing with haki",
+      "level": "expert",
+      "at": 150,
+      "description": "A coated grip that breaks anything.",
+      "text": "Your coated fingers broke a wall like bread.",
+      "requires": {
+        "tracks": {
+          "track_armament": "harden"
+        }
+      },
+      "combat": 38
+    }
+  ],
+  "learn": {
+    "how": "event",
+    "requires": {
+      "stats": {
+        "strength": 60
+      }
+    }
+  },
+  "speedStats": {
+    "strength": 0.5
+  },
+  "word": "Dragon",
+  "tags": ["grip"]
+}

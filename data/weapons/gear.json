@@ -1,0 +1,34 @@
+[
+  {
+    "id": "weapon_sword",
+    "name": "Cutlass",
+    "description": "A plain sailor's sword.",
+    "gear": "swords",
+    "price": 30000,
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_katana",
+    "name": "Katana",
+    "description": "A good Wano blade.",
+    "gear": "swords",
+    "price": 200000,
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_flintlock",
+    "name": "Flintlock pistol",
+    "description": "One shot, then a reload.",
+    "gear": "gun",
+    "price": 50000,
+    "tags": ["gun"]
+  },
+  {
+    "id": "weapon_bow",
+    "name": "Hunting bow",
+    "description": "Yew and gut.",
+    "gear": "bow",
+    "price": 15000,
+    "tags": ["bow"]
+  }
+]

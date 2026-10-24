@@ -1,0 +1,112 @@
+{
+  "id": "track_three_sword",
+  "name": "Three-sword style",
+  "family": "sword",
+  "description": "Santoryu: a blade in each hand and one in the teeth.",
+  "stages": [
+    {
+      "id": "teeth",
+      "name": "A blade held in the teeth",
+      "level": "novice",
+      "at": 0,
+      "description": "Hold a third blade in your jaw.",
+      "text": "You held the third sword in your teeth and did not drop it.",
+      "requires": {
+        "gear": {
+          "swords": 3
+        }
+      },
+      "techniques": ["tech_santoryu_oni_giri"],
+      "combat": 8
+    },
+    {
+      "id": "jaw",
+      "name": "Jaw and neck strength",
+      "level": "adept",
+      "at": 50,
+      "description": "A jaw strong enough to cut with.",
+      "text": "Your jaw was strong enough now to cut with the third blade alone.",
+      "requires": {
+        "stats": {
+          "strength": 50,
+          "endurance": 50
+        }
+      },
+      "techniques": ["tech_santoryu_tora_gari"],
+      "combat": 20
+    },
+    {
+      "id": "three_blades",
+      "name": "Three-blade style",
+      "level": "expert",
+      "at": 120,
+      "description": "Three blades as one weapon.",
+      "text": "Three blades moved as one.",
+      "requires": {
+        "stats": {
+          "strength": 60,
+          "dexterity": 60
+        }
+      },
+      "techniques": ["tech_santoryu_ushi_bari"],
+      "combat": 34
+    },
+    {
+      "id": "demon",
+      "name": "Demon of three swords",
+      "level": "master",
+      "at": 200,
+      "description": "A style that frightens other swordsmen.",
+      "text": "Other swordsmen stepped back when they saw your stance.",
+      "requires": {
+        "breakthrough": true,
+        "stats": {
+          "strength": 70,
+          "dexterity": 70
+        }
+      },
+      "techniques": ["tech_santoryu_sanzen_sekai"],
+      "combat": 48
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a dojo master",
+        "features": ["dojo"],
+        "fee": 20000
+      },
+      {
+        "name": "a wandering master of Wano",
+        "places": ["loc_wano"],
+        "fee": 50000,
+        "mult": 1.35
+      },
+      {
+        "name": "Dracule Mihawk, if he finds you worth it",
+        "places": ["loc_kuraigana"],
+        "mult": 1.5,
+        "requires": {
+          "stats": {
+            "dexterity": 60
+          }
+        }
+      }
+    ],
+    "requires": {
+      "tracks": {
+        "track_two_sword": "paired_cuts"
+      },
+      "gear": {
+        "swords": 3
+      }
+    }
+  },
+  "speedStats": {
+    "dexterity": 0.5,
+    "strength": 0.3
+  },
+  "word": "Demon",
+  "tags": ["sword", "slash"]
+}

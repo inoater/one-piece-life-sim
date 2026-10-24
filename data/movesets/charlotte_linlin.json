@@ -1,0 +1,29 @@
+{
+  "id": "moveset_charlotte_linlin",
+  "char": "char_charlotte_linlin",
+  "eras": [
+    {
+      "from": {
+        "year": -24,
+        "month": 1
+      },
+      "techniques": [
+        "tech_soru_soru_soul_pocus",
+        "tech_soru_soru_zeus_breeze",
+        "tech_soru_soru_prometheus_flame",
+        "tech_soru_soru_heavenly_fire",
+        "tech_soru_soru_maser_cannon",
+        "tech_linlin_ikoku"
+      ],
+      "tracks": {
+        "track_observation": "track_crowds",
+        "track_armament": "internal",
+        "track_conqueror": "clash"
+      },
+      "approx": true,
+      "mastery": 88,
+      "signature": "tech_linlin_ikoku",
+      "finisher": "tech_soru_soru_maser_cannon"
+    }
+  ]
+}

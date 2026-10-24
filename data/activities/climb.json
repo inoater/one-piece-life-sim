@@ -35,11 +35,23 @@
       "statWeights": {
         "dexterity": 0.5,
         "strength": 0.4
-      }
+      },
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["reckless"]
+        }
+      ]
     },
     {
       "id": "nest",
-      "text": "You climbed to a seabird's nest and came down with an egg and a bitten finger."
+      "text": "You climbed to a seabird's nest and came down with an egg and a bitten finger.",
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["reckless"]
+        }
+      ]
     },
     {
       "id": "fall",
@@ -51,6 +63,10 @@
           "severity": "roll",
           "area": "legs",
           "cause": "accident"
+        },
+        {
+          "kind": "drift",
+          "tags": ["careful"]
         }
       ]
     }

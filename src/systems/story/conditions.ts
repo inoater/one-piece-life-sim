@@ -9,6 +9,9 @@ import {
   relationKind,
   statTotal,
 } from '../life/body';
+import { fruitDefOf } from '../powers/catalogue';
+import { eatenFruit, fruitEntities, fruitMastery } from '../powers/fruits';
+import { HAKI_TRACKS, reached } from '../powers/state';
 import { shipsOf } from '../voyage/plan';
 import { mouthsAboard, vesselNow } from '../voyage/progress';
 import type { StoryCtx } from './context';
@@ -112,6 +115,45 @@ export function conditionHolds(ctx: StoryCtx, cond: Condition): boolean {
       return (state.canon.beats[cond.beat]?.status ?? 'pending') === cond.status;
     case 'canonHere':
       return canonHere(ctx).length > 0;
+    // Phase 4
+    case 'track':
+      return p ? reached(data, p.c, cond.track, cond.stage ?? 'open') : false;
+    case 'notTrack':
+      return p ? !reached(data, p.c, cond.track, 'open') : true;
+    case 'fruitUser': {
+      if (!p) return false;
+      const fruit = eatenFruit(state, p.entity);
+      if (!fruit) return !cond.value;
+      if (!cond.value) return false;
+      const def = fruitDefOf(data, fruit);
+      if (cond.type && def?.type !== cond.type) return false;
+      if (cond.zoan && def?.zoan !== cond.zoan) return false;
+      return true;
+    }
+    case 'mastery':
+      return p ? inRange(fruitMastery(data, p.c), cond.min, cond.max) : false;
+    case 'fruitUnknown': {
+      const record = p?.c.powers?.fruit;
+      return record !== undefined && record !== null && !record.identified && !record.dud;
+    }
+    case 'fruitHasSecret': {
+      const record = p?.c.powers?.fruit;
+      if (!p || !record || record.dud || record.secret) return false;
+      return fruitDefOf(data, state.entities[record.id])?.secret !== undefined;
+    }
+    case 'wildFruitHere': {
+      const here = place?.location?.id;
+      if (!here) return false;
+      return fruitEntities(state).some(
+        (e) => e.fruit?.place === here && ['tree', 'unknown', 'chest'].includes(e.fruit.container),
+      );
+    }
+    case 'personality':
+      return p ? inRange(p.c.personality?.axes[cond.axis] ?? 0, cond.min, cond.max) : false;
+    case 'counter':
+      return p ? (p.c.personality?.counters[cond.counter] ?? 0) >= cond.min : false;
+    case 'haki':
+      return p ? reached(data, p.c, HAKI_TRACKS[cond.haki], 'open') === cond.value : false;
   }
 }
 

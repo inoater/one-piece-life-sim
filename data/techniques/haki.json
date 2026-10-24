@@ -1,0 +1,83 @@
+[
+  {
+    "id": "tech_haki_sense",
+    "name": "Kenbunshoku: Sense Presence",
+    "form": "support",
+    "tags": ["observation", "haki"],
+    "effects": ["buff"],
+    "description": "Know where everyone near is."
+  },
+  {
+    "id": "tech_haki_read_strike",
+    "name": "Read the Blow",
+    "form": "counter",
+    "tags": ["observation", "haki"],
+    "effects": ["buff"],
+    "named": false,
+    "description": "See where a blow will land a heartbeat early."
+  },
+  {
+    "id": "tech_haki_future_sight",
+    "name": "Future Sight",
+    "form": "counter",
+    "tags": ["observation", "haki"],
+    "effects": ["reflect", "buff"],
+    "description": "See a little of the future and answer it."
+  },
+  {
+    "id": "tech_haki_coat",
+    "name": "Busoshoku: Coat",
+    "form": "boost",
+    "tags": ["armament", "haki"],
+    "effects": ["ignore_logia"],
+    "description": "Will wrapped around a fist: it strikes even what cannot be struck."
+  },
+  {
+    "id": "tech_haki_harden",
+    "name": "Busoshoku: Koka",
+    "form": "guard",
+    "tags": ["armament", "haki"],
+    "effects": ["ignore_logia"],
+    "description": "Hardened black: a guard and a weapon."
+  },
+  {
+    "id": "tech_haki_coat_weapon",
+    "name": "Coated Weapon",
+    "form": "boost",
+    "tags": ["armament", "haki", "weapon"],
+    "effects": ["ignore_logia", "pierce_guard"],
+    "named": false
+  },
+  {
+    "id": "tech_haki_ryuo",
+    "name": "Ryuo",
+    "form": "projectile",
+    "tags": ["armament", "haki"],
+    "effects": ["ignore_logia", "knockback"],
+    "description": "Armament that flows out and strikes without contact."
+  },
+  {
+    "id": "tech_haki_internal",
+    "name": "Ryuo: Internal Destruction",
+    "form": "strike",
+    "tags": ["armament", "haki"],
+    "effects": ["internal", "pierce_guard"],
+    "named": false
+  },
+  {
+    "id": "tech_haki_burst",
+    "name": "Haoshoku Burst",
+    "form": "area",
+    "tags": ["conqueror", "haki"],
+    "effects": ["knockout", "fear"],
+    "named": false
+  },
+  {
+    "id": "tech_haki_conqueror_coat",
+    "name": "Conqueror's Coating",
+    "form": "boost",
+    "tags": ["conqueror", "haki"],
+    "effects": ["ignore_logia", "pierce_guard"],
+    "named": false
+  }
+]

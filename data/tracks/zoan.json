@@ -1,0 +1,98 @@
+{
+  "id": "track_zoan",
+  "name": "Zoan mastery",
+  "family": "fruit",
+  "description": "Animal forms, hybrid and full: Endurance speeds the control.",
+  "stages": [
+    {
+      "id": "changing",
+      "name": "Changing without accidents",
+      "level": "novice",
+      "at": 0,
+      "description": "Change on purpose, and back.",
+      "text": "You changed and changed back, on purpose, and nothing broke.",
+      "combat": 6
+    },
+    {
+      "id": "hybrid",
+      "name": "Hybrid control",
+      "level": "trained",
+      "at": 15,
+      "description": "Hold the form between human and beast.",
+      "text": "You held the half-beast form and kept your head.",
+      "combat": 14
+    },
+    {
+      "id": "full_form",
+      "name": "Full form",
+      "level": "adept",
+      "at": 30,
+      "description": "Become the beast entirely.",
+      "text": "You became the beast entirely, and it did not become you.",
+      "requires": {
+        "stats": {
+          "endurance": 35
+        }
+      },
+      "combat": 22
+    },
+    {
+      "id": "extra_forms",
+      "name": "Extra forms",
+      "level": "expert",
+      "at": 50,
+      "description": "Find forms beyond the three.",
+      "text": "You found a form between the forms, one nobody had shown you.",
+      "requires": {
+        "stats": {
+          "endurance": 45
+        }
+      },
+      "combat": 32
+    },
+    {
+      "id": "stamina",
+      "name": "Stamina in forms",
+      "level": "master",
+      "at": 70,
+      "description": "Hold a form for a day of fighting.",
+      "text": "You fought a whole day in your beast's shape and were not spent.",
+      "requires": {
+        "stats": {
+          "endurance": 60
+        }
+      },
+      "combat": 44
+    },
+    {
+      "id": "awakening",
+      "name": "Awakening",
+      "level": "grandmaster",
+      "at": 90,
+      "description": "The beast's body heals and hits far past its nature, at the risk of rampage.",
+      "text": "Something old and wild woke in the beast's body: you had awakened.",
+      "requires": {
+        "stats": {
+          "willpower": 70
+        },
+        "breakthrough": true
+      },
+      "combat": 64,
+      "flags": {
+        "fruit.awakened": true
+      }
+    }
+  ],
+  "learn": {
+    "how": "fruit"
+  },
+  "fruitType": "zoan",
+  "mode": "mastery",
+  "speedStats": {
+    "endurance": 0.6
+  },
+  "rust": {
+    "afterMonths": 36,
+    "perYear": 0.1
+  }
+}

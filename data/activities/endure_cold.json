@@ -16,7 +16,14 @@
       "id": "plunge",
       "text": "You plunged into the sea every morning before dawn.",
       "weight": 1.5,
-      "quiet": true
+      "quiet": true,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "haki.seed.armament",
+          "by": 1
+        }
+      ]
     },
     {
       "id": "fever",

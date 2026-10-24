@@ -1,0 +1,47 @@
+{
+  "id": "track_asura",
+  "name": "Hidden ascension: Asura",
+  "family": "sword",
+  "description": "A rare form born of will: an apparition of many arms and blades.",
+  "stages": [
+    {
+      "id": "aura",
+      "name": "Demon aura",
+      "level": "expert",
+      "at": 0,
+      "description": "A swordsman's will so hard others see a demon behind them.",
+      "text": "For a moment the people facing you saw something with many arms behind you.",
+      "requires": {
+        "anyTraits": ["trait_demon_aura"],
+        "hidden": true
+      },
+      "combat": 30
+    },
+    {
+      "id": "asura",
+      "name": "Asura",
+      "level": "grandmaster",
+      "at": 80,
+      "description": "An apparition of many arms and blades.",
+      "text": "Nine swords flashed where you had three: Asura.",
+      "requires": {
+        "event": "crisis",
+        "breakthrough": true,
+        "hidden": true
+      },
+      "techniques": ["tech_asura_ichibugin"],
+      "combat": 70
+    }
+  ],
+  "learn": {
+    "how": "event",
+    "requires": {
+      "tracks": {
+        "track_three_sword": "demon"
+      }
+    }
+  },
+  "hidden": true,
+  "word": "Asura",
+  "tags": ["sword", "slash"]
+}

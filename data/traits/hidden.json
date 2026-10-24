@@ -1,0 +1,65 @@
+[
+  {
+    "id": "trait_kings_qualities",
+    "name": "King's Qualities",
+    "description": "The will of a king: the seed of Conqueror's Haki, about one in a few million.",
+    "category": "hidden",
+    "hidden": true,
+    "weight": 0,
+    "hint": "Some days a room goes quiet when you are angry, and you do not know why.",
+    "flags": {
+      "haki.kings": true
+    }
+  },
+  {
+    "id": "trait_will_of_d",
+    "name": "The Will of D.",
+    "description": "An inherited will nobody can explain.",
+    "category": "hidden",
+    "hidden": true,
+    "weight": 0,
+    "hint": "Old people sometimes look at your name a second time.",
+    "flags": {
+      "will.d": true
+    },
+    "powerMods": {
+      "family:haki": 10
+    }
+  },
+  {
+    "id": "trait_voice_of_all_things",
+    "name": "The Voice of All Things",
+    "description": "Hears the voices of everything that lives.",
+    "category": "hidden",
+    "hidden": true,
+    "weight": 0,
+    "hint": "On quiet nights you could swear the ship is talking.",
+    "flags": {
+      "voice.all_things": true
+    }
+  },
+  {
+    "id": "trait_anomalous_body",
+    "name": "Anomalous Body",
+    "description": "A body unlike any other: it can hold two Devil Fruits.",
+    "category": "hidden",
+    "hidden": true,
+    "weight": 0,
+    "hint": "Doctors frown at your heartbeat and will not say why.",
+    "flags": {
+      "body.anomaly": true
+    }
+  },
+  {
+    "id": "trait_demon_aura",
+    "name": "Demon Aura",
+    "description": "A swordsman's will so hard others see a demon behind them.",
+    "category": "hidden",
+    "hidden": true,
+    "weight": 0,
+    "hint": "People who face you in a fight sometimes look past you, frightened.",
+    "flags": {
+      "sword.demon": true
+    }
+  }
+]

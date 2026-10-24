@@ -14,9 +14,22 @@ export function mintGeneratedId(state: WorldState): string {
   return formatGeneratedId(state.counters.genId);
 }
 
-/** All entity ids in a stable (sorted) order. */
-export function entityIds(state: WorldState): string[] {
-  return Object.keys(state.entities).sort();
+const sortedIds = new WeakMap<object, { keys: string[]; sorted: string[] }>();
+
+/**
+ * All entity ids in a stable (sorted) order. The sort is reused while the set of keys is exactly
+ * the same, in the same insertion order (checked every call, so it can never be stale): a full
+ * world has thousands of entities and many systems walk them every month. Do not mutate it.
+ */
+export function entityIds(state: WorldState): readonly string[] {
+  const keys = Object.keys(state.entities);
+  const cached = sortedIds.get(state.entities);
+  if (cached && cached.keys.length === keys.length && cached.keys.every((k, i) => k === keys[i])) {
+    return cached.sorted;
+  }
+  const sorted = [...keys].sort();
+  sortedIds.set(state.entities, { keys, sorted });
+  return sorted;
 }
 
 export function getEntity(state: WorldState, id: string): Entity | undefined {

@@ -3,7 +3,11 @@ import { dpow } from '../../engine/dmath';
 import type { Rng } from '../../engine/rng';
 import { SCAR_AREAS, type Entity, type Injury, type WorldState } from '../../engine/state';
 import { addMod, removeModsBySource } from '../../engine/stats';
-import { giveTraitTo } from './traits';
+import { giveTraitTo, immuneTo } from './traits';
+import { countBehaviour } from './personality';
+import { powerEvent } from '../powers/haki';
+import { releaseFruitOf } from '../powers/fruits';
+import { powerCtxOf } from '../powers/tracks';
 import { capitalize } from '../genesis/text';
 import { maxHealthOf, stageOf, ageYears, type Person } from './body';
 import { lifeLog, renderLife, reportLine, type LifeEnv } from './env';
@@ -108,6 +112,7 @@ export function injure(env: LifeEnv, spec: InjurySpec): Injury | null {
     healTick: tick + severity.months,
   };
   life.injuries.push(injury);
+  if (severity.id === 'severe') countBehaviour(p.c, 'severe_injuries');
   for (const stat of areaDef.stats) {
     const s = p.entity.stats[stat];
     if (s)
@@ -132,6 +137,7 @@ export function fallIll(env: LifeEnv, illnessId: string): boolean {
   const { data, tick, p, life } = env;
   const def = data.life.illnesses.find((i) => i.id === illnessId);
   if (!def || !p.c.alive) return false;
+  if (immuneTo(data, p.c, illnessId)) return false;
   if (life.illnesses.some((i) => i.id === illnessId && i.healTick > tick)) return false;
   const healTick = tick + env.rng.fork('illness', illnessId).int(def.months.min, def.months.max);
   life.illnesses.push({ id: def.id, name: def.name, tick, healTick });
@@ -196,6 +202,8 @@ export function die(env: LifeEnv, cause: string): void {
   if (!p.c.alive) return;
   p.c.alive = false;
   p.c.death = { tick, cause };
+  // Phase 4: the fruit returns to the world (and the seas will say so in their own time).
+  releaseFruitOf(env.state, data, p.entity, tick, env.rng.fork('fruit'));
   const text = renderLife(env, data.life.lines.death, {
     cause,
     age: String(ageYears(p.c, tick)),
@@ -223,6 +231,9 @@ export function collapseOrDie(env: LifeEnv, cause: string, what: string): void {
   const text = renderLife(env, data.life.lines.collapse);
   lifeLog(env, text, { kind: 'event', tags: ['personal', 'health'] });
   reportLine(env, text, 'alert');
+  // Phase 4: a brush with death can wake haki, and opens the stages that need one.
+  countBehaviour(p.c, 'near_death');
+  powerEvent(powerCtxOf(env), 'near_death');
   if (rng.fork('breakthrough?').chance(data.life.training.nearDeathBreakthrough)) {
     const stats = [...data.character.physical, ...data.character.mental];
     breakthrough(env, rng.fork('stat').pick(stats), 'Breakthrough (near death)');

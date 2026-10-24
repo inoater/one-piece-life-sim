@@ -1,0 +1,116 @@
+[
+  {
+    "id": "trait_thick_skinned",
+    "name": "Thick-Skinned",
+    "description": "Shrugs off cuts that drop others.",
+    "category": "innate",
+    "derivedMods": {
+      "maxHealth": 10
+    },
+    "statMods": [
+      {
+        "stat": "durability",
+        "value": 2,
+        "kind": "flat"
+      }
+    ],
+    "weight": 0.7
+  },
+  {
+    "id": "trait_bottomless",
+    "name": "Bottomless Stamina",
+    "description": "Never seems to tire.",
+    "category": "innate",
+    "derivedMods": {
+      "vigor": 1
+    },
+    "trainingMods": {
+      "endurance": 10
+    },
+    "weight": 0.6
+  },
+  {
+    "id": "trait_iron_stomach",
+    "name": "Iron Stomach",
+    "description": "Eats anything, keeps it down.",
+    "category": "innate",
+    "immunities": ["bad_stomach"],
+    "derivedMods": {
+      "maxHealth": 3
+    },
+    "weight": 0.7
+  },
+  {
+    "id": "trait_light_sleeper",
+    "name": "Light Sleeper",
+    "description": "Wakes at a footstep.",
+    "category": "innate",
+    "checkBonuses": {
+      "perception": 5
+    },
+    "eventWeights": {
+      "ambush": 0.7
+    },
+    "weight": 0.7
+  },
+  {
+    "id": "trait_quick_wits",
+    "name": "Quick Wits",
+    "description": "Thinks fast under pressure.",
+    "category": "innate",
+    "checkBonuses": {
+      "intellect": 5,
+      "charisma": 3
+    },
+    "weight": 0.7
+  },
+  {
+    "id": "trait_heavy_handed",
+    "name": "Heavy-Handed",
+    "description": "Hits harder than they mean to.",
+    "category": "innate",
+    "trainingMods": {
+      "strength": 10
+    },
+    "checkBonuses": {
+      "dexterity": -3
+    },
+    "weight": 0.7
+  },
+  {
+    "id": "trait_clumsy",
+    "name": "Clumsy",
+    "description": "Trips over their own feet.",
+    "category": "innate",
+    "checkBonuses": {
+      "dexterity": -6
+    },
+    "eventWeights": {
+      "misfortune": 1.3
+    },
+    "weight": 0.5
+  },
+  {
+    "id": "trait_haki_sensitive",
+    "name": "Haki-Sensitive",
+    "description": "Feels other people's moods like weather.",
+    "category": "innate",
+    "powerMods": {
+      "family:haki": 15
+    },
+    "checkBonuses": {
+      "perception": 3
+    },
+    "weight": 0.3
+  },
+  {
+    "id": "trait_fruit_affinity",
+    "name": "Fruit Affinity",
+    "description": "Strange powers seem to come easily.",
+    "category": "innate",
+    "powerMods": {
+      "family:fruit": 20
+    },
+    "weight": 0.3
+  }
+]

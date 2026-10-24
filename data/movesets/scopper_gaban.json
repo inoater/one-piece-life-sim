@@ -1,0 +1,19 @@
+{
+  "id": "moveset_scopper_gaban",
+  "char": "char_scopper_gaban",
+  "eras": [
+    {
+      "from": {
+        "year": -16,
+        "month": 1
+      },
+      "techniques": ["tech_gaban_axe", "tech_haki_coat_weapon"],
+      "tracks": {
+        "track_armament": "coat_weapon",
+        "track_observation": "read_intent"
+      },
+      "approx": true,
+      "signature": "tech_gaban_axe"
+    }
+  ]
+}

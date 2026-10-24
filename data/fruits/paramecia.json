@@ -1,0 +1,3637 @@
+[
+  {
+    "id": "fruit_gomu_gomu",
+    "name": "Gum-Gum Fruit",
+    "japanese": "Gomu Gomu no Mi",
+    "type": "paramecia",
+    "rarity": "legendary",
+    "power": "rubber",
+    "primitives": ["stretch", "spring"],
+    "description": "The user's body becomes rubber: it stretches, bounces, and shrugs off blunt blows and lightning.",
+    "techniques": [
+      {
+        "id": "tech_gomu_gomu_gomu_gomu_no_pistol",
+        "name": "Gomu Gomu no Pistol",
+        "form": "strike",
+        "tags": ["rubber", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_gomu_gomu_gomu_gomu_no_gatling",
+        "name": "Gomu Gomu no Gatling",
+        "form": "barrage",
+        "tags": ["rubber", "blunt"],
+        "mastery": 15
+      },
+      {
+        "id": "tech_gomu_gomu_gomu_gomu_no_bazooka",
+        "name": "Gomu Gomu no Bazooka",
+        "form": "strike",
+        "tags": ["rubber", "blunt"],
+        "mastery": 20,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_gomu_gomu_gomu_gomu_no_fusen",
+        "name": "Gomu Gomu no Fusen",
+        "form": "guard",
+        "tags": ["rubber", "body"],
+        "mastery": 25,
+        "effects": ["reflect"]
+      },
+      {
+        "id": "tech_gomu_gomu_gear_second",
+        "name": "Gear Second",
+        "form": "boost",
+        "tags": ["rubber", "body"],
+        "mastery": 40,
+        "effects": ["buff"]
+      },
+      {
+        "id": "tech_gomu_gomu_gear_third_gigant_pistol",
+        "name": "Gear Third: Gigant Pistol",
+        "form": "strike",
+        "tags": ["rubber", "blunt"],
+        "mastery": 50,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_gomu_gomu_gomu_gomu_no_red_hawk",
+        "name": "Gomu Gomu no Red Hawk",
+        "form": "strike",
+        "tags": ["rubber", "fire", "armament"],
+        "mastery": 65,
+        "effects": ["burn", "ignore_logia"]
+      },
+      {
+        "id": "tech_gomu_gomu_gear_fourth_kong_gun",
+        "name": "Gear Fourth: Kong Gun",
+        "form": "strike",
+        "tags": ["rubber", "armament"],
+        "mastery": 75,
+        "effects": ["knockback", "ignore_logia"],
+        "finisher": true
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "slash",
+        "text": "Blades still cut rubber."
+      },
+      {
+        "against": "water",
+        "text": "A rubber body soaked in water loses its bounce."
+      }
+    ],
+    "secret": {
+      "name": "Human-Human Fruit, Model: Nika",
+      "text": "It was never a Paramecia: it is a Mythical Zoan, the fruit of the Sun God, which the World Government renamed and hid.",
+      "mastery": 85,
+      "techniques": [
+        {
+          "id": "tech_gomu_gomu_gear_fifth",
+          "name": "Gear Fifth",
+          "form": "boost",
+          "tags": ["rubber", "body"],
+          "mastery": 90,
+          "effects": ["transform", "buff"]
+        },
+        {
+          "id": "tech_gomu_gomu_gomu_gomu_no_bajrang_gun",
+          "name": "Gomu Gomu no Bajrang Gun",
+          "form": "strike",
+          "tags": ["rubber", "conqueror"],
+          "mastery": 92,
+          "effects": ["knockback", "terrain"]
+        }
+      ]
+    },
+    "awakening": "The rubber spreads to the ground and the air: the world itself turns to rubber around the user.",
+    "holders": [
+      {
+        "name": "Monkey D. Luffy",
+        "from": {
+          "year": 26,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_monkey_d_luffy",
+        "how": "ate it out of Shanks's chest"
+      }
+    ],
+    "start": {
+      "place": "loc_mary_geoise",
+      "container": "vault",
+      "note": "Held by the World Government, under another name"
+    }
+  },
+  {
+    "id": "fruit_bara_bara",
+    "name": "Chop-Chop Fruit",
+    "japanese": "Bara Bara no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "split_body",
+    "primitives": ["split"],
+    "description": "The user's body splits into pieces that float apart and fly at will; slashing does nothing.",
+    "techniques": [
+      {
+        "id": "tech_bara_bara_bara_bara_hou",
+        "name": "Bara Bara Hou",
+        "form": "projectile",
+        "tags": ["body"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_bara_bara_bara_bara_festival",
+        "name": "Bara Bara Festival",
+        "form": "barrage",
+        "tags": ["body"],
+        "mastery": 30
+      },
+      {
+        "id": "tech_bara_bara_bara_bara_car",
+        "name": "Bara Bara Car",
+        "form": "movement",
+        "tags": ["body"],
+        "mastery": 20
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "blunt",
+        "text": "Each piece can still be crushed or held."
+      }
+    ],
+    "holders": [
+      {
+        "name": "Buggy",
+        "from": {
+          "year": 9,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_buggy",
+        "how": "swallowed it by accident aboard Roger's ship"
+      }
+    ]
+  },
+  {
+    "id": "fruit_sube_sube",
+    "name": "Slip-Slip Fruit",
+    "japanese": "Sube Sube no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "slippery_skin",
+    "primitives": ["slip"],
+    "description": "The user's skin is so smooth that blows slide off it.",
+    "techniques": [
+      {
+        "id": "tech_sube_sube_sube_sube_spur",
+        "name": "Sube Sube Spur",
+        "form": "strike",
+        "tags": ["body", "blunt"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_sube_sube_slide_away",
+        "name": "Slide Away",
+        "form": "guard",
+        "tags": ["body"],
+        "mastery": 15,
+        "effects": ["reflect"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Alvida",
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_bomu_bomu",
+    "name": "Bomb-Bomb Fruit",
+    "japanese": "Bomu Bomu no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "bomb_body",
+    "primitives": ["explode"],
+    "description": "Any part of the user's body, and anything that leaves it, can explode.",
+    "techniques": [
+      {
+        "id": "tech_bomu_bomu_nose_fancy_cannon",
+        "name": "Nose Fancy Cannon",
+        "form": "projectile",
+        "tags": ["explosive"],
+        "mastery": 0,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_bomu_bomu_kick_bomb",
+        "name": "Kick Bomb",
+        "form": "strike",
+        "tags": ["explosive", "kick"],
+        "mastery": 15
+      }
+    ],
+    "holders": [
+      {
+        "name": "Mr. 5",
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_kilo_kilo",
+    "name": "Kilo-Kilo Fruit",
+    "japanese": "Kilo Kilo no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "weight_change",
+    "primitives": ["weight"],
+    "description": "The user can change their weight from one kilo to ten thousand.",
+    "techniques": [
+      {
+        "id": "tech_kilo_kilo_10_000_kilo_press",
+        "name": "10,000 Kilo Press",
+        "form": "strike",
+        "tags": ["blunt", "gravity"],
+        "mastery": 0,
+        "effects": ["stun"]
+      },
+      {
+        "id": "tech_kilo_kilo_featherweight_float",
+        "name": "Featherweight Float",
+        "form": "movement",
+        "tags": ["sky"],
+        "mastery": 10,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Miss Valentine",
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_hana_hana",
+    "name": "Flower-Flower Fruit",
+    "japanese": "Hana Hana no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "bloom_limbs",
+    "primitives": ["sprout"],
+    "description": "The user can sprout copies of their limbs from any surface, like flowers.",
+    "techniques": [
+      {
+        "id": "tech_hana_hana_cuatro_fleur_clutch",
+        "name": "Cuatro Fleur: Clutch",
+        "form": "grapple",
+        "tags": ["body", "grip"],
+        "mastery": 0,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_hana_hana_seis_fleur_twist",
+        "name": "Seis Fleur: Twist",
+        "form": "grapple",
+        "tags": ["grip"],
+        "mastery": 15,
+        "effects": ["stun"]
+      },
+      {
+        "id": "tech_hana_hana_mil_fleur_gigantesco_mano",
+        "name": "Mil Fleur: Gigantesco Mano",
+        "form": "area",
+        "tags": ["body", "grip"],
+        "mastery": 55,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_hana_hana_demonio_fleur",
+        "name": "Demonio Fleur",
+        "form": "boost",
+        "tags": ["body"],
+        "mastery": 75,
+        "effects": ["transform"],
+        "finisher": true
+      }
+    ],
+    "holders": [
+      {
+        "name": "Nico Robin",
+        "from": {
+          "year": 13,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_nico_robin"
+      }
+    ]
+  },
+  {
+    "id": "fruit_doru_doru",
+    "name": "Wax-Wax Fruit",
+    "japanese": "Doru Doru no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "wax",
+    "primitives": ["wax"],
+    "description": "The user makes wax that sets as hard as steel.",
+    "techniques": [
+      {
+        "id": "tech_doru_doru_candle_wall",
+        "name": "Candle Wall",
+        "form": "guard",
+        "tags": ["wax"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_doru_doru_candle_lock",
+        "name": "Candle Lock",
+        "form": "grapple",
+        "tags": ["wax", "bind"],
+        "mastery": 10,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_doru_doru_candle_champion",
+        "name": "Candle Champion",
+        "form": "boost",
+        "tags": ["wax"],
+        "mastery": 40
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "fire",
+        "text": "Wax melts."
+      }
+    ],
+    "holders": [
+      {
+        "name": "Galdino (Mr. 3)",
+        "from": {
+          "year": 27,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_baku_baku",
+    "name": "Munch-Munch Fruit",
+    "japanese": "Baku Baku no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "eat_anything",
+    "primitives": ["copy"],
+    "description": "The user can eat anything, and take on the shape of what they ate.",
+    "techniques": [
+      {
+        "id": "tech_baku_baku_baku_baku_factory",
+        "name": "Baku Baku Factory",
+        "form": "support",
+        "tags": ["body", "metal"],
+        "mastery": 20,
+        "effects": ["transform"]
+      },
+      {
+        "id": "tech_baku_baku_bite",
+        "name": "Bite",
+        "form": "grapple",
+        "tags": ["grip", "pierce"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Wapol",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_mane_mane",
+    "name": "Clone-Clone Fruit",
+    "japanese": "Mane Mane no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "copy_face",
+    "primitives": ["copy"],
+    "description": "A touch of the right hand lets the user copy someone's face and body.",
+    "techniques": [
+      {
+        "id": "tech_mane_mane_copy_face",
+        "name": "Copy Face",
+        "form": "support",
+        "tags": ["illusion", "body"],
+        "mastery": 0,
+        "effects": ["transform"],
+        "named": false
+      },
+      {
+        "id": "tech_mane_mane_mane_mane_montage",
+        "name": "Mane Mane Montage",
+        "form": "support",
+        "tags": ["illusion"],
+        "mastery": 30,
+        "effects": ["transform"]
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kurozumi Higurashi",
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "approx": true,
+        "to": {
+          "year": 18,
+          "month": 6
+        }
+      },
+      {
+        "name": "Bentham (Mr. 2 Bon Clay)",
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_supa_supa",
+    "name": "Dice-Dice Fruit",
+    "japanese": "Supa Supa no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "blade_body",
+    "primitives": ["cut"],
+    "description": "Any part of the user's body can turn into a blade of steel.",
+    "techniques": [
+      {
+        "id": "tech_supa_supa_spar_claw",
+        "name": "Spar Claw",
+        "form": "strike",
+        "tags": ["slash", "metal"],
+        "mastery": 0,
+        "effects": ["bleed"]
+      },
+      {
+        "id": "tech_supa_supa_atomic_spar",
+        "name": "Atomic Spar",
+        "form": "strike",
+        "tags": ["slash"],
+        "mastery": 25
+      },
+      {
+        "id": "tech_supa_supa_spiral_hollow",
+        "name": "Spiral Hollow",
+        "form": "area",
+        "tags": ["slash"],
+        "mastery": 45,
+        "effects": ["bleed"]
+      }
+    ],
+    "holders": [
+      {
+        "name": "Daz Bonez (Mr. 1)",
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_toge_toge",
+    "name": "Spike-Spike Fruit",
+    "japanese": "Toge Toge no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "spike_body",
+    "primitives": ["coat"],
+    "description": "The user can grow spikes from anywhere on their body.",
+    "techniques": [
+      {
+        "id": "tech_toge_toge_spike_hug",
+        "name": "Spike Hug",
+        "form": "grapple",
+        "tags": ["pierce"],
+        "mastery": 0,
+        "effects": ["bleed"]
+      },
+      {
+        "id": "tech_toge_toge_sting_dance",
+        "name": "Sting Dance",
+        "form": "barrage",
+        "tags": ["pierce"],
+        "mastery": 20
+      }
+    ],
+    "holders": [
+      {
+        "name": "Paula (Miss Doublefinger)",
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ori_ori",
+    "name": "Bind-Bind Fruit",
+    "japanese": "Ori Ori no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "iron_bind",
+    "primitives": ["bind"],
+    "description": "Whatever the user's arms pass through is bound in iron shackles.",
+    "techniques": [
+      {
+        "id": "tech_ori_ori_awase_baori",
+        "name": "Awase Baori",
+        "form": "grapple",
+        "tags": ["bind", "metal"],
+        "mastery": 0,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_ori_ori_ori_ori_cage",
+        "name": "Ori Ori Cage",
+        "form": "grapple",
+        "tags": ["bind", "metal"],
+        "mastery": 30,
+        "effects": ["bind"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Hina",
+        "from": {
+          "year": 26,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_bane_bane",
+    "name": "Spring-Spring Fruit",
+    "japanese": "Bane Bane no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "spring_body",
+    "primitives": ["spring"],
+    "description": "The user's legs and arms become springs.",
+    "techniques": [
+      {
+        "id": "tech_bane_bane_spring_hopper",
+        "name": "Spring Hopper",
+        "form": "movement",
+        "tags": ["body"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_bane_bane_spring_death_knock",
+        "name": "Spring Death Knock",
+        "form": "strike",
+        "tags": ["blunt"],
+        "mastery": 20,
+        "effects": ["knockback"]
+      }
+    ],
+    "holders": [
+      {
+        "name": "Bellamy",
+        "from": {
+          "year": 32,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_noro_noro",
+    "name": "Slow-Slow Fruit",
+    "japanese": "Noro Noro no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "slow_beam",
+    "primitives": ["slow"],
+    "description": "The user fires beams that make anything they hit move thirty times slower for thirty seconds.",
+    "techniques": [
+      {
+        "id": "tech_noro_noro_noro_noro_beam",
+        "name": "Noro Noro Beam",
+        "form": "projectile",
+        "tags": ["time", "light"],
+        "mastery": 0,
+        "effects": ["slow"]
+      },
+      {
+        "id": "tech_noro_noro_noro_noro_beam_sword",
+        "name": "Noro Noro Beam Sword",
+        "form": "strike",
+        "tags": ["time"],
+        "mastery": 30,
+        "effects": ["slow"]
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "light",
+        "text": "A mirror sends the beam back."
+      }
+    ],
+    "holders": [
+      {
+        "name": "Foxy",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_doa_doa",
+    "name": "Door-Door Fruit",
+    "japanese": "Doa Doa no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "doors",
+    "primitives": ["door"],
+    "description": "The user can open doors in anything, even in the air.",
+    "techniques": [
+      {
+        "id": "tech_doa_doa_air_door",
+        "name": "Air Door",
+        "form": "movement",
+        "tags": ["spatial"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_doa_doa_door_trap",
+        "name": "Door Trap",
+        "form": "grapple",
+        "tags": ["spatial"],
+        "mastery": 25,
+        "effects": ["bind"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Blueno",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_awa_awa",
+    "name": "Bubble-Bubble Fruit",
+    "japanese": "Awa Awa no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "cleansing_bubbles",
+    "primitives": ["bubble"],
+    "description": "The user makes soap bubbles that wash away strength and footing.",
+    "techniques": [
+      {
+        "id": "tech_awa_awa_golden_away",
+        "name": "Golden Away",
+        "form": "projectile",
+        "tags": ["water"],
+        "mastery": 0,
+        "effects": ["debuff"]
+      },
+      {
+        "id": "tech_awa_awa_soap_sheep",
+        "name": "Soap Sheep",
+        "form": "area",
+        "tags": ["water"],
+        "mastery": 25,
+        "effects": ["debuff"]
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kalifa",
+        "from": {
+          "year": 31,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_beri_beri",
+    "name": "Berry-Berry Fruit",
+    "japanese": "Beri Beri no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "berry_body",
+    "primitives": ["split"],
+    "description": "The user's body can break into berry-sized spheres.",
+    "techniques": [
+      {
+        "id": "tech_beri_beri_berry_shot",
+        "name": "Berry Shot",
+        "form": "projectile",
+        "tags": ["body"],
+        "mastery": 0,
+        "named": false
+      },
+      {
+        "id": "tech_beri_beri_berry_scatter",
+        "name": "Berry Scatter",
+        "form": "movement",
+        "tags": ["body"],
+        "mastery": 15,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Very Good",
+        "from": {
+          "year": 33,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_sabi_sabi",
+    "name": "Rust-Rust Fruit",
+    "japanese": "Sabi Sabi no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "rust",
+    "primitives": ["rot"],
+    "description": "Any metal the user touches rusts away.",
+    "techniques": [
+      {
+        "id": "tech_sabi_sabi_rust_touch",
+        "name": "Rust Touch",
+        "form": "strike",
+        "tags": ["metal", "poison"],
+        "mastery": 0,
+        "effects": ["disarm"],
+        "named": false
+      },
+      {
+        "id": "tech_sabi_sabi_rust_wave",
+        "name": "Rust Wave",
+        "form": "area",
+        "tags": ["metal"],
+        "mastery": 30,
+        "effects": ["disarm"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Shu",
+        "from": {
+          "year": 33,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_shari_shari",
+    "name": "Wheel-Wheel Fruit",
+    "japanese": "Shari Shari no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "wheel_body",
+    "primitives": ["transform"],
+    "description": "The user can turn parts of their body into spinning wheels.",
+    "techniques": [
+      {
+        "id": "tech_shari_shari_wheel_charge",
+        "name": "Wheel Charge",
+        "form": "movement",
+        "tags": ["body"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_shari_shari_spinning_saw",
+        "name": "Spinning Saw",
+        "form": "strike",
+        "tags": ["slash"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Sharinguru",
+        "from": {
+          "year": 33,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_yomi_yomi",
+    "name": "Revive-Revive Fruit",
+    "japanese": "Yomi Yomi no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "revive",
+    "primitives": ["revive", "soul"],
+    "description": "The user comes back once from death; later the soul can leave the body and chill whatever it touches.",
+    "techniques": [
+      {
+        "id": "tech_yomi_yomi_yomi_no_kaze",
+        "name": "Yomi no Kaze",
+        "form": "strike",
+        "tags": ["soul", "ice"],
+        "mastery": 40,
+        "effects": ["freeze"]
+      },
+      {
+        "id": "tech_yomi_yomi_soul_solid",
+        "name": "Soul Solid",
+        "form": "boost",
+        "tags": ["soul", "ice"],
+        "mastery": 20,
+        "effects": ["freeze"]
+      },
+      {
+        "id": "tech_yomi_yomi_soul_parade",
+        "name": "Soul Parade",
+        "form": "barrage",
+        "tags": ["soul", "sword"],
+        "mastery": 55
+      }
+    ],
+    "holders": [
+      {
+        "name": "Brook",
+        "from": {
+          "year": -14,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_kage_kage",
+    "name": "Shadow-Shadow Fruit",
+    "japanese": "Kage Kage no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "shadow",
+    "primitives": ["shadow"],
+    "description": "The user controls shadows, cuts them from their owners and puts them into other bodies.",
+    "techniques": [
+      {
+        "id": "tech_kage_kage_brick_bat",
+        "name": "Brick Bat",
+        "form": "barrage",
+        "tags": ["dark"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_kage_kage_doppelman",
+        "name": "Doppelman",
+        "form": "support",
+        "tags": ["dark"],
+        "mastery": 20,
+        "effects": ["summon"]
+      },
+      {
+        "id": "tech_kage_kage_kage_kakumei",
+        "name": "Kage Kakumei",
+        "form": "boost",
+        "tags": ["dark"],
+        "mastery": 50,
+        "effects": ["buff"]
+      },
+      {
+        "id": "tech_kage_kage_shadow_s_asgard",
+        "name": "Shadow's Asgard",
+        "form": "boost",
+        "tags": ["dark", "body"],
+        "mastery": 70,
+        "effects": ["grow"],
+        "finisher": true
+      }
+    ],
+    "holders": [
+      {
+        "name": "Gecko Moria",
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_horo_horo",
+    "name": "Hollow-Hollow Fruit",
+    "japanese": "Horo Horo no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "ghosts",
+    "primitives": ["soul"],
+    "description": "The user makes ghosts that pass through people and drain their will to live.",
+    "techniques": [
+      {
+        "id": "tech_horo_horo_negative_hollow",
+        "name": "Negative Hollow",
+        "form": "projectile",
+        "tags": ["soul", "mind"],
+        "mastery": 0,
+        "effects": ["debuff", "fear"]
+      },
+      {
+        "id": "tech_horo_horo_ghost_rap",
+        "name": "Ghost Rap",
+        "form": "projectile",
+        "tags": ["soul", "explosive"],
+        "mastery": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "Perona",
+        "from": {
+          "year": 31,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_suke_suke",
+    "name": "Clear-Clear Fruit",
+    "japanese": "Suke Suke no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "invisibility",
+    "primitives": ["clear"],
+    "description": "The user and whatever they touch can turn invisible.",
+    "techniques": [
+      {
+        "id": "tech_suke_suke_vanish",
+        "name": "Vanish",
+        "form": "movement",
+        "tags": ["illusion"],
+        "mastery": 0,
+        "effects": ["blind"],
+        "named": false
+      },
+      {
+        "id": "tech_suke_suke_clear_strike",
+        "name": "Clear Strike",
+        "form": "strike",
+        "tags": ["illusion", "blunt"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Absalom",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true,
+        "to": {
+          "year": 37,
+          "month": 6
+        }
+      },
+      {
+        "name": "Shiryu",
+        "from": {
+          "year": 37,
+          "month": 7
+        },
+        "approx": true,
+        "how": "took it after Absalom's death"
+      }
+    ]
+  },
+  {
+    "id": "fruit_nikyu_nikyu",
+    "name": "Paw-Paw Fruit",
+    "japanese": "Nikyu Nikyu no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "repel",
+    "primitives": ["repel"],
+    "description": "Paws on the user's palms repel anything: air, pain, fatigue, even a person across the sea.",
+    "techniques": [
+      {
+        "id": "tech_nikyu_nikyu_tsuppari_pad_hou",
+        "name": "Tsuppari Pad Hou",
+        "form": "projectile",
+        "tags": ["spatial", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_nikyu_nikyu_ursus_shock",
+        "name": "Ursus Shock",
+        "form": "area",
+        "tags": ["spatial", "explosive"],
+        "mastery": 50,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_nikyu_nikyu_repel_pain",
+        "name": "Repel Pain",
+        "form": "support",
+        "tags": ["spatial", "heal"],
+        "mastery": 65,
+        "effects": ["heal"],
+        "named": false
+      },
+      {
+        "id": "tech_nikyu_nikyu_send_away",
+        "name": "Send Away",
+        "form": "support",
+        "tags": ["spatial"],
+        "mastery": 80,
+        "effects": ["swap"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Bartholomew Kuma",
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_bartholomew_kuma"
+      }
+    ]
+  },
+  {
+    "id": "fruit_ato_ato",
+    "name": "Art-Art Fruit",
+    "japanese": "Ato Ato no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "modern_art",
+    "primitives": ["art"],
+    "description": "The user turns people and things into works of modern art.",
+    "techniques": [
+      {
+        "id": "tech_ato_ato_abstract_paint",
+        "name": "Abstract Paint",
+        "form": "projectile",
+        "tags": ["illusion"],
+        "mastery": 0,
+        "effects": ["bind"],
+        "named": false
+      },
+      {
+        "id": "tech_ato_ato_art_field",
+        "name": "Art Field",
+        "form": "area",
+        "tags": ["illusion"],
+        "mastery": 30,
+        "effects": ["bind"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Jora",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_mero_mero",
+    "name": "Love-Love Fruit",
+    "japanese": "Mero Mero no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "petrify_love",
+    "primitives": ["art", "soul"],
+    "description": "Anyone who feels lust for the user can be turned to stone.",
+    "techniques": [
+      {
+        "id": "tech_mero_mero_mero_mero_mellow",
+        "name": "Mero Mero Mellow",
+        "form": "projectile",
+        "tags": ["soul"],
+        "mastery": 0,
+        "effects": ["transform"]
+      },
+      {
+        "id": "tech_mero_mero_slave_arrow",
+        "name": "Slave Arrow",
+        "form": "projectile",
+        "tags": ["soul"],
+        "mastery": 30,
+        "effects": ["transform"]
+      },
+      {
+        "id": "tech_mero_mero_pistol_kiss",
+        "name": "Pistol Kiss",
+        "form": "projectile",
+        "tags": ["soul"],
+        "mastery": 15,
+        "effects": ["transform"]
+      }
+    ],
+    "holders": [
+      {
+        "name": "Boa Hancock",
+        "from": {
+          "year": 19,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_boa_hancock",
+        "how": "ate it while a slave in Mary Geoise"
+      }
+    ]
+  },
+  {
+    "id": "fruit_doku_doku",
+    "name": "Venom-Venom Fruit",
+    "japanese": "Doku Doku no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "venom",
+    "primitives": ["poison"],
+    "description": "The user makes and controls every kind of poison.",
+    "techniques": [
+      {
+        "id": "tech_doku_doku_chloro_ball",
+        "name": "Chloro Ball",
+        "form": "projectile",
+        "tags": ["poison"],
+        "mastery": 0,
+        "effects": ["poison"]
+      },
+      {
+        "id": "tech_doku_doku_hydra",
+        "name": "Hydra",
+        "form": "projectile",
+        "tags": ["poison"],
+        "mastery": 30,
+        "effects": ["poison"]
+      },
+      {
+        "id": "tech_doku_doku_venom_demon",
+        "name": "Venom Demon",
+        "form": "boost",
+        "tags": ["poison"],
+        "mastery": 70,
+        "effects": ["poison"],
+        "finisher": true
+      }
+    ],
+    "holders": [
+      {
+        "name": "Magellan",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_horu_horu",
+    "name": "Horm-Horm Fruit",
+    "japanese": "Horu Horu no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "hormones",
+    "primitives": ["hormone"],
+    "description": "The user controls hormones: sex, temperament, growth, healing.",
+    "techniques": [
+      {
+        "id": "tech_horu_horu_tension_hormone",
+        "name": "Tension Hormone",
+        "form": "support",
+        "tags": ["heal", "body"],
+        "mastery": 20,
+        "effects": ["heal", "buff"]
+      },
+      {
+        "id": "tech_horu_horu_healing_hormone",
+        "name": "Healing Hormone",
+        "form": "support",
+        "tags": ["heal"],
+        "mastery": 40,
+        "effects": ["heal"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Emporio Ivankov",
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_emporio_ivankov"
+      }
+    ]
+  },
+  {
+    "id": "fruit_choki_choki",
+    "name": "Snip-Snip Fruit",
+    "japanese": "Choki Choki no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "scissor_hands",
+    "primitives": ["cut"],
+    "description": "The user's hands are scissors that cut anything like paper.",
+    "techniques": [
+      {
+        "id": "tech_choki_choki_snip_path",
+        "name": "Snip Path",
+        "form": "support",
+        "tags": ["slash"],
+        "mastery": 20,
+        "effects": ["terrain"],
+        "named": false
+      },
+      {
+        "id": "tech_choki_choki_scissor_strike",
+        "name": "Scissor Strike",
+        "form": "strike",
+        "tags": ["slash"],
+        "mastery": 0,
+        "effects": ["bleed"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Inazuma",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_gura_gura",
+    "name": "Tremor-Tremor Fruit",
+    "japanese": "Gura Gura no Mi",
+    "type": "paramecia",
+    "rarity": "legendary",
+    "power": "quake",
+    "primitives": ["quake"],
+    "description": "The user makes quakes: in the air, in the ground, in the sea. The strongest Paramecia, it was said, the power to destroy the world.",
+    "techniques": [
+      {
+        "id": "tech_gura_gura_quake_punch",
+        "name": "Quake Punch",
+        "form": "strike",
+        "tags": ["explosive", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_gura_gura_kabutowari",
+        "name": "Kabutowari",
+        "form": "area",
+        "tags": ["explosive"],
+        "mastery": 40,
+        "effects": ["knockback", "terrain"]
+      },
+      {
+        "id": "tech_gura_gura_shima_yurashi",
+        "name": "Shima Yurashi",
+        "form": "area",
+        "tags": ["explosive", "sea"],
+        "mastery": 70,
+        "effects": ["terrain"]
+      },
+      {
+        "id": "tech_gura_gura_gekishin",
+        "name": "Gekishin",
+        "form": "strike",
+        "tags": ["explosive", "armament"],
+        "mastery": 85,
+        "effects": ["internal"],
+        "finisher": true
+      }
+    ],
+    "awakening": "The quakes spread into the world: whole islands shake for a month.",
+    "holders": [
+      {
+        "name": "Edward Newgate (Whitebeard)",
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "approx": true,
+        "to": {
+          "year": 36,
+          "month": 9
+        },
+        "char": "char_edward_newgate"
+      },
+      {
+        "name": "Marshall D. Teach",
+        "from": {
+          "year": 36,
+          "month": 9
+        },
+        "approx": true,
+        "char": "char_marshall_d_teach",
+        "how": "stole it from Whitebeard's corpse at Marineford"
+      }
+    ]
+  },
+  {
+    "id": "fruit_fuwa_fuwa",
+    "name": "Float-Float Fruit",
+    "japanese": "Fuwa Fuwa no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "levitate",
+    "primitives": ["fly", "gravity"],
+    "description": "The user can make anything they have touched float, except themselves; they fly on swords strapped to their legs.",
+    "techniques": [
+      {
+        "id": "tech_fuwa_fuwa_lift",
+        "name": "Lift",
+        "form": "support",
+        "tags": ["gravity", "sky"],
+        "mastery": 0,
+        "effects": ["flight"],
+        "named": false
+      },
+      {
+        "id": "tech_fuwa_fuwa_island_raise",
+        "name": "Island Raise",
+        "form": "area",
+        "tags": ["gravity", "earth"],
+        "mastery": 60,
+        "effects": ["terrain"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Shiki",
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_shiki"
+      }
+    ]
+  },
+  {
+    "id": "fruit_mato_mato",
+    "name": "Mark-Mark Fruit",
+    "japanese": "Mato Mato no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "homing",
+    "primitives": ["bind"],
+    "description": "Whatever the user throws at a marked target always hits it.",
+    "techniques": [
+      {
+        "id": "tech_mato_mato_marked_throw",
+        "name": "Marked Throw",
+        "form": "projectile",
+        "tags": ["pierce"],
+        "mastery": 0,
+        "named": false
+      },
+      {
+        "id": "tech_mato_mato_rain_of_axes",
+        "name": "Rain of Axes",
+        "form": "barrage",
+        "tags": ["pierce"],
+        "mastery": 30,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Vander Decken IX",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_buki_buki",
+    "name": "Arms-Arms Fruit",
+    "japanese": "Buki Buki no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "weapon_body",
+    "primitives": ["weapon"],
+    "description": "The user can turn any part of their body into any weapon.",
+    "techniques": [
+      {
+        "id": "tech_buki_buki_missile",
+        "name": "Missile",
+        "form": "projectile",
+        "tags": ["weapon", "explosive"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_buki_buki_blade_arm",
+        "name": "Blade Arm",
+        "form": "strike",
+        "tags": ["weapon", "slash"],
+        "mastery": 10,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Baby 5",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_guru_guru",
+    "name": "Spin-Spin Fruit",
+    "japanese": "Guru Guru no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "spin",
+    "primitives": ["transform"],
+    "description": "The user can spin parts of their body like propellers, and fly.",
+    "techniques": [
+      {
+        "id": "tech_guru_guru_propeller_flight",
+        "name": "Propeller Flight",
+        "form": "movement",
+        "tags": ["sky", "wind"],
+        "mastery": 0,
+        "effects": ["flight"],
+        "named": false
+      },
+      {
+        "id": "tech_guru_guru_spin_drop",
+        "name": "Spin Drop",
+        "form": "strike",
+        "tags": ["blunt"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Buffalo",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_beta_beta",
+    "name": "Stick-Stick Fruit",
+    "japanese": "Beta Beta no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "mucus",
+    "primitives": ["sweet"],
+    "description": "The user makes a sticky, flammable mucus.",
+    "techniques": [
+      {
+        "id": "tech_beta_beta_beta_beta_chain",
+        "name": "Beta Beta Chain",
+        "form": "grapple",
+        "tags": ["bind"],
+        "mastery": 0,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_beta_beta_beta_beta_firewall",
+        "name": "Beta Beta Firewall",
+        "form": "area",
+        "tags": ["fire", "bind"],
+        "mastery": 35,
+        "effects": ["burn"],
+        "named": false
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "fire",
+        "text": "The mucus burns."
+      }
+    ],
+    "holders": [
+      {
+        "name": "Trebol",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_bari_bari",
+    "name": "Barrier-Barrier Fruit",
+    "japanese": "Bari Bari no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "barrier",
+    "primitives": ["barrier"],
+    "description": "The user makes barriers nothing can break.",
+    "techniques": [
+      {
+        "id": "tech_bari_bari_barrier",
+        "name": "Barrier",
+        "form": "guard",
+        "tags": ["spatial"],
+        "mastery": 0,
+        "effects": ["reflect"],
+        "named": false
+      },
+      {
+        "id": "tech_bari_bari_barrier_bulls",
+        "name": "Barrier Bulls",
+        "form": "strike",
+        "tags": ["spatial", "blunt"],
+        "mastery": 30,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_bari_bari_barrier_crash",
+        "name": "Barrier Crash",
+        "form": "projectile",
+        "tags": ["spatial"],
+        "mastery": 45
+      }
+    ],
+    "holders": [
+      {
+        "name": "Bartolomeo",
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_nui_nui",
+    "name": "Stitch-Stitch Fruit",
+    "japanese": "Nui Nui no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "stitch",
+    "primitives": ["bind"],
+    "description": "The user stitches anything to anything.",
+    "techniques": [
+      {
+        "id": "tech_nui_nui_tatarian_stitch",
+        "name": "Tatarian Stitch",
+        "form": "grapple",
+        "tags": ["bind", "string"],
+        "mastery": 0,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_nui_nui_patch_up",
+        "name": "Patch Up",
+        "form": "support",
+        "tags": ["heal"],
+        "mastery": 20,
+        "effects": ["heal"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Leo",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_giro_giro",
+    "name": "Glare-Glare Fruit",
+    "japanese": "Giro Giro no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "x_ray",
+    "primitives": ["mind"],
+    "description": "The user sees through anything and into minds, from far away.",
+    "techniques": [
+      {
+        "id": "tech_giro_giro_glare",
+        "name": "Glare",
+        "form": "support",
+        "tags": ["mind", "observation"],
+        "mastery": 0,
+        "effects": ["buff"],
+        "named": false
+      },
+      {
+        "id": "tech_giro_giro_mind_read",
+        "name": "Mind Read",
+        "form": "support",
+        "tags": ["mind"],
+        "mastery": 30,
+        "effects": ["debuff"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Viola",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ope_ope",
+    "name": "Op-Op Fruit",
+    "japanese": "Ope Ope no Mi",
+    "type": "paramecia",
+    "rarity": "legendary",
+    "power": "operating_room",
+    "primitives": ["space", "swap"],
+    "description": "Inside a ROOM the user makes, they can cut, swap and rearrange anything, a surgeon's god. Its last gift is eternal youth, at the cost of the user's life.",
+    "techniques": [
+      {
+        "id": "tech_ope_ope_room",
+        "name": "Room",
+        "form": "support",
+        "tags": ["spatial"],
+        "mastery": 0,
+        "effects": ["terrain"]
+      },
+      {
+        "id": "tech_ope_ope_shambles",
+        "name": "Shambles",
+        "form": "support",
+        "tags": ["spatial"],
+        "mastery": 15,
+        "effects": ["swap"]
+      },
+      {
+        "id": "tech_ope_ope_amputate",
+        "name": "Amputate",
+        "form": "strike",
+        "tags": ["spatial", "slash"],
+        "mastery": 25
+      },
+      {
+        "id": "tech_ope_ope_counter_shock",
+        "name": "Counter Shock",
+        "form": "strike",
+        "tags": ["lightning"],
+        "mastery": 45,
+        "effects": ["shock"]
+      },
+      {
+        "id": "tech_ope_ope_gamma_knife",
+        "name": "Gamma Knife",
+        "form": "strike",
+        "tags": ["spatial"],
+        "mastery": 70,
+        "effects": ["internal"]
+      },
+      {
+        "id": "tech_ope_ope_k_room_shock_wille",
+        "name": "K-Room: Shock Wille",
+        "form": "strike",
+        "tags": ["spatial", "armament"],
+        "mastery": 85,
+        "effects": ["internal"],
+        "finisher": true
+      }
+    ],
+    "holders": [
+      {
+        "name": "Trafalgar Law",
+        "from": {
+          "year": 23,
+          "month": 6
+        },
+        "approx": true,
+        "char": "char_trafalgar_law",
+        "how": "was fed it by Corazon on Minion Island"
+      }
+    ],
+    "start": {
+      "container": "vault",
+      "note": "A prize the Donquixote family meant to buy from the government"
+    }
+  },
+  {
+    "id": "fruit_ishi_ishi",
+    "name": "Stone-Stone Fruit",
+    "japanese": "Ishi Ishi no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "stone_merge",
+    "primitives": ["earth"],
+    "description": "The user merges with stone and moves it as their own body.",
+    "techniques": [
+      {
+        "id": "tech_ishi_ishi_stone_giant",
+        "name": "Stone Giant",
+        "form": "boost",
+        "tags": ["earth"],
+        "mastery": 30,
+        "effects": ["grow"],
+        "named": false
+      },
+      {
+        "id": "tech_ishi_ishi_stone_fist",
+        "name": "Stone Fist",
+        "form": "strike",
+        "tags": ["earth", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Pica",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_hobi_hobi",
+    "name": "Hobby-Hobby Fruit",
+    "japanese": "Hobi Hobi no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "toys",
+    "primitives": ["transform", "memory"],
+    "description": "A touch turns anyone into a toy, and everyone forgets they ever existed.",
+    "techniques": [
+      {
+        "id": "tech_hobi_hobi_toy_touch",
+        "name": "Toy Touch",
+        "form": "strike",
+        "tags": ["mind", "body"],
+        "mastery": 0,
+        "effects": ["transform"],
+        "named": false
+      },
+      {
+        "id": "tech_hobi_hobi_contract",
+        "name": "Contract",
+        "form": "support",
+        "tags": ["mind"],
+        "mastery": 20,
+        "effects": ["bind"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Sugar",
+        "from": {
+          "year": 17,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ito_ito",
+    "name": "String-String Fruit",
+    "japanese": "Ito Ito no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "string",
+    "primitives": ["string"],
+    "description": "The user makes strings sharp enough to cut steel, and puppets people with them.",
+    "techniques": [
+      {
+        "id": "tech_ito_ito_parasite",
+        "name": "Parasite",
+        "form": "grapple",
+        "tags": ["string", "mind"],
+        "mastery": 0,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_ito_ito_overheat",
+        "name": "Overheat",
+        "form": "projectile",
+        "tags": ["string", "fire"],
+        "mastery": 40,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_ito_ito_bird_cage",
+        "name": "Bird Cage",
+        "form": "area",
+        "tags": ["string", "slash"],
+        "mastery": 70,
+        "effects": ["terrain", "bind"]
+      },
+      {
+        "id": "tech_ito_ito_god_thread",
+        "name": "God Thread",
+        "form": "strike",
+        "tags": ["string", "armament"],
+        "mastery": 85,
+        "effects": ["pierce_guard"],
+        "finisher": true
+      }
+    ],
+    "awakening": "The strings spread into the ground and buildings: the whole town becomes string.",
+    "holders": [
+      {
+        "name": "Donquixote Doflamingo",
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_donquixote_doflamingo"
+      }
+    ]
+  },
+  {
+    "id": "fruit_nagi_nagi",
+    "name": "Calm-Calm Fruit",
+    "japanese": "Nagi Nagi no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "silence",
+    "primitives": ["sound"],
+    "description": "The user can silence any sound in a space around them.",
+    "techniques": [
+      {
+        "id": "tech_nagi_nagi_calm",
+        "name": "Calm",
+        "form": "support",
+        "tags": ["sound"],
+        "mastery": 0,
+        "effects": ["debuff"]
+      },
+      {
+        "id": "tech_nagi_nagi_soundless",
+        "name": "Soundless",
+        "form": "area",
+        "tags": ["sound"],
+        "mastery": 20,
+        "effects": ["debuff"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Donquixote Rosinante (Corazon)",
+        "from": {
+          "year": 12,
+          "month": 1
+        },
+        "approx": true,
+        "to": {
+          "year": 23,
+          "month": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "fruit_chiyu_chiyu",
+    "name": "Heal-Heal Fruit",
+    "japanese": "Chiyu Chiyu no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "heal_tears",
+    "primitives": ["heal"],
+    "description": "The user's tears heal any wound.",
+    "techniques": [
+      {
+        "id": "tech_chiyu_chiyu_healing_tears",
+        "name": "Healing Tears",
+        "form": "support",
+        "tags": ["heal"],
+        "mastery": 0,
+        "effects": ["heal"],
+        "named": false
+      },
+      {
+        "id": "tech_chiyu_chiyu_dandelion_seeds",
+        "name": "Dandelion Seeds",
+        "form": "support",
+        "tags": ["heal", "plant"],
+        "mastery": 30,
+        "effects": ["heal"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Mansherry",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_sui_sui",
+    "name": "Swim-Swim Fruit",
+    "japanese": "Sui Sui no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "swim_ground",
+    "primitives": ["water"],
+    "description": "The user can swim through the ground and walls as if through water.",
+    "techniques": [
+      {
+        "id": "tech_sui_sui_swimming_strike",
+        "name": "Swimming Strike",
+        "form": "movement",
+        "tags": ["earth"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_sui_sui_sink_under",
+        "name": "Sink Under",
+        "form": "movement",
+        "tags": ["earth"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Senor Pink",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ton_ton",
+    "name": "Ton-Ton Fruit",
+    "japanese": "Ton Ton no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "tons",
+    "primitives": ["weight"],
+    "description": "The user can weigh many tons at will.",
+    "techniques": [
+      {
+        "id": "tech_ton_ton_ton_drop",
+        "name": "Ton Drop",
+        "form": "strike",
+        "tags": ["gravity", "blunt"],
+        "mastery": 0,
+        "effects": ["stun"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Machvise",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_hira_hira",
+    "name": "Flag-Flag Fruit",
+    "japanese": "Hira Hira no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "flutter",
+    "primitives": ["transform"],
+    "description": "Whatever the user touches flutters like a flag, and stiffens again at their word.",
+    "techniques": [
+      {
+        "id": "tech_hira_hira_flap_thread",
+        "name": "Flap Thread",
+        "form": "strike",
+        "tags": ["slash", "wind"],
+        "mastery": 0,
+        "named": false
+      },
+      {
+        "id": "tech_hira_hira_iron_banner",
+        "name": "Iron Banner",
+        "form": "guard",
+        "tags": ["metal"],
+        "mastery": 25,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Diamante",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_pamu_pamu",
+    "name": "Pop-Pop Fruit",
+    "japanese": "Pamu Pamu no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "rupture",
+    "primitives": ["explode"],
+    "description": "The user makes their body and whatever they touch swell and burst.",
+    "techniques": [
+      {
+        "id": "tech_pamu_pamu_punk_rotten",
+        "name": "Punk Rotten",
+        "form": "area",
+        "tags": ["explosive"],
+        "mastery": 0,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_pamu_pamu_rupture_touch",
+        "name": "Rupture Touch",
+        "form": "strike",
+        "tags": ["explosive"],
+        "mastery": 15,
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Gladius",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_jake_jake",
+    "name": "Jacket-Jacket Fruit",
+    "japanese": "Jake Jake no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "jacket",
+    "primitives": ["fuse"],
+    "description": "The user becomes a jacket, and whoever wears it moves as the user wants.",
+    "techniques": [
+      {
+        "id": "tech_jake_jake_puppet_coat",
+        "name": "Puppet Coat",
+        "form": "grapple",
+        "tags": ["mind", "bind"],
+        "mastery": 0,
+        "effects": ["bind"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kelly Funk",
+        "from": {
+          "year": 33,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_oshi_oshi",
+    "name": "Push-Push Fruit",
+    "japanese": "Oshi Oshi no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "push_ground",
+    "primitives": ["earth"],
+    "description": "The user pushes the ground and buildings about like clay.",
+    "techniques": [
+      {
+        "id": "tech_oshi_oshi_push_earth",
+        "name": "Push Earth",
+        "form": "area",
+        "tags": ["earth"],
+        "mastery": 0,
+        "effects": ["terrain"],
+        "named": false
+      },
+      {
+        "id": "tech_oshi_oshi_clay_wave",
+        "name": "Clay Wave",
+        "form": "area",
+        "tags": ["earth"],
+        "mastery": 30,
+        "effects": ["knockback"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Morley",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_kobu_kobu",
+    "name": "Pump-Pump Fruit",
+    "japanese": "Kobu Kobu no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "rally",
+    "primitives": ["mind"],
+    "description": "The user's cheers turn ordinary people into fighters.",
+    "techniques": [
+      {
+        "id": "tech_kobu_kobu_rally_flag",
+        "name": "Rally Flag",
+        "form": "support",
+        "tags": ["mind"],
+        "mastery": 0,
+        "effects": ["buff"],
+        "named": false
+      },
+      {
+        "id": "tech_kobu_kobu_liberation_cheer",
+        "name": "Liberation Cheer",
+        "form": "support",
+        "tags": ["mind"],
+        "mastery": 30,
+        "effects": ["buff"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Belo Betty",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_netsu_netsu",
+    "name": "Heat-Heat Fruit",
+    "japanese": "Netsu Netsu no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "heat_body",
+    "primitives": ["ignite"],
+    "description": "The user heats their body and whatever they touch.",
+    "techniques": [
+      {
+        "id": "tech_netsu_netsu_heat_hand",
+        "name": "Heat Hand",
+        "form": "strike",
+        "tags": ["fire"],
+        "mastery": 0,
+        "effects": ["burn"],
+        "named": false
+      },
+      {
+        "id": "tech_netsu_netsu_boiling_sea",
+        "name": "Boiling Sea",
+        "form": "area",
+        "tags": ["fire", "water"],
+        "mastery": 40,
+        "effects": ["burn"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Oven",
+        "from": {
+          "year": 8,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_mira_mira",
+    "name": "Mirror-Mirror Fruit",
+    "japanese": "Mira Mira no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "mirror_world",
+    "primitives": ["mirror"],
+    "description": "The user opens doors into a world behind mirrors, and reflects attacks.",
+    "techniques": [
+      {
+        "id": "tech_mira_mira_mirror_door",
+        "name": "Mirror Door",
+        "form": "movement",
+        "tags": ["spatial"],
+        "mastery": 0,
+        "effects": ["swap"],
+        "named": false
+      },
+      {
+        "id": "tech_mira_mira_mirror_reflect",
+        "name": "Mirror Reflect",
+        "form": "counter",
+        "tags": ["spatial", "illusion"],
+        "mastery": 20,
+        "effects": ["reflect"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Brulee",
+        "from": {
+          "year": 12,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_bisu_bisu",
+    "name": "Biscuit-Biscuit Fruit",
+    "japanese": "Bisu Bisu no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "biscuit",
+    "primitives": ["sweet"],
+    "description": "The user makes hard biscuits, and biscuit soldiers.",
+    "techniques": [
+      {
+        "id": "tech_bisu_bisu_biscuit_soldier",
+        "name": "Biscuit Soldier",
+        "form": "support",
+        "tags": ["body"],
+        "mastery": 0,
+        "effects": ["summon"],
+        "named": false
+      },
+      {
+        "id": "tech_bisu_bisu_hard_biscuit_armour",
+        "name": "Hard Biscuit Armour",
+        "form": "guard",
+        "tags": ["body"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "weaknesses": [
+      {
+        "against": "water",
+        "text": "Biscuits go soft in water."
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Cracker",
+        "from": {
+          "year": 14,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_soru_soru",
+    "name": "Soul-Soul Fruit",
+    "japanese": "Soru Soru no Mi",
+    "type": "paramecia",
+    "rarity": "legendary",
+    "power": "souls",
+    "primitives": ["soul"],
+    "description": "The user takes years from people's souls and puts them into things, which come alive as homies.",
+    "techniques": [
+      {
+        "id": "tech_soru_soru_soul_pocus",
+        "name": "Soul Pocus",
+        "form": "support",
+        "tags": ["soul"],
+        "mastery": 0,
+        "effects": ["drain"]
+      },
+      {
+        "id": "tech_soru_soru_zeus_breeze",
+        "name": "Zeus Breeze",
+        "form": "projectile",
+        "tags": ["lightning", "soul"],
+        "mastery": 30,
+        "effects": ["shock"]
+      },
+      {
+        "id": "tech_soru_soru_prometheus_flame",
+        "name": "Prometheus Flame",
+        "form": "projectile",
+        "tags": ["fire", "soul"],
+        "mastery": 30,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_soru_soru_heavenly_fire",
+        "name": "Heavenly Fire",
+        "form": "area",
+        "tags": ["fire", "soul"],
+        "mastery": 60,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_soru_soru_maser_cannon",
+        "name": "Maser Cannon",
+        "form": "projectile",
+        "tags": ["lightning", "soul"],
+        "mastery": 75,
+        "effects": ["shock"],
+        "finisher": true
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Linlin (Big Mom)",
+        "from": {
+          "year": -24,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_charlotte_linlin"
+      }
+    ]
+  },
+  {
+    "id": "fruit_kuku_kuku",
+    "name": "Cook-Cook Fruit",
+    "japanese": "Kuku Kuku no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "cook_anything",
+    "primitives": ["sweet"],
+    "description": "The user can cook anything at all into food.",
+    "techniques": [
+      {
+        "id": "tech_kuku_kuku_cook_up",
+        "name": "Cook Up",
+        "form": "support",
+        "tags": ["cooking"],
+        "mastery": 0,
+        "effects": ["transform"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Streusen",
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_pero_pero",
+    "name": "Lick-Lick Fruit",
+    "japanese": "Pero Pero no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "candy_make",
+    "primitives": ["sweet"],
+    "description": "The user makes hard candy and shapes it into anything.",
+    "techniques": [
+      {
+        "id": "tech_pero_pero_candy_wall",
+        "name": "Candy Wall",
+        "form": "guard",
+        "tags": ["bind"],
+        "mastery": 0,
+        "named": false
+      },
+      {
+        "id": "tech_pero_pero_candy_man",
+        "name": "Candy Man",
+        "form": "grapple",
+        "tags": ["bind"],
+        "mastery": 25,
+        "effects": ["bind"]
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Perospero",
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_shibo_shibo",
+    "name": "Wring-Wring Fruit",
+    "japanese": "Shibo Shibo no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "wring",
+    "primitives": ["dry"],
+    "description": "The user wrings anything dry, people included, and drinks the juice.",
+    "techniques": [
+      {
+        "id": "tech_shibo_shibo_wring_dry",
+        "name": "Wring Dry",
+        "form": "grapple",
+        "tags": ["grip"],
+        "mastery": 0,
+        "effects": ["drain"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Smoothie",
+        "from": {
+          "year": 16,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_memo_memo",
+    "name": "Memo-Memo Fruit",
+    "japanese": "Memo Memo no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "memories",
+    "primitives": ["memory"],
+    "description": "The user can take memories out like film, cut them and splice them back.",
+    "techniques": [
+      {
+        "id": "tech_memo_memo_memory_cut",
+        "name": "Memory Cut",
+        "form": "support",
+        "tags": ["mind"],
+        "mastery": 0,
+        "effects": ["debuff"],
+        "named": false
+      },
+      {
+        "id": "tech_memo_memo_memory_splice",
+        "name": "Memory Splice",
+        "form": "support",
+        "tags": ["mind"],
+        "mastery": 30,
+        "effects": ["debuff"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Pudding",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_tama_tama",
+    "name": "Egg-Egg Fruit",
+    "japanese": "Tama Tama no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "egg_stages",
+    "primitives": ["transform"],
+    "description": "Struck down, the user hatches into a stronger form.",
+    "techniques": [
+      {
+        "id": "tech_tama_tama_hatch",
+        "name": "Hatch",
+        "form": "boost",
+        "tags": ["body"],
+        "mastery": 20,
+        "effects": ["buff"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Tamago",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_buku_buku",
+    "name": "Book-Book Fruit",
+    "japanese": "Buku Buku no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "book_world",
+    "primitives": ["memory", "door"],
+    "description": "The user can trap people inside the world of a book.",
+    "techniques": [
+      {
+        "id": "tech_buku_buku_book_world",
+        "name": "Book World",
+        "form": "grapple",
+        "tags": ["spatial"],
+        "mastery": 20,
+        "effects": ["bind"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Mont-d'Or",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_hoya_hoya",
+    "name": "Genie-Genie Fruit",
+    "japanese": "Hoya Hoya no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "genie",
+    "primitives": ["soul"],
+    "description": "Rubbing their nose, the user summons a fighting genie.",
+    "techniques": [
+      {
+        "id": "tech_hoya_hoya_genie",
+        "name": "Genie",
+        "form": "support",
+        "tags": ["soul"],
+        "mastery": 0,
+        "effects": ["summon"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Daifuku",
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_kuri_kuri",
+    "name": "Cream-Cream Fruit",
+    "japanese": "Kuri Kuri no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "cream",
+    "primitives": ["sweet"],
+    "description": "The user makes scalding cream.",
+    "techniques": [
+      {
+        "id": "tech_kuri_kuri_cream_shot",
+        "name": "Cream Shot",
+        "form": "projectile",
+        "tags": ["fire"],
+        "mastery": 0,
+        "effects": ["burn"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Opera",
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_bata_bata",
+    "name": "Butter-Butter Fruit",
+    "japanese": "Bata Bata no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "butter",
+    "primitives": ["slip"],
+    "description": "The user makes butter and slides on it.",
+    "techniques": [
+      {
+        "id": "tech_bata_bata_butter_slide",
+        "name": "Butter Slide",
+        "form": "movement",
+        "tags": ["body"],
+        "mastery": 0,
+        "effects": ["slow"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Charlotte Galette",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_mochi_mochi",
+    "name": "Mochi-Mochi Fruit",
+    "japanese": "Mochi Mochi no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "mochi",
+    "primitives": ["sweet", "transform"],
+    "description": "A special Paramecia: the user becomes and makes sticky mochi, so close to a Logia that few can tell.",
+    "techniques": [
+      {
+        "id": "tech_mochi_mochi_zan_giri_mochi",
+        "name": "Zan Giri Mochi",
+        "form": "strike",
+        "tags": ["bind", "pierce"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_mochi_mochi_power_mochi",
+        "name": "Power Mochi",
+        "form": "strike",
+        "tags": ["blunt"],
+        "mastery": 20,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_mochi_mochi_buzz_cut_mochi",
+        "name": "Buzz Cut Mochi",
+        "form": "strike",
+        "tags": ["pierce", "armament"],
+        "mastery": 55
+      },
+      {
+        "id": "tech_mochi_mochi_mochi_mochi_no_gatling",
+        "name": "Mochi Mochi no Gatling",
+        "form": "barrage",
+        "tags": ["bind", "blunt"],
+        "mastery": 40
+      }
+    ],
+    "awakening": "The mochi spreads into the ground and walls around the user.",
+    "holders": [
+      {
+        "name": "Charlotte Katakuri",
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_toki_toki",
+    "name": "Time-Time Fruit",
+    "japanese": "Toki Toki no Mi",
+    "type": "paramecia",
+    "rarity": "legendary",
+    "power": "time_leap",
+    "primitives": ["time"],
+    "description": "The user can send themselves, and others, years into the future, but never back.",
+    "techniques": [
+      {
+        "id": "tech_toki_toki_time_leap",
+        "name": "Time Leap",
+        "form": "support",
+        "tags": ["time"],
+        "mastery": 0,
+        "effects": ["swap"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kozuki Toki",
+        "from": {
+          "year": -800,
+          "month": 1
+        },
+        "approx": true,
+        "to": {
+          "year": 18,
+          "month": 3
+        },
+        "how": "ate it eight hundred years before, and leapt forward through time"
+      }
+    ]
+  },
+  {
+    "id": "fruit_fude_fude",
+    "name": "Brush-Brush Fruit",
+    "japanese": "Fude Fude no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "drawings",
+    "primitives": ["art"],
+    "description": "Whatever the user draws comes to life.",
+    "techniques": [
+      {
+        "id": "tech_fude_fude_ink_dragon",
+        "name": "Ink Dragon",
+        "form": "support",
+        "tags": ["illusion"],
+        "mastery": 20,
+        "effects": ["summon"],
+        "named": false
+      },
+      {
+        "id": "tech_fude_fude_drawn_double",
+        "name": "Drawn Double",
+        "form": "support",
+        "tags": ["illusion"],
+        "mastery": 0,
+        "effects": ["summon"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kurozumi Kanjuro",
+        "from": {
+          "year": 14,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_juku_juku",
+    "name": "Ripe-Ripe Fruit",
+    "japanese": "Juku Juku no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "ripen_age",
+    "primitives": ["time"],
+    "description": "The user ages and ripens anything they touch.",
+    "techniques": [
+      {
+        "id": "tech_juku_juku_ripen",
+        "name": "Ripen",
+        "form": "strike",
+        "tags": ["time"],
+        "mastery": 0,
+        "effects": ["debuff"],
+        "named": false
+      },
+      {
+        "id": "tech_juku_juku_rot_away",
+        "name": "Rot Away",
+        "form": "area",
+        "tags": ["time", "poison"],
+        "mastery": 40,
+        "effects": ["debuff"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Shinobu",
+        "from": {
+          "year": -8,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_kibi_kibi",
+    "name": "Millet-Millet Fruit",
+    "japanese": "Kibi Kibi no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "dumplings",
+    "primitives": ["mind"],
+    "description": "The user makes millet dumplings that tame any animal that eats one.",
+    "techniques": [
+      {
+        "id": "tech_kibi_kibi_tame",
+        "name": "Tame",
+        "form": "support",
+        "tags": ["mind", "beast"],
+        "mastery": 0,
+        "effects": ["buff"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Tama",
+        "from": {
+          "year": 32,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_fuku_fuku",
+    "name": "Clothes-Clothes Fruit",
+    "japanese": "Fuku Fuku no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "make_clothes",
+    "primitives": ["transform"],
+    "description": "The user can turn anything into clothes and dress people in them.",
+    "techniques": [
+      {
+        "id": "tech_fuku_fuku_dress_up",
+        "name": "Dress Up",
+        "form": "support",
+        "tags": ["illusion"],
+        "mastery": 0,
+        "effects": ["transform"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kin'emon",
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_maki_maki",
+    "name": "Scroll-Scroll Fruit",
+    "japanese": "Maki Maki no Mi",
+    "type": "paramecia",
+    "rarity": "common",
+    "power": "scrolls",
+    "primitives": ["door"],
+    "description": "The user stores things inside scrolls and releases them.",
+    "techniques": [
+      {
+        "id": "tech_maki_maki_scroll_store",
+        "name": "Scroll Store",
+        "form": "support",
+        "tags": ["spatial"],
+        "mastery": 0,
+        "effects": ["absorb"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Raizo",
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_shiro_shiro",
+    "name": "Castle-Castle Fruit",
+    "japanese": "Shiro Shiro no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "castle_body",
+    "primitives": ["barrier", "enlarge"],
+    "description": "The user's body becomes a castle that holds people and cannons.",
+    "techniques": [
+      {
+        "id": "tech_shiro_shiro_castle_cannons",
+        "name": "Castle Cannons",
+        "form": "barrage",
+        "tags": ["explosive"],
+        "mastery": 20,
+        "named": false
+      },
+      {
+        "id": "tech_shiro_shiro_big_father",
+        "name": "Big Father",
+        "form": "boost",
+        "tags": ["body"],
+        "mastery": 40,
+        "effects": ["grow"]
+      }
+    ],
+    "holders": [
+      {
+        "name": "Capone Bege",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_oto_oto",
+    "name": "Tone-Tone Fruit",
+    "japanese": "Oto Oto no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "sound_body",
+    "primitives": ["sound"],
+    "description": "The user's body is an instrument, and its sound cuts and bursts.",
+    "techniques": [
+      {
+        "id": "tech_oto_oto_air_door",
+        "name": "Air Door",
+        "form": "projectile",
+        "tags": ["sound", "slash"],
+        "mastery": 0,
+        "finisher": true
+      },
+      {
+        "id": "tech_oto_oto_scratch_hit",
+        "name": "Scratch Hit",
+        "form": "area",
+        "tags": ["sound", "explosive"],
+        "mastery": 20
+      }
+    ],
+    "holders": [
+      {
+        "name": "Scratchmen Apoo",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_wara_wara",
+    "name": "Straw-Straw Fruit",
+    "japanese": "Wara Wara no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "straw_dolls",
+    "primitives": ["transform", "soul"],
+    "description": "The user becomes straw, and passes the wounds they take onto the people tied to their dolls.",
+    "techniques": [
+      {
+        "id": "tech_wara_wara_straw_man",
+        "name": "Straw Man",
+        "form": "boost",
+        "tags": ["body"],
+        "mastery": 0,
+        "effects": ["transform"],
+        "named": false
+      },
+      {
+        "id": "tech_wara_wara_curse_doll",
+        "name": "Curse Doll",
+        "form": "support",
+        "tags": ["soul"],
+        "mastery": 30,
+        "effects": ["reflect"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Basil Hawkins",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_jiki_jiki",
+    "name": "Magnet-Magnet Fruit",
+    "japanese": "Jiki Jiki no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "magnetism",
+    "primitives": ["magnet"],
+    "description": "The user makes magnetic force and pulls metal to themselves.",
+    "techniques": [
+      {
+        "id": "tech_jiki_jiki_repel",
+        "name": "Repel",
+        "form": "area",
+        "tags": ["metal"],
+        "mastery": 0,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_jiki_jiki_punk_gibson",
+        "name": "Punk Gibson",
+        "form": "strike",
+        "tags": ["metal", "blunt"],
+        "mastery": 30
+      },
+      {
+        "id": "tech_jiki_jiki_damned_punk",
+        "name": "Damned Punk",
+        "form": "projectile",
+        "tags": ["metal", "lightning"],
+        "mastery": 60,
+        "effects": ["shock"]
+      },
+      {
+        "id": "tech_jiki_jiki_punk_corna_dio",
+        "name": "Punk Corna Dio",
+        "form": "area",
+        "tags": ["metal"],
+        "mastery": 85,
+        "effects": ["knockback"],
+        "finisher": true
+      }
+    ],
+    "awakening": "Whatever the user touches becomes magnetic too.",
+    "holders": [
+      {
+        "name": "Eustass Kid",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_zushi_zushi",
+    "name": "Press-Press Fruit",
+    "japanese": "Zushi Zushi no Mi",
+    "type": "paramecia",
+    "rarity": "legendary",
+    "power": "gravity",
+    "primitives": ["gravity"],
+    "description": "The user controls gravity: pressing armies flat, pulling meteors down from the sky.",
+    "techniques": [
+      {
+        "id": "tech_zushi_zushi_gravity_blade",
+        "name": "Gravity Blade",
+        "form": "strike",
+        "tags": ["gravity", "sword"],
+        "mastery": 0,
+        "effects": ["stun"]
+      },
+      {
+        "id": "tech_zushi_zushi_moko",
+        "name": "Moko",
+        "form": "area",
+        "tags": ["gravity"],
+        "mastery": 25,
+        "effects": ["slow"]
+      },
+      {
+        "id": "tech_zushi_zushi_meteor",
+        "name": "Meteor",
+        "form": "area",
+        "tags": ["gravity", "earth"],
+        "mastery": 75,
+        "effects": ["terrain", "knockback"],
+        "finisher": true
+      }
+    ],
+    "holders": [
+      {
+        "name": "Issho (Fujitora)",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_woshu_woshu",
+    "name": "Wash-Wash Fruit",
+    "japanese": "Woshu Woshu no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "wash_hearts",
+    "primitives": ["wash"],
+    "description": "The user washes people, and their hearts, and hangs them out to dry.",
+    "techniques": [
+      {
+        "id": "tech_woshu_woshu_washing_line",
+        "name": "Washing Line",
+        "form": "grapple",
+        "tags": ["water", "mind"],
+        "mastery": 0,
+        "effects": ["bind"]
+      },
+      {
+        "id": "tech_woshu_woshu_clean_heart",
+        "name": "Clean Heart",
+        "form": "support",
+        "tags": ["mind"],
+        "mastery": 30,
+        "effects": ["debuff"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Tsuru",
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_tsuru"
+      }
+    ]
+  },
+  {
+    "id": "fruit_kira_kira",
+    "name": "Twinkle-Twinkle Fruit",
+    "japanese": "Kira Kira no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "diamond_body",
+    "primitives": ["coat"],
+    "description": "The user's body becomes diamond.",
+    "techniques": [
+      {
+        "id": "tech_kira_kira_diamond_guard",
+        "name": "Diamond Guard",
+        "form": "guard",
+        "tags": ["body"],
+        "mastery": 0
+      },
+      {
+        "id": "tech_kira_kira_brilliant_punk",
+        "name": "Brilliant Punk",
+        "form": "strike",
+        "tags": ["blunt"],
+        "mastery": 20,
+        "effects": ["knockback"]
+      }
+    ],
+    "holders": [
+      {
+        "name": "Jozu",
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_nomi_nomi",
+    "name": "Brain-Brain Fruit",
+    "japanese": "Nomi Nomi no Mi",
+    "type": "paramecia",
+    "rarity": "legendary",
+    "power": "infinite_knowledge",
+    "primitives": ["memory", "mind"],
+    "description": "The user's brain can store limitless knowledge; their head grows with it.",
+    "techniques": [
+      {
+        "id": "tech_nomi_nomi_vast_knowledge",
+        "name": "Vast Knowledge",
+        "form": "support",
+        "tags": ["mind"],
+        "mastery": 0,
+        "effects": ["buff"],
+        "named": false
+      },
+      {
+        "id": "tech_nomi_nomi_punk_records",
+        "name": "Punk Records",
+        "form": "support",
+        "tags": ["mind"],
+        "mastery": 40,
+        "effects": ["buff"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Vegapunk",
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_vegapunk"
+      }
+    ]
+  },
+  {
+    "id": "fruit_shiku_shiku",
+    "name": "Sick-Sick Fruit",
+    "japanese": "Shiku Shiku no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "disease",
+    "primitives": ["poison"],
+    "description": "The user spreads sickness, and can cure it.",
+    "techniques": [
+      {
+        "id": "tech_shiku_shiku_fever_touch",
+        "name": "Fever Touch",
+        "form": "strike",
+        "tags": ["poison"],
+        "mastery": 0,
+        "effects": ["poison"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Doc Q",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_wapu_wapu",
+    "name": "Warp-Warp Fruit",
+    "japanese": "Wapu Wapu no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "warp",
+    "primitives": ["door", "swap"],
+    "description": "The user can warp themselves and others from place to place.",
+    "techniques": [
+      {
+        "id": "tech_wapu_wapu_warp",
+        "name": "Warp",
+        "form": "movement",
+        "tags": ["spatial"],
+        "mastery": 0,
+        "effects": ["swap"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Van Augur",
+        "from": {
+          "year": 37,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_gabu_gabu",
+    "name": "Glug-Glug Fruit",
+    "japanese": "Gabu Gabu no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "drink_fire",
+    "primitives": ["ignite"],
+    "description": "The user drinks liquor and breathes it out as fire.",
+    "techniques": [
+      {
+        "id": "tech_gabu_gabu_fire_breath",
+        "name": "Fire Breath",
+        "form": "projectile",
+        "tags": ["fire"],
+        "mastery": 0,
+        "effects": ["burn"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Vasco Shot",
+        "from": {
+          "year": 37,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_deka_deka",
+    "name": "Big-Big Fruit",
+    "japanese": "Deka Deka no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "giant_size",
+    "primitives": ["enlarge"],
+    "description": "The user grows to a great size, far past any giant.",
+    "techniques": [
+      {
+        "id": "tech_deka_deka_colossus",
+        "name": "Colossus",
+        "form": "boost",
+        "tags": ["body"],
+        "mastery": 0,
+        "effects": ["grow"],
+        "named": false
+      },
+      {
+        "id": "tech_deka_deka_giant_step",
+        "name": "Giant Step",
+        "form": "area",
+        "tags": ["earth", "blunt"],
+        "mastery": 30,
+        "effects": ["terrain"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Sanjuan Wolf",
+        "from": {
+          "year": 37,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_shima_shima",
+    "name": "Isle-Isle Fruit",
+    "japanese": "Shima Shima no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "island_body",
+    "primitives": ["earth", "fuse"],
+    "description": "The user fuses with an island and moves it like their own body.",
+    "techniques": [
+      {
+        "id": "tech_shima_shima_island_fist",
+        "name": "Island Fist",
+        "form": "area",
+        "tags": ["earth", "blunt"],
+        "mastery": 20,
+        "effects": ["terrain"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Avalo Pizarro",
+        "from": {
+          "year": 37,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_riki_riki",
+    "name": "Strength-Strength Fruit",
+    "japanese": "Riki Riki no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "brute_strength",
+    "primitives": ["coat"],
+    "description": "The user's strength grows far beyond their body.",
+    "techniques": [
+      {
+        "id": "tech_riki_riki_champion_punch",
+        "name": "Champion Punch",
+        "form": "strike",
+        "tags": ["blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Jesus Burgess",
+        "from": {
+          "year": 37,
+          "month": 1
+        },
+        "approx": true
+      }
+    ],
+    "approx": true
+  },
+  {
+    "id": "fruit_toshi_toshi",
+    "name": "Age-Age Fruit",
+    "japanese": "Toshi Toshi no Mi",
+    "type": "paramecia",
+    "rarity": "rare",
+    "power": "age_change",
+    "primitives": ["time"],
+    "description": "The user changes their own age, and others', up and down.",
+    "techniques": [
+      {
+        "id": "tech_toshi_toshi_age_shift",
+        "name": "Age Shift",
+        "form": "strike",
+        "tags": ["time"],
+        "mastery": 0,
+        "effects": ["debuff"],
+        "named": false
+      },
+      {
+        "id": "tech_toshi_toshi_distorted_future",
+        "name": "Distorted Future",
+        "form": "boost",
+        "tags": ["time", "body"],
+        "mastery": 60,
+        "effects": ["transform"]
+      }
+    ],
+    "holders": [
+      {
+        "name": "Jewelry Bonney",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_moa_moa",
+    "name": "More-More Fruit",
+    "japanese": "Moa Moa no Mi",
+    "type": "paramecia",
+    "rarity": "uncommon",
+    "power": "multiply_speed",
+    "primitives": ["enlarge"],
+    "description": "The user can make anything a hundred times bigger or faster.",
+    "techniques": [
+      {
+        "id": "tech_moa_moa_hundredfold",
+        "name": "Hundredfold",
+        "form": "projectile",
+        "tags": ["blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      }
+    ],
+    "holders": [
+      {
+        "name": "Byrnndi World",
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  }
+]

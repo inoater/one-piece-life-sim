@@ -1,4 +1,6 @@
+import type { Snapshot } from '../../worker/protocol';
 import { h } from '../dom';
+import { yearLabel } from '../format';
 
 /**
  * The year rail: the chronicle's scrollbar, marked in years.
@@ -13,7 +15,7 @@ import { h } from '../dom';
 export interface YearRail {
   el: HTMLElement;
   /** Re-read the chronicle's layout (after it is redrawn or resized). */
-  refresh(info: { birthTick: number | null }): void;
+  refresh(info: { birthTick: number | null; calendar: Snapshot['calendar'] | null }): void;
   /** Move the thumb (on every scroll). */
   sync(): void;
   destroy(): void;
@@ -50,6 +52,7 @@ export function createYearRail(scroller: HTMLElement): YearRail {
   /** Year boundaries: where each year starts in the chronicle, as a fraction of its height. */
   let years: { year: number; at: number; tick: number }[] = [];
   let birthTick: number | null = null;
+  let calendar: Snapshot['calendar'] | null = null;
 
   const scrollable = () => scroller.scrollHeight - scroller.clientHeight;
 
@@ -80,13 +83,18 @@ export function createYearRail(scroller: HTMLElement): YearRail {
   function describe(fraction: number): string {
     const y = yearAt(fraction);
     if (!y) return '';
-    if (birthTick === null) return `Year ${y.year}`;
+    const year = calendar ? yearLabel(y.year, calendar) : `Year ${y.year}`;
+    if (birthTick === null) return year;
     const age = Math.floor((y.tick - birthTick) / 12);
-    return age >= 0 ? `Year ${y.year}, age ${age}` : `Year ${y.year}, before you were born`;
+    return age >= 0 ? `${year}, age ${age}` : `${year}, before you were born`;
   }
 
-  function refresh(info: { birthTick: number | null }): void {
+  function refresh(info: {
+    birthTick: number | null;
+    calendar: Snapshot['calendar'] | null;
+  }): void {
     birthTick = info.birthTick;
+    calendar = info.calendar;
     const total = scroller.scrollHeight;
     const overflow = scrollable() > 4;
     el.hidden = !overflow;
@@ -206,7 +214,9 @@ export function createYearRail(scroller: HTMLElement): YearRail {
   el.addEventListener('keydown', onKey);
 
   const resize =
-    typeof ResizeObserver === 'function' ? new ResizeObserver(() => refresh({ birthTick })) : null;
+    typeof ResizeObserver === 'function'
+      ? new ResizeObserver(() => refresh({ birthTick, calendar }))
+      : null;
   resize?.observe(scroller);
 
   return {

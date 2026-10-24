@@ -1,0 +1,81 @@
+{
+  "id": "track_fishman_jujutsu",
+  "name": "Fish-Man Jujutsu",
+  "family": "style",
+  "description": "Moves the sea itself: needs Fish-Man Karate at 5th dan and time in the water.",
+  "stages": [
+    {
+      "id": "grip_water",
+      "name": "Gripping water",
+      "level": "adept",
+      "at": 0,
+      "description": "Take hold of water as if it were rope.",
+      "text": "The sea came up in your hand like a rope.",
+      "requires": {
+        "event": "water_time"
+      },
+      "techniques": ["tech_jujutsu_grip"],
+      "combat": 20
+    },
+    {
+      "id": "currents",
+      "name": "Throwing currents",
+      "level": "expert",
+      "at": 60,
+      "description": "Throw a current like a spear.",
+      "text": "You threw a current, and it knocked a man off a cliff.",
+      "requires": {
+        "stats": {
+          "strength": 60
+        }
+      },
+      "techniques": ["tech_jujutsu_yarinami", "tech_jujutsu_kairyu"],
+      "combat": 34
+    },
+    {
+      "id": "wave",
+      "name": "Commanding a wave",
+      "level": "master",
+      "at": 150,
+      "description": "Raise a wave and send it where you will.",
+      "text": "You raised a wave out of a calm sea.",
+      "requires": {
+        "event": "water_time",
+        "breakthrough": true,
+        "stats": {
+          "strength": 70
+        }
+      },
+      "techniques": ["tech_jujutsu_wave"],
+      "combat": 50
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a Fish-Man Jujutsu master",
+        "places": ["loc_fishman_island"],
+        "fee": 20000,
+        "mult": 1.3
+      }
+    ],
+    "requires": {
+      "tracks": {
+        "track_fishman_karate": "fifth_dan"
+      }
+    },
+    "raceRates": {
+      "race_fishman": 1,
+      "race_merfolk": 1
+    },
+    "defaultRate": 0.5,
+    "outsiderFlag": "fishman.trust"
+  },
+  "speedStats": {
+    "strength": 0.3,
+    "willpower": 0.3
+  },
+  "word": "Tide",
+  "tags": ["water"]
+}

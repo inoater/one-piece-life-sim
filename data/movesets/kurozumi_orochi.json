@@ -1,0 +1,16 @@
+{
+  "id": "moveset_kurozumi_orochi",
+  "char": "char_kurozumi_orochi",
+  "eras": [
+    {
+      "from": {
+        "year": 5,
+        "month": 1
+      },
+      "techniques": ["tech_hebi_hebi_orochi_eight_heads"],
+      "tracks": {},
+      "approx": true,
+      "mastery": 30
+    }
+  ]
+}

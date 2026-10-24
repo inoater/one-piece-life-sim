@@ -3,6 +3,7 @@ import type { CharacterData, Entity } from '../../engine/state';
 import { addMod, statLabel, statValue } from '../../engine/stats';
 import { namedMod, roundTo, TRAINING_SOURCE } from '../genesis/context';
 import { lifeLog, renderLife, reportLine, type LifeEnv } from './env';
+import { trainingModPct } from './traits';
 
 /**
  * Training (Phase 2):
@@ -62,7 +63,7 @@ export function trainStat(
     points,
     statValue(s, tick),
     statValue(potential, tick),
-    growthMultiplier(data, c),
+    growthMultiplier(data, c) * Math.max(0, 1 + trainingModPct(data, c, stat) / 100),
   );
   if (result.gain > 0) {
     const mod = namedMod(s, TRAINING_SOURCE);

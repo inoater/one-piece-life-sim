@@ -9,7 +9,9 @@ import type {
 import type { LogInput } from '../../engine/log';
 import type { Rng } from '../../engine/rng';
 import type { CharacterData, Entity, Stat, WorldState } from '../../engine/state';
-import { addMod, statValue } from '../../engine/stats';
+import { statValue } from '../../engine/stats';
+import { giveTraitTo } from '../life/traits';
+import { articleFor } from './text';
 import type { GenesisOptions } from './options';
 
 /**
@@ -142,23 +144,46 @@ export function blockedTraits(data: GameData, held: readonly string[]): Set<stri
  * Give a trait to the player: its stat modifiers, potential modifiers, flags and training bonus.
  * Returns false (and changes nothing) if the trait is held already or excluded by one held.
  */
-export function giveTrait(ctx: GenesisCtx, traitId: string): boolean {
+export function giveTrait(ctx: GenesisCtx, traitId: string, tick?: number): boolean {
   const trait = ctx.data.traits[traitId];
   if (!trait) throw new Error(`unknown trait ${traitId}`);
   if (blockedTraits(ctx.data, ctx.pc.traits).has(traitId)) return false;
-  ctx.pc.traits.push(traitId);
-  const source = `${trait.name} (trait)`;
-  for (const mod of trait.statMods) {
-    const stat = ctx.player.stats[mod.stat];
-    if (stat) addMod(stat, { source, value: mod.value, kind: mod.kind });
+  // The same rules as later in life (life/traits.ts), plus where it came from for the sheet.
+  if (
+    !giveTraitTo(
+      ctx.data,
+      ctx.player,
+      traitId,
+      traitOrigin(ctx, trait.category),
+      tick ?? ctx.birthTick,
+    )
+  ) {
+    return false;
   }
-  for (const mod of trait.potentialMods) {
-    const potential = ctx.pc.hidden?.potential[mod.stat];
-    if (potential) addMod(potential, { source, value: mod.pct, kind: 'pct' });
-  }
-  Object.assign(ctx.player.flags, trait.flags);
   ctx.trainingPct += trait.trainingGainPct;
   return true;
+}
+
+/** Where a trait gained at birth or in the years before the story came from. */
+function traitOrigin(ctx: GenesisCtx, category: string): string {
+  switch (category) {
+    case 'racial':
+      return `Born ${articleFor(ctx.race.name).toLowerCase()} ${ctx.race.name}`;
+    case 'innate':
+    case 'hidden':
+      return 'Born with it';
+    case 'birth':
+      return `Grew up ${ctx.birthplace.bornIn}`;
+    case 'family':
+      return ctx.legacy.name;
+    case 'quirk':
+    case 'personality':
+      return 'Your nature';
+    case 'scar':
+      return 'An old wound';
+    default:
+      return 'Your past';
+  }
 }
 
 export function wealthTier(ctx: GenesisCtx): Creation['wealthTiers'][number] {

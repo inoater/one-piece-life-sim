@@ -26,7 +26,13 @@
       "weight": 1.2,
       "statWeights": {
         "strength": 0.5
-      }
+      },
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["brave"]
+        }
+      ]
     },
     {
       "id": "knuckles",
@@ -37,6 +43,10 @@
           "stats": {
             "willpower": 0.2
           }
+        },
+        {
+          "kind": "drift",
+          "tags": ["rash"]
         }
       ]
     },
@@ -56,6 +66,10 @@
             "min": -1,
             "max": 2
           }
+        },
+        {
+          "kind": "drift",
+          "tags": ["humble"]
         }
       ]
     }

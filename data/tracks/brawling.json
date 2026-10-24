@@ -1,0 +1,73 @@
+{
+  "id": "track_brawling",
+  "name": "Brawling",
+  "family": "style",
+  "description": "Fists, elbows and whatever is to hand: anyone can begin, alone.",
+  "stages": [
+    {
+      "id": "scrapper",
+      "name": "Scrapper",
+      "level": "novice",
+      "at": 0,
+      "description": "Fists, elbows, whatever is to hand.",
+      "text": "You stopped flailing and started fighting.",
+      "techniques": ["tech_brawl_haymaker", "tech_brawl_headbutt"],
+      "combat": 3
+    },
+    {
+      "id": "street",
+      "name": "Street fighter",
+      "level": "trained",
+      "at": 40,
+      "description": "Fight dirty, and well.",
+      "text": "You knew how a fight would go before it started.",
+      "requires": {
+        "stats": {
+          "strength": 30
+        }
+      },
+      "techniques": ["tech_brawl_throw"],
+      "combat": 8
+    },
+    {
+      "id": "brawler",
+      "name": "Brawler",
+      "level": "adept",
+      "at": 100,
+      "description": "Fists that end fights.",
+      "text": "One blow ended it.",
+      "requires": {
+        "stats": {
+          "strength": 45,
+          "durability": 40
+        }
+      },
+      "techniques": ["tech_brawl_rush"],
+      "combat": 15
+    },
+    {
+      "id": "iron_fists",
+      "name": "Iron fists",
+      "level": "expert",
+      "at": 180,
+      "description": "Fists that break stone.",
+      "text": "Your fist went through the stone wall.",
+      "requires": {
+        "breakthrough": true,
+        "stats": {
+          "strength": 60
+        }
+      },
+      "combat": 24
+    }
+  ],
+  "learn": {
+    "how": "innate"
+  },
+  "speedStats": {
+    "strength": 0.4,
+    "durability": 0.2
+  },
+  "word": "Knuckle",
+  "tags": ["blunt"]
+}

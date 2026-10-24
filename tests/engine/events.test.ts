@@ -45,7 +45,7 @@ describe('firing events', () => {
       cause: 'evt_test_notice',
       tags: ['event', 'world', 'dev'],
       knownBy: ['*'],
-      summary: 'A test notice is posted in January, Year 0. Nothing depends on it.',
+      summary: 'A test notice is posted in January 1486 SC. Nothing depends on it.',
     });
     expect(w.state.scheduled).toEqual([]);
   });
@@ -59,7 +59,7 @@ describe('firing events', () => {
       {
         id: 1,
         tick: 0,
-        text: 'Test notice posted (January, Year 0).',
+        text: 'Test notice posted (January 1486 SC).',
         tags: ['news', 'dev', 'world'],
         sourceSeq: record.seq,
       },

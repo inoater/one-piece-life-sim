@@ -1,0 +1,136 @@
+{
+  "pairs": [
+    {
+      "attacker": "tag:lightning",
+      "defender": "power:rubber",
+      "result": "immune",
+      "text": "Rubber does not conduct: lightning does nothing to it."
+    },
+    {
+      "attacker": "tag:blunt",
+      "defender": "power:rubber",
+      "result": "weakened",
+      "text": "Blunt blows bounce off rubber."
+    },
+    {
+      "attacker": "power:magma",
+      "defender": "power:fire",
+      "result": "wins",
+      "text": "Magma burns hotter than fire, and consumes it."
+    },
+    {
+      "attacker": "power:magma",
+      "defender": "power:ice",
+      "result": "wins",
+      "text": "Magma melts ice and boils the water."
+    },
+    {
+      "attacker": "tag:water",
+      "defender": "power:sand",
+      "result": "solidifies",
+      "text": "Wet sand holds together and cannot slip away."
+    },
+    {
+      "attacker": "tag:water",
+      "defender": "power:smoke",
+      "result": "weakened",
+      "text": "Smoke soaked through holds no shape."
+    },
+    {
+      "attacker": "tag:fire",
+      "defender": "power:ice",
+      "result": "wins",
+      "text": "Fire melts ice."
+    },
+    {
+      "attacker": "tag:fire",
+      "defender": "power:snow",
+      "result": "wins",
+      "text": "Fire melts snow."
+    },
+    {
+      "attacker": "tag:fire",
+      "defender": "power:wax",
+      "result": "wins",
+      "text": "Wax melts in the heat."
+    },
+    {
+      "attacker": "tag:fire",
+      "defender": "power:forest",
+      "result": "wins",
+      "text": "A forest burns."
+    },
+    {
+      "attacker": "tag:fire",
+      "defender": "power:gas",
+      "result": "wins",
+      "text": "Gas catches fire and burns away."
+    },
+    {
+      "attacker": "tag:fire",
+      "defender": "power:mucus",
+      "result": "wins",
+      "text": "The sticky mucus burns."
+    },
+    {
+      "attacker": "tag:water",
+      "defender": "power:biscuit",
+      "result": "wins",
+      "text": "Biscuits go soft in water."
+    },
+    {
+      "attacker": "tag:light",
+      "defender": "power:slow_beam",
+      "result": "weakened",
+      "text": "A mirror sends the slow beam back."
+    },
+    {
+      "attacker": "tag:haki",
+      "defender": "type:logia",
+      "result": "nullifies",
+      "text": "Haki strikes a Logia's true body, element or not."
+    },
+    {
+      "attacker": "tag:armament",
+      "defender": "type:logia",
+      "result": "nullifies",
+      "text": "Armament Haki strikes a Logia's true body."
+    },
+    {
+      "attacker": "power:darkness",
+      "defender": "any",
+      "result": "nullifies",
+      "text": "The darkness cancels any fruit's power while it holds the user."
+    },
+    {
+      "attacker": "seastone",
+      "defender": "any",
+      "result": "nullifies",
+      "text": "Seastone holds the sea's power: no fruit works against it, or while touching it."
+    },
+    {
+      "attacker": "sea",
+      "defender": "any",
+      "result": "nullifies",
+      "text": "The sea takes every fruit's power, and the user sinks."
+    },
+    {
+      "attacker": "tag:wind",
+      "defender": "power:gas",
+      "result": "weakened",
+      "text": "Wind scatters gas."
+    },
+    {
+      "attacker": "tag:ice",
+      "defender": "power:magma",
+      "result": "loses",
+      "text": "Ice cannot cool magma for long: it melts."
+    },
+    {
+      "attacker": "tag:light",
+      "defender": "power:darkness",
+      "result": "weakened",
+      "text": "Light is the one thing darkness cannot swallow whole."
+    }
+  ]
+}

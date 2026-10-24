@@ -1,0 +1,23 @@
+{
+  "id": "moveset_sengoku",
+  "char": "char_sengoku",
+  "eras": [
+    {
+      "from": {
+        "year": -10,
+        "month": 1
+      },
+      "techniques": [
+        "tech_hito_hito_daibutsu_buddha_shockwave",
+        "tech_hito_hito_daibutsu_golden_palm",
+        "tech_haki_harden"
+      ],
+      "tracks": {
+        "track_armament": "full_body",
+        "track_observation": "track_crowds"
+      },
+      "approx": true,
+      "mastery": 85
+    }
+  ]
+}

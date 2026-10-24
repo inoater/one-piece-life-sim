@@ -1,0 +1,27 @@
+{
+  "id": "moveset_kuzan",
+  "char": "char_kuzan",
+  "eras": [
+    {
+      "from": {
+        "year": 5,
+        "month": 1
+      },
+      "techniques": [
+        "tech_hie_hie_ice_time",
+        "tech_hie_hie_ice_saber",
+        "tech_hie_hie_ice_block_pheasant_beak",
+        "tech_hie_hie_ice_age",
+        "tech_haki_coat"
+      ],
+      "tracks": {
+        "track_armament": "full_body",
+        "track_observation": "track_crowds"
+      },
+      "approx": true,
+      "mastery": 85,
+      "signature": "tech_hie_hie_ice_block_pheasant_beak",
+      "finisher": "tech_hie_hie_ice_age"
+    }
+  ]
+}

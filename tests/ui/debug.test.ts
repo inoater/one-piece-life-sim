@@ -139,7 +139,7 @@ describe('World tab', () => {
     await hit(section('world'), 'Tick x468');
     expect(ui.core.peekState().tick).toBe(468); // stops at the present
     expect(text(ui.root.querySelector('.controls__status'))).toBe(
-      'Reached the present (Year 39) after 455 months.',
+      'Reached the present (1525 SC) after 455 months.',
     );
   });
 
@@ -159,7 +159,7 @@ describe('World tab', () => {
     ]);
     await hit(ui.root, 'Next month');
     expect(text(ui.root.querySelector('.panel--feed'))).toContain(
-      'A test notice is posted in January, Year 0',
+      'A test notice is posted in January 1486 SC',
     );
   });
 
@@ -398,7 +398,7 @@ describe('Log tab', () => {
     expect(text(event?.querySelector('.logrow__meta'))).toContain(
       'cause: evt_test_notice (after #',
     );
-    expect(text(event?.querySelector('.logrow__date'))).toBe('January, Year 0');
+    expect(text(event?.querySelector('.logrow__date'))).toBe('January 1486 SC');
   });
 
   it('filters by text, kind, tag, entity and tick range', async () => {
@@ -440,7 +440,7 @@ describe('Log tab', () => {
 
     await type(control('To tick'), '0', 260);
     await settle();
-    expect(rows().every((r) => text(r.querySelector('.logrow__date')) === 'January, Year 0')).toBe(
+    expect(rows().every((r) => text(r.querySelector('.logrow__date')) === 'January 1486 SC')).toBe(
       true,
     );
   });

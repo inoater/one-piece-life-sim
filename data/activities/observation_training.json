@@ -2,7 +2,7 @@
   "id": "act_observation_training",
   "name": "Listen for voices",
   "category": "special",
-  "description": "Reaching for the sense you have felt at the edge of things. The plan calls it the first seed of Observation Haki; Phase 4 makes it grow.",
+  "description": "Reaching for the sense at the edge of things: blindfold drills, lookout at night. It feeds Observation Haki once it wakes, and helps it wake.",
   "minAge": 12,
   "usesMentor": true,
   "requires": {
@@ -16,6 +16,11 @@
         "flags": {
           "haki.observation": 1
         }
+      },
+      {
+        "tracks": {
+          "track_observation": "open"
+        }
       }
     ]
   },
@@ -23,7 +28,7 @@
     "willpower": 0.5,
     "perception": 0.6
   },
-  "tags": ["spirit", "haki"],
+  "tags": ["spirit", "haki", "blindfold"],
   "outcomes": [
     {
       "id": "stillness",
@@ -59,5 +64,10 @@
         }
       ]
     }
-  ]
+  ],
+  "practice": {
+    "kind": "drill",
+    "tracks": ["track_observation", "track_mantra"],
+    "stamina": true
+  }
 }

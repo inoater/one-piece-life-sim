@@ -1,0 +1,25 @@
+{
+  "id": "moveset_emporio_ivankov",
+  "char": "char_emporio_ivankov",
+  "eras": [
+    {
+      "from": {
+        "year": 10,
+        "month": 1
+      },
+      "techniques": [
+        "tech_horu_horu_tension_hormone",
+        "tech_horu_horu_healing_hormone",
+        "tech_ivankov_death_wink",
+        "tech_okama_arabesque"
+      ],
+      "tracks": {
+        "track_okama_kenpo": "angles",
+        "track_armament": "harden"
+      },
+      "approx": true,
+      "mastery": 70,
+      "signature": "tech_ivankov_death_wink"
+    }
+  ]
+}

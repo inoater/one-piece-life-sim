@@ -27,12 +27,22 @@
           "stats": {
             "dexterity": 0.2
           }
+        },
+        {
+          "kind": "drift",
+          "tags": ["brave"]
         }
       ]
     },
     {
       "id": "ruins",
-      "text": "You slept a night in the ruins everyone says are haunted. Nothing happened, mostly."
+      "text": "You slept a night in the ruins everyone says are haunted. Nothing happened, mostly.",
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["brave"]
+        }
+      ]
     },
     {
       "id": "stare",
@@ -46,13 +56,23 @@
           "kind": "count",
           "flag": "haki.seed.conqueror",
           "by": 1
+        },
+        {
+          "kind": "drift",
+          "tags": ["brave"]
         }
       ]
     },
     {
       "id": "fled",
       "text": "You lost your nerve and ran. You will try again.",
-      "weight": 0.7
+      "weight": 0.7,
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["cowardly"]
+        }
+      ]
     }
   ]
 }

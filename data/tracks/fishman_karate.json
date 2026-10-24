@@ -1,0 +1,162 @@
+{
+  "id": "track_fishman_karate",
+  "name": "Fish-Man Karate",
+  "family": "style",
+  "description": "Strikes that move the water in the air and in the body. Ranks from 1st to 10th dan; outsiders learn only after a trust event, and at half speed.",
+  "stages": [
+    {
+      "id": "first_dan",
+      "name": "1st dan",
+      "level": "novice",
+      "at": 0,
+      "description": "A water-shock strike.",
+      "text": "You were given the 1st dan of Fish-Man Karate.",
+      "techniques": ["tech_karate_seiken"],
+      "combat": 6
+    },
+    {
+      "id": "second_dan",
+      "name": "2nd dan",
+      "level": "trained",
+      "at": 20,
+      "description": "Fish-Man Karate, 2nd dan.",
+      "text": "You were given the 2nd dan of Fish-Man Karate.",
+      "combat": 13
+    },
+    {
+      "id": "third_dan",
+      "name": "3rd dan",
+      "level": "adept",
+      "at": 45,
+      "description": "Fish-Man Karate, 3rd dan.",
+      "text": "You were given the 3rd dan of Fish-Man Karate.",
+      "requires": {
+        "stats": {
+          "strength": 40
+        }
+      },
+      "techniques": ["tech_karate_senmaigawara"],
+      "combat": 20
+    },
+    {
+      "id": "fourth_dan",
+      "name": "4th dan",
+      "level": "adept",
+      "at": 75,
+      "description": "Striking through the water inside a body.",
+      "text": "You were given the 4th dan of Fish-Man Karate.",
+      "requires": {
+        "stats": {
+          "strength": 45,
+          "dexterity": 40
+        }
+      },
+      "techniques": ["tech_karate_samehada", "tech_karate_inner_water"],
+      "combat": 27
+    },
+    {
+      "id": "fifth_dan",
+      "name": "5th dan",
+      "level": "expert",
+      "at": 110,
+      "description": "Fish-Man Karate, 5th dan.",
+      "text": "You were given the 5th dan of Fish-Man Karate.",
+      "requires": {
+        "stats": {
+          "strength": 50
+        },
+        "teacher": true
+      },
+      "combat": 34
+    },
+    {
+      "id": "sixth_dan",
+      "name": "6th dan",
+      "level": "expert",
+      "at": 150,
+      "description": "Fish-Man Karate, 6th dan.",
+      "text": "You were given the 6th dan of Fish-Man Karate.",
+      "combat": 41
+    },
+    {
+      "id": "seventh_dan",
+      "name": "7th dan",
+      "level": "master",
+      "at": 195,
+      "description": "Shockwaves through the sea at range.",
+      "text": "You were given the 7th dan of Fish-Man Karate.",
+      "requires": {
+        "stats": {
+          "strength": 65
+        },
+        "breakthrough": true
+      },
+      "techniques": ["tech_karate_uchimizu", "tech_karate_buraikan"],
+      "combat": 48
+    },
+    {
+      "id": "eighth_dan",
+      "name": "8th dan",
+      "level": "master",
+      "at": 245,
+      "description": "Fish-Man Karate, 8th dan.",
+      "text": "You were given the 8th dan of Fish-Man Karate.",
+      "combat": 55
+    },
+    {
+      "id": "ninth_dan",
+      "name": "9th dan",
+      "level": "grandmaster",
+      "at": 300,
+      "description": "Fish-Man Karate, 9th dan.",
+      "text": "You were given the 9th dan of Fish-Man Karate.",
+      "requires": {
+        "stats": {
+          "strength": 75,
+          "willpower": 60
+        },
+        "teacher": true
+      },
+      "combat": 62
+    },
+    {
+      "id": "tenth_dan",
+      "name": "10th dan",
+      "level": "grandmaster",
+      "at": 360,
+      "description": "Fish-Man Karate, 10th dan.",
+      "text": "You were given the 10th dan of Fish-Man Karate.",
+      "requires": {
+        "stats": {
+          "strength": 85
+        },
+        "breakthrough": true
+      },
+      "combat": 69
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a Fish-Man Karate master",
+        "places": ["loc_fishman_island"],
+        "fee": 10000,
+        "mult": 1.3,
+        "occupation": "occ_karate_master"
+      }
+    ],
+    "raceRates": {
+      "race_fishman": 1,
+      "race_merfolk": 1
+    },
+    "defaultRate": 0.5,
+    "outsiderFlag": "fishman.trust"
+  },
+  "speedStats": {
+    "strength": 0.4,
+    "dexterity": 0.3
+  },
+  "word": "Karate",
+  "tags": ["water", "blunt"]
+}

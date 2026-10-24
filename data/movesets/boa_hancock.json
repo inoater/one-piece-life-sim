@@ -1,0 +1,27 @@
+{
+  "id": "moveset_boa_hancock",
+  "char": "char_boa_hancock",
+  "eras": [
+    {
+      "from": {
+        "year": 19,
+        "month": 1
+      },
+      "techniques": [
+        "tech_mero_mero_mero_mero_mellow",
+        "tech_mero_mero_slave_arrow",
+        "tech_mero_mero_pistol_kiss",
+        "tech_hancock_perfume_femur"
+      ],
+      "tracks": {
+        "track_armament": "full_body",
+        "track_observation": "read_intent",
+        "track_conqueror": "selective"
+      },
+      "approx": true,
+      "mastery": 80,
+      "signature": "tech_mero_mero_mero_mero_mellow",
+      "finisher": "tech_mero_mero_slave_arrow"
+    }
+  ]
+}

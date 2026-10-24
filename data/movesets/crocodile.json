@@ -1,0 +1,26 @@
+{
+  "id": "moveset_crocodile",
+  "char": "char_crocodile",
+  "eras": [
+    {
+      "from": {
+        "year": 15,
+        "month": 1
+      },
+      "techniques": [
+        "tech_suna_suna_sables",
+        "tech_suna_suna_desert_spada",
+        "tech_suna_suna_desert_girasole",
+        "tech_suna_suna_ground_death",
+        "tech_crocodile_hook"
+      ],
+      "tracks": {
+        "track_observation": "wider_range"
+      },
+      "approx": true,
+      "mastery": 70,
+      "signature": "tech_suna_suna_desert_spada",
+      "finisher": "tech_suna_suna_ground_death"
+    }
+  ]
+}

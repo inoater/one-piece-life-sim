@@ -1,0 +1,60 @@
+{
+  "id": "track_rankyaku",
+  "name": "Rankyaku",
+  "family": "six_powers",
+  "description": "One of the Six Powers (Rokushiki): one kick blade, then many blades, then shaped blades.",
+  "stages": [
+    {
+      "id": "first",
+      "name": "One kick blade",
+      "level": "novice",
+      "at": 0,
+      "description": "Rankyaku: one kick blade.",
+      "text": "You managed Rankyaku for the first time: one kick blade.",
+      "techniques": ["tech_rankyaku"],
+      "combat": 6
+    },
+    {
+      "id": "second",
+      "name": "Many blades",
+      "level": "adept",
+      "at": 40,
+      "description": "Rankyaku: many blades.",
+      "text": "Rankyaku came to you without thinking now: many blades.",
+      "requires": {
+        "stats": {
+          "strength": 60
+        }
+      },
+      "combat": 14
+    },
+    {
+      "id": "mastered",
+      "name": "Shaped blades",
+      "level": "master",
+      "at": 100,
+      "description": "Rankyaku mastered: shaped blades.",
+      "text": "You had mastered Rankyaku: shaped blades.",
+      "requires": {
+        "stats": {
+          "strength": 75
+        },
+        "teacher": true
+      },
+      "techniques": ["tech_rankyaku_2"],
+      "combat": 24,
+      "flags": {
+        "six_powers.rankyaku": true
+      }
+    }
+  ],
+  "learn": {
+    "how": "event"
+  },
+  "group": "six_powers",
+  "speedStats": {
+    "strength": 0.5
+  },
+  "word": "Rankyaku",
+  "tags": ["body"]
+}

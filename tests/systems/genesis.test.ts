@@ -361,7 +361,7 @@ describe('Done when: the Giant newborn warning appears', () => {
   it('flags a birth before God Valley', () => {
     const { warnings, state } = createLife(data, base({ entryYear: 3, entryAge: 20 }));
     expect(warnings.find((w) => w.id === 'before-god-valley')?.text).toMatch(
-      /Year -17: 17 years before God Valley/,
+      /1469 SC: 17 years before God Valley/,
     );
     expect(playerOf(state).character!.backstory).toContain('before God Valley');
   });
@@ -392,9 +392,12 @@ describe('what a new character is made of', () => {
 
   it('every stat is base plus named modifiers, and nothing is negative or not a number', () => {
     for (const { state } of sample) {
+      // Bonus stacks on derived values (Phase 4) may be negative: Frail takes 10 off Max Health.
+      const bonuses = new Set(data.character.derived.map((d) => d.bonusStat));
       for (const [id, stat] of Object.entries(playerOf(state).stats)) {
         expect(Number.isFinite(stat.base), id).toBe(true);
         for (const mod of stat.mods) expect(mod.source.length, id).toBeGreaterThan(0);
+        if (bonuses.has(id)) continue;
         expect(statValue(stat, state.tick), `${state.seed} ${id}`).toBeGreaterThanOrEqual(0);
       }
       const hidden = playerOf(state).character!.hidden!;

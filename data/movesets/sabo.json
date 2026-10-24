@@ -1,0 +1,48 @@
+{
+  "id": "moveset_sabo",
+  "char": "char_sabo",
+  "eras": [
+    {
+      "from": {
+        "year": 26,
+        "month": 8
+      },
+      "techniques": ["tech_dragon_claw", "tech_dragon_breath"],
+      "tracks": {
+        "track_dragon_claw": "haki_crush",
+        "track_armament": "full_body",
+        "track_observation": "read_intent"
+      },
+      "approx": true,
+      "to": {
+        "year": 38,
+        "month": 4
+      },
+      "signature": "tech_dragon_claw",
+      "finisher": "tech_dragon_breath"
+    },
+    {
+      "from": {
+        "year": 38,
+        "month": 5
+      },
+      "techniques": [
+        "tech_dragon_claw",
+        "tech_dragon_breath",
+        "tech_mera_mera_hiken",
+        "tech_mera_mera_higan",
+        "tech_mera_mera_hibashira",
+        "tech_mera_mera_kagero"
+      ],
+      "tracks": {
+        "track_dragon_claw": "haki_crush",
+        "track_armament": "full_body",
+        "track_observation": "track_crowds"
+      },
+      "approx": true,
+      "mastery": 45,
+      "signature": "tech_dragon_claw",
+      "finisher": "tech_mera_mera_kagero"
+    }
+  ]
+}

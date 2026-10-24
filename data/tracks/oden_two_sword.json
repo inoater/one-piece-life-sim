@@ -1,0 +1,90 @@
+{
+  "id": "track_oden_two_sword",
+  "name": "Oden's two-sword style",
+  "family": "sword",
+  "description": "Oden Nitoryu: a Wano style taught only by its heirs, or learned from a scroll; huge single cuts, and it needs Armament.",
+  "stages": [
+    {
+      "id": "stance",
+      "name": "Oden's stance",
+      "level": "novice",
+      "at": 0,
+      "description": "The stance of a man who carried two swords like two arms.",
+      "text": "You took Oden's stance, and it fit.",
+      "requires": {
+        "gear": {
+          "swords": 2
+        }
+      },
+      "combat": 10
+    },
+    {
+      "id": "togen",
+      "name": "Togen Totsuka",
+      "level": "adept",
+      "at": 60,
+      "description": "Huge single cuts.",
+      "text": "One cut, and the hill behind your target split.",
+      "requires": {
+        "tracks": {
+          "track_armament": "harden"
+        },
+        "stats": {
+          "strength": 55
+        }
+      },
+      "techniques": ["tech_oden_togen_totsuka"],
+      "combat": 26
+    },
+    {
+      "id": "falling_heaven",
+      "name": "Falling heaven",
+      "level": "expert",
+      "at": 150,
+      "description": "A cut that falls like a waterfall.",
+      "text": "Your cut fell on your target like a waterfall.",
+      "requires": {
+        "tracks": {
+          "track_armament": "coat_weapon"
+        },
+        "stats": {
+          "strength": 65
+        }
+      },
+      "techniques": ["tech_oden_falling_heaven"],
+      "combat": 44
+    },
+    {
+      "id": "oden_master",
+      "name": "Heir of Oden",
+      "level": "master",
+      "at": 260,
+      "description": "The style as its founder fought it.",
+      "text": "You fought the way Oden fought.",
+      "requires": {
+        "breakthrough": true,
+        "stats": {
+          "strength": 75
+        }
+      },
+      "combat": 60
+    }
+  ],
+  "learn": {
+    "how": "event",
+    "requires": {
+      "tracks": {
+        "track_swordsmanship": "cut_stone"
+      },
+      "gear": {
+        "swords": 2
+      }
+    }
+  },
+  "speedStats": {
+    "strength": 0.5,
+    "dexterity": 0.3
+  },
+  "word": "Oden",
+  "tags": ["sword", "slash", "armament"]
+}

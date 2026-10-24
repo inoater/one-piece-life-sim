@@ -1,0 +1,31 @@
+{
+  "id": "moveset_edward_newgate",
+  "char": "char_edward_newgate",
+  "eras": [
+    {
+      "from": {
+        "year": -10,
+        "month": 1
+      },
+      "techniques": [
+        "tech_gura_gura_quake_punch",
+        "tech_gura_gura_kabutowari",
+        "tech_gura_gura_shima_yurashi",
+        "tech_gura_gura_gekishin"
+      ],
+      "tracks": {
+        "track_observation": "track_crowds",
+        "track_armament": "internal",
+        "track_conqueror": "clash"
+      },
+      "approx": true,
+      "to": {
+        "year": 36,
+        "month": 9
+      },
+      "mastery": 90,
+      "signature": "tech_gura_gura_kabutowari",
+      "finisher": "tech_gura_gura_gekishin"
+    }
+  ]
+}

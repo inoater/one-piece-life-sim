@@ -67,6 +67,14 @@ export const MIGRATIONS: Readonly<Record<number, Migration>> = {
       },
     };
   },
+  /**
+   * 4 -> 5 (Phase 4, powers): characters gain optional `powers`, `personality` and `traitInfo`
+   * blocks, and fruit entities a `fruit` block. Nothing is added here: the fruits of the world
+   * (one entity each, with their canon users) are built from game data the first month the world
+   * runs, and a person's powers block is made the first time a power touches them. The canon
+   * cast's old `fruit` flag (a name) is replaced by the fruit's own record then.
+   */
+  4: (envelope) => ({ ...envelope, saveVersion: 5, state: { ...stateOf(envelope) } }),
 };
 
 export interface MigrationResult {

@@ -1,0 +1,1272 @@
+[
+  {
+    "id": "evt_fruit_in_ruins",
+    "type": "personal",
+    "title": "A strange fruit among the stones",
+    "text": "Among the fallen stones grows a single tree, and on it hangs a fruit covered in swirls.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 14
+      },
+      {
+        "kind": "wildFruitHere"
+      },
+      {
+        "kind": "atSea",
+        "value": false
+      }
+    ],
+    "weight": 0.6,
+    "tags": ["fruit", "discovery"],
+    "cooldown": 24,
+    "choices": [
+      {
+        "id": "take",
+        "label": "Take it",
+        "effects": [
+          {
+            "kind": "findFruit"
+          }
+        ]
+      },
+      {
+        "id": "leave",
+        "label": "Leave it where it hangs",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["careful"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_fruit_chest_adrift",
+    "type": "voyage",
+    "title": "A chest adrift",
+    "text": "A sealed chest bobs past the hull, wrapped in rotten rope.",
+    "trigger": "voyage",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 14
+      }
+    ],
+    "weight": 0.15,
+    "tags": ["fruit", "discovery"],
+    "cooldown": 60,
+    "choices": [
+      {
+        "id": "haul",
+        "label": "Haul it aboard",
+        "check": {
+          "stat": "strength",
+          "difficulty": 35,
+          "success": {
+            "text": "Inside, packed in straw, lay a swirled fruit.",
+            "effects": [
+              {
+                "kind": "findFruit",
+                "rarity": "uncommon"
+              }
+            ]
+          },
+          "failure": {
+            "text": "The rope broke and the chest went under."
+          }
+        }
+      },
+      {
+        "id": "let_go",
+        "label": "Let it drift"
+      }
+    ]
+  },
+  {
+    "id": "evt_fruit_auction",
+    "type": "personal",
+    "title": "A fruit at auction",
+    "text": "Behind a warehouse, a hushed auction: tonight's lot is a Devil Fruit, its name unknown.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 14
+      },
+      {
+        "kind": "feature",
+        "features": ["underworld"]
+      },
+      {
+        "kind": "berries",
+        "min": 100000000
+      }
+    ],
+    "weight": 0.5,
+    "tags": ["fruit", "money"],
+    "cooldown": 24,
+    "choices": [
+      {
+        "id": "bid",
+        "label": "Bid",
+        "effects": [
+          {
+            "kind": "berries",
+            "min": -180000000,
+            "max": -110000000
+          },
+          {
+            "kind": "findFruit"
+          }
+        ],
+        "requires": [
+          {
+            "kind": "berries",
+            "min": 180000000
+          }
+        ]
+      },
+      {
+        "id": "watch",
+        "label": "Watch it go to someone else"
+      }
+    ]
+  },
+  {
+    "id": "evt_fruit_thief",
+    "type": "personal",
+    "title": "A thief with a fruit",
+    "text": "A nervous man in an alley opens his coat: a swirled fruit, \"lifted from a noble's collection\". He wants it gone, and cheap.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 14
+      },
+      {
+        "kind": "feature",
+        "features": ["underworld", "docks"]
+      },
+      {
+        "kind": "berries",
+        "min": 20000000
+      }
+    ],
+    "weight": 0.3,
+    "tags": ["fruit", "crime"],
+    "cooldown": 36,
+    "choices": [
+      {
+        "id": "buy",
+        "label": "Buy the stolen fruit",
+        "effects": [
+          {
+            "kind": "berries",
+            "min": -40000000,
+            "max": -20000000
+          },
+          {
+            "kind": "findFruit"
+          },
+          {
+            "kind": "drift",
+            "tags": ["sly"]
+          }
+        ]
+      },
+      {
+        "id": "report",
+        "label": "Turn him in",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["honest"]
+          },
+          {
+            "kind": "fame",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "id": "walk",
+        "label": "Walk away"
+      }
+    ]
+  },
+  {
+    "id": "evt_fruit_gift",
+    "type": "personal",
+    "title": "A gift from your teacher",
+    "text": "{role.teacher.name} presses a swirled fruit into your hands. \"I was never brave enough to eat it.\"",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 14
+      },
+      {
+        "kind": "relation",
+        "relation": "mentor"
+      }
+    ],
+    "weight": 0.05,
+    "tags": ["fruit", "relationship"],
+    "cooldown": 120,
+    "choices": [
+      {
+        "id": "thank",
+        "label": "Take it, and thank them",
+        "effects": [
+          {
+            "kind": "findFruit"
+          },
+          {
+            "kind": "opinion",
+            "target": "mentor",
+            "value": 10
+          }
+        ]
+      }
+    ],
+    "roles": {
+      "teacher": {
+        "kind": "relation",
+        "relation": "mentor"
+      }
+    }
+  },
+  {
+    "id": "evt_fruit_secret",
+    "type": "personal",
+    "title": "What your fruit really is",
+    "text": "An old scholar watches you use your power for a long time, then asks you to sit down. \"That is not what they told you it was.\"",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "fruitHasSecret"
+      },
+      {
+        "kind": "mastery",
+        "min": 60
+      }
+    ],
+    "weight": 0.4,
+    "tags": ["fruit", "mystery"],
+    "once": true,
+    "choices": [
+      {
+        "id": "listen",
+        "label": "Listen",
+        "effects": [
+          {
+            "kind": "fruitSecret"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_mythical_will",
+    "type": "personal",
+    "title": "The beast's will",
+    "text": "Your fruit's creature has a nature of its own, and tonight it pulls at you.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "fruitUser",
+        "zoan": "mythical"
+      }
+    ],
+    "weight": 0.4,
+    "tags": ["fruit", "eerie"],
+    "cooldown": 24,
+    "choices": [
+      {
+        "id": "give_in",
+        "label": "Let it lead you",
+        "effects": [
+          {
+            "kind": "powerPoints",
+            "practice": "drill",
+            "points": 3
+          }
+        ]
+      },
+      {
+        "id": "resist",
+        "label": "Hold on to yourself",
+        "check": {
+          "stat": "willpower",
+          "difficulty": 50,
+          "success": {
+            "text": "You held. The creature settled, and so did you.",
+            "effects": [
+              {
+                "kind": "train",
+                "stats": {
+                  "willpower": 1
+                }
+              }
+            ]
+          },
+          "failure": {
+            "text": "You woke in the morning with no memory of the night.",
+            "effects": [
+              {
+                "kind": "health",
+                "fraction": -0.1
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "evt_fruit_mishap_galley",
+    "type": "voyage",
+    "title": "Your power in the galley",
+    "text": "You reached for the salt and your power reached first.",
+    "trigger": "voyage",
+    "conditions": [
+      {
+        "kind": "fruitUser"
+      },
+      {
+        "kind": "mastery",
+        "max": 25
+      }
+    ],
+    "weight": 0.4,
+    "tags": ["fruit", "ship"],
+    "cooldown": 12,
+    "choices": [
+      {
+        "id": "laugh",
+        "label": "Laugh it off",
+        "effects": [
+          {
+            "kind": "morale",
+            "value": -3
+          }
+        ]
+      },
+      {
+        "id": "apologise",
+        "label": "Apologise to the cook",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["humble"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_crisis_protect",
+    "type": "personal",
+    "title": "Someone to protect",
+    "text": "Thugs have cornered a child against the harbour wall, and nobody is moving.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 14
+      }
+    ],
+    "weight": 0.5,
+    "tags": ["fight", "local"],
+    "cooldown": 18,
+    "choices": [
+      {
+        "id": "stand",
+        "label": "Step between them",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["brave", "kind"]
+          },
+          {
+            "kind": "powerEvent",
+            "event": "crisis"
+          }
+        ],
+        "check": {
+          "stat": "combatPower",
+          "difficulty": 60,
+          "perDanger": 10,
+          "success": {
+            "text": "They backed off. The child ran home.",
+            "effects": [
+              {
+                "kind": "behaviour",
+                "counter": "rescues",
+                "by": 1
+              },
+              {
+                "kind": "fame",
+                "value": 2
+              }
+            ]
+          },
+          "failure": {
+            "text": "They beat you, but the child got away.",
+            "effects": [
+              {
+                "kind": "behaviour",
+                "counter": "rescues",
+                "by": 1
+              },
+              {
+                "kind": "injury",
+                "severity": "roll",
+                "area": "roll",
+                "cause": "violence"
+              }
+            ]
+          },
+          "criticalFailure": {
+            "text": "They beat you badly.",
+            "effects": [
+              {
+                "kind": "injury",
+                "severity": "serious",
+                "area": "roll",
+                "cause": "violence"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "look_away",
+        "label": "Look away",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["cowardly"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_stronger_foe",
+    "type": "personal",
+    "title": "A fighter far above you",
+    "text": "A scarred fighter has heard of you, and wants to see what you have.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 16
+      },
+      {
+        "kind": "stat",
+        "stat": "combatPower",
+        "min": 60
+      }
+    ],
+    "weight": 0.35,
+    "tags": ["fight", "local"],
+    "cooldown": 24,
+    "choices": [
+      {
+        "id": "accept",
+        "label": "Fight them",
+        "effects": [
+          {
+            "kind": "powerEvent",
+            "event": "stronger_foe"
+          },
+          {
+            "kind": "behaviour",
+            "counter": "fights",
+            "by": 1
+          },
+          {
+            "kind": "powerPoints",
+            "practice": "fight",
+            "points": 3
+          }
+        ],
+        "check": {
+          "stat": "combatPower",
+          "difficulty": 140,
+          "success": {
+            "text": "Somehow you held your own, and they bowed before they left.",
+            "effects": [
+              {
+                "kind": "fame",
+                "value": 3
+              }
+            ]
+          },
+          "failure": {
+            "text": "They took you apart, kindly. You learned more in a minute than in a year.",
+            "effects": [
+              {
+                "kind": "powerEvent",
+                "event": "defeat"
+              },
+              {
+                "kind": "health",
+                "fraction": -0.3
+              }
+            ]
+          },
+          "criticalFailure": {
+            "text": "They nearly killed you.",
+            "effects": [
+              {
+                "kind": "powerEvent",
+                "event": "defeat"
+              },
+              {
+                "kind": "injury",
+                "severity": "severe",
+                "area": "roll",
+                "cause": "violence"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "decline",
+        "label": "Decline",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["careful"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_mentor_push",
+    "type": "personal",
+    "title": "Your teacher pushes",
+    "text": "{role.teacher.name} watches you train, then knocks you flat and tells you to get up and do it properly.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "relation",
+        "relation": "mentor"
+      },
+      {
+        "kind": "age",
+        "min": 14
+      }
+    ],
+    "weight": 0.35,
+    "tags": ["training", "relationship"],
+    "cooldown": 24,
+    "choices": [
+      {
+        "id": "again",
+        "label": "Get up and go again",
+        "effects": [
+          {
+            "kind": "powerEvent",
+            "event": "mentor_push"
+          },
+          {
+            "kind": "opinion",
+            "target": "mentor",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "id": "sulk",
+        "label": "Sulk",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["proud"]
+          }
+        ]
+      }
+    ],
+    "roles": {
+      "teacher": {
+        "kind": "relation",
+        "relation": "mentor"
+      }
+    }
+  },
+  {
+    "id": "evt_full_moon",
+    "type": "personal",
+    "title": "The full moon",
+    "text": "The moon is full tonight, and something in your blood answers it.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "flag",
+        "flag": "unlock.sulong",
+        "equals": true
+      },
+      {
+        "kind": "age",
+        "min": 14
+      }
+    ],
+    "weight": 0.4,
+    "tags": ["eerie"],
+    "cooldown": 12,
+    "choices": [
+      {
+        "id": "look",
+        "label": "Look up at the moon",
+        "effects": [
+          {
+            "kind": "powerEvent",
+            "event": "moon"
+          },
+          {
+            "kind": "learnTrack",
+            "track": "track_sulong"
+          }
+        ],
+        "check": {
+          "stat": "willpower",
+          "difficulty": 45,
+          "success": {
+            "text": "You changed, and you came back."
+          },
+          "failure": {
+            "text": "You changed, and woke far from home, aching.",
+            "effects": [
+              {
+                "kind": "health",
+                "fraction": -0.2
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "hide",
+        "label": "Stay indoors with the shutters closed"
+      }
+    ]
+  },
+  {
+    "id": "evt_okama_invitation",
+    "type": "personal",
+    "title": "An invitation to Kamabakka",
+    "text": "A flamboyant stranger in a ballgown watches you fight, then hands you a card: the Kamabakka Kingdom, where they teach a style called Okama Kenpo.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 16
+      },
+      {
+        "kind": "notTrack",
+        "track": "track_okama_kenpo"
+      }
+    ],
+    "weight": 0.05,
+    "tags": ["training", "people"],
+    "once": true,
+    "choices": [
+      {
+        "id": "go",
+        "label": "Accept the invitation",
+        "effects": [
+          {
+            "kind": "learnTrack",
+            "track": "track_okama_kenpo"
+          },
+          {
+            "kind": "powerEvent",
+            "event": "invitation"
+          }
+        ]
+      },
+      {
+        "id": "decline",
+        "label": "Decline politely"
+      }
+    ]
+  },
+  {
+    "id": "evt_revolutionary_teacher",
+    "type": "personal",
+    "title": "A revolutionary's grip",
+    "text": "A quiet woman in a cloak shows you a grip that crushes stone, and asks whether you would fight for a freer world.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "stat",
+        "stat": "strength",
+        "min": 60
+      },
+      {
+        "kind": "notTrack",
+        "track": "track_dragon_claw"
+      }
+    ],
+    "weight": 0.05,
+    "tags": ["training", "revolution"],
+    "once": true,
+    "choices": [
+      {
+        "id": "learn",
+        "label": "Learn the Dragon Claw",
+        "effects": [
+          {
+            "kind": "learnTrack",
+            "track": "track_dragon_claw"
+          },
+          {
+            "kind": "drift",
+            "tags": ["brave"]
+          }
+        ]
+      },
+      {
+        "id": "refuse",
+        "label": "Refuse"
+      }
+    ]
+  },
+  {
+    "id": "evt_oden_scroll",
+    "type": "personal",
+    "title": "A scroll in a burned shrine",
+    "text": "In the ashes of a shrine you find a scroll of sword forms, signed with the Kozuki crest.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "atLocation",
+        "location": "loc_wano"
+      },
+      {
+        "kind": "track",
+        "track": "track_swordsmanship",
+        "stage": "cut_stone"
+      },
+      {
+        "kind": "notTrack",
+        "track": "track_oden_two_sword"
+      }
+    ],
+    "weight": 0.3,
+    "tags": ["training", "discovery"],
+    "once": true,
+    "choices": [
+      {
+        "id": "study",
+        "label": "Study it",
+        "effects": [
+          {
+            "kind": "learnTrack",
+            "track": "track_oden_two_sword"
+          },
+          {
+            "kind": "powerEvent",
+            "event": "scroll"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_fishman_trust",
+    "type": "personal",
+    "title": "A debt on Fish-Man Island",
+    "text": "A Fish-Man child is being bullied by a human sailor at the docks.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "atLocation",
+        "location": "loc_fishman_island"
+      },
+      {
+        "kind": "notFlag",
+        "flag": "fishman.trust"
+      }
+    ],
+    "weight": 0.6,
+    "tags": ["fishman", "people"],
+    "cooldown": 12,
+    "choices": [
+      {
+        "id": "help",
+        "label": "Stand up for the child",
+        "effects": [
+          {
+            "kind": "flag",
+            "flag": "fishman.trust",
+            "value": true
+          },
+          {
+            "kind": "drift",
+            "tags": ["kind"]
+          },
+          {
+            "kind": "powerEvent",
+            "event": "trust"
+          }
+        ]
+      },
+      {
+        "id": "ignore",
+        "label": "Keep walking"
+      }
+    ]
+  },
+  {
+    "id": "evt_lost_purse",
+    "type": "personal",
+    "title": "A purse in the gutter",
+    "text": "A fat purse lies in the gutter, a name stitched inside it.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "atSea",
+        "value": false
+      },
+      {
+        "kind": "age",
+        "min": 8
+      }
+    ],
+    "weight": 0.6,
+    "tags": ["money", "local"],
+    "cooldown": 10,
+    "choices": [
+      {
+        "id": "return",
+        "label": "Find its owner",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["honest", "generous"]
+          },
+          {
+            "kind": "fame",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "id": "keep",
+        "label": "Keep it",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["greedy", "sly"]
+          },
+          {
+            "kind": "berries",
+            "min": 500,
+            "max": 4000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_beggar",
+    "type": "personal",
+    "title": "A beggar at the gate",
+    "text": "An old sailor with one leg asks you for a coin.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "atSea",
+        "value": false
+      },
+      {
+        "kind": "age",
+        "min": 8
+      }
+    ],
+    "weight": 0.6,
+    "tags": ["social", "local"],
+    "cooldown": 10,
+    "choices": [
+      {
+        "id": "give",
+        "label": "Give them a coin",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["generous", "kind"]
+          },
+          {
+            "kind": "berries",
+            "min": -300,
+            "max": -100
+          }
+        ]
+      },
+      {
+        "id": "pass",
+        "label": "Walk past",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["greedy"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_insult",
+    "type": "personal",
+    "title": "An insult in the tavern",
+    "text": "A drunk loudly insults your family in front of everyone.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 14
+      }
+    ],
+    "weight": 0.6,
+    "tags": ["fight", "social"],
+    "cooldown": 10,
+    "choices": [
+      {
+        "id": "fight",
+        "label": "Hit him",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["rash"]
+          },
+          {
+            "kind": "behaviour",
+            "counter": "fights",
+            "by": 1
+          },
+          {
+            "kind": "powerPoints",
+            "practice": "fight",
+            "points": 1
+          }
+        ]
+      },
+      {
+        "id": "walk",
+        "label": "Walk away",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["calm"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_praise",
+    "type": "personal",
+    "title": "Praised in public",
+    "text": "The harbour master praises your work in front of a crowd.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 12
+      }
+    ],
+    "weight": 0.5,
+    "tags": ["social", "local"],
+    "cooldown": 10,
+    "choices": [
+      {
+        "id": "accept",
+        "label": "Soak it up",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["proud"]
+          },
+          {
+            "kind": "fame",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "id": "deflect",
+        "label": "Say it was nothing",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["humble"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_dare",
+    "type": "personal",
+    "title": "A dare on the cliffs",
+    "text": "The others dare you to jump from the high rocks into the sea.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 10,
+        "max": 40
+      },
+      {
+        "kind": "feature",
+        "features": ["coast"]
+      }
+    ],
+    "weight": 0.5,
+    "tags": ["social", "local"],
+    "cooldown": 10,
+    "choices": [
+      {
+        "id": "jump",
+        "label": "Jump",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["reckless", "brave"]
+          }
+        ],
+        "check": {
+          "stat": "durability",
+          "difficulty": 25,
+          "success": {
+            "text": "You came up laughing."
+          },
+          "failure": {
+            "text": "You hit the water badly.",
+            "effects": [
+              {
+                "kind": "health",
+                "fraction": -0.15
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "climb_down",
+        "label": "Climb down",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["careful", "cowardly"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_begging_enemy",
+    "type": "personal",
+    "title": "An enemy at your mercy",
+    "text": "The man who robbed you last spring lies in the mud at your feet, begging.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 16
+      },
+      {
+        "kind": "counter",
+        "counter": "fights",
+        "min": 3
+      }
+    ],
+    "weight": 0.3,
+    "tags": ["fight", "crime"],
+    "cooldown": 24,
+    "choices": [
+      {
+        "id": "spare",
+        "label": "Let him go",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["kind"]
+          }
+        ]
+      },
+      {
+        "id": "finish",
+        "label": "Finish it",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["cruel"]
+          },
+          {
+            "kind": "behaviour",
+            "counter": "kills",
+            "by": 1
+          },
+          {
+            "kind": "infamy",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_promise",
+    "type": "personal",
+    "title": "A promise that costs",
+    "text": "You promised a friend you would help them move house today. A better offer has come.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 12
+      },
+      {
+        "kind": "relation",
+        "relation": "friend"
+      }
+    ],
+    "weight": 0.4,
+    "tags": ["social", "relationship"],
+    "cooldown": 18,
+    "choices": [
+      {
+        "id": "keep",
+        "label": "Keep your promise",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["honest"]
+          },
+          {
+            "kind": "opinion",
+            "target": "friend",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "id": "break",
+        "label": "Break it",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["sly"]
+          },
+          {
+            "kind": "behaviour",
+            "counter": "broken_oaths",
+            "by": 1
+          },
+          {
+            "kind": "opinion",
+            "target": "friend",
+            "value": -10
+          },
+          {
+            "kind": "berries",
+            "min": 500,
+            "max": 2000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evt_pirate_thug",
+    "type": "personal",
+    "title": "A pirate shaking down the market",
+    "text": "A pirate with a fresh bounty poster is taking money from the stallholders.",
+    "trigger": "random",
+    "conditions": [
+      {
+        "kind": "age",
+        "min": 16
+      },
+      {
+        "kind": "feature",
+        "features": ["market", "docks"]
+      }
+    ],
+    "weight": 0.4,
+    "tags": ["fight", "pirates", "local"],
+    "cooldown": 12,
+    "choices": [
+      {
+        "id": "stop",
+        "label": "Stop him",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["brave"]
+          },
+          {
+            "kind": "behaviour",
+            "counter": "fights",
+            "by": 1
+          },
+          {
+            "kind": "powerPoints",
+            "practice": "fight",
+            "points": 2
+          }
+        ],
+        "check": {
+          "stat": "combatPower",
+          "difficulty": 80,
+          "perDanger": 10,
+          "success": {
+            "text": "He went down, and the stallholders cheered.",
+            "effects": [
+              {
+                "kind": "behaviour",
+                "counter": "pirates_beaten",
+                "by": 1
+              },
+              {
+                "kind": "fame",
+                "value": 2
+              }
+            ]
+          },
+          "failure": {
+            "text": "He beat you and laughed about it.",
+            "effects": [
+              {
+                "kind": "injury",
+                "severity": "roll",
+                "area": "roll",
+                "cause": "violence"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "pay",
+        "label": "Keep your head down",
+        "effects": [
+          {
+            "kind": "drift",
+            "tags": ["cowardly"]
+          }
+        ]
+      }
+    ]
+  }
+]

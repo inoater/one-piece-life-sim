@@ -1,0 +1,61 @@
+{
+  "id": "moveset_nico_robin",
+  "char": "char_nico_robin",
+  "eras": [
+    {
+      "from": {
+        "year": 13,
+        "month": 1
+      },
+      "techniques": ["tech_hana_hana_cuatro_fleur_clutch", "tech_hana_hana_seis_fleur_twist"],
+      "tracks": {},
+      "approx": true,
+      "to": {
+        "year": 35,
+        "month": 12
+      },
+      "mastery": 30,
+      "signature": "tech_hana_hana_cuatro_fleur_clutch"
+    },
+    {
+      "from": {
+        "year": 36,
+        "month": 1
+      },
+      "techniques": [
+        "tech_hana_hana_cuatro_fleur_clutch",
+        "tech_hana_hana_seis_fleur_twist",
+        "tech_hana_hana_mil_fleur_gigantesco_mano"
+      ],
+      "tracks": {},
+      "approx": true,
+      "to": {
+        "year": 37,
+        "month": 12
+      },
+      "mastery": 60,
+      "signature": "tech_hana_hana_cuatro_fleur_clutch",
+      "finisher": "tech_hana_hana_mil_fleur_gigantesco_mano"
+    },
+    {
+      "from": {
+        "year": 38,
+        "month": 1
+      },
+      "techniques": [
+        "tech_hana_hana_cuatro_fleur_clutch",
+        "tech_hana_hana_seis_fleur_twist",
+        "tech_hana_hana_mil_fleur_gigantesco_mano",
+        "tech_hana_hana_demonio_fleur"
+      ],
+      "tracks": {
+        "track_armament": "coat",
+        "track_observation": "wider_range"
+      },
+      "approx": true,
+      "mastery": 80,
+      "signature": "tech_hana_hana_cuatro_fleur_clutch",
+      "finisher": "tech_hana_hana_demonio_fleur"
+    }
+  ]
+}

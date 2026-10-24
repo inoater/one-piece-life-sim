@@ -1,0 +1,24 @@
+{
+  "id": "moveset_fisher_tiger",
+  "char": "char_fisher_tiger",
+  "eras": [
+    {
+      "from": {
+        "year": -5,
+        "month": 1
+      },
+      "techniques": ["tech_karate_seiken", "tech_karate_senmaigawara", "tech_karate_buraikan"],
+      "tracks": {
+        "track_fishman_karate": "eighth_dan",
+        "track_armament": "harden"
+      },
+      "approx": true,
+      "to": {
+        "year": 25,
+        "month": 6
+      },
+      "signature": "tech_karate_senmaigawara",
+      "finisher": "tech_karate_buraikan"
+    }
+  ]
+}

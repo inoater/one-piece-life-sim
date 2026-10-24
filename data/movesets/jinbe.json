@@ -1,0 +1,31 @@
+{
+  "id": "moveset_jinbe",
+  "char": "char_jinbe",
+  "eras": [
+    {
+      "from": {
+        "year": 0,
+        "month": 1
+      },
+      "techniques": [
+        "tech_karate_seiken",
+        "tech_karate_senmaigawara",
+        "tech_karate_samehada",
+        "tech_karate_uchimizu",
+        "tech_karate_buraikan",
+        "tech_jujutsu_yarinami",
+        "tech_jujutsu_kairyu",
+        "tech_jinbe_sea_dragon"
+      ],
+      "tracks": {
+        "track_fishman_karate": "ninth_dan",
+        "track_fishman_jujutsu": "wave",
+        "track_armament": "full_body",
+        "track_observation": "read_intent"
+      },
+      "approx": true,
+      "signature": "tech_jinbe_sea_dragon",
+      "finisher": "tech_karate_buraikan"
+    }
+  ]
+}

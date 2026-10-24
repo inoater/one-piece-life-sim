@@ -1,0 +1,26 @@
+{
+  "id": "moveset_bartholomew_kuma",
+  "char": "char_bartholomew_kuma",
+  "eras": [
+    {
+      "from": {
+        "year": 15,
+        "month": 1
+      },
+      "techniques": [
+        "tech_nikyu_nikyu_tsuppari_pad_hou",
+        "tech_nikyu_nikyu_ursus_shock",
+        "tech_nikyu_nikyu_repel_pain",
+        "tech_nikyu_nikyu_send_away"
+      ],
+      "tracks": {
+        "track_armament": "full_body",
+        "track_observation": "read_intent"
+      },
+      "approx": true,
+      "mastery": 85,
+      "signature": "tech_nikyu_nikyu_tsuppari_pad_hou",
+      "finisher": "tech_nikyu_nikyu_ursus_shock"
+    }
+  ]
+}

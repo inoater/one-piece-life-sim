@@ -1,0 +1,26 @@
+{
+  "id": "moveset_monkey_d_garp",
+  "char": "char_monkey_d_garp",
+  "eras": [
+    {
+      "from": {
+        "year": -20,
+        "month": 1
+      },
+      "techniques": [
+        "tech_garp_fist_of_love",
+        "tech_garp_galaxy_impact",
+        "tech_brawl_haymaker",
+        "tech_haki_harden"
+      ],
+      "tracks": {
+        "track_brawling": "iron_fists",
+        "track_armament": "internal",
+        "track_observation": "future_sight"
+      },
+      "approx": true,
+      "signature": "tech_garp_fist_of_love",
+      "finisher": "tech_garp_galaxy_impact"
+    }
+  ]
+}

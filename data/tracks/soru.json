@@ -1,0 +1,90 @@
+{
+  "id": "track_soru",
+  "name": "Soru",
+  "family": "six_powers",
+  "description": "One of the Six Powers (Rokushiki): a burst step, then chained steps, then afterimages.",
+  "stages": [
+    {
+      "id": "first",
+      "name": "A burst step",
+      "level": "novice",
+      "at": 0,
+      "description": "Soru: a burst step.",
+      "text": "You managed Soru for the first time: a burst step.",
+      "techniques": ["tech_soru"],
+      "combat": 6
+    },
+    {
+      "id": "second",
+      "name": "Chained steps",
+      "level": "adept",
+      "at": 40,
+      "description": "Soru: chained steps.",
+      "text": "Soru came to you without thinking now: chained steps.",
+      "requires": {
+        "stats": {
+          "speed": 60
+        }
+      },
+      "combat": 14
+    },
+    {
+      "id": "mastered",
+      "name": "Afterimages",
+      "level": "master",
+      "at": 100,
+      "description": "Soru mastered: afterimages.",
+      "text": "You had mastered Soru: afterimages.",
+      "requires": {
+        "stats": {
+          "speed": 75
+        },
+        "teacher": true
+      },
+      "techniques": ["tech_soru_2"],
+      "combat": 24,
+      "flags": {
+        "six_powers.soru": true
+      }
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a Cipher Pol instructor",
+        "places": ["loc_enies_lobby", "loc_mary_geoise"],
+        "mult": 1.4,
+        "requires": {
+          "flags": {
+            "marine.enlisted": true
+          }
+        }
+      },
+      {
+        "name": "a Marine elite instructor",
+        "places": ["loc_marineford", "loc_marine_base_town"],
+        "mult": 1.3,
+        "requires": {
+          "flags": {
+            "marine.enlisted": true
+          }
+        }
+      }
+    ],
+    "requires": {
+      "stats": {
+        "strength": 50,
+        "speed": 50,
+        "durability": 50
+      }
+    },
+    "opens": ["track_geppo", "track_tekkai", "track_shigan", "track_rankyaku", "track_kami_e"]
+  },
+  "group": "six_powers",
+  "speedStats": {
+    "speed": 0.5
+  },
+  "word": "Soru",
+  "tags": ["body"]
+}

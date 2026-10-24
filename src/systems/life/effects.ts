@@ -6,9 +6,21 @@ import { humanAgeOf, isMarried, livingRelations, reputation } from './body';
 import { lifeLog, pay, renderLife, reportLine, type LifeEnv } from './env';
 import { fallIll, hurt, injure, restore } from './health';
 import { meetPerson, relate, shiftOpinion } from './people';
-import { giveTraitTo } from './traits';
+import { firstImpressions, giveTraitTo, removeTrait } from './traits';
 import { raisePotential, trainStat } from './training';
 import { delayVoyage, overboard, redirect, shipEffect } from '../voyage/sea';
+import { countBehaviour, drift, driftCtxOf } from './personality';
+import { dateOf, formatDate } from '../../engine/calendar';
+import { hasKingsQualities, powerEvent, wake } from '../powers/haki';
+import { curse, findFruit, hearRumour, revealSecret } from '../powers/fruits';
+import {
+  addProgress,
+  breakthroughTrack,
+  fightingTracks,
+  openTrack,
+  powerCtxOf,
+  practiceTarget,
+} from '../powers/tracks';
 
 /**
  * What a month can do to a life, in one place: activity outcomes, job shifts and events all apply
@@ -40,6 +52,15 @@ export const AFTER_TEXT = new Set<LifeEffect['kind']>([
   'schedule',
   'redirect',
   'overboard',
+  // Phase 4: powers write their own lines.
+  'powerEvent',
+  'powerPoints',
+  'powerBreakthrough',
+  'learnTrack',
+  'findFruit',
+  'fruitSecret',
+  'fruitRumour',
+  'wakeHaki',
 ]);
 
 const OPINION_KIND: Record<string, RelationKind> = {
@@ -66,6 +87,8 @@ export function arrest(env: LifeEnv, fine: number, months: number): void {
   }
   const stay = Math.max(1, months);
   life.jailedUntil = Math.max(life.jailedUntil ?? 0, tick + 1 + stay);
+  // Phase 4: a cell for a fruit user means seastone cuffs.
+  curse(env, life.jailedUntil, true);
   const text = renderLife(env, data.life.lines.jailed, { months: String(stay) });
   lifeLog(env, text, { kind: 'event', tags: ['personal', 'crime'], knownBy: ['*'] });
   reportLine(env, text, 'alert');
@@ -104,7 +127,13 @@ export function applyLifeEffect(env: LifeEnv, effect: LifeEffect, scope: EffectS
       else hurt(env, -effect.fraction, 'accident', 'an accident');
       break;
     case 'trait':
-      giveTraitTo(data, p.entity, effect.trait);
+      giveTraitTo(
+        data,
+        p.entity,
+        effect.trait,
+        `${capitalSource(env.cause)}, ${formatDate(dateOf(data.calendar, tick))}`,
+        tick,
+      );
       break;
     case 'flag':
       p.entity.flags[effect.flag] = effect.value;
@@ -144,6 +173,7 @@ export function applyLifeEffect(env: LifeEnv, effect: LifeEffect, scope: EffectS
         flags: effect.flags,
       });
       relate(p.entity, other, effect.role, effect.opinion, tick, rng.fork('relate'));
+      firstImpressions(data, p.entity, other);
       scope.other = other;
       break;
     }
@@ -239,5 +269,60 @@ export function applyLifeEffect(env: LifeEnv, effect: LifeEffect, scope: EffectS
       if (effect.value > 0) reputation(p.entity, 'infamy').base += 1;
       break;
     }
+    // Phase 4
+    case 'drift':
+      drift(driftCtxOf(env), effect.tags);
+      break;
+    case 'behaviour':
+      countBehaviour(p.c, effect.counter, effect.by);
+      break;
+    case 'loseTrait':
+      removeTrait(data, p.entity, effect.trait);
+      break;
+    case 'powerEvent':
+      powerEvent(powerCtxOf(env), effect.event);
+      break;
+    case 'powerPoints': {
+      const ctx = powerCtxOf(env);
+      const target = effect.track ?? practiceTarget(p.c, data, fightingTracks(p.c, data));
+      if (target) addProgress(ctx, target, effect.points, effect.practice);
+      break;
+    }
+    case 'powerBreakthrough':
+      breakthroughTrack(powerCtxOf(env), effect.track);
+      break;
+    case 'learnTrack':
+      openTrack(powerCtxOf(env), effect.track, { source: env.cause });
+      break;
+    case 'findFruit':
+      findFruit(env, {
+        ...(effect.fruit !== undefined ? { fruit: effect.fruit } : {}),
+        ...(effect.rarity !== undefined ? { rarity: effect.rarity } : {}),
+      });
+      break;
+    case 'immerse':
+      curse(env, tick + effect.months);
+      break;
+    case 'fruitSecret':
+      revealSecret(env);
+      break;
+    case 'fruitRumour':
+      hearRumour(env);
+      break;
+    case 'wakeHaki': {
+      const ctx = powerCtxOf(env);
+      if (effect.haki !== 'conqueror' || hasKingsQualities(data, p.c))
+        wake(ctx, effect.haki, 'event');
+      break;
+    }
   }
+}
+
+/** "evt_pirates_in_harbour#fight" -> "An event" style source text for the sheet. */
+function capitalSource(cause: string): string {
+  if (cause.startsWith('evt_')) return 'An event';
+  if (cause.startsWith('act_')) return 'Something you did';
+  if (cause.startsWith('job_')) return 'Your work';
+  if (cause.startsWith('beat_')) return 'History';
+  return 'Life';
 }

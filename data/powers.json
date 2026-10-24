@@ -1,0 +1,1933 @@
+{
+  "levels": [
+    {
+      "id": "novice",
+      "name": "Novice"
+    },
+    {
+      "id": "trained",
+      "name": "Trained"
+    },
+    {
+      "id": "adept",
+      "name": "Adept"
+    },
+    {
+      "id": "expert",
+      "name": "Expert"
+    },
+    {
+      "id": "master",
+      "name": "Master"
+    },
+    {
+      "id": "grandmaster",
+      "name": "Grandmaster"
+    }
+  ],
+  "practice": {
+    "drill": 1,
+    "spar": 1.5,
+    "fight": 3,
+    "teach": 0.5
+  },
+  "breakthroughPoints": 20,
+  "rust": {
+    "afterMonths": 24,
+    "perYear": 0.25
+  },
+  "talentCeilings": {
+    "ordinary": "master",
+    "gifted": "grandmaster",
+    "prodigy": "grandmaster",
+    "monster": "grandmaster",
+    "anomaly": "grandmaster"
+  },
+  "combatBonusStat": "combatBonus",
+  "haki": {
+    "seedMonths": 12,
+    "seedChance": 0.06,
+    "nearDeathChance": 0.35,
+    "crisisChance": 0.3,
+    "teacherChance": 0.12,
+    "minWillpower": 25,
+    "trainingStamina": 8,
+    "vigorPerOverspend": 0.25,
+    "kingsQualitiesChance": 3e-7,
+    "kingsQualitiesTrait": "trait_kings_qualities",
+    "voiceTrait": "trait_voice_of_all_things",
+    "surgeWillpower": 40
+  },
+  "fruit": {
+    "cursePct": -90,
+    "cursedTrait": "trait_devil_fruit_user",
+    "rebirth": {
+      "nearbyMiles": 3000,
+      "nearby": 6,
+      "trade": 2,
+      "anywhere": 1
+    },
+    "prices": {
+      "common": {
+        "min": 100000000,
+        "max": 150000000
+      },
+      "uncommon": {
+        "min": 150000000,
+        "max": 300000000
+      },
+      "rare": {
+        "min": 300000000,
+        "max": 600000000
+      },
+      "legendary": {
+        "min": 600000000,
+        "max": 1500000000
+      }
+    },
+    "discoveryMonths": {
+      "min": 1,
+      "max": 6
+    },
+    "wildFoundPerYear": 0.12,
+    "sellChance": 0.4,
+    "marketSoldPerYear": 0.3,
+    "generatedPerWorld": 24,
+    "generatedRandomMode": 80,
+    "fighterChance": 0.04,
+    "identifyFee": 200000,
+    "combatPerMastery": {
+      "common": 0.8,
+      "uncommon": 1.0,
+      "rare": 1.4,
+      "legendary": 1.8
+    },
+    "handover": {
+      "canon": 1,
+      "probable": 0.8,
+      "random": 0.15
+    },
+    "handoverWait": 6,
+    "strangerYears": {
+      "min": 5,
+      "max": 40
+    },
+    "encyclopedia": {
+      "id": "item_fruit_encyclopedia",
+      "name": "Devil Fruit Encyclopedia",
+      "price": 5000000
+    },
+    "masteryPoints": 1.4,
+    "awakening": {
+      "mastery": 90,
+      "willpower": 70
+    },
+    "awakened": {
+      "paramecia": [
+        {
+          "stat": "willpower",
+          "pct": 10
+        },
+        {
+          "stat": "intellect",
+          "pct": 10
+        }
+      ],
+      "zoan": [
+        {
+          "stat": "strength",
+          "pct": 20
+        },
+        {
+          "stat": "speed",
+          "pct": 20
+        },
+        {
+          "stat": "endurance",
+          "pct": 20
+        },
+        {
+          "stat": "durability",
+          "pct": 20
+        },
+        {
+          "stat": "dexterity",
+          "pct": 20
+        }
+      ],
+      "logia": [
+        {
+          "stat": "strength",
+          "pct": 10
+        },
+        {
+          "stat": "perception",
+          "pct": 10
+        }
+      ]
+    },
+    "mishapChance": 0.12,
+    "mishapUntil": 25,
+    "smileWorks": 0.1,
+    "bodies": [
+      {
+        "id": "item_lassoo",
+        "name": "Lassoo",
+        "description": "A bazooka that ate the Dog-Dog Fruit, Model: Dachshund, and became a dog that fires itself.",
+        "place": "loc_alabasta"
+      },
+      {
+        "id": "item_funkfreed",
+        "name": "Funkfreed",
+        "description": "A sword that ate the Elephant-Elephant Fruit and became an elephant with a blade for a trunk.",
+        "place": "loc_enies_lobby"
+      }
+    ]
+  },
+  "primitives": [
+    {
+      "id": "stretch",
+      "name": "Stretch",
+      "tags": ["rubber", "body"]
+    },
+    {
+      "id": "ignite",
+      "name": "Ignite",
+      "tags": ["fire"]
+    },
+    {
+      "id": "freeze",
+      "name": "Freeze",
+      "tags": ["ice"]
+    },
+    {
+      "id": "glow",
+      "name": "Glow",
+      "tags": ["light"]
+    },
+    {
+      "id": "thunder",
+      "name": "Thunder",
+      "tags": ["lightning"]
+    },
+    {
+      "id": "melt",
+      "name": "Melt",
+      "tags": ["magma"]
+    },
+    {
+      "id": "dry",
+      "name": "Dry",
+      "tags": ["sand"]
+    },
+    {
+      "id": "smoke",
+      "name": "Smoke",
+      "tags": ["smoke"]
+    },
+    {
+      "id": "gas",
+      "name": "Gas",
+      "tags": ["gas", "poison"]
+    },
+    {
+      "id": "snow",
+      "name": "Snow",
+      "tags": ["ice"]
+    },
+    {
+      "id": "sink",
+      "name": "Sink",
+      "tags": ["earth"]
+    },
+    {
+      "id": "dark",
+      "name": "Darkness",
+      "tags": ["dark", "gravity"]
+    },
+    {
+      "id": "grow",
+      "name": "Grow",
+      "tags": ["plant"]
+    },
+    {
+      "id": "string",
+      "name": "String",
+      "tags": ["string"]
+    },
+    {
+      "id": "wax",
+      "name": "Wax",
+      "tags": ["wax"]
+    },
+    {
+      "id": "explode",
+      "name": "Explode",
+      "tags": ["explosive"]
+    },
+    {
+      "id": "cut",
+      "name": "Cut",
+      "tags": ["slash"]
+    },
+    {
+      "id": "spring",
+      "name": "Spring",
+      "tags": ["body"]
+    },
+    {
+      "id": "split",
+      "name": "Split",
+      "tags": ["body"]
+    },
+    {
+      "id": "sprout",
+      "name": "Sprout",
+      "tags": ["body", "grip"]
+    },
+    {
+      "id": "slip",
+      "name": "Slip",
+      "tags": ["body"]
+    },
+    {
+      "id": "poison",
+      "name": "Poison",
+      "tags": ["poison"]
+    },
+    {
+      "id": "shrink",
+      "name": "Shrink",
+      "tags": ["body"]
+    },
+    {
+      "id": "enlarge",
+      "name": "Enlarge",
+      "tags": ["body"]
+    },
+    {
+      "id": "weight",
+      "name": "Weight",
+      "tags": ["blunt", "gravity"]
+    },
+    {
+      "id": "coat",
+      "name": "Coat",
+      "tags": ["body"]
+    },
+    {
+      "id": "slow",
+      "name": "Slow",
+      "tags": ["time"]
+    },
+    {
+      "id": "swap",
+      "name": "Swap",
+      "tags": ["spatial"]
+    },
+    {
+      "id": "bind",
+      "name": "Bind",
+      "tags": ["bind"]
+    },
+    {
+      "id": "rot",
+      "name": "Rot",
+      "tags": ["poison"]
+    },
+    {
+      "id": "chime",
+      "name": "Chime",
+      "tags": ["sound"]
+    },
+    {
+      "id": "quake",
+      "name": "Quake",
+      "tags": ["explosive", "blunt"]
+    },
+    {
+      "id": "barrier",
+      "name": "Barrier",
+      "tags": ["body"]
+    },
+    {
+      "id": "door",
+      "name": "Door",
+      "tags": ["spatial"]
+    },
+    {
+      "id": "soul",
+      "name": "Soul",
+      "tags": ["soul"]
+    },
+    {
+      "id": "shadow",
+      "name": "Shadow",
+      "tags": ["dark"]
+    },
+    {
+      "id": "repel",
+      "name": "Repel",
+      "tags": ["blunt", "spatial"]
+    },
+    {
+      "id": "mirror",
+      "name": "Mirror",
+      "tags": ["spatial", "illusion"]
+    },
+    {
+      "id": "magnet",
+      "name": "Magnet",
+      "tags": ["metal"]
+    },
+    {
+      "id": "heal",
+      "name": "Heal",
+      "tags": ["heal"]
+    },
+    {
+      "id": "copy",
+      "name": "Copy",
+      "tags": ["illusion", "body"]
+    },
+    {
+      "id": "clear",
+      "name": "Vanish",
+      "tags": ["illusion"]
+    },
+    {
+      "id": "bubble",
+      "name": "Bubble",
+      "tags": ["water"]
+    },
+    {
+      "id": "sound",
+      "name": "Sound",
+      "tags": ["sound"]
+    },
+    {
+      "id": "gravity",
+      "name": "Gravity",
+      "tags": ["gravity"]
+    },
+    {
+      "id": "space",
+      "name": "Space",
+      "tags": ["spatial", "slash"]
+    },
+    {
+      "id": "time",
+      "name": "Time",
+      "tags": ["time"]
+    },
+    {
+      "id": "sweet",
+      "name": "Sweets",
+      "tags": ["body", "bind"]
+    },
+    {
+      "id": "wash",
+      "name": "Wash",
+      "tags": ["water", "mind"]
+    },
+    {
+      "id": "memory",
+      "name": "Memory",
+      "tags": ["mind"]
+    },
+    {
+      "id": "transform",
+      "name": "Transform",
+      "tags": ["body"]
+    },
+    {
+      "id": "beast",
+      "name": "Beast",
+      "tags": ["beast", "body"]
+    },
+    {
+      "id": "revive",
+      "name": "Revive",
+      "tags": ["soul"]
+    },
+    {
+      "id": "fly",
+      "name": "Flight",
+      "tags": ["sky", "wind"]
+    },
+    {
+      "id": "weapon",
+      "name": "Weapon",
+      "tags": ["weapon", "metal"]
+    },
+    {
+      "id": "mind",
+      "name": "Mind",
+      "tags": ["mind"]
+    },
+    {
+      "id": "wind",
+      "name": "Wind",
+      "tags": ["wind"]
+    },
+    {
+      "id": "earth",
+      "name": "Earth",
+      "tags": ["earth"]
+    },
+    {
+      "id": "water",
+      "name": "Water",
+      "tags": ["water"]
+    },
+    {
+      "id": "art",
+      "name": "Art",
+      "tags": ["illusion", "bind"]
+    },
+    {
+      "id": "metal",
+      "name": "Metal",
+      "tags": ["metal"]
+    },
+    {
+      "id": "hormone",
+      "name": "Hormone",
+      "tags": ["heal", "body"]
+    },
+    {
+      "id": "dream",
+      "name": "Dream",
+      "tags": ["mind", "illusion"]
+    },
+    {
+      "id": "fuse",
+      "name": "Fuse",
+      "tags": ["body", "bind"]
+    }
+  ],
+  "generator": {
+    "concepts": [
+      {
+        "id": "chime",
+        "word": "Chime",
+        "type": "paramecia",
+        "gist": "rings like a great bell, and makes whatever they strike ring until it shakes apart",
+        "tags": ["sound", "blunt"],
+        "forms": ["strike", "area", "projectile", "counter"],
+        "weakness": "sound",
+        "effects": ["stun"]
+      },
+      {
+        "id": "echo",
+        "word": "Echo",
+        "type": "paramecia",
+        "gist": "can store a blow and release it again a moment later, twice as hard",
+        "tags": ["sound", "blunt"],
+        "forms": ["counter", "strike", "guard"],
+        "weakness": "concentration",
+        "effects": ["reflect"]
+      },
+      {
+        "id": "knot",
+        "word": "Knot",
+        "type": "paramecia",
+        "gist": "ties anything they touch into knots, rope or iron alike",
+        "tags": ["bind", "grip"],
+        "forms": ["grapple", "strike", "support"],
+        "weakness": "slash",
+        "effects": ["bind"]
+      },
+      {
+        "id": "hinge",
+        "word": "Hinge",
+        "type": "paramecia",
+        "gist": "can fold their own body and anything they touch along hinges that were not there",
+        "tags": ["body", "spatial"],
+        "forms": ["movement", "grapple", "counter"],
+        "weakness": "fatigue",
+        "effects": ["disarm"]
+      },
+      {
+        "id": "ripple",
+        "word": "Ripple",
+        "type": "paramecia",
+        "gist": "sends ripples through solid ground as if it were a pond",
+        "tags": ["earth", "blunt"],
+        "forms": ["area", "projectile", "movement"],
+        "weakness": "distance",
+        "effects": ["knockback", "terrain"]
+      },
+      {
+        "id": "quill",
+        "word": "Quill",
+        "type": "paramecia",
+        "gist": "grows and fires quills from their skin",
+        "tags": ["pierce", "body"],
+        "forms": ["projectile", "barrage", "guard"],
+        "weakness": "fire",
+        "effects": ["bleed"]
+      },
+      {
+        "id": "tally",
+        "word": "Tally",
+        "type": "paramecia",
+        "gist": "counts every blow they take and can pay it all back at once",
+        "tags": ["blunt", "mind"],
+        "forms": ["counter", "boost", "strike"],
+        "weakness": "concentration",
+        "effects": ["reflect"]
+      },
+      {
+        "id": "lull",
+        "word": "Lull",
+        "type": "paramecia",
+        "gist": "makes everyone nearby drowsy with a low hum",
+        "tags": ["sound", "mind"],
+        "forms": ["area", "support"],
+        "weakness": "sound",
+        "effects": ["slow", "debuff"]
+      },
+      {
+        "id": "wilt",
+        "word": "Wilt",
+        "type": "paramecia",
+        "gist": "makes living things wilt and droop at a touch",
+        "tags": ["plant", "poison"],
+        "forms": ["strike", "area"],
+        "weakness": "water",
+        "effects": ["debuff"]
+      },
+      {
+        "id": "chalk",
+        "word": "Chalk",
+        "type": "paramecia",
+        "gist": "draws lines in the air that hold like walls",
+        "tags": ["bind", "spatial"],
+        "forms": ["guard", "support", "grapple"],
+        "weakness": "water",
+        "effects": ["bind"]
+      },
+      {
+        "id": "sift",
+        "word": "Sift",
+        "type": "paramecia",
+        "gist": "passes their hands through solid things and pulls out what they want",
+        "tags": ["spatial", "grip"],
+        "forms": ["grapple", "strike"],
+        "weakness": "haki",
+        "effects": ["disarm"]
+      },
+      {
+        "id": "prism",
+        "word": "Prism",
+        "type": "paramecia",
+        "gist": "bends light around themselves into rainbows that blind and dazzle",
+        "tags": ["light", "illusion"],
+        "forms": ["area", "projectile", "movement"],
+        "weakness": "light",
+        "effects": ["blind"]
+      },
+      {
+        "id": "tether",
+        "word": "Tether",
+        "type": "paramecia",
+        "gist": "ties invisible tethers between things, which then cannot pull apart",
+        "tags": ["bind", "spatial"],
+        "forms": ["grapple", "support", "movement"],
+        "weakness": "slash",
+        "effects": ["bind"]
+      },
+      {
+        "id": "spiral",
+        "word": "Spiral",
+        "type": "paramecia",
+        "gist": "puts a spin on everything they throw or strike",
+        "tags": ["wind", "pierce"],
+        "forms": ["projectile", "strike", "barrage"],
+        "weakness": "fatigue",
+        "effects": ["knockback"]
+      },
+      {
+        "id": "bramble",
+        "word": "Bramble",
+        "type": "paramecia",
+        "gist": "grows thorned brambles from any wood",
+        "tags": ["plant", "pierce"],
+        "forms": ["area", "grapple", "guard"],
+        "weakness": "fire",
+        "effects": ["bleed", "bind"]
+      },
+      {
+        "id": "pebble",
+        "word": "Pebble",
+        "type": "paramecia",
+        "gist": "breaks anything they touch into a storm of pebbles",
+        "tags": ["earth", "blunt"],
+        "forms": ["projectile", "barrage", "area"],
+        "weakness": "water",
+        "effects": ["terrain"]
+      },
+      {
+        "id": "lantern",
+        "word": "Lantern",
+        "type": "paramecia",
+        "gist": "carries a light inside that no wind can put out, and can burn it bright as a lighthouse",
+        "tags": ["light", "fire"],
+        "forms": ["projectile", "support", "area"],
+        "weakness": "water",
+        "effects": ["blind"]
+      },
+      {
+        "id": "brine",
+        "word": "Brine",
+        "type": "paramecia",
+        "gist": "sweats seawater that stings and stiffens",
+        "tags": ["water", "poison"],
+        "forms": ["projectile", "area"],
+        "weakness": "fire",
+        "effects": ["slow"]
+      },
+      {
+        "id": "pulse",
+        "word": "Pulse",
+        "type": "paramecia",
+        "gist": "sends a heartbeat through the ground that knocks people off their feet",
+        "tags": ["blunt", "body"],
+        "forms": ["area", "counter", "strike"],
+        "weakness": "distance",
+        "effects": ["stun"]
+      },
+      {
+        "id": "wobble",
+        "word": "Wobble",
+        "type": "paramecia",
+        "gist": "makes anything they touch wobble like jelly for a moment",
+        "tags": ["body", "blunt"],
+        "forms": ["strike", "counter", "guard"],
+        "weakness": "concentration",
+        "effects": ["debuff"]
+      },
+      {
+        "id": "gild",
+        "word": "Gild",
+        "type": "paramecia",
+        "gist": "covers things in a thin, unbreakable leaf of gold",
+        "tags": ["metal", "bind"],
+        "forms": ["guard", "grapple", "support"],
+        "weakness": "heat",
+        "effects": ["bind"]
+      },
+      {
+        "id": "ash",
+        "word": "Ash",
+        "type": "logia",
+        "gist": "becomes and makes ash, choking and grey",
+        "tags": ["smoke", "fire"],
+        "forms": ["area", "projectile", "movement"],
+        "weakness": "water",
+        "effects": ["blind"]
+      },
+      {
+        "id": "glass",
+        "word": "Glass",
+        "type": "logia",
+        "gist": "becomes and makes glass, sharp and clear",
+        "tags": ["slash", "light"],
+        "forms": ["projectile", "guard", "area"],
+        "weakness": "blunt",
+        "effects": ["bleed"]
+      },
+      {
+        "id": "steam",
+        "word": "Steam",
+        "type": "logia",
+        "gist": "becomes and makes scalding steam",
+        "tags": ["water", "fire"],
+        "forms": ["area", "movement", "projectile"],
+        "weakness": "cold",
+        "effects": ["burn"]
+      },
+      {
+        "id": "salt",
+        "word": "Salt",
+        "type": "logia",
+        "gist": "becomes and makes salt that dries and stings",
+        "tags": ["earth", "poison"],
+        "forms": ["area", "projectile", "grapple"],
+        "weakness": "water",
+        "effects": ["slow"]
+      },
+      {
+        "id": "mist",
+        "word": "Mist",
+        "type": "logia",
+        "gist": "becomes and makes a cold white mist",
+        "tags": ["water", "illusion"],
+        "forms": ["area", "movement", "support"],
+        "weakness": "wind",
+        "effects": ["blind"]
+      },
+      {
+        "id": "dust",
+        "word": "Dust",
+        "type": "logia",
+        "gist": "becomes and makes dust, everywhere and in everything",
+        "tags": ["earth", "wind"],
+        "forms": ["area", "movement"],
+        "weakness": "water",
+        "effects": ["blind"]
+      },
+      {
+        "id": "oil",
+        "word": "Oil",
+        "type": "logia",
+        "gist": "becomes and makes slick black oil",
+        "tags": ["water", "explosive"],
+        "forms": ["area", "grapple", "projectile"],
+        "weakness": "fire",
+        "effects": ["slow"]
+      },
+      {
+        "id": "ink",
+        "word": "Ink",
+        "type": "logia",
+        "gist": "becomes and makes ink that stains and blinds",
+        "tags": ["water", "illusion"],
+        "forms": ["projectile", "area"],
+        "weakness": "light",
+        "effects": ["blind"]
+      },
+      {
+        "id": "pollen",
+        "word": "Pollen",
+        "type": "logia",
+        "gist": "becomes and makes clouds of pollen that make people sneeze and swoon",
+        "tags": ["plant", "mind"],
+        "forms": ["area", "support"],
+        "weakness": "wind",
+        "effects": ["debuff"]
+      },
+      {
+        "id": "tar",
+        "word": "Tar",
+        "type": "logia",
+        "gist": "becomes and makes hot tar",
+        "tags": ["earth", "bind"],
+        "forms": ["grapple", "area", "projectile"],
+        "weakness": "cold",
+        "effects": ["bind", "burn"]
+      },
+      {
+        "id": "coral",
+        "word": "Coral",
+        "type": "logia",
+        "gist": "becomes and makes coral, hard and branching",
+        "tags": ["earth", "pierce"],
+        "forms": ["guard", "projectile", "area"],
+        "weakness": "blunt",
+        "effects": ["bleed"]
+      },
+      {
+        "id": "amber",
+        "word": "Amber",
+        "type": "logia",
+        "gist": "becomes and makes amber that sets hard around whatever it catches",
+        "tags": ["bind", "earth"],
+        "forms": ["grapple", "guard", "area"],
+        "weakness": "heat",
+        "effects": ["bind"]
+      },
+      {
+        "id": "silt",
+        "word": "Silt",
+        "type": "logia",
+        "gist": "becomes and makes river silt",
+        "tags": ["earth", "water"],
+        "forms": ["area", "grapple", "movement"],
+        "weakness": "heat",
+        "effects": ["slow"]
+      },
+      {
+        "id": "hum",
+        "word": "Hum",
+        "type": "paramecia",
+        "gist": "hums at a pitch that cracks stone",
+        "tags": ["sound"],
+        "forms": ["area", "projectile", "boost"],
+        "weakness": "sound",
+        "effects": ["internal"]
+      },
+      {
+        "id": "snag",
+        "word": "Snag",
+        "type": "paramecia",
+        "gist": "makes anything that passes them snag and catch",
+        "tags": ["bind", "grip"],
+        "forms": ["counter", "grapple", "guard"],
+        "weakness": "fire",
+        "effects": ["disarm"]
+      },
+      {
+        "id": "tumble",
+        "word": "Tumble",
+        "type": "paramecia",
+        "gist": "makes anything they touch tumble head over heels",
+        "tags": ["wind", "body"],
+        "forms": ["strike", "counter", "area"],
+        "weakness": "concentration",
+        "effects": ["knockback"]
+      },
+      {
+        "id": "shiver",
+        "word": "Shiver",
+        "type": "paramecia",
+        "gist": "makes anyone they touch shiver uncontrollably",
+        "tags": ["body", "mind"],
+        "forms": ["strike", "area"],
+        "weakness": "heat",
+        "effects": ["slow", "debuff"]
+      },
+      {
+        "id": "scale",
+        "word": "Scale",
+        "type": "paramecia",
+        "gist": "grows hard scales anywhere on their body",
+        "tags": ["body", "metal"],
+        "forms": ["guard", "boost", "strike"],
+        "weakness": "heat",
+        "effects": ["buff"]
+      },
+      {
+        "id": "prickle",
+        "word": "Prickle",
+        "type": "paramecia",
+        "gist": "makes their skin bristle with needles",
+        "tags": ["pierce", "body"],
+        "forms": ["counter", "guard", "barrage"],
+        "weakness": "blunt",
+        "effects": ["bleed"]
+      },
+      {
+        "id": "smudge",
+        "word": "Smudge",
+        "type": "paramecia",
+        "gist": "smudges things out of shape, even faces",
+        "tags": ["illusion", "body"],
+        "forms": ["strike", "support"],
+        "weakness": "water",
+        "effects": ["debuff"]
+      },
+      {
+        "id": "plume",
+        "word": "Plume",
+        "type": "paramecia",
+        "gist": "grows great plumes of feathers and rides the wind on them",
+        "tags": ["wind", "sky"],
+        "forms": ["movement", "projectile", "guard"],
+        "weakness": "fire",
+        "effects": ["flight"]
+      },
+      {
+        "id": "groove",
+        "word": "Groove",
+        "type": "paramecia",
+        "gist": "cuts grooves into anything with a dancer's step",
+        "tags": ["dance", "slash"],
+        "forms": ["movement", "strike", "barrage"],
+        "weakness": "fatigue",
+        "effects": ["bleed"]
+      },
+      {
+        "id": "crumble",
+        "word": "Crumble",
+        "type": "paramecia",
+        "gist": "makes walls and armour crumble like dry bread",
+        "tags": ["earth", "blunt"],
+        "forms": ["strike", "area"],
+        "weakness": "water",
+        "effects": ["pierce_guard"]
+      },
+      {
+        "id": "knell",
+        "word": "Knell",
+        "type": "paramecia",
+        "gist": "rings a knell only the struck can hear, and it drains their strength",
+        "tags": ["sound", "soul"],
+        "forms": ["strike", "area"],
+        "weakness": "concentration",
+        "effects": ["drain"]
+      },
+      {
+        "id": "fizz",
+        "word": "Fizz",
+        "type": "paramecia",
+        "gist": "turns liquids into fizzing foam that bursts",
+        "tags": ["water", "explosive"],
+        "forms": ["projectile", "area"],
+        "weakness": "cold",
+        "effects": ["knockback"]
+      },
+      {
+        "id": "mold",
+        "word": "Mold",
+        "type": "paramecia",
+        "gist": "grows mould on whatever they touch, eating it away",
+        "tags": ["plant", "poison"],
+        "forms": ["strike", "area"],
+        "weakness": "heat",
+        "effects": ["poison"]
+      },
+      {
+        "id": "shed",
+        "word": "Shed",
+        "type": "paramecia",
+        "gist": "sheds their skin like a snake to escape any hold or wound",
+        "tags": ["body"],
+        "forms": ["movement", "guard", "boost"],
+        "weakness": "fatigue",
+        "effects": ["heal"]
+      },
+      {
+        "id": "ripen",
+        "word": "Ripen",
+        "type": "paramecia",
+        "gist": "ripens and ages anything they touch, food or foe",
+        "tags": ["time", "plant"],
+        "forms": ["strike", "support"],
+        "weakness": "concentration",
+        "effects": ["debuff"]
+      },
+      {
+        "id": "vane",
+        "word": "Vane",
+        "type": "paramecia",
+        "gist": "turns like a weathervane, and turns the wind with them",
+        "tags": ["wind"],
+        "forms": ["movement", "projectile", "counter"],
+        "weakness": "fatigue",
+        "effects": ["knockback"]
+      },
+      {
+        "id": "wane",
+        "word": "Wane",
+        "type": "paramecia",
+        "gist": "makes anything they look at grow weaker, like the waning moon",
+        "tags": ["mind", "dark"],
+        "forms": ["area", "support"],
+        "weakness": "light",
+        "effects": ["debuff"]
+      }
+    ],
+    "typeWeights": {
+      "paramecia": 60,
+      "zoan": 30,
+      "logia": 10
+    },
+    "zoanWeights": {
+      "regular": 60,
+      "ancient": 15,
+      "mythical": 5,
+      "artificial": 20
+    },
+    "animals": [
+      {
+        "word": "Badger",
+        "animal": "badger",
+        "kind": "regular"
+      },
+      {
+        "word": "Heron",
+        "animal": "heron",
+        "kind": "regular"
+      },
+      {
+        "word": "Axolotl",
+        "animal": "axolotl",
+        "kind": "regular"
+      },
+      {
+        "word": "Ibex",
+        "animal": "ibex",
+        "kind": "regular"
+      },
+      {
+        "word": "Lynx",
+        "animal": "lynx",
+        "kind": "regular"
+      },
+      {
+        "word": "Manta",
+        "animal": "manta ray",
+        "kind": "regular"
+      },
+      {
+        "word": "Yak",
+        "animal": "yak",
+        "kind": "regular"
+      },
+      {
+        "word": "Pangolin",
+        "animal": "pangolin",
+        "kind": "regular"
+      },
+      {
+        "word": "Otter",
+        "animal": "otter",
+        "kind": "regular"
+      },
+      {
+        "word": "Magpie",
+        "animal": "magpie",
+        "kind": "regular"
+      },
+      {
+        "word": "Kingfisher",
+        "animal": "kingfisher",
+        "kind": "regular"
+      },
+      {
+        "word": "Wolverine",
+        "animal": "wolverine",
+        "kind": "regular"
+      },
+      {
+        "word": "Tapir",
+        "animal": "tapir",
+        "kind": "regular"
+      },
+      {
+        "word": "Okapi",
+        "animal": "okapi",
+        "kind": "regular"
+      },
+      {
+        "word": "Narwhal",
+        "animal": "narwhal",
+        "kind": "regular"
+      },
+      {
+        "word": "Armadillo",
+        "animal": "armadillo",
+        "kind": "regular"
+      },
+      {
+        "word": "Moose",
+        "animal": "moose",
+        "kind": "regular"
+      },
+      {
+        "word": "Porcupine",
+        "animal": "porcupine",
+        "kind": "regular"
+      },
+      {
+        "word": "Salamander",
+        "animal": "salamander",
+        "kind": "regular"
+      },
+      {
+        "word": "Stingray",
+        "animal": "stingray",
+        "kind": "regular"
+      },
+      {
+        "word": "Walrus",
+        "animal": "walrus",
+        "kind": "regular"
+      },
+      {
+        "word": "Sloth",
+        "animal": "megatherium",
+        "kind": "ancient"
+      },
+      {
+        "word": "Glyptodon",
+        "animal": "glyptodon",
+        "kind": "ancient"
+      },
+      {
+        "word": "Terror",
+        "animal": "terror bird",
+        "kind": "ancient"
+      },
+      {
+        "word": "Archelon",
+        "animal": "archelon",
+        "kind": "ancient"
+      },
+      {
+        "word": "Mosasaur",
+        "animal": "mosasaur",
+        "kind": "ancient"
+      },
+      {
+        "word": "Titanoboa",
+        "animal": "titanoboa",
+        "kind": "ancient"
+      },
+      {
+        "word": "Basilisk",
+        "animal": "basilisk",
+        "kind": "mythical"
+      },
+      {
+        "word": "Griffin",
+        "animal": "griffin",
+        "kind": "mythical"
+      },
+      {
+        "word": "Manticore",
+        "animal": "manticore",
+        "kind": "mythical"
+      },
+      {
+        "word": "Roc",
+        "animal": "roc",
+        "kind": "mythical"
+      },
+      {
+        "word": "Thunderbird",
+        "animal": "thunderbird",
+        "kind": "mythical"
+      },
+      {
+        "word": "Unicorn",
+        "animal": "unicorn",
+        "kind": "mythical"
+      },
+      {
+        "word": "Kelpie",
+        "animal": "kelpie",
+        "kind": "mythical"
+      },
+      {
+        "word": "Hamster",
+        "animal": "hamster",
+        "kind": "artificial"
+      },
+      {
+        "word": "Gecko",
+        "animal": "gecko",
+        "kind": "artificial"
+      },
+      {
+        "word": "Ferret",
+        "animal": "ferret",
+        "kind": "artificial"
+      }
+    ],
+    "rarityWeights": {
+      "common": 50,
+      "uncommon": 32,
+      "rare": 14,
+      "legendary": 4
+    },
+    "techniques": {
+      "min": 6,
+      "max": 10
+    },
+    "grammars": {
+      "default": {
+        "patterns": ["{word} {noun}", "{adjective} {word} {noun}", "{word} {noun}"],
+        "nouns": {
+          "strike": ["Fist", "Hammer", "Blow", "Strike", "Smash"],
+          "barrage": ["Gatling", "Storm", "Barrage", "Rain", "Flurry"],
+          "projectile": ["Bullet", "Cannon", "Spear", "Shot", "Arrow"],
+          "area": ["Wave", "Burst", "Tempest", "Field", "Quake"],
+          "counter": ["Return", "Mirror", "Answer", "Riposte"],
+          "movement": ["Step", "Dash", "Glide", "Leap"],
+          "boost": ["Form", "Mode", "Awakening", "Surge"],
+          "grapple": ["Grip", "Lock", "Snare", "Hold"],
+          "guard": ["Wall", "Shell", "Shield", "Bastion"],
+          "support": ["Blessing", "Veil", "Gift", "Lantern"]
+        },
+        "adjectives": ["Great", "Iron", "Wild", "Thousand", "Red", "Black", "Crimson", "Silver"]
+      },
+      "bp_wano": {
+        "patterns": ["{word}-giri", "{adjective} {word} Ryu", "{word} no {noun}"],
+        "nouns": {
+          "strike": ["Tsuki", "Uchi", "Giri"],
+          "barrage": ["Midare", "Rensa"],
+          "projectile": ["Tobi", "Hanabi"],
+          "area": ["Arashi", "Nami"],
+          "counter": ["Kaeshi"],
+          "movement": ["Ashi", "Kaze"],
+          "boost": ["Kamae"],
+          "grapple": ["Shime"],
+          "guard": ["Mamori"],
+          "support": ["Inori"]
+        },
+        "adjectives": ["Oni", "Kaen", "Ryu", "Tora", "Shishi", "Yasha"]
+      },
+      "bp_fishman_island": {
+        "patterns": [
+          "Karate: {word} {noun}",
+          "{adjective} {word} {noun}",
+          "{word} {noun} of the Deep"
+        ],
+        "nouns": {
+          "strike": ["Seiken", "Palm", "Fist"],
+          "barrage": ["Tide", "Current"],
+          "projectile": ["Water Bullet", "Spear"],
+          "area": ["Wave", "Shock", "Undertow"],
+          "counter": ["Backwash"],
+          "movement": ["Swim", "Dive"],
+          "grapple": ["Throw"],
+          "guard": ["Reef"],
+          "boost": ["Form"],
+          "support": ["Calm"]
+        },
+        "adjectives": ["Thousand-Brick", "Shark", "Sea-Dragon", "Deep", "Coral"]
+      },
+      "bp_west_blue_port": {
+        "patterns": ["{adjective} {word} {noun}", "{word} {noun}"],
+        "nouns": {
+          "projectile": ["Shot", "Round", "Bullet", "Buckshot"],
+          "strike": ["Pistol-Whip", "Knock"],
+          "barrage": ["Volley", "Fan the Hammer"],
+          "area": ["Spread", "Crossfire"],
+          "counter": ["Quickdraw"],
+          "movement": ["Duck", "Roll"]
+        },
+        "adjectives": ["Dead-Eye", "Six-Gun", "Smoking", "Long", "Lucky"]
+      },
+      "bp_east_blue_village": {
+        "patterns": ["{adjective} {word} {noun}", "{word} {noun}"],
+        "nouns": {
+          "strike": ["Punch", "Headbutt", "Haymaker", "Knuckle"],
+          "barrage": ["Flurry", "Rush"],
+          "grapple": ["Headlock", "Bear Hug"],
+          "counter": ["Duck and Swing"]
+        },
+        "adjectives": ["Harbour", "Big", "Dirty", "Iron", "Lucky"]
+      },
+      "bp_zou": {
+        "patterns": ["Electro {word} {noun}", "{adjective} {word} {noun}"],
+        "nouns": {
+          "strike": ["Claw", "Pounce", "Fang"],
+          "area": ["Discharge", "Storm"],
+          "movement": ["Bound", "Dash"]
+        },
+        "adjectives": ["Moonlit", "Garchu", "Lightning", "Wild"]
+      },
+      "bp_sky_island": {
+        "patterns": ["{word} {noun} of the Clouds", "{adjective} {word} {noun}"],
+        "nouns": {
+          "strike": ["Burn Blade", "Impact"],
+          "projectile": ["Flash", "Breath"],
+          "area": ["Cloud Burst"],
+          "movement": ["Cloud Step"]
+        },
+        "adjectives": ["Upper", "Vearth", "White", "Milky"]
+      },
+      "bp_elbaf_highlands": {
+        "patterns": ["{adjective} {word} {noun}", "Elbaf {word} {noun}"],
+        "nouns": {
+          "strike": ["Hakoku", "Axe-Fall", "Cleaver"],
+          "area": ["Earthsplitter", "Avalanche"],
+          "barrage": ["War Drum"]
+        },
+        "adjectives": ["Giant", "Warrior's", "Ancient", "Frost"]
+      }
+    },
+    "looks": {
+      "colours": [
+        "purple",
+        "orange",
+        "deep blue",
+        "crimson",
+        "green",
+        "golden",
+        "pale pink",
+        "black",
+        "teal",
+        "white",
+        "violet",
+        "lemon-yellow"
+      ],
+      "shapes": [
+        "shaped like a pear",
+        "as round as an apple",
+        "in a bunch like grapes",
+        "as long as a banana",
+        "shaped like a melon",
+        "spiked like a durian",
+        "shaped like a heart",
+        "scaled like a pinecone",
+        "shaped like a mango",
+        "ribbed like a star fruit"
+      ]
+    }
+  },
+  "pricing": {
+    "forms": {
+      "strike": {
+        "power": 30,
+        "accuracy": 75,
+        "cost": 2,
+        "range": "melee"
+      },
+      "barrage": {
+        "power": 26,
+        "accuracy": 65,
+        "cost": 3,
+        "range": "melee"
+      },
+      "projectile": {
+        "power": 26,
+        "accuracy": 70,
+        "cost": 2.5,
+        "range": "far"
+      },
+      "area": {
+        "power": 34,
+        "accuracy": 60,
+        "cost": 4,
+        "range": "area"
+      },
+      "counter": {
+        "power": 24,
+        "accuracy": 80,
+        "cost": 2,
+        "range": "melee"
+      },
+      "movement": {
+        "power": 4,
+        "accuracy": 90,
+        "cost": 1.5,
+        "range": "near"
+      },
+      "boost": {
+        "power": 6,
+        "accuracy": 100,
+        "cost": 3,
+        "range": "melee"
+      },
+      "grapple": {
+        "power": 18,
+        "accuracy": 65,
+        "cost": 2,
+        "range": "melee"
+      },
+      "guard": {
+        "power": 0,
+        "accuracy": 100,
+        "cost": 1.5,
+        "range": "melee"
+      },
+      "support": {
+        "power": 0,
+        "accuracy": 100,
+        "cost": 2,
+        "range": "near"
+      }
+    },
+    "tags": {
+      "fire": {
+        "power": 6,
+        "accuracy": 0,
+        "cost": 0.5
+      },
+      "ice": {
+        "power": 4,
+        "accuracy": 0,
+        "cost": 0.5
+      },
+      "lightning": {
+        "power": 8,
+        "accuracy": 5,
+        "cost": 0.8
+      },
+      "light": {
+        "power": 6,
+        "accuracy": 10,
+        "cost": 0.8
+      },
+      "magma": {
+        "power": 12,
+        "accuracy": -5,
+        "cost": 1
+      },
+      "explosive": {
+        "power": 10,
+        "accuracy": -5,
+        "cost": 0.8
+      },
+      "slash": {
+        "power": 5,
+        "accuracy": 0,
+        "cost": 0.3
+      },
+      "pierce": {
+        "power": 4,
+        "accuracy": 3,
+        "cost": 0.3
+      },
+      "blunt": {
+        "power": 2,
+        "accuracy": 0,
+        "cost": 0
+      },
+      "kick": {
+        "power": 3,
+        "accuracy": 0,
+        "cost": 0.2
+      },
+      "grip": {
+        "power": 2,
+        "accuracy": 3,
+        "cost": 0.2
+      },
+      "sword": {
+        "power": 4,
+        "accuracy": 2,
+        "cost": 0.3
+      },
+      "gun": {
+        "power": 3,
+        "accuracy": 5,
+        "cost": 0.2
+      },
+      "bow": {
+        "power": 2,
+        "accuracy": 5,
+        "cost": 0.2
+      },
+      "haki": {
+        "power": 8,
+        "accuracy": 5,
+        "cost": 1
+      },
+      "armament": {
+        "power": 10,
+        "accuracy": 0,
+        "cost": 1
+      },
+      "observation": {
+        "power": 0,
+        "accuracy": 12,
+        "cost": 0.8
+      },
+      "conqueror": {
+        "power": 14,
+        "accuracy": 5,
+        "cost": 1.5
+      },
+      "gravity": {
+        "power": 10,
+        "accuracy": 0,
+        "cost": 1
+      },
+      "spatial": {
+        "power": 6,
+        "accuracy": 8,
+        "cost": 1
+      },
+      "poison": {
+        "power": 4,
+        "accuracy": 0,
+        "cost": 0.5
+      },
+      "sound": {
+        "power": 3,
+        "accuracy": 4,
+        "cost": 0.4
+      },
+      "water": {
+        "power": 3,
+        "accuracy": 0,
+        "cost": 0.3
+      },
+      "wind": {
+        "power": 3,
+        "accuracy": 5,
+        "cost": 0.3
+      },
+      "earth": {
+        "power": 6,
+        "accuracy": -3,
+        "cost": 0.5
+      },
+      "rubber": {
+        "power": 3,
+        "accuracy": 0,
+        "cost": 0.2
+      },
+      "string": {
+        "power": 3,
+        "accuracy": 4,
+        "cost": 0.3
+      },
+      "dark": {
+        "power": 8,
+        "accuracy": 0,
+        "cost": 1
+      },
+      "soul": {
+        "power": 6,
+        "accuracy": 0,
+        "cost": 1
+      },
+      "mind": {
+        "power": 2,
+        "accuracy": 5,
+        "cost": 0.6
+      },
+      "time": {
+        "power": 4,
+        "accuracy": 8,
+        "cost": 1
+      },
+      "bind": {
+        "power": 0,
+        "accuracy": 5,
+        "cost": 0.4
+      },
+      "heal": {
+        "power": -10,
+        "accuracy": 0,
+        "cost": 1
+      },
+      "illusion": {
+        "power": -5,
+        "accuracy": 10,
+        "cost": 0.5
+      },
+      "beast": {
+        "power": 5,
+        "accuracy": 0,
+        "cost": 0.3
+      },
+      "body": {
+        "power": 1,
+        "accuracy": 0,
+        "cost": 0
+      },
+      "sea": {
+        "power": 6,
+        "accuracy": 0,
+        "cost": 0.6
+      },
+      "smoke": {
+        "power": 2,
+        "accuracy": 3,
+        "cost": 0.3
+      },
+      "sand": {
+        "power": 5,
+        "accuracy": 0,
+        "cost": 0.5
+      },
+      "gas": {
+        "power": 3,
+        "accuracy": 2,
+        "cost": 0.4
+      },
+      "metal": {
+        "power": 5,
+        "accuracy": 0,
+        "cost": 0.3
+      },
+      "plant": {
+        "power": 3,
+        "accuracy": 2,
+        "cost": 0.3
+      },
+      "wax": {
+        "power": 2,
+        "accuracy": 2,
+        "cost": 0.3
+      },
+      "sky": {
+        "power": 3,
+        "accuracy": 4,
+        "cost": 0.4
+      },
+      "cooking": {
+        "power": 0,
+        "accuracy": 0,
+        "cost": 0.2
+      },
+      "dance": {
+        "power": 2,
+        "accuracy": 4,
+        "cost": 0.2
+      },
+      "weapon": {
+        "power": 3,
+        "accuracy": 2,
+        "cost": 0.2
+      }
+    },
+    "effects": {
+      "knockback": 0.3,
+      "burn": 0.5,
+      "freeze": 0.6,
+      "shock": 0.5,
+      "bind": 0.6,
+      "stun": 0.6,
+      "bleed": 0.4,
+      "poison": 0.5,
+      "pierce_guard": 0.8,
+      "ignore_logia": 1,
+      "internal": 1,
+      "heal": 1,
+      "reflect": 0.8,
+      "intangible": 1,
+      "drain": 0.8,
+      "slow": 0.5,
+      "blind": 0.4,
+      "fear": 0.6,
+      "knockout": 1.2,
+      "flight": 0.6,
+      "transform": 0.8,
+      "absorb": 0.8,
+      "disarm": 0.5,
+      "swap": 0.6,
+      "shrink": 0.6,
+      "grow": 0.6,
+      "terrain": 0.8,
+      "summon": 1,
+      "buff": 0.5,
+      "debuff": 0.5
+    },
+    "masteryScale": 0.012,
+    "finisher": {
+      "power": 1.6,
+      "cost": 2
+    }
+  },
+  "inventing": {
+    "base": 0.15,
+    "perMastery": 0.004,
+    "perIntellect": 0.005,
+    "perAttempt": 0.08,
+    "maxDrafts": 3
+  },
+  "moveset": {
+    "max": 14,
+    "fadeAfterMonths": 36,
+    "fadePerYear": 12,
+    "signatureFame": 0.01,
+    "signatureCap": 1.6,
+    "usePoints": 3,
+    "temperaments": {
+      "aggressive": {
+        "strike": 3,
+        "barrage": 3,
+        "projectile": 2,
+        "area": 2,
+        "grapple": 1.5,
+        "counter": 0.3,
+        "guard": 0.3,
+        "movement": 0.6,
+        "boost": 1
+      },
+      "cautious": {
+        "counter": 3,
+        "guard": 3,
+        "movement": 2,
+        "strike": 1,
+        "projectile": 1.2,
+        "support": 1,
+        "boost": 0.8
+      },
+      "balanced": {
+        "strike": 1.5,
+        "barrage": 1,
+        "projectile": 1,
+        "area": 1,
+        "counter": 1,
+        "guard": 1,
+        "movement": 1,
+        "boost": 0.8,
+        "grapple": 1
+      }
+    },
+    "combinationOpinion": 60,
+    "temperamentTraits": {
+      "aggressive": ["trait_hot_headed", "trait_reckless", "trait_cruel", "trait_brave"],
+      "cautious": ["trait_cautious", "trait_patient", "trait_cowardly"]
+    }
+  },
+  "fighters": {
+    "occ_pirate": {
+      "tracks": {
+        "track_brawling": 3,
+        "track_swordsmanship": 4,
+        "track_gunmanship": 2,
+        "track_black_leg": 2
+      },
+      "count": 1,
+      "gear": {
+        "swords": 1,
+        "gun": 1
+      }
+    },
+    "occ_marine": {
+      "tracks": {
+        "track_swordsmanship": 4,
+        "track_gunmanship": 3,
+        "track_brawling": 3,
+        "track_naval_tactics": 2
+      },
+      "count": 2,
+      "gear": {
+        "swords": 1,
+        "gun": 1
+      }
+    },
+    "occ_mercenary": {
+      "tracks": {
+        "track_brawling": 3,
+        "track_swordsmanship": 4,
+        "track_gunmanship": 3
+      },
+      "count": 1,
+      "gear": {
+        "swords": 1,
+        "gun": 1
+      }
+    },
+    "occ_bounty_hunter": {
+      "tracks": {
+        "track_swordsmanship": 4,
+        "track_gunmanship": 3,
+        "track_brawling": 3
+      },
+      "count": 1,
+      "gear": {
+        "swords": 1,
+        "gun": 1
+      }
+    },
+    "occ_swordsman": {
+      "tracks": {
+        "track_swordsmanship": 6,
+        "track_two_sword": 3,
+        "track_iai": 3
+      },
+      "count": 2,
+      "gear": {
+        "swords": 2
+      }
+    },
+    "occ_samurai": {
+      "tracks": {
+        "track_swordsmanship": 6,
+        "track_iai": 4
+      },
+      "count": 2,
+      "gear": {
+        "swords": 2
+      }
+    },
+    "occ_karate_master": {
+      "tracks": {
+        "track_fishman_karate": 6
+      },
+      "count": 1
+    },
+    "occ_warrior": {
+      "tracks": {
+        "track_brawling": 4,
+        "track_archery": 3,
+        "track_swordsmanship": 3
+      },
+      "count": 1,
+      "gear": {
+        "swords": 1,
+        "bow": 1
+      }
+    },
+    "occ_mink_guard": {
+      "tracks": {
+        "track_electro": 2,
+        "track_brawling": 3
+      },
+      "count": 2
+    },
+    "occ_guard": {
+      "tracks": {
+        "track_swordsmanship": 2,
+        "track_gunmanship": 2
+      },
+      "count": 1,
+      "gear": {
+        "swords": 1,
+        "gun": 1
+      }
+    },
+    "occ_bandit": {
+      "tracks": {
+        "track_brawling": 3,
+        "track_swordsmanship": 2
+      },
+      "count": 1,
+      "gear": {
+        "swords": 1
+      }
+    },
+    "occ_retired_marine": {
+      "tracks": {
+        "track_swordsmanship": 3,
+        "track_naval_tactics": 2
+      },
+      "count": 1,
+      "gear": {
+        "swords": 1
+      }
+    },
+    "occ_smuggler": {
+      "tracks": {
+        "track_gunmanship": 2,
+        "track_brawling": 1
+      },
+      "count": 1,
+      "gear": {
+        "gun": 1
+      }
+    }
+  },
+  "hakiByRegion": {
+    "east_blue": 0.01,
+    "west_blue": 0.02,
+    "north_blue": 0.02,
+    "south_blue": 0.02,
+    "paradise": 0.06,
+    "new_world": 0.25,
+    "sky": 0.15,
+    "fishman_island": 0.05,
+    "wano": 0.3,
+    "red_line": 0.1,
+    "calm_belt": 0.4
+  },
+  "lines": {
+    "takenOn": "{other} took you on to learn {title}.",
+    "beganAlone": "You began to teach yourself {title}.",
+    "breakthrough": "Something gave way, and {title} opened up in a way no drill had managed.",
+    "hakiWakes": "The world went sharp and strange for a moment: {title} had woken in you.",
+    "conquerorWakes": "Something rose out of you that you could not hold back. {title} had woken.",
+    "conquerorSurge": "Around you people dropped where they stood, eyes rolled back. Only the strong-willed kept their feet.",
+    "fruitReborn": "{title} returned to the world: {cause}.",
+    "fruitDiverged": "{title} was not there for {name}: {other} had it first.",
+    "secondFruit": "You bit into {title}, and your body tore itself apart from within. One body cannot hold two devils.",
+    "smileDud": "The fruit tasted of rot. Since that day you have not been able to do anything but smile.",
+    "ateKnown": "You ate {title}. It tasted worse than anything you had ever eaten, and the sea will never hold you again.",
+    "ateUnknown": "You ate {title}. It tasted foul. Nothing happened, at first.",
+    "identified": "Now you know what it is: {title}.",
+    "discovered": "At last you understood it: you had eaten {title}.",
+    "discovering": "Something strange again: {title}.",
+    "sankAlone": "You hit the water and it took everything from you. You sank like a stone, and there was nobody aboard to dive after you.",
+    "sankRescued": "You hit the water and sank like a stone. Someone dove after you and hauled you up, half drowned.",
+    "bought": "You paid {amount} Berries on the black market for a swirled fruit.",
+    "foundFruit": "You found a strange fruit: {title}.",
+    "rumour": "A rumour: {title}, somewhere on {destination}.",
+    "invented": "It worked at last, and you named it {title}.",
+    "inventFailed": "Another try at {title} came to nothing, but you are closer.",
+    "mishap": "Your power slipped its leash and hurt you.",
+    "secret": "Your fruit was never what you thought it was: {title}. {other}",
+    "rokuogan": "With all six of the Six Powers mastered, you found the seventh: {title}."
+  }
+}

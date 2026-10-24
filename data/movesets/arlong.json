@@ -1,0 +1,22 @@
+{
+  "id": "moveset_arlong",
+  "char": "char_arlong",
+  "eras": [
+    {
+      "from": {
+        "year": 15,
+        "month": 1
+      },
+      "techniques": ["tech_arlong_shark_on_darts", "tech_arlong_shark_tooth", "tech_karate_seiken"],
+      "tracks": {
+        "track_fishman_karate": "third_dan"
+      },
+      "approx": true,
+      "to": {
+        "year": 36,
+        "month": 3
+      },
+      "signature": "tech_arlong_shark_on_darts"
+    }
+  ]
+}

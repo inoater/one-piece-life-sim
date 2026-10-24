@@ -1,0 +1,19 @@
+{
+  "id": "moveset_kong",
+  "char": "char_kong",
+  "eras": [
+    {
+      "from": {
+        "year": -15,
+        "month": 1
+      },
+      "techniques": ["tech_kong_order", "tech_brawl_haymaker", "tech_haki_harden"],
+      "tracks": {
+        "track_naval_tactics": "admiral",
+        "track_armament": "harden",
+        "track_brawling": "brawler"
+      },
+      "approx": true
+    }
+  ]
+}

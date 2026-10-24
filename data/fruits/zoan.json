@@ -1,0 +1,1946 @@
+[
+  {
+    "id": "fruit_hito_hito",
+    "name": "Human-Human Fruit",
+    "japanese": "Hito Hito no Mi",
+    "type": "zoan",
+    "rarity": "uncommon",
+    "power": "zoan:human",
+    "primitives": ["transform"],
+    "description": "An animal that eats it gains a human form and a human mind.",
+    "techniques": [
+      {
+        "id": "tech_hito_hito_heavy_point",
+        "name": "Heavy Point",
+        "form": "boost",
+        "tags": ["body"],
+        "mastery": 10,
+        "effects": ["buff"]
+      },
+      {
+        "id": "tech_hito_hito_kung_fu_point",
+        "name": "Kung Fu Point",
+        "form": "boost",
+        "tags": ["body"],
+        "mastery": 30,
+        "effects": ["buff"]
+      },
+      {
+        "id": "tech_hito_hito_monster_point",
+        "name": "Monster Point",
+        "form": "boost",
+        "tags": ["body"],
+        "mastery": 60,
+        "effects": ["grow"],
+        "finisher": true
+      }
+    ],
+    "zoan": "regular",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Tony Tony Chopper",
+        "from": {
+          "year": 27,
+          "month": 1
+        },
+        "approx": true,
+        "how": "ate it as a reindeer calf"
+      }
+    ]
+  },
+  {
+    "id": "fruit_mogu_mogu",
+    "name": "Mole-Mole Fruit",
+    "japanese": "Mogu Mogu no Mi",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:mole",
+    "primitives": ["beast"],
+    "description": "The user becomes a mole and digs through the ground.",
+    "techniques": [
+      {
+        "id": "tech_mogu_mogu_mole_tunnel",
+        "name": "Mole Tunnel",
+        "form": "movement",
+        "tags": ["earth", "beast"],
+        "mastery": 0,
+        "named": false
+      },
+      {
+        "id": "tech_mogu_mogu_claw_swipe",
+        "name": "Claw Swipe",
+        "form": "strike",
+        "tags": ["beast", "slash"],
+        "mastery": 10,
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Drophy (Miss Merry Christmas)",
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ushi_ushi_bison",
+    "name": "Ox-Ox Fruit, Model: Bison",
+    "japanese": "Ushi Ushi no Mi, Model: Bison",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:bison",
+    "primitives": ["beast"],
+    "description": "The user becomes a bison.",
+    "techniques": [
+      {
+        "id": "tech_ushi_ushi_bison_bison_charge",
+        "name": "Bison Charge",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Bison",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Dalton",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ushi_ushi_giraffe",
+    "name": "Ox-Ox Fruit, Model: Giraffe",
+    "japanese": "Ushi Ushi no Mi, Model: Giraffe",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:giraffe",
+    "primitives": ["beast"],
+    "description": "The user becomes a giraffe.",
+    "techniques": [
+      {
+        "id": "tech_ushi_ushi_giraffe_bigan",
+        "name": "Bigan",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 10
+      },
+      {
+        "id": "tech_ushi_ushi_giraffe_giraffe_rankyaku",
+        "name": "Giraffe Rankyaku",
+        "form": "projectile",
+        "tags": ["beast", "slash"],
+        "mastery": 30
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Giraffe",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kaku",
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "approx": true,
+        "how": "was given it by the World Government"
+      }
+    ]
+  },
+  {
+    "id": "fruit_uma_uma",
+    "name": "Horse-Horse Fruit",
+    "japanese": "Uma Uma no Mi",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:horse",
+    "primitives": ["beast"],
+    "description": "The user becomes a horse; on a winged bird, it makes a pegasus.",
+    "techniques": [
+      {
+        "id": "tech_uma_uma_gallop",
+        "name": "Gallop",
+        "form": "movement",
+        "tags": ["beast"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Pierre",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_tori_tori_falcon",
+    "name": "Bird-Bird Fruit, Model: Falcon",
+    "japanese": "Tori Tori no Mi, Model: Falcon",
+    "type": "zoan",
+    "rarity": "uncommon",
+    "power": "zoan:falcon",
+    "primitives": ["beast", "fly"],
+    "description": "The user becomes a falcon.",
+    "techniques": [
+      {
+        "id": "tech_tori_tori_falcon_falcon_dive",
+        "name": "Falcon Dive",
+        "form": "strike",
+        "tags": ["beast", "sky"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_tori_tori_falcon_sky_patrol",
+        "name": "Sky Patrol",
+        "form": "movement",
+        "tags": ["sky"],
+        "mastery": 10,
+        "effects": ["flight"],
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Falcon",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Pell",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_tori_tori_phoenix",
+    "name": "Bird-Bird Fruit, Model: Phoenix",
+    "japanese": "Tori Tori no Mi, Model: Phoenix",
+    "type": "zoan",
+    "rarity": "legendary",
+    "power": "zoan:phoenix",
+    "primitives": ["beast", "fly", "heal"],
+    "description": "The user becomes a phoenix whose blue flames heal any wound.",
+    "techniques": [
+      {
+        "id": "tech_tori_tori_phoenix_phoenix_flight",
+        "name": "Phoenix Flight",
+        "form": "movement",
+        "tags": ["sky", "fire"],
+        "mastery": 0,
+        "effects": ["flight"],
+        "named": false
+      },
+      {
+        "id": "tech_tori_tori_phoenix_phoenix_brand",
+        "name": "Phoenix Brand",
+        "form": "strike",
+        "tags": ["fire", "kick"],
+        "mastery": 20,
+        "named": false
+      },
+      {
+        "id": "tech_tori_tori_phoenix_blue_flames_of_regeneration",
+        "name": "Blue Flames of Regeneration",
+        "form": "support",
+        "tags": ["heal", "fire"],
+        "mastery": 30,
+        "effects": ["heal"],
+        "named": false
+      },
+      {
+        "id": "tech_tori_tori_phoenix_phoenix_pyreapple",
+        "name": "Phoenix Pyreapple",
+        "form": "strike",
+        "tags": ["fire", "armament"],
+        "mastery": 70,
+        "finisher": true,
+        "named": false
+      }
+    ],
+    "zoan": "mythical",
+    "model": "Model: Phoenix",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 15
+      },
+      {
+        "stat": "durability",
+        "pct": 15
+      },
+      {
+        "stat": "speed",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Marco",
+        "from": {
+          "year": 8,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_marco"
+      }
+    ],
+    "will": {
+      "axis": "mercy",
+      "toward": 1
+    }
+  },
+  {
+    "id": "fruit_neko_neko_leopard",
+    "name": "Cat-Cat Fruit, Model: Leopard",
+    "japanese": "Neko Neko no Mi, Model: Leopard",
+    "type": "zoan",
+    "rarity": "uncommon",
+    "power": "zoan:leopard",
+    "primitives": ["beast"],
+    "description": "The user becomes a leopard.",
+    "techniques": [
+      {
+        "id": "tech_neko_neko_leopard_rokuogan_leopard",
+        "name": "Rokuogan Leopard",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 50,
+        "effects": ["internal"]
+      },
+      {
+        "id": "tech_neko_neko_leopard_leopard_pounce",
+        "name": "Leopard Pounce",
+        "form": "strike",
+        "tags": ["beast", "slash"],
+        "mastery": 0,
+        "effects": ["bleed"],
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Leopard",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Rob Lucci",
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_neko_neko_sabertooth",
+    "name": "Cat-Cat Fruit, Model: Saber-toothed Tiger",
+    "japanese": "Neko Neko no Mi, Model: Saber-toothed Tiger",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:sabertooth",
+    "primitives": ["beast"],
+    "description": "An Ancient Zoan: the user becomes a saber-toothed tiger.",
+    "techniques": [
+      {
+        "id": "tech_neko_neko_sabertooth_saber_bite",
+        "name": "Saber Bite",
+        "form": "grapple",
+        "tags": ["beast", "pierce"],
+        "mastery": 0,
+        "effects": ["bleed"],
+        "named": false
+      }
+    ],
+    "zoan": "ancient",
+    "model": "Model: Saber-toothed Tiger",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 12
+      },
+      {
+        "stat": "durability",
+        "pct": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "Who's-Who",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_zou_zou",
+    "name": "Elephant-Elephant Fruit",
+    "japanese": "Zou Zou no Mi",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:elephant",
+    "primitives": ["beast"],
+    "description": "The user becomes an elephant.",
+    "techniques": [
+      {
+        "id": "tech_zou_zou_trunk_swing",
+        "name": "Trunk Swing",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Funkfreed",
+        "from": {
+          "year": 33,
+          "month": 1
+        },
+        "approx": true,
+        "body": "item_funkfreed",
+        "how": "was fed to a sword"
+      }
+    ]
+  },
+  {
+    "id": "fruit_zou_zou_mammoth",
+    "name": "Elephant-Elephant Fruit, Model: Mammoth",
+    "japanese": "Zou Zou no Mi, Model: Mammoth",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:mammoth",
+    "primitives": ["beast"],
+    "description": "An Ancient Zoan: the user becomes a mammoth.",
+    "techniques": [
+      {
+        "id": "tech_zou_zou_mammoth_mammoth_charge",
+        "name": "Mammoth Charge",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_zou_zou_mammoth_tusk_gore",
+        "name": "Tusk Gore",
+        "form": "strike",
+        "tags": ["beast", "pierce"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "zoan": "ancient",
+    "model": "Model: Mammoth",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 12
+      },
+      {
+        "stat": "durability",
+        "pct": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "Jack",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_inu_inu_dachshund",
+    "name": "Dog-Dog Fruit, Model: Dachshund",
+    "japanese": "Inu Inu no Mi, Model: Dachshund",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:dachshund",
+    "primitives": ["beast"],
+    "description": "The user becomes a dachshund.",
+    "techniques": [
+      {
+        "id": "tech_inu_inu_dachshund_dog_cannon",
+        "name": "Dog Cannon",
+        "form": "projectile",
+        "tags": ["beast", "explosive"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Dachshund",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Lassoo",
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "approx": true,
+        "body": "item_lassoo",
+        "how": "was fed to a bazooka"
+      }
+    ]
+  },
+  {
+    "id": "fruit_inu_inu_jackal",
+    "name": "Dog-Dog Fruit, Model: Jackal",
+    "japanese": "Inu Inu no Mi, Model: Jackal",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:jackal",
+    "primitives": ["beast"],
+    "description": "The user becomes a jackal.",
+    "techniques": [
+      {
+        "id": "tech_inu_inu_jackal_jackal_fang",
+        "name": "Jackal Fang",
+        "form": "grapple",
+        "tags": ["beast", "pierce"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Jackal",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Chaka",
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_inu_inu_dalmatian",
+    "name": "Dog-Dog Fruit, Model: Dalmatian",
+    "japanese": "Inu Inu no Mi, Model: Dalmatian",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:dalmatian",
+    "primitives": ["beast"],
+    "description": "The user becomes a dalmatian.",
+    "techniques": [
+      {
+        "id": "tech_inu_inu_dalmatian_spotted_fang",
+        "name": "Spotted Fang",
+        "form": "strike",
+        "tags": ["beast", "slash"],
+        "mastery": 0,
+        "effects": ["bleed"],
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Dalmatian",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Dalmatian",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_inu_inu_wolf",
+    "name": "Dog-Dog Fruit, Model: Wolf",
+    "japanese": "Inu Inu no Mi, Model: Wolf",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:wolf",
+    "primitives": ["beast"],
+    "description": "The user becomes a wolf.",
+    "techniques": [
+      {
+        "id": "tech_inu_inu_wolf_wolf_fang",
+        "name": "Wolf Fang",
+        "form": "strike",
+        "tags": ["beast", "slash"],
+        "mastery": 0,
+        "effects": ["bleed"],
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Wolf",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Jabra",
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_inu_inu_kyubi",
+    "name": "Dog-Dog Fruit, Model: Kyubi no Kitsune",
+    "japanese": "Inu Inu no Mi, Model: Kyubi no Kitsune",
+    "type": "zoan",
+    "rarity": "legendary",
+    "power": "zoan:kyubi",
+    "primitives": ["beast", "copy"],
+    "description": "A Mythical Zoan: the user becomes a nine-tailed fox and can take any shape.",
+    "techniques": [
+      {
+        "id": "tech_inu_inu_kyubi_fox_shapes",
+        "name": "Fox Shapes",
+        "form": "support",
+        "tags": ["illusion", "beast"],
+        "mastery": 0,
+        "effects": ["transform"],
+        "named": false
+      }
+    ],
+    "zoan": "mythical",
+    "model": "Model: Kyubi no Kitsune",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 15
+      },
+      {
+        "stat": "durability",
+        "pct": 15
+      },
+      {
+        "stat": "speed",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Catarina Devon",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ],
+    "will": {
+      "axis": "honesty",
+      "toward": -1
+    }
+  },
+  {
+    "id": "fruit_inu_inu_okuchi",
+    "name": "Dog-Dog Fruit, Model: Okuchi no Makami",
+    "japanese": "Inu Inu no Mi, Model: Okuchi no Makami",
+    "type": "zoan",
+    "rarity": "legendary",
+    "power": "zoan:okuchi",
+    "primitives": ["beast", "freeze"],
+    "description": "A Mythical Zoan: the user becomes a great guardian wolf of Wano, with cold breath and holy fur.",
+    "techniques": [
+      {
+        "id": "tech_inu_inu_okuchi_narikabura_arrow",
+        "name": "Narikabura Arrow",
+        "form": "projectile",
+        "tags": ["ice", "beast"],
+        "mastery": 30,
+        "effects": ["freeze"]
+      },
+      {
+        "id": "tech_inu_inu_okuchi_kamaitachi_rabbit",
+        "name": "Kamaitachi Rabbit",
+        "form": "strike",
+        "tags": ["beast", "ice"],
+        "mastery": 50
+      },
+      {
+        "id": "tech_inu_inu_okuchi_divine_wolf",
+        "name": "Divine Wolf",
+        "form": "boost",
+        "tags": ["beast", "ice"],
+        "mastery": 70,
+        "effects": ["buff"]
+      }
+    ],
+    "zoan": "mythical",
+    "model": "Model: Okuchi no Makami",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 15
+      },
+      {
+        "stat": "durability",
+        "pct": 15
+      },
+      {
+        "stat": "speed",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Yamato",
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "approx": true
+      }
+    ],
+    "will": {
+      "axis": "mercy",
+      "toward": 1
+    }
+  },
+  {
+    "id": "fruit_hebi_hebi_anaconda",
+    "name": "Snake-Snake Fruit, Model: Anaconda",
+    "japanese": "Hebi Hebi no Mi, Model: Anaconda",
+    "type": "zoan",
+    "rarity": "uncommon",
+    "power": "zoan:anaconda",
+    "primitives": ["beast"],
+    "description": "The user becomes an anaconda.",
+    "techniques": [
+      {
+        "id": "tech_hebi_hebi_anaconda_constrict",
+        "name": "Constrict",
+        "form": "grapple",
+        "tags": ["beast", "grip"],
+        "mastery": 0,
+        "effects": ["bind"],
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Anaconda",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Boa Sandersonia",
+        "from": {
+          "year": 19,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_hebi_hebi_cobra",
+    "name": "Snake-Snake Fruit, Model: King Cobra",
+    "japanese": "Hebi Hebi no Mi, Model: King Cobra",
+    "type": "zoan",
+    "rarity": "uncommon",
+    "power": "zoan:king_cobra",
+    "primitives": ["beast"],
+    "description": "The user becomes a king cobra.",
+    "techniques": [
+      {
+        "id": "tech_hebi_hebi_cobra_cobra_strike",
+        "name": "Cobra Strike",
+        "form": "strike",
+        "tags": ["beast", "poison"],
+        "mastery": 0,
+        "effects": ["poison"],
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: King Cobra",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Boa Marigold",
+        "from": {
+          "year": 19,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_hebi_hebi_orochi",
+    "name": "Snake-Snake Fruit, Model: Yamata no Orochi",
+    "japanese": "Hebi Hebi no Mi, Model: Yamata no Orochi",
+    "type": "zoan",
+    "rarity": "legendary",
+    "power": "zoan:yamata_no_orochi",
+    "primitives": ["beast"],
+    "description": "A Mythical Zoan: the user becomes an eight-headed serpent, each head with its own life.",
+    "techniques": [
+      {
+        "id": "tech_hebi_hebi_orochi_eight_heads",
+        "name": "Eight Heads",
+        "form": "barrage",
+        "tags": ["beast", "pierce"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "mythical",
+    "model": "Model: Yamata no Orochi",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 15
+      },
+      {
+        "stat": "durability",
+        "pct": 15
+      },
+      {
+        "stat": "speed",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kurozumi Orochi",
+        "from": {
+          "year": 5,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_kurozumi_orochi"
+      }
+    ],
+    "will": {
+      "axis": "pride",
+      "toward": 1
+    }
+  },
+  {
+    "id": "fruit_ryu_ryu_allosaurus",
+    "name": "Dragon-Dragon Fruit, Model: Allosaurus",
+    "japanese": "Ryu Ryu no Mi, Model: Allosaurus",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:allosaurus",
+    "primitives": ["beast"],
+    "description": "An Ancient Zoan: the user becomes a allosaurus.",
+    "techniques": [
+      {
+        "id": "tech_ryu_ryu_allosaurus_allosaurus_rampage",
+        "name": "Allosaurus Rampage",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_ryu_ryu_allosaurus_allosaurus_hide",
+        "name": "Allosaurus Hide",
+        "form": "guard",
+        "tags": ["beast", "body"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "zoan": "ancient",
+    "model": "Model: Allosaurus",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 12
+      },
+      {
+        "stat": "durability",
+        "pct": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "X Drake",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ryu_ryu_pteranodon",
+    "name": "Dragon-Dragon Fruit, Model: Pteranodon",
+    "japanese": "Ryu Ryu no Mi, Model: Pteranodon",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:pteranodon",
+    "primitives": ["beast"],
+    "description": "An Ancient Zoan: the user becomes a pteranodon.",
+    "techniques": [
+      {
+        "id": "tech_ryu_ryu_pteranodon_pteranodon_rampage",
+        "name": "Pteranodon Rampage",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_ryu_ryu_pteranodon_pteranodon_hide",
+        "name": "Pteranodon Hide",
+        "form": "guard",
+        "tags": ["beast", "body"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "zoan": "ancient",
+    "model": "Model: Pteranodon",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 12
+      },
+      {
+        "stat": "durability",
+        "pct": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "King",
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ryu_ryu_spinosaurus",
+    "name": "Dragon-Dragon Fruit, Model: Spinosaurus",
+    "japanese": "Ryu Ryu no Mi, Model: Spinosaurus",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:spinosaurus",
+    "primitives": ["beast"],
+    "description": "An Ancient Zoan: the user becomes a spinosaurus.",
+    "techniques": [
+      {
+        "id": "tech_ryu_ryu_spinosaurus_spinosaurus_rampage",
+        "name": "Spinosaurus Rampage",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_ryu_ryu_spinosaurus_spinosaurus_hide",
+        "name": "Spinosaurus Hide",
+        "form": "guard",
+        "tags": ["beast", "body"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "zoan": "ancient",
+    "model": "Model: Spinosaurus",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 12
+      },
+      {
+        "stat": "durability",
+        "pct": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "Page One",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ryu_ryu_brachiosaurus",
+    "name": "Dragon-Dragon Fruit, Model: Brachiosaurus",
+    "japanese": "Ryu Ryu no Mi, Model: Brachiosaurus",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:brachiosaurus",
+    "primitives": ["beast"],
+    "description": "An Ancient Zoan: the user becomes a brachiosaurus.",
+    "techniques": [
+      {
+        "id": "tech_ryu_ryu_brachiosaurus_brachiosaurus_rampage",
+        "name": "Brachiosaurus Rampage",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_ryu_ryu_brachiosaurus_brachiosaurus_hide",
+        "name": "Brachiosaurus Hide",
+        "form": "guard",
+        "tags": ["beast", "body"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "zoan": "ancient",
+    "model": "Model: Brachiosaurus",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 12
+      },
+      {
+        "stat": "durability",
+        "pct": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "Queen",
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ryu_ryu_pachycephalosaurus",
+    "name": "Dragon-Dragon Fruit, Model: Pachycephalosaurus",
+    "japanese": "Ryu Ryu no Mi, Model: Pachycephalosaurus",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:pachycephalosaurus",
+    "primitives": ["beast"],
+    "description": "An Ancient Zoan: the user becomes a pachycephalosaurus.",
+    "techniques": [
+      {
+        "id": "tech_ryu_ryu_pachycephalosaurus_pachycephalosaurus_rampage",
+        "name": "Pachycephalosaurus Rampage",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_ryu_ryu_pachycephalosaurus_pachycephalosaurus_hide",
+        "name": "Pachycephalosaurus Hide",
+        "form": "guard",
+        "tags": ["beast", "body"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "zoan": "ancient",
+    "model": "Model: Pachycephalosaurus",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 12
+      },
+      {
+        "stat": "durability",
+        "pct": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "Ulti",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_ryu_ryu_triceratops",
+    "name": "Dragon-Dragon Fruit, Model: Triceratops",
+    "japanese": "Ryu Ryu no Mi, Model: Triceratops",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:triceratops",
+    "primitives": ["beast"],
+    "description": "An Ancient Zoan: the user becomes a triceratops.",
+    "techniques": [
+      {
+        "id": "tech_ryu_ryu_triceratops_triceratops_rampage",
+        "name": "Triceratops Rampage",
+        "form": "strike",
+        "tags": ["beast", "blunt"],
+        "mastery": 0,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_ryu_ryu_triceratops_triceratops_hide",
+        "name": "Triceratops Hide",
+        "form": "guard",
+        "tags": ["beast", "body"],
+        "mastery": 20,
+        "named": false
+      }
+    ],
+    "zoan": "ancient",
+    "model": "Model: Triceratops",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 12
+      },
+      {
+        "stat": "durability",
+        "pct": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "Sasaki",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_uo_uo_seiryu",
+    "name": "Fish-Fish Fruit, Model: Azure Dragon",
+    "japanese": "Uo Uo no Mi, Model: Seiryu",
+    "type": "zoan",
+    "rarity": "legendary",
+    "power": "zoan:azure_dragon",
+    "primitives": ["beast", "fly"],
+    "description": "A Mythical Zoan: the user becomes a great azure dragon that rides the clouds and breathes fire.",
+    "techniques": [
+      {
+        "id": "tech_uo_uo_seiryu_boro_breath",
+        "name": "Boro Breath",
+        "form": "projectile",
+        "tags": ["fire", "beast"],
+        "mastery": 0,
+        "effects": ["burn"]
+      },
+      {
+        "id": "tech_uo_uo_seiryu_kaifu",
+        "name": "Kaifu",
+        "form": "projectile",
+        "tags": ["wind", "beast"],
+        "mastery": 20,
+        "effects": ["knockback"]
+      },
+      {
+        "id": "tech_uo_uo_seiryu_kaen_kumo",
+        "name": "Kaen Kumo",
+        "form": "movement",
+        "tags": ["fire", "sky"],
+        "mastery": 30,
+        "effects": ["flight"]
+      },
+      {
+        "id": "tech_uo_uo_seiryu_raimei_hakke_dragon",
+        "name": "Raimei Hakke Dragon",
+        "form": "strike",
+        "tags": ["beast", "conqueror"],
+        "mastery": 80,
+        "effects": ["knockout"],
+        "finisher": true,
+        "named": false
+      }
+    ],
+    "zoan": "mythical",
+    "model": "Model: Seiryu",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 15
+      },
+      {
+        "stat": "durability",
+        "pct": 15
+      },
+      {
+        "stat": "speed",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kaido",
+        "from": {
+          "year": -11,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_kaido"
+      }
+    ],
+    "will": {
+      "axis": "pride",
+      "toward": 1
+    }
+  },
+  {
+    "id": "fruit_uo_uo_artificial",
+    "name": "Fish-Fish Fruit, Model: Azure Dragon (artificial)",
+    "japanese": "Uo Uo no Mi, Model: Seiryu (artificial)",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:artificial_azure_dragon",
+    "primitives": ["beast", "fly"],
+    "description": "An artificial Zoan made from the azure dragon's lineage: a small pink dragon that flies on clouds.",
+    "techniques": [
+      {
+        "id": "tech_uo_uo_artificial_cloud_ride",
+        "name": "Cloud Ride",
+        "form": "movement",
+        "tags": ["sky"],
+        "mastery": 0,
+        "effects": ["flight"],
+        "named": false
+      },
+      {
+        "id": "tech_uo_uo_artificial_dragon_breath",
+        "name": "Dragon Breath",
+        "form": "projectile",
+        "tags": ["fire"],
+        "mastery": 40,
+        "effects": ["burn"],
+        "named": false
+      }
+    ],
+    "zoan": "artificial",
+    "model": "Model: Seiryu",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 8
+      },
+      {
+        "stat": "durability",
+        "pct": 6
+      }
+    ],
+    "holders": [
+      {
+        "name": "Kozuki Momonosuke",
+        "from": {
+          "year": 17,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_hito_hito_daibutsu",
+    "name": "Human-Human Fruit, Model: Daibutsu",
+    "japanese": "Hito Hito no Mi, Model: Daibutsu",
+    "type": "zoan",
+    "rarity": "legendary",
+    "power": "zoan:great_buddha",
+    "primitives": ["beast", "quake"],
+    "description": "A Mythical Zoan: the user becomes a giant golden Buddha whose palms send out shockwaves.",
+    "techniques": [
+      {
+        "id": "tech_hito_hito_daibutsu_buddha_shockwave",
+        "name": "Buddha Shockwave",
+        "form": "area",
+        "tags": ["explosive", "light"],
+        "mastery": 20,
+        "effects": ["knockback"],
+        "named": false
+      },
+      {
+        "id": "tech_hito_hito_daibutsu_golden_palm",
+        "name": "Golden Palm",
+        "form": "strike",
+        "tags": ["blunt", "armament"],
+        "mastery": 50,
+        "named": false
+      }
+    ],
+    "zoan": "mythical",
+    "model": "Model: Daibutsu",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 15
+      },
+      {
+        "stat": "durability",
+        "pct": 15
+      },
+      {
+        "stat": "speed",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Sengoku",
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "approx": true,
+        "char": "char_sengoku"
+      }
+    ],
+    "will": {
+      "axis": "mercy",
+      "toward": 1
+    }
+  },
+  {
+    "id": "fruit_kumo_kumo_rosamygale",
+    "name": "Spider-Spider Fruit, Model: Rosamygale Grauvogeli",
+    "japanese": "Kumo Kumo no Mi, Model: Rosamygale Grauvogeli",
+    "type": "zoan",
+    "rarity": "rare",
+    "power": "zoan:rosamygale",
+    "primitives": ["beast", "string"],
+    "description": "An Ancient Zoan: the user becomes a giant spider of the deep past.",
+    "techniques": [
+      {
+        "id": "tech_kumo_kumo_rosamygale_spider_web",
+        "name": "Spider Web",
+        "form": "grapple",
+        "tags": ["string", "bind"],
+        "mastery": 0,
+        "effects": ["bind"],
+        "named": false
+      },
+      {
+        "id": "tech_kumo_kumo_rosamygale_spider_fire",
+        "name": "Spider Fire",
+        "form": "area",
+        "tags": ["fire", "string"],
+        "mastery": 30,
+        "effects": ["burn"],
+        "named": false
+      }
+    ],
+    "zoan": "ancient",
+    "model": "Model: Rosamygale Grauvogeli",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 15
+      },
+      {
+        "stat": "endurance",
+        "pct": 12
+      },
+      {
+        "stat": "durability",
+        "pct": 25
+      }
+    ],
+    "holders": [
+      {
+        "name": "Black Maria",
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_sara_sara_axolotl",
+    "name": "Axolotl-Axolotl Fruit, Model: Axolotl",
+    "japanese": "Sara Sara no Mi, Model: Axolotl",
+    "type": "zoan",
+    "rarity": "uncommon",
+    "power": "zoan:axolotl",
+    "primitives": ["beast", "gas"],
+    "description": "Fed to a slime of poison gas, it gave the slime an axolotl's body.",
+    "techniques": [
+      {
+        "id": "tech_sara_sara_axolotl_poison_breath",
+        "name": "Poison Breath",
+        "form": "area",
+        "tags": ["gas", "poison"],
+        "mastery": 0,
+        "effects": ["poison"],
+        "named": false
+      }
+    ],
+    "zoan": "regular",
+    "model": "Model: Axolotl",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 12
+      },
+      {
+        "stat": "endurance",
+        "pct": 10
+      },
+      {
+        "stat": "durability",
+        "pct": 10
+      }
+    ],
+    "holders": [
+      {
+        "name": "Smiley",
+        "from": {
+          "year": 35,
+          "month": 1
+        },
+        "approx": true,
+        "to": {
+          "year": 38,
+          "month": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "fruit_smile_lion",
+    "name": "SMILE, Lion",
+    "japanese": "SMILE (Lion)",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:smile_lion",
+    "primitives": ["beast", "transform"],
+    "description": "An artificial Zoan made from Lineage Factor: it gave its eater a lion's part where it does not belong.",
+    "techniques": [
+      {
+        "id": "tech_smile_lion_lion_part",
+        "name": "Lion Part",
+        "form": "strike",
+        "tags": ["beast"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "artificial",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 8
+      },
+      {
+        "stat": "durability",
+        "pct": 6
+      }
+    ],
+    "holders": [
+      {
+        "name": "Holdem",
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_smile_horse",
+    "name": "SMILE, Horse",
+    "japanese": "SMILE (Horse)",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:smile_horse",
+    "primitives": ["beast", "transform"],
+    "description": "An artificial Zoan made from Lineage Factor: it gave its eater a horse's part where it does not belong.",
+    "techniques": [
+      {
+        "id": "tech_smile_horse_horse_part",
+        "name": "Horse Part",
+        "form": "strike",
+        "tags": ["beast"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "artificial",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 8
+      },
+      {
+        "stat": "durability",
+        "pct": 6
+      }
+    ],
+    "holders": [
+      {
+        "name": "Speed",
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_smile_sheep",
+    "name": "SMILE, Sheep",
+    "japanese": "SMILE (Sheep)",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:smile_sheep",
+    "primitives": ["beast", "transform"],
+    "description": "An artificial Zoan made from Lineage Factor: it gave its eater a sheep's part where it does not belong.",
+    "techniques": [
+      {
+        "id": "tech_smile_sheep_sheep_part",
+        "name": "Sheep Part",
+        "form": "strike",
+        "tags": ["beast"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "artificial",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 8
+      },
+      {
+        "stat": "durability",
+        "pct": 6
+      }
+    ],
+    "holders": [
+      {
+        "name": "Sheepshead",
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_smile_gazelle",
+    "name": "SMILE, Gazelle",
+    "japanese": "SMILE (Gazelle)",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:smile_gazelle",
+    "primitives": ["beast", "transform"],
+    "description": "An artificial Zoan made from Lineage Factor: it gave its eater a gazelle's part where it does not belong.",
+    "techniques": [
+      {
+        "id": "tech_smile_gazelle_gazelle_part",
+        "name": "Gazelle Part",
+        "form": "strike",
+        "tags": ["beast"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "artificial",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 8
+      },
+      {
+        "stat": "durability",
+        "pct": 6
+      }
+    ],
+    "holders": [
+      {
+        "name": "Gazelle Man",
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_smile_bat",
+    "name": "SMILE, Bat",
+    "japanese": "SMILE (Bat)",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:smile_bat",
+    "primitives": ["beast", "transform"],
+    "description": "An artificial Zoan made from Lineage Factor: it gave its eater a bat's part where it does not belong.",
+    "techniques": [
+      {
+        "id": "tech_smile_bat_bat_part",
+        "name": "Bat Part",
+        "form": "strike",
+        "tags": ["beast"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "artificial",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 8
+      },
+      {
+        "stat": "durability",
+        "pct": 6
+      }
+    ],
+    "holders": [
+      {
+        "name": "Batman",
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  },
+  {
+    "id": "fruit_smile_mouse",
+    "name": "SMILE, Mouse",
+    "japanese": "SMILE (Mouse)",
+    "type": "zoan",
+    "rarity": "common",
+    "power": "zoan:smile_mouse",
+    "primitives": ["beast", "transform"],
+    "description": "An artificial Zoan made from Lineage Factor: it gave its eater a mouse's part where it does not belong.",
+    "techniques": [
+      {
+        "id": "tech_smile_mouse_mouse_part",
+        "name": "Mouse Part",
+        "form": "strike",
+        "tags": ["beast"],
+        "mastery": 0,
+        "named": false
+      }
+    ],
+    "zoan": "artificial",
+    "boosts": [
+      {
+        "stat": "strength",
+        "pct": 8
+      },
+      {
+        "stat": "durability",
+        "pct": 6
+      }
+    ],
+    "holders": [
+      {
+        "name": "Mouse Man",
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "approx": true
+      }
+    ]
+  }
+]

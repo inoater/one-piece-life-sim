@@ -23,7 +23,7 @@ const click = async (label: string | RegExp) => {
 
 describe('the masthead', () => {
   it('shows the date, the season and the dial', () => {
-    expect(text(q('.masthead__title'))).toBe('January, Year 0');
+    expect(text(q('.masthead__title'))).toBe('January 1486 SC');
     expect(text(q('.masthead__season'))).toBe('Winter');
     expect(q('.dial')).not.toBeNull();
   });
@@ -42,15 +42,15 @@ describe('the masthead', () => {
 
   it('follows the clock', async () => {
     await click('Next month');
-    expect(text(q('.masthead__title'))).toBe('February, Year 0');
+    expect(text(q('.masthead__title'))).toBe('February 1486 SC');
     await ui.app.advance({ kind: 'months', count: 14 }, 'test');
-    expect(text(q('.masthead__title'))).toBe('April, Year 1');
+    expect(text(q('.masthead__title'))).toBe('April 1487 SC');
     expect(text(q('.masthead__season'))).toBe('Spring');
   });
 });
 
 describe('navigation', () => {
-  it('has the five sections and the map as real links, and Back-friendly hash URLs', () => {
+  it('has the five sections, the map and the Powers page as real links, and Back-friendly hash URLs', () => {
     expect(qa('.tabs a').map((a) => [text(a), a.getAttribute('href')])).toEqual([
       ['Feed', '#/feed'],
       ['Character', '#/character'],
@@ -58,6 +58,7 @@ describe('navigation', () => {
       ['World', '#/world'],
       ['News', '#/news'],
       ['Map', '#/map'],
+      ['Powers', '#/powers'],
     ]);
   });
 
@@ -118,7 +119,7 @@ describe('the chronicle', () => {
     await click('Next month');
     await ui.app.dispatch({ type: 'debug/forceEvent', eventId: 'evt_test_aftermath' });
     await click('Next month');
-    expect(qa('.month__title').map(text)).toEqual(['January, Year 0', 'February, Year 0']);
+    expect(qa('.month__title').map(text)).toEqual(['January 1486 SC', 'February 1486 SC']);
     const lines = qa('.line');
     expect(lines.map((l) => l.getAttribute('data-category'))).toEqual([
       'system',
@@ -128,7 +129,7 @@ describe('the chronicle', () => {
       'family',
     ]);
     expect(text(lines[2])).toBe(
-      'World. A test notice is posted in January, Year 0. Nothing depends on it.',
+      'World. A test notice is posted in January 1486 SC. Nothing depends on it.',
     );
   });
 
@@ -155,7 +156,7 @@ describe('the chronicle', () => {
     expect(text(q('.epilogue button'))).toBe('Sail on past the present');
     expect(q('.shell')?.getAttribute('data-phase')).toBe('present');
     expect(q('.dial')?.classList.contains('is-present')).toBe(true);
-    expect(text(q('.masthead__title'))).toBe('January, Year 39');
+    expect(text(q('.masthead__title'))).toBe('January 1525 SC');
   });
 });
 
@@ -187,7 +188,7 @@ describe('time controls', () => {
 
   it('Skip to next event says where it ended when nothing happens', async () => {
     await click('Skip to next event');
-    expect(status()).toBe('Reached the present (Year 39) after 468 months.');
+    expect(status()).toBe('Reached the present (1525 SC) after 468 months.');
     expect(timeButtons().every((b) => b.disabled)).toBe(true);
     expect(timeButtons()[0]?.getAttribute('title')).toBe('The present has arrived');
   });
@@ -290,8 +291,8 @@ describe('resuming', () => {
     ui.shell.destroy();
 
     ui = await mountUi({ store, autoResume: true });
-    expect(text(q('.masthead__title'))).toBe('July, Year 2');
-    expect(status()).toContain('Resumed your saved world (auto-1, July, Year 2)');
+    expect(text(q('.masthead__title'))).toBe('July 1488 SC');
+    expect(status()).toContain('Resumed your saved world (auto-1, July 1488 SC)');
     expect(status()).toContain('state hash matches the save');
   });
 
@@ -305,7 +306,7 @@ describe('resuming', () => {
 
     ui = await mountUi({ store, autoResume: true });
     expect(text(q('.banner'))).toContain('Could not resume auto-1');
-    expect(text(q('.masthead__title'))).toBe('January, Year 0');
+    expect(text(q('.masthead__title'))).toBe('January 1486 SC');
     button(q('.banner') as Element, 'Dismiss').click();
     await settle();
     expect(q('.banner')).toBeNull();

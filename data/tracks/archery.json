@@ -1,0 +1,75 @@
+{
+  "id": "track_archery",
+  "name": "Archery",
+  "family": "weapon",
+  "description": "From steady aim to trick shots to arrows coated with haki.",
+  "stages": [
+    {
+      "id": "steady",
+      "name": "Steady aim",
+      "level": "novice",
+      "at": 0,
+      "description": "Hit what you aim at.",
+      "text": "Your arrow split the one before it.",
+      "requires": {
+        "gear": {
+          "bow": 1
+        }
+      },
+      "techniques": ["tech_bow_shot"],
+      "combat": 6
+    },
+    {
+      "id": "trick",
+      "name": "Trick shots",
+      "level": "adept",
+      "at": 60,
+      "description": "Arrows around corners, three at once.",
+      "text": "Three arrows left your bow at once and found three targets.",
+      "requires": {
+        "stats": {
+          "dexterity": 50,
+          "perception": 45
+        }
+      },
+      "techniques": ["tech_bow_volley"],
+      "combat": 18
+    },
+    {
+      "id": "coated",
+      "name": "Arrows coated with haki",
+      "level": "expert",
+      "at": 150,
+      "description": "Arrows that carry Armament.",
+      "text": "Your coated arrow went through a shield of steel.",
+      "requires": {
+        "tracks": {
+          "track_armament": "coat_weapon"
+        }
+      },
+      "techniques": ["tech_bow_coated"],
+      "combat": 32
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a hunter who teaches",
+        "features": ["forest", "jungle"],
+        "fee": 5000
+      }
+    ],
+    "requires": {
+      "gear": {
+        "bow": 1
+      }
+    }
+  },
+  "speedStats": {
+    "dexterity": 0.4,
+    "perception": 0.3
+  },
+  "word": "Arrow",
+  "tags": ["bow"]
+}

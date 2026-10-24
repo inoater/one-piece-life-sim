@@ -1,5 +1,5 @@
 /**
- * Text templates for event text, news and log lines: "Posted in {monthName}, Year {year}."
+ * Text templates for event text, news and log lines: "Posted in {monthName} {year}."
  *
  * Syntax: `{name}` inserts a variable; `{{` and `}}` produce literal braces.
  *
@@ -101,6 +101,8 @@ export const LIFE_VARS = [
   'stat',
   'months',
   'name',
+  // Phase 4: the technique used in a fight or a spar ("Your Gum-Gum Pistol caught them").
+  'technique',
 ] as const;
 
 /**

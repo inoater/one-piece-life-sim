@@ -25,6 +25,10 @@
             "min": -3,
             "max": 3
           }
+        },
+        {
+          "kind": "drift",
+          "tags": ["kind"]
         }
       ]
     },
@@ -39,6 +43,10 @@
           "kind": "opinion",
           "target": "friend",
           "value": 8
+        },
+        {
+          "kind": "drift",
+          "tags": ["generous"]
         }
       ]
     },
@@ -52,6 +60,10 @@
           "stats": {
             "charisma": 0.2
           }
+        },
+        {
+          "kind": "drift",
+          "tags": ["humble"]
         }
       ],
       "quiet": true

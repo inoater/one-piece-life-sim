@@ -1,0 +1,23 @@
+{
+  "id": "moveset_buggy",
+  "char": "char_buggy",
+  "eras": [
+    {
+      "from": {
+        "year": 9,
+        "month": 1
+      },
+      "techniques": [
+        "tech_bara_bara_bara_bara_hou",
+        "tech_bara_bara_bara_bara_festival",
+        "tech_bara_bara_bara_bara_car",
+        "tech_buggy_muggy_ball"
+      ],
+      "tracks": {},
+      "approx": true,
+      "mastery": 45,
+      "signature": "tech_buggy_muggy_ball",
+      "finisher": "tech_bara_bara_bara_bara_festival"
+    }
+  ]
+}

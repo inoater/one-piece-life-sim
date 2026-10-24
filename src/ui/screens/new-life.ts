@@ -815,19 +815,21 @@ export function createNewLife(app: App): NewLifeScreen {
         step: '1',
         'aria-label': label,
       });
+    // The player picks a Sea Circle year (1486 to 1524 SC); the options carry the game year.
+    const off = s.canonYearOffset;
     const yearNumber = numberInput(
       'entryYear',
-      d.entryYear,
-      entry.minYear,
-      entry.maxYear,
-      'Entry year',
+      d.entryYear + off,
+      entry.minYear + off,
+      entry.maxYear + off,
+      'Entry year (SC)',
     );
     const yearRange = rangeInput(
       'entryYearRange',
-      d.entryYear,
-      entry.minYear,
-      entry.maxYear,
-      'Entry year',
+      d.entryYear + off,
+      entry.minYear + off,
+      entry.maxYear + off,
+      'Entry year (SC)',
     );
     const ageNumber = numberInput('entryAge', d.entryAge, entry.minAge, entry.maxAge, 'Entry age');
     const ageRange = rangeInput(
@@ -838,6 +840,9 @@ export function createNewLife(app: App): NewLifeScreen {
       'Entry age',
     );
     const yearNote = h('span', { class: 'field__hint' });
+    const sc = (year: number) => `${year + off} ${s.era}`;
+    const yearNoteText = (year: number) =>
+      `${year === 0 ? 'The year of the God Valley incident' : `${year} years after God Valley`}; the present begins in ${sc(s.presentYear)}.`;
     const summary = h('p', { class: 'entry-summary' });
     const warnings = h('ul', { class: 'warnings', 'aria-live': 'polite' });
     const focusBox = h('div', { class: 'focus-box' });
@@ -845,11 +850,11 @@ export function createNewLife(app: App): NewLifeScreen {
     const setYear = (raw: string) => {
       const n = Math.round(Number(raw));
       if (!Number.isFinite(n) || raw.trim() === '') return;
-      const v = Math.min(entry.maxYear, Math.max(entry.minYear, n));
+      const v = Math.min(entry.maxYear, Math.max(entry.minYear, n - off));
       if (draft) draft.entryYear = v;
-      yearRange.value = String(v);
-      if (document.activeElement !== yearNumber) yearNumber.value = String(v);
-      yearNote.textContent = `Year ${v} is ${v + s.canonYearOffset} on the old calendar; the present is Year ${s.presentYear}.`;
+      yearRange.value = String(v + off);
+      if (document.activeElement !== yearNumber) yearNumber.value = String(v + off);
+      yearNote.textContent = yearNoteText(v);
       requestPreview(120);
     };
     const setAge = (raw: string) => {
@@ -871,7 +876,7 @@ export function createNewLife(app: App): NewLifeScreen {
       ageNumber.value = ageRange.value;
       setAge(ageRange.value);
     });
-    yearNote.textContent = `Year ${d.entryYear} is ${d.entryYear + s.canonYearOffset} on the old calendar; the present is Year ${s.presentYear}.`;
+    yearNote.textContent = yearNoteText(d.entryYear);
 
     const el = h(
       'div',
@@ -892,7 +897,7 @@ export function createNewLife(app: App): NewLifeScreen {
       update(p: GenesisPreview | null) {
         if (!draft) return;
         if (p?.entry && p.sheet) {
-          summary.textContent = `Born ${p.entry.birthLabel}; the story starts ${p.entry.label}. You would turn ${draft.entryAge + s.presentYear - draft.entryYear} in Year ${s.presentYear}, when the present arrives.`;
+          summary.textContent = `Born ${p.entry.birthLabel}; the story starts ${p.entry.label}. You would turn ${draft.entryAge + s.presentYear - draft.entryYear} in ${sc(s.presentYear)}, when the present arrives.`;
         } else summary.textContent = '';
         warnings.replaceChildren(
           ...(p?.warnings ?? []).map((w) =>
@@ -1093,7 +1098,7 @@ export function createNewLife(app: App): NewLifeScreen {
             'Entry',
             p?.entry
               ? `${p.entry.label}, age ${draft.entryAge}`
-              : `Year ${draft.entryYear}, age ${draft.entryAge}`,
+              : `${draft.entryYear + s.canonYearOffset} ${s.era}, age ${draft.entryAge}`,
             'entry',
           ),
           row(

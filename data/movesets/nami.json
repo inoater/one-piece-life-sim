@@ -1,0 +1,34 @@
+{
+  "id": "moveset_nami",
+  "char": "char_nami",
+  "eras": [
+    {
+      "from": {
+        "year": 36,
+        "month": 2
+      },
+      "techniques": ["tech_nami_thunderbolt_tempo", "tech_nami_mirage_tempo"],
+      "tracks": {
+        "track_naval_tactics": "tactician"
+      },
+      "approx": true,
+      "to": {
+        "year": 36,
+        "month": 9
+      },
+      "signature": "tech_nami_thunderbolt_tempo"
+    },
+    {
+      "from": {
+        "year": 38,
+        "month": 1
+      },
+      "techniques": ["tech_nami_thunderbolt_tempo", "tech_nami_mirage_tempo"],
+      "tracks": {
+        "track_naval_tactics": "admiral"
+      },
+      "approx": true,
+      "signature": "tech_nami_thunderbolt_tempo"
+    }
+  ]
+}

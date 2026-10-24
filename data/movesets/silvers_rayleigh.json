@@ -1,0 +1,27 @@
+{
+  "id": "moveset_silvers_rayleigh",
+  "char": "char_silvers_rayleigh",
+  "eras": [
+    {
+      "from": {
+        "year": -16,
+        "month": 1
+      },
+      "techniques": [
+        "tech_rayleigh_slash",
+        "tech_sword_shishi_sonson",
+        "tech_sword_36_pound",
+        "tech_haki_coat_weapon",
+        "tech_haki_ryuo"
+      ],
+      "tracks": {
+        "track_swordsmanship": "black_blade",
+        "track_armament": "emission",
+        "track_observation": "future_sight",
+        "track_conqueror": "coating"
+      },
+      "approx": true,
+      "signature": "tech_rayleigh_slash"
+    }
+  ]
+}

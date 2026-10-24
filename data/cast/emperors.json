@@ -87,7 +87,8 @@
         "approx": true
       }
     ],
-    "ties": ["char_marco", "char_portgas_d_ace", "char_marshall_d_teach", "char_kozuki_oden"]
+    "ties": ["char_marco", "char_portgas_d_ace", "char_marshall_d_teach", "char_kozuki_oden"],
+    "traits": ["trait_kings_qualities"]
   },
   {
     "id": "char_marco",
@@ -272,7 +273,8 @@
         "bounty": 4388000000,
         "approx": true
       }
-    ]
+    ],
+    "traits": ["trait_kings_qualities"]
   },
   {
     "id": "char_kaido",
@@ -370,7 +372,8 @@
         "status": "imprisoned",
         "approx": true
       }
-    ]
+    ],
+    "traits": ["trait_kings_qualities"]
   },
   {
     "id": "char_shiki",
@@ -469,7 +472,8 @@
         "status": "hidden",
         "approx": true
       }
-    ]
+    ],
+    "traits": ["trait_kings_qualities"]
   },
   {
     "id": "char_kozuki_oden",
@@ -545,7 +549,8 @@
         "approx": true
       }
     ],
-    "ties": ["char_kurozumi_orochi"]
+    "ties": ["char_kurozumi_orochi"],
+    "traits": ["trait_kings_qualities", "trait_voice_of_all_things"]
   },
   {
     "id": "char_kurozumi_orochi",

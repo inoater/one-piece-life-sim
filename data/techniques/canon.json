@@ -1,0 +1,233 @@
+[
+  {
+    "id": "tech_garp_fist_of_love",
+    "name": "Fist of Love",
+    "form": "strike",
+    "tags": ["blunt", "armament", "haki"],
+    "effects": ["knockback"],
+    "description": "A grandfather's punch, coated in Armament."
+  },
+  {
+    "id": "tech_garp_galaxy_impact",
+    "name": "Galaxy Impact",
+    "form": "area",
+    "tags": ["blunt", "armament", "haki"],
+    "effects": ["knockback", "terrain"],
+    "finisher": true,
+    "description": "A punch that flattens a town's worth of ground."
+  },
+  {
+    "id": "tech_roger_kamusari",
+    "name": "Kamusari",
+    "form": "strike",
+    "tags": ["sword", "slash", "conqueror"],
+    "effects": ["ignore_logia", "knockout"],
+    "finisher": true,
+    "description": "Divine Departure: a slash on Conqueror's Haki."
+  },
+  {
+    "id": "tech_mihawk_slash",
+    "name": "Yoru's Slash",
+    "form": "projectile",
+    "tags": ["sword", "slash"],
+    "effects": ["pierce_guard"],
+    "named": false,
+    "description": "A flying slash from the black blade that cuts icebergs."
+  },
+  {
+    "id": "tech_shanks_divine_departure",
+    "name": "Divine Departure",
+    "form": "strike",
+    "tags": ["sword", "slash", "conqueror"],
+    "effects": ["ignore_logia", "knockout"],
+    "finisher": true
+  },
+  {
+    "id": "tech_zephyr_smash_buster",
+    "name": "Smash Buster",
+    "form": "strike",
+    "tags": ["blunt", "explosive", "weapon"],
+    "effects": ["knockback"],
+    "description": "A blow from the Battle Smasher arm."
+  },
+  {
+    "id": "tech_arlong_shark_on_darts",
+    "name": "Shark On Darts",
+    "form": "projectile",
+    "tags": ["pierce", "water"],
+    "effects": ["bleed"],
+    "description": "Arlong hurls himself through the water nose first."
+  },
+  {
+    "id": "tech_arlong_shark_tooth",
+    "name": "Shark Tooth Bite",
+    "form": "grapple",
+    "tags": ["pierce", "grip"],
+    "effects": ["bleed"],
+    "named": false
+  },
+  {
+    "id": "tech_nami_thunderbolt_tempo",
+    "name": "Thunderbolt Tempo",
+    "form": "projectile",
+    "tags": ["lightning", "weapon"],
+    "effects": ["shock"],
+    "description": "A thunderbolt called down with the Clima-Tact."
+  },
+  {
+    "id": "tech_nami_mirage_tempo",
+    "name": "Mirage Tempo",
+    "form": "support",
+    "tags": ["illusion", "weapon"],
+    "effects": ["blind"],
+    "description": "Mirages raised with the Clima-Tact."
+  },
+  {
+    "id": "tech_bellemere_shot",
+    "name": "Marine's Shot",
+    "form": "projectile",
+    "tags": ["gun", "pierce"],
+    "named": false
+  },
+  {
+    "id": "tech_kaido_thunder_bagua",
+    "name": "Raimei Hakke",
+    "form": "strike",
+    "tags": ["blunt", "conqueror", "weapon"],
+    "effects": ["knockback", "knockout"],
+    "finisher": true,
+    "description": "Thunder Bagua: a club blow coated in a king's will."
+  },
+  {
+    "id": "tech_kaido_club",
+    "name": "Kanabo Sweep",
+    "form": "area",
+    "tags": ["blunt", "weapon", "armament"],
+    "effects": ["knockback"],
+    "named": false
+  },
+  {
+    "id": "tech_linlin_ikoku",
+    "name": "Ikoku Sovereignty",
+    "form": "projectile",
+    "tags": ["slash", "soul", "conqueror"],
+    "effects": ["knockback"],
+    "finisher": true,
+    "description": "A thrust with Napoleon that splits the sea."
+  },
+  {
+    "id": "tech_shiki_shishi_shigure",
+    "name": "Shishi Shigure",
+    "form": "projectile",
+    "tags": ["sword", "slash", "wind"],
+    "effects": ["bleed"],
+    "description": "Lion's Rain: slashes from the two swords in his legs."
+  },
+  {
+    "id": "tech_oden_signature",
+    "name": "Oden Nitoryu: Togen Totsuka",
+    "form": "strike",
+    "tags": ["sword", "slash", "armament"],
+    "effects": ["pierce_guard"],
+    "description": "Oden's own cut."
+  },
+  {
+    "id": "tech_jinbe_sea_dragon",
+    "name": "Kairyu Ippon Zeoi",
+    "form": "grapple",
+    "tags": ["water", "grip"],
+    "effects": ["knockback"],
+    "description": "Jinbe throws the sea itself."
+  },
+  {
+    "id": "tech_hancock_perfume_femur",
+    "name": "Perfume Femur",
+    "form": "strike",
+    "tags": ["kick"],
+    "effects": ["transform"],
+    "description": "A kick that turns the struck to stone."
+  },
+  {
+    "id": "tech_ivankov_death_wink",
+    "name": "Death Wink",
+    "form": "projectile",
+    "tags": ["wind"],
+    "effects": ["knockback"],
+    "description": "A wink that blows people away."
+  },
+  {
+    "id": "tech_buggy_muggy_ball",
+    "name": "Muggy Ball",
+    "form": "projectile",
+    "tags": ["explosive", "weapon"],
+    "effects": ["knockback"],
+    "description": "A Buggy Ball, small enough to hold."
+  },
+  {
+    "id": "tech_crocodile_hook",
+    "name": "Golden Hook",
+    "form": "strike",
+    "tags": ["pierce", "poison", "weapon"],
+    "effects": ["poison"],
+    "named": false,
+    "description": "The poisoned hook inside the golden one."
+  },
+  {
+    "id": "tech_rayleigh_slash",
+    "name": "Dark King's Cut",
+    "form": "strike",
+    "tags": ["sword", "slash", "armament"],
+    "effects": ["pierce_guard"],
+    "named": false
+  },
+  {
+    "id": "tech_gaban_axe",
+    "name": "Twin Axes",
+    "form": "area",
+    "tags": ["slash", "weapon"],
+    "effects": ["knockback"],
+    "named": false
+  },
+  {
+    "id": "tech_xebec_storm",
+    "name": "Rocks' Storm",
+    "form": "area",
+    "tags": ["conqueror", "blunt"],
+    "effects": ["knockout"],
+    "named": false
+  },
+  {
+    "id": "tech_dragon_wind",
+    "name": "Dragon's Gale",
+    "form": "area",
+    "tags": ["wind"],
+    "effects": ["knockback"],
+    "named": false,
+    "description": "A gale that seems to rise wherever he stands."
+  },
+  {
+    "id": "tech_vegapunk_knowledge",
+    "name": "Punk Pressure",
+    "form": "support",
+    "tags": ["mind"],
+    "effects": ["buff"],
+    "named": false,
+    "description": "The Brain-Brain Fruit's endless store of knowledge, used to plan."
+  },
+  {
+    "id": "tech_tsuru_wash",
+    "name": "Wash and Dry",
+    "form": "grapple",
+    "tags": ["water", "mind"],
+    "effects": ["bind"],
+    "named": false
+  },
+  {
+    "id": "tech_kong_order",
+    "name": "Command of the Fleet",
+    "form": "support",
+    "tags": ["sea"],
+    "effects": ["buff"],
+    "named": false
+  }
+]

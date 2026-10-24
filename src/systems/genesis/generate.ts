@@ -1,4 +1,4 @@
-import { tickOf } from '../../engine/calendar';
+import { formatYear, tickOf } from '../../engine/calendar';
 import type { Birthplace, GameData, Race } from '../../engine/data/schemas';
 import { dpow } from '../../engine/dmath';
 import { createEntity } from '../../engine/entities';
@@ -47,6 +47,8 @@ import {
 import { ageAt, humanAgeFor, raceAgeFor, stageAt } from './stages';
 import { capitalize } from './text';
 import { blockingWarning, entryWarnings, type EntryWarning } from './warnings';
+import { bornPowers } from '../powers/month';
+import { powerCtxFor, setStage } from '../powers/tracks';
 
 /**
  * Character genesis: New Life turned into a world with a person in it.
@@ -271,13 +273,32 @@ function drawTrait(ctx: GenesisCtx, rng: Rng, pool: readonly string[]): string |
   return undefined;
 }
 
-function weightedTraitPool(ctx: GenesisCtx, rng: Rng, category: string): string | undefined {
-  const pool = sortedValues(ctx.data.traits).filter((t) => t.category === category && t.weight > 0);
+function weightedTraitPool(ctx: GenesisCtx, rng: Rng, ...categories: string[]): string | undefined {
+  const pool = sortedValues(ctx.data.traits).filter(
+    (t) => categories.includes(t.category) && t.weight > 0,
+  );
   for (let attempt = 0; attempt < pool.length; attempt++) {
     const pick = rng.fork('attempt', attempt).weightedPick(pool, (t) => t.weight);
     if (pick && giveTrait(ctx, pick.id)) return pick.id;
   }
   return undefined;
+}
+
+/** A grown entry's past taught them a little: a fighter's brawling, a sailor's seamanship. */
+function pastPowers(ctx: GenesisCtx, rng: Rng): void {
+  const focus = ctx.focus;
+  if (!focus) return;
+  const years = Math.max(0, humanAgeFor(ctx.data.character, ctx.race, ctx.options.entryAge) - 12);
+  if (years <= 0) return;
+  const ctxP = powerCtxFor(ctx.state, ctx.data, ctx.player, ctx.entryTick, rng);
+  if (!ctxP) return;
+  for (const [trackId, max] of Object.entries(focus.tracks).sort()) {
+    const stage = Math.min(
+      max,
+      Math.floor((years / 18) * (max + 1) * rng.fork('stage', trackId).float(0.6, 1.1)),
+    );
+    setStage(ctxP, trackId, stage);
+  }
 }
 
 /** Write the generated numbers back as clean, rounded stats: base + training + traits - age. */
@@ -322,7 +343,7 @@ export function createLife(
   }
   if (options.entryYear < entry.minYear || options.entryYear > entry.maxYear) {
     throw new GenesisError(
-      `The entry year must be between Year ${entry.minYear} and Year ${entry.maxYear}`,
+      `The entry year must be between ${formatYear(data.calendar, entry.minYear)} and ${formatYear(data.calendar, entry.maxYear)}`,
     );
   }
   if (options.entryAge < entry.minAge || options.entryAge > entry.maxAge) {
@@ -459,7 +480,12 @@ export function createLife(
   );
   drawTrait(ctx, familyRng.fork('trait'), legacy.traitPool);
   if (natureRng.fork('quirk?').chance(data.creation.quirkChance)) {
-    weightedTraitPool(ctx, natureRng.fork('quirk'), 'quirk');
+    // Phase 4: a quirk, or a personality trait that drift can later take away.
+    weightedTraitPool(ctx, natureRng.fork('quirk'), 'quirk', 'personality');
+  }
+  // Phase 4: King's Qualities, about one in a few million (hidden: the sheet only hints).
+  if (rng.fork('kings').chance(data.powers.haki.kingsQualitiesChance)) {
+    giveTrait(ctx, data.powers.haki.kingsQualitiesTrait);
   }
 
   // ---- Family
@@ -546,6 +572,9 @@ export function createLife(
   if (pc.family) pc.family.wealth = tier.id;
   if (focus) pc.focus = focus.id;
   finishStats(ctx);
+  // Phase 4: what their people are born with (Electro, Mantra), and what their past taught them.
+  bornPowers(state, data, player, birthTick);
+  pastPowers(ctx, rng.fork('powers'));
   pc.backstory = writeParagraph(ctx, data);
   // The life loop starts here (Phase 2): full Health, an empty routine.
   pc.life = freshLife(data, player, entryTick);

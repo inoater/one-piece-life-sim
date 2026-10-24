@@ -6,10 +6,11 @@
 /** The sections, each a tab. */
 export const ROUTES = ['feed', 'character', 'actions', 'world', 'news'] as const;
 /**
- * Full-page screens that are not tabs: New Life, the Map, the life recap after a death, and
- * (Phase 3) the canon timeline with its Divergence Log.
+ * Full-page screens that are not tabs: New Life, the Map, the life recap after a death,
+ * (Phase 3) the canon timeline with its Divergence Log, and (Phase 4) the Powers and Devil Fruit
+ * pages.
  */
-export const PAGE_ROUTES = ['new', 'map', 'end', 'canon'] as const;
+export const PAGE_ROUTES = ['new', 'map', 'end', 'canon', 'powers', 'fruits'] as const;
 export type TabRoute = (typeof ROUTES)[number];
 export type Route = TabRoute | (typeof PAGE_ROUTES)[number];
 /** The routes that live in the side panel on a wide screen (the feed is always visible there). */
@@ -26,6 +27,8 @@ export const ROUTE_LABELS: Record<Route, string> = {
   map: 'Map',
   end: 'Life recap',
   canon: 'Canon',
+  powers: 'Powers',
+  fruits: 'Devil Fruits',
 };
 
 export function parseHash(hash: string): Route {

@@ -15,6 +15,8 @@ export interface DialInput {
   /** 1 to 12 */
   month: number;
   year: number;
+  /** How the year is written ("1497 SC"); the game year when absent. */
+  yearLabel?: string;
   /** 0 to 1 along the way to the present */
   progress: number;
   atPresent: boolean;
@@ -78,7 +80,7 @@ export function createDial(): Dial {
 
   return {
     el: root,
-    update({ month, year, progress: fraction, atPresent }) {
+    update({ month, year, yearLabel, progress: fraction, atPresent }) {
       const angle = (month - 1) * 30 + year * 360;
       // Going backwards (a new world) should snap, not spin the whole way round.
       const jumpedBack = angle < previousAngle;
@@ -98,8 +100,8 @@ export function createDial(): Dial {
       root.setAttribute(
         'aria-label',
         atPresent
-          ? `Month ${month} of Year ${year}. The present has arrived.`
-          : `Month ${month} of Year ${year}. ${Math.round(clamped * 100)} percent of the way to the present.`,
+          ? `Month ${month} of ${yearLabel ?? `Year ${year}`}. The present has arrived.`
+          : `Month ${month} of ${yearLabel ?? `Year ${year}`}. ${Math.round(clamped * 100)} percent of the way to the present.`,
       );
     },
   };

@@ -21,8 +21,11 @@ import type {
   WorldSummary,
 } from '../systems/places/view';
 import type { TravelView } from '../systems/voyage/view';
+import type { FruitsView, PowersView } from '../systems/powers/view';
 
 export type {
+  FruitsView,
+  PowersView,
   CanonView,
   FactionView,
   MapView,
@@ -98,6 +101,8 @@ export interface Snapshot {
   tick: number;
   date: DateInfo;
   presentTick: number;
+  /** How a game year is written (Phase 4: Sea Circle years, "1497 SC"). */
+  calendar: { yearOffset: number; era: string };
   /** 0 to 1 along the way to the present. */
   progress: number;
   /** True when the clock has reached the present and play is not open-ended. */
@@ -122,6 +127,8 @@ export interface Snapshot {
   travel: TravelView | null;
   /** The world (Phase 3): factions, the canon layer's progress, the population. */
   world: WorldSummary;
+  /** Powers (Phase 4): tracks, techniques, the fruit, gear. Null with nobody alive to play. */
+  powers: PowersView | null;
   /** At the present, before open-ended play: the epilogue to show. */
   epilogue: null | { title: string; text: string };
   /** The player's character sheet. Hidden facts are included only in omniscient views. */
@@ -290,6 +297,7 @@ export interface GenesisSetup {
   defaults: GenesisOptions;
   presentYear: number;
   canonYearOffset: number;
+  era: string;
   appearanceFields: { id: string; label: string }[];
   /** Month names, for writing dates. */
   months: string[];
@@ -396,6 +404,8 @@ export interface Protocol {
   'world/place': { req: { id: string; view: ViewOptions }; res: PlaceDetailView | null };
   'world/canon': { req: Record<string, never>; res: CanonView };
   'world/factions': { req: { generated?: boolean }; res: FactionView[] };
+  // ---- Powers (Phase 4)
+  'powers/fruits': { req: { view: ViewOptions }; res: FruitsView | null };
 }
 
 /** A handful of headless lives of one race, for the debug panel's lifespan chart. */

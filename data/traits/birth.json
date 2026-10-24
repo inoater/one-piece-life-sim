@@ -22,6 +22,18 @@
     "excludes": ["trait_landlubber"],
     "eventWeights": {
       "sea": 1.5
+    },
+    "immunities": ["seasickness"],
+    "checkBonuses": {
+      "navigation": 3
+    },
+    "evolves": {
+      "to": "trait_seasoned_sailor",
+      "when": {
+        "counters": {
+          "months_at_sea": 36
+        }
+      }
     }
   },
   {
@@ -41,7 +53,13 @@
         "kind": "flat"
       }
     ],
-    "excludes": ["trait_restless"]
+    "excludes": ["trait_restless"],
+    "eventWeights": {
+      "family": 1.3
+    },
+    "checkBonuses": {
+      "willpower": -3
+    }
   },
   {
     "id": "trait_street_smart",
@@ -59,7 +77,14 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "perception": 5,
+      "charisma": 3
+    },
+    "eventWeights": {
+      "crime": 1.2
+    }
   },
   {
     "id": "trait_silver_tongued",
@@ -71,6 +96,16 @@
         "stat": "charisma",
         "value": 4,
         "kind": "flat"
+      }
+    ],
+    "checkBonuses": {
+      "charisma": 10
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": 5,
+        "firstImpression": true
       }
     ]
   },
@@ -90,7 +125,11 @@
         "value": 2,
         "kind": "flat"
       }
-    ]
+    ],
+    "derivedMods": {
+      "maxHealth": 8
+    },
+    "immunities": ["chest_cough"]
   },
   {
     "id": "trait_stoic",
@@ -107,6 +146,16 @@
         "stat": "charisma",
         "value": -1,
         "kind": "flat"
+      }
+    ],
+    "checkBonuses": {
+      "willpower": 5
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -2,
+        "firstImpression": true
       }
     ]
   },
@@ -131,6 +180,15 @@
         "value": -1,
         "kind": "flat"
       }
+    ],
+    "trainingMods": {
+      "speed": 10
+    },
+    "opinion": [
+      {
+        "group": "nobles",
+        "value": -5
+      }
     ]
   },
   {
@@ -147,6 +205,12 @@
     ],
     "eventWeights": {
       "crime": 1.5
+    },
+    "checkBonuses": {
+      "dexterity": 5
+    },
+    "trainingMods": {
+      "dexterity": 10
     }
   },
   {
@@ -165,7 +229,13 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "navigation": 6
+    },
+    "eventWeights": {
+      "weather": 0.8
+    }
   },
   {
     "id": "trait_scarred",
@@ -182,6 +252,16 @@
         "stat": "charisma",
         "value": -1,
         "kind": "flat"
+      }
+    ],
+    "opinion": [
+      {
+        "group": "nobles",
+        "value": -5
+      },
+      {
+        "group": "pirates",
+        "value": 5
       }
     ]
   },
@@ -202,7 +282,16 @@
         "kind": "flat"
       }
     ],
-    "trainingGainPct": 5
+    "trainingGainPct": 5,
+    "checkBonuses": {
+      "willpower": 5
+    },
+    "opinion": [
+      {
+        "group": "marines",
+        "value": 5
+      }
+    ]
   },
   {
     "id": "trait_loyal",
@@ -220,7 +309,16 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": 5
+      }
+    ],
+    "checkBonuses": {
+      "willpower": 3
+    }
   },
   {
     "id": "trait_sky_born",
@@ -237,6 +335,9 @@
     "flags": {
       "sky.born": true,
       "unlock.dials": true
+    },
+    "checkBonuses": {
+      "perception": 5
     }
   },
   {
@@ -258,6 +359,12 @@
     ],
     "flags": {
       "water.born": true
+    },
+    "trainingMods": {
+      "endurance": 10
+    },
+    "powerMods": {
+      "track_fishman_karate": 10
     }
   },
   {
@@ -274,6 +381,19 @@
     ],
     "flags": {
       "code.honor": true
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": 3
+      },
+      {
+        "group": "criminals",
+        "value": -5
+      }
+    ],
+    "powerMods": {
+      "family:sword": 5
     }
   },
   {
@@ -292,7 +412,13 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "combatPower": 5
+    },
+    "powerMods": {
+      "family:style": 5
+    }
   },
   {
     "id": "trait_sure_footed",
@@ -310,7 +436,13 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "speed": 5
+    },
+    "eventWeights": {
+      "hazard": 0.85
+    }
   },
   {
     "id": "trait_hard_working",
@@ -328,7 +460,10 @@
         "value": 1,
         "kind": "flat"
       }
-    ]
+    ],
+    "derivedMods": {
+      "vigor": 1
+    }
   },
   {
     "id": "trait_gullible",
@@ -346,6 +481,13 @@
         "value": 2,
         "kind": "flat"
       }
-    ]
+    ],
+    "checkBonuses": {
+      "intellect": -5,
+      "perception": -5
+    },
+    "eventWeights": {
+      "crime": 1.3
+    }
   }
 ]

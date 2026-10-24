@@ -1,0 +1,198 @@
+[
+  {
+    "id": "trait_brave",
+    "name": "Brave",
+    "description": "Steps toward trouble when others step back.",
+    "category": "personality",
+    "drift": {
+      "axis": "courage",
+      "gainAt": 6,
+      "loseAt": 2
+    },
+    "checkBonuses": {
+      "willpower": 5
+    },
+    "powerMods": {
+      "track_conqueror": 10
+    },
+    "gainText": "You stopped looking for the way out first. You had become brave."
+  },
+  {
+    "id": "trait_cowardly",
+    "name": "Cowardly",
+    "description": "Flinches first and runs if it can.",
+    "category": "personality",
+    "drift": {
+      "axis": "courage",
+      "gainAt": -6,
+      "loseAt": -2
+    },
+    "checkBonuses": {
+      "willpower": -5,
+      "speed": 3
+    },
+    "gainText": "You learned to run before the first blow. You had become a coward.",
+    "loseText": "You no longer flinch at a raised fist."
+  },
+  {
+    "id": "trait_honest",
+    "name": "Honest",
+    "description": "Says what is true, even when it costs.",
+    "category": "personality",
+    "drift": {
+      "axis": "honesty",
+      "gainAt": 6,
+      "loseAt": 2
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": 5
+      }
+    ],
+    "checkBonuses": {
+      "charisma": -3
+    }
+  },
+  {
+    "id": "trait_sly",
+    "name": "Sly",
+    "description": "Says what works.",
+    "category": "personality",
+    "drift": {
+      "axis": "honesty",
+      "gainAt": -6,
+      "loseAt": -2
+    },
+    "checkBonuses": {
+      "charisma": 5
+    },
+    "eventWeights": {
+      "crime": 1.3
+    },
+    "loseText": "You found you no longer reached for a lie first."
+  },
+  {
+    "id": "trait_kind",
+    "name": "Kind",
+    "description": "Cannot pass someone in trouble.",
+    "category": "personality",
+    "drift": {
+      "axis": "mercy",
+      "gainAt": 6,
+      "loseAt": 2
+    },
+    "opinion": [
+      {
+        "group": "commoners",
+        "value": 8
+      },
+      {
+        "group": "everyone",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "trait_cruel",
+    "name": "Cruel",
+    "description": "Enjoys it a little when others suffer.",
+    "category": "personality",
+    "drift": {
+      "axis": "mercy",
+      "gainAt": -6,
+      "loseAt": -2
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -8
+      }
+    ],
+    "checkBonuses": {
+      "combatPower": 3
+    },
+    "loseText": "The pleasure you once took in others' pain had gone."
+  },
+  {
+    "id": "trait_generous",
+    "name": "Generous",
+    "description": "Shares what they have.",
+    "category": "personality",
+    "drift": {
+      "axis": "generosity",
+      "gainAt": 6,
+      "loseAt": 2
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": 5
+      },
+      {
+        "group": "commoners",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": "trait_greedy",
+    "name": "Greedy",
+    "description": "Never has enough.",
+    "category": "personality",
+    "drift": {
+      "axis": "generosity",
+      "gainAt": -6,
+      "loseAt": -2
+    },
+    "eventWeights": {
+      "money": 1.3,
+      "crime": 1.2
+    },
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -3
+      }
+    ]
+  },
+  {
+    "id": "trait_proud",
+    "name": "Proud",
+    "description": "Will not be made small.",
+    "category": "personality",
+    "drift": {
+      "axis": "pride",
+      "gainAt": 6,
+      "loseAt": 2
+    },
+    "checkBonuses": {
+      "willpower": 5,
+      "charisma": -3
+    },
+    "opinion": [
+      {
+        "group": "nobles",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "trait_humble",
+    "name": "Humble",
+    "description": "Never makes much of themselves.",
+    "category": "personality",
+    "drift": {
+      "axis": "pride",
+      "gainAt": -6,
+      "loseAt": -2
+    },
+    "opinion": [
+      {
+        "group": "commoners",
+        "value": 5
+      }
+    ],
+    "trainingGainPct": 5
+  }
+]

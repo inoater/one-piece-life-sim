@@ -1,0 +1,31 @@
+{
+  "id": "act_life_return",
+  "name": "Practise Life Return",
+  "category": "train_spirit",
+  "description": "Breath, heartbeat, hair and stomach: making the body's own workings obey.",
+  "minAge": 12,
+  "physical": false,
+  "usesMentor": true,
+  "requires": {
+    "tracks": {
+      "track_life_return": "open"
+    }
+  },
+  "gains": {
+    "willpower": 0.5,
+    "endurance": 0.3
+  },
+  "practice": {
+    "kind": "drill",
+    "tracks": ["track_life_return"]
+  },
+  "tags": ["spirit", "at_sea"],
+  "outcomes": [
+    {
+      "id": "breath",
+      "text": "You slowed your heart until you could hear the blood in your ears stop.",
+      "weight": 1.5,
+      "quiet": true
+    }
+  ]
+}

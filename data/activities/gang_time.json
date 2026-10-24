@@ -41,6 +41,10 @@
         {
           "kind": "fame",
           "value": 0.3
+        },
+        {
+          "kind": "drift",
+          "tags": ["brave", "rash"]
         }
       ]
     },
@@ -56,6 +60,10 @@
         {
           "kind": "infamy",
           "value": 1
+        },
+        {
+          "kind": "drift",
+          "tags": ["cruel", "greedy"]
         }
       ]
     },
@@ -70,13 +78,23 @@
           "kind": "opinion",
           "target": "friend",
           "value": 10
+        },
+        {
+          "kind": "drift",
+          "tags": ["honest"]
         }
       ]
     },
     {
       "id": "idle",
       "text": "A month of standing on corners looking dangerous.",
-      "quiet": true
+      "quiet": true,
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["sly"]
+        }
+      ]
     }
   ]
 }

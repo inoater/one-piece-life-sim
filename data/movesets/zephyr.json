@@ -1,0 +1,20 @@
+{
+  "id": "moveset_zephyr",
+  "char": "char_zephyr",
+  "eras": [
+    {
+      "from": {
+        "year": -10,
+        "month": 1
+      },
+      "techniques": ["tech_zephyr_smash_buster", "tech_brawl_haymaker", "tech_haki_harden"],
+      "tracks": {
+        "track_armament": "full_body",
+        "track_brawling": "iron_fists",
+        "track_observation": "read_intent"
+      },
+      "approx": true,
+      "signature": "tech_zephyr_smash_buster"
+    }
+  ]
+}

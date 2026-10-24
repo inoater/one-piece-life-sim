@@ -47,7 +47,7 @@ describe('the status line after a time skip', () => {
     ticksRun: number,
     stop: Parameters<typeof describeAdvance>[0]['stop'],
     snapshot = notYet,
-  ) => describeAdvance({ ticksRun, stop, snapshot }, 39);
+  ) => describeAdvance({ ticksRun, stop, snapshot }, '1525 SC');
 
   it('says how far time moved', () => {
     expect(say(1, 'completed')).toBe('Advanced 1 month.');
@@ -62,11 +62,11 @@ describe('the status line after a time skip', () => {
   });
 
   it('celebrates reaching the present, even when that was exactly what was asked for', () => {
-    expect(say(8, 'present', atPresent)).toBe('Reached the present (Year 39) after 8 months.');
+    expect(say(8, 'present', atPresent)).toBe('Reached the present (1525 SC) after 8 months.');
     expect(say(468, 'completed', atPresent)).toBe(
-      'Reached the present (Year 39) after 468 months.',
+      'Reached the present (1525 SC) after 468 months.',
     );
-    expect(say(0, 'present', atPresent)).toBe('Already at the present (Year 39).');
+    expect(say(0, 'present', atPresent)).toBe('Already at the present (1525 SC).');
   });
 
   it('does not claim the present when no time passed', () => {

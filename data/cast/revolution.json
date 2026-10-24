@@ -84,7 +84,8 @@
         "approx": true
       }
     ],
-    "ties": ["char_sabo"]
+    "ties": ["char_sabo"],
+    "traits": ["trait_will_of_d"]
   },
   {
     "id": "char_bartholomew_kuma",

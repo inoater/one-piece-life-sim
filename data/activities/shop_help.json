@@ -27,6 +27,10 @@
           "stats": {
             "perception": 0.1
           }
+        },
+        {
+          "kind": "drift",
+          "tags": ["honest"]
         }
       ],
       "quiet": true
@@ -41,6 +45,10 @@
           "stats": {
             "charisma": 0.2
           }
+        },
+        {
+          "kind": "drift",
+          "tags": ["honest"]
         }
       ]
     }

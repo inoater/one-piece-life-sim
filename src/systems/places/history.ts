@@ -1,6 +1,7 @@
 import type { GameData } from '../../engine/data/schemas';
 import type { TickStep } from '../../engine/pipeline';
 import { Rng } from '../../engine/rng';
+import { buildFruitLayer, seedGeneratedFruits } from '../powers/fruits';
 import type { WorldState } from '../../engine/state';
 import { runTickInPlace } from '../../engine/tick';
 import { spawnDueCast } from '../canon/cast';
@@ -56,7 +57,10 @@ export function ensureWorldLayer(state: WorldState, data: GameData): boolean {
   ensurePlaces(state, data, from);
   spawnDueFactions(state, data, from);
   spawnDueCast(state, data, from);
+  // Phase 4: every canon fruit as it was then, before the history plays its handovers.
+  buildFruitLayer(state, data, from, Rng.root(state.seed).fork('fruits'));
   runHistory(state, data, from, start);
   populate(state, data, start, Rng.root(state.seed).fork('populate'));
+  seedGeneratedFruits(state, data, start, Rng.root(state.seed).fork('generated-fruits'));
   return true;
 }

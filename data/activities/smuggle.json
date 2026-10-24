@@ -38,7 +38,13 @@
       "weight": 1.5,
       "statWeights": {
         "perception": 0.4
-      }
+      },
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["greedy"]
+        }
+      ]
     },
     {
       "id": "double_cross",

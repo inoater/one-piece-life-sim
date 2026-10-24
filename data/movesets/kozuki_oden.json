@@ -1,0 +1,32 @@
+{
+  "id": "moveset_kozuki_oden",
+  "char": "char_kozuki_oden",
+  "eras": [
+    {
+      "from": {
+        "year": -5,
+        "month": 1
+      },
+      "techniques": [
+        "tech_oden_signature",
+        "tech_oden_togen_totsuka",
+        "tech_oden_falling_heaven",
+        "tech_sword_shishi_sonson"
+      ],
+      "tracks": {
+        "track_oden_two_sword": "oden_master",
+        "track_swordsmanship": "coated",
+        "track_armament": "emission",
+        "track_observation": "voice",
+        "track_conqueror": "coating"
+      },
+      "approx": true,
+      "to": {
+        "year": 18,
+        "month": 6
+      },
+      "signature": "tech_oden_signature",
+      "finisher": "tech_oden_falling_heaven"
+    }
+  ]
+}

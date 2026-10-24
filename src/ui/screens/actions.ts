@@ -387,6 +387,7 @@ function catalogue(life: LifeView, app: App, busy: boolean): HTMLElement {
           acts.map((a) => {
             const facts = [
               a.trains.length > 0 ? `Trains ${a.trains.join(', ')}` : '',
+              a.practice ? `practises ${a.practice}` : '',
               a.earns ? `earns ${a.earns}` : '',
               a.costs ? `costs ${a.costs}` : '',
               a.restful ? 'restful' : '',

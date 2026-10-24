@@ -1,0 +1,73 @@
+{
+  "id": "track_naval_tactics",
+  "name": "Naval tactics",
+  "family": "style",
+  "description": "A support style: the battle between ships, from a deckhand's sense to an admiral's eye.",
+  "stages": [
+    {
+      "id": "deckhand",
+      "name": "Deckhand's sense",
+      "level": "novice",
+      "at": 0,
+      "description": "Know where everyone should be on a deck in a fight.",
+      "text": "You saw the fight on deck the way a captain sees it.",
+      "techniques": ["tech_naval_broadside"],
+      "combat": 2
+    },
+    {
+      "id": "tactician",
+      "name": "Tactician",
+      "level": "adept",
+      "at": 60,
+      "description": "Plan a battle between ships.",
+      "text": "Your plan put the enemy ship between two fires.",
+      "requires": {
+        "stats": {
+          "intellect": 45
+        }
+      },
+      "techniques": ["tech_naval_pincer"],
+      "combat": 6
+    },
+    {
+      "id": "admiral",
+      "name": "An admiral's eye",
+      "level": "expert",
+      "at": 160,
+      "description": "Command a fleet.",
+      "text": "A fleet moved where you pointed.",
+      "requires": {
+        "stats": {
+          "intellect": 65,
+          "charisma": 50
+        }
+      },
+      "combat": 10
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a Marine tactics instructor",
+        "features": ["marine_base"],
+        "fee": 8000
+      },
+      {
+        "name": "an old captain at the shipyards",
+        "features": ["shipyard"],
+        "fee": 5000
+      }
+    ],
+    "requires": {
+      "stats": {
+        "intellect": 30
+      }
+    }
+  },
+  "speedStats": {
+    "intellect": 0.5
+  },
+  "word": "Fleet",
+  "tags": ["sea"]
+}

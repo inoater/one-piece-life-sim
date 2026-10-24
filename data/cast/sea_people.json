@@ -346,6 +346,7 @@
         "bounty": 1659000000,
         "approx": true
       }
-    ]
+    ],
+    "traits": ["trait_kings_qualities"]
   }
 ]

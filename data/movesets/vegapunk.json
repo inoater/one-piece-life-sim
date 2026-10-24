@@ -1,0 +1,20 @@
+{
+  "id": "moveset_vegapunk",
+  "char": "char_vegapunk",
+  "eras": [
+    {
+      "from": {
+        "year": -20,
+        "month": 1
+      },
+      "techniques": [
+        "tech_nomi_nomi_vast_knowledge",
+        "tech_nomi_nomi_punk_records",
+        "tech_vegapunk_knowledge"
+      ],
+      "tracks": {},
+      "approx": true,
+      "mastery": 80
+    }
+  ]
+}

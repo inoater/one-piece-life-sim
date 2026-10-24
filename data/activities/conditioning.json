@@ -35,6 +35,11 @@
           "stats": {
             "willpower": 0.2
           }
+        },
+        {
+          "kind": "count",
+          "flag": "haki.seed.armament",
+          "by": 1
         }
       ],
       "quiet": true

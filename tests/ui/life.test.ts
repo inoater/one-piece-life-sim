@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { summarizeAdvance } from '../../src/ui/components/log-card';
 import { navigate } from '../../src/ui/router';
-import { button, mountUi, settle, text, type Mounted } from '../helpers/ui';
+import { button, mountUi, settle, text, until, type Mounted } from '../helpers/ui';
 
 /**
  * The life loop in the page (Phase 2): Health and Vigor in the masthead, the Actions planner, the
@@ -48,6 +48,7 @@ async function choose(slot: number, activity: string): Promise<void> {
   if (!option) throw new Error(`no option ${activity}`);
   option.selected = true;
   select.dispatchEvent(new Event('change'));
+  await until(() => ui.app.store.get().snapshot?.life?.routine[slot]?.activity === activity);
   await settle(10);
 }
 
@@ -167,6 +168,7 @@ describe('the present', () => {
     expect(snap.atPresent).toBe(true);
     expect(text(q('.epilogue__title'))).toBe('The present');
     button(q('.epilogue') as HTMLElement, 'Sail on past the present').click();
+    await until(() => ui.app.store.get().snapshot?.openEnded === true);
     await settle(10);
     expect(ui.app.store.get().snapshot?.openEnded).toBe(true);
     expect(q('.epilogue__title')).toBeNull();

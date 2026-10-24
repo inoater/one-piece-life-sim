@@ -1,0 +1,278 @@
+{
+  "axes": [
+    {
+      "id": "courage",
+      "name": "Courage",
+      "decayPerYear": 0.06,
+      "max": 30
+    },
+    {
+      "id": "temper",
+      "name": "Temper",
+      "decayPerYear": 0.06,
+      "max": 30
+    },
+    {
+      "id": "honesty",
+      "name": "Honesty",
+      "decayPerYear": 0.06,
+      "max": 30
+    },
+    {
+      "id": "mercy",
+      "name": "Mercy",
+      "decayPerYear": 0.06,
+      "max": 30
+    },
+    {
+      "id": "generosity",
+      "name": "Generosity",
+      "decayPerYear": 0.06,
+      "max": 30
+    },
+    {
+      "id": "pride",
+      "name": "Pride",
+      "decayPerYear": 0.06,
+      "max": 30
+    },
+    {
+      "id": "caution",
+      "name": "Caution",
+      "decayPerYear": 0.06,
+      "max": 30
+    }
+  ],
+  "tags": {
+    "brave": {
+      "axis": "courage",
+      "by": 1
+    },
+    "cowardly": {
+      "axis": "courage",
+      "by": -1
+    },
+    "rash": {
+      "axis": "temper",
+      "by": 1
+    },
+    "calm": {
+      "axis": "temper",
+      "by": -1
+    },
+    "honest": {
+      "axis": "honesty",
+      "by": 1
+    },
+    "sly": {
+      "axis": "honesty",
+      "by": -1
+    },
+    "kind": {
+      "axis": "mercy",
+      "by": 1
+    },
+    "cruel": {
+      "axis": "mercy",
+      "by": -1
+    },
+    "generous": {
+      "axis": "generosity",
+      "by": 1
+    },
+    "greedy": {
+      "axis": "generosity",
+      "by": -1
+    },
+    "proud": {
+      "axis": "pride",
+      "by": 1
+    },
+    "humble": {
+      "axis": "pride",
+      "by": -1
+    },
+    "careful": {
+      "axis": "caution",
+      "by": 1
+    },
+    "reckless": {
+      "axis": "caution",
+      "by": -1
+    }
+  },
+  "counters": [
+    {
+      "id": "hard_training",
+      "name": "Months of Hard training",
+      "categories": ["train_body", "train_spirit"],
+      "effort": "hard"
+    },
+    {
+      "id": "months_worked",
+      "name": "Months worked",
+      "categories": ["work"]
+    },
+    {
+      "id": "months_at_sea",
+      "name": "Months at sea",
+      "atSea": true
+    },
+    {
+      "id": "study_months",
+      "name": "Months of study",
+      "categories": ["train_mind"]
+    },
+    {
+      "id": "social_months",
+      "name": "Months spent with people",
+      "categories": ["social"]
+    },
+    {
+      "id": "explore_months",
+      "name": "Months of exploring",
+      "categories": ["explore"]
+    },
+    {
+      "id": "crime_months",
+      "name": "Months of crime",
+      "categories": ["crime"]
+    },
+    {
+      "id": "blade_months",
+      "name": "Months of blade drills",
+      "activities": ["act_blade_drills"]
+    },
+    {
+      "id": "marksman_months",
+      "name": "Months of marksmanship",
+      "activities": ["act_marksmanship"]
+    },
+    {
+      "id": "fishing_months",
+      "name": "Months of fishing",
+      "activities": ["act_fish"]
+    },
+    {
+      "id": "hauling_months",
+      "name": "Months hauling cargo",
+      "activities": ["act_haul_cargo"]
+    },
+    {
+      "id": "meditation_months",
+      "name": "Months of meditation",
+      "activities": ["act_meditate"]
+    },
+    {
+      "id": "medicine_months",
+      "name": "Months learning medicine",
+      "activities": ["act_learn_medicine"]
+    },
+    {
+      "id": "rest_months",
+      "name": "Months of rest",
+      "categories": ["rest"]
+    },
+    {
+      "id": "night_months",
+      "name": "Months of late nights",
+      "tags": ["night"]
+    },
+    {
+      "id": "fights",
+      "name": "Fights",
+      "manual": true
+    },
+    {
+      "id": "severe_injuries",
+      "name": "Severe injuries",
+      "manual": true
+    },
+    {
+      "id": "near_death",
+      "name": "Brushes with death",
+      "manual": true
+    },
+    {
+      "id": "kills",
+      "name": "Lives taken",
+      "manual": true
+    },
+    {
+      "id": "rescues",
+      "name": "People saved",
+      "manual": true
+    },
+    {
+      "id": "broken_oaths",
+      "name": "Oaths broken",
+      "manual": true
+    },
+    {
+      "id": "pirates_beaten",
+      "name": "Pirates brought down",
+      "manual": true
+    }
+  ],
+  "groups": {
+    "nobles": {
+      "occupations": ["occ_noble", "occ_noble_heir"],
+      "flags": ["noble"]
+    },
+    "pirates": {
+      "occupations": ["occ_pirate"],
+      "flags": ["pirate"]
+    },
+    "marines": {
+      "occupations": ["occ_marine", "occ_retired_marine"],
+      "flags": ["marine.enlisted"]
+    },
+    "commoners": {
+      "occupations": [
+        "occ_farmer",
+        "occ_fisher",
+        "occ_dockworker",
+        "occ_shopkeeper",
+        "occ_herder",
+        "occ_woodcutter",
+        "occ_miner",
+        "occ_craftsman",
+        "occ_innkeeper",
+        "occ_net_mender",
+        "occ_cook",
+        "occ_carpenter",
+        "occ_forager",
+        "occ_coral_farmer",
+        "occ_cloud_farmer",
+        "occ_tontatta_farmer"
+      ]
+    },
+    "criminals": {
+      "occupations": ["occ_bandit", "occ_smuggler", "occ_street_kid"],
+      "flags": ["gang.member"]
+    },
+    "scholars": {
+      "occupations": ["occ_scholar", "occ_teacher", "occ_doctor"]
+    },
+    "fishmen": {
+      "races": ["race_fishman", "race_merfolk"]
+    },
+    "fighters": {
+      "occupations": [
+        "occ_mercenary",
+        "occ_bounty_hunter",
+        "occ_swordsman",
+        "occ_samurai",
+        "occ_warrior",
+        "occ_guard",
+        "occ_karate_master",
+        "occ_mink_guard"
+      ]
+    }
+  },
+  "lines": {
+    "gained": "Somewhere along the way you had become {title}.",
+    "lost": "You are not {title} any more.",
+    "evolved": "{other} grew into something more: {title}."
+  }
+}

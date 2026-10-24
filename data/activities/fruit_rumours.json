@@ -2,7 +2,7 @@
   "id": "act_fruit_rumours",
   "name": "Chase Devil Fruit rumours",
   "category": "special",
-  "description": "Strange fruits that grant strange powers. Every port has a story; Phase 4 decides which are true.",
+  "description": "Strange fruits that grant strange powers. Every port has a story, and some of them are true.",
   "minAge": 16,
   "requires": {
     "flags": {
@@ -42,6 +42,16 @@
           "kind": "count",
           "flag": "rumour.fruit",
           "by": 1
+        }
+      ]
+    },
+    {
+      "id": "real_lead",
+      "text": "A sailor in the harbour swore he knew where a swirled fruit lay.",
+      "weight": 0.8,
+      "effects": [
+        {
+          "kind": "fruitRumour"
         }
       ]
     }

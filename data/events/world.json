@@ -194,7 +194,7 @@
       }
     ],
     "news": "Famine in {place}. Ships carrying grain are asking ruinous prices.",
-    "tags": ["world", "hardship"]
+    "tags": ["world", "hardship", "misfortune"]
   },
   {
     "id": "evt_world_underworld_war",

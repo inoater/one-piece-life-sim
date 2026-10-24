@@ -30,9 +30,9 @@ export function createNpcDecisionsStep(behaviours: readonly NpcBehaviour[]): Tic
 }
 
 /** The canon cast: keyframes while on the story's path, and a body that ages. */
-export const canonBehaviour: NpcBehaviour = (_state, ctx, entity) => {
+export const canonBehaviour: NpcBehaviour = (state, ctx, entity) => {
   if (entity.type === 'character' && entity.id in ctx.data.cast)
-    followCanon(ctx.data, entity, ctx.tick);
+    followCanon(ctx.data, entity, ctx.tick, state);
 };
 
 /** Tier 2 people: one goal-driven choice a quarter. */

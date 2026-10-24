@@ -87,7 +87,8 @@
         "status": "retired",
         "approx": true
       }
-    ]
+    ],
+    "traits": ["trait_kings_qualities"]
   },
   {
     "id": "char_crocus",
@@ -353,7 +354,8 @@
         "approx": true
       }
     ],
-    "ties": ["char_buggy"]
+    "ties": ["char_buggy"],
+    "traits": ["trait_kings_qualities"]
   },
   {
     "id": "char_buggy",

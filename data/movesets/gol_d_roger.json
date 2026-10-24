@@ -1,0 +1,32 @@
+{
+  "id": "moveset_gol_d_roger",
+  "char": "char_gol_d_roger",
+  "eras": [
+    {
+      "from": {
+        "year": -16,
+        "month": 1
+      },
+      "techniques": [
+        "tech_roger_kamusari",
+        "tech_sword_daishinkan",
+        "tech_sword_36_pound",
+        "tech_haki_internal",
+        "tech_haki_burst"
+      ],
+      "tracks": {
+        "track_swordsmanship": "conqueror_slash",
+        "track_armament": "internal",
+        "track_observation": "voice",
+        "track_conqueror": "clash"
+      },
+      "approx": true,
+      "to": {
+        "year": 14,
+        "month": 6
+      },
+      "signature": "tech_roger_kamusari",
+      "finisher": "tech_roger_kamusari"
+    }
+  ]
+}

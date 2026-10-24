@@ -19,6 +19,10 @@
           "kind": "count",
           "flag": "haki.seed.observation",
           "by": 1
+        },
+        {
+          "kind": "drift",
+          "tags": ["calm"]
         }
       ],
       "quiet": true
@@ -36,6 +40,10 @@
           "kind": "count",
           "flag": "haki.seed.observation",
           "by": 3
+        },
+        {
+          "kind": "drift",
+          "tags": ["calm"]
         }
       ]
     },
@@ -43,7 +51,13 @@
       "id": "restless",
       "text": "You could not sit still for a minute all month.",
       "weight": 0.8,
-      "quiet": true
+      "quiet": true,
+      "effects": [
+        {
+          "kind": "drift",
+          "tags": ["rash"]
+        }
+      ]
     }
   ]
 }

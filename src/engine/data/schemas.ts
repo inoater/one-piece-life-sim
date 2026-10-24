@@ -1,6 +1,38 @@
 import { z } from 'zod';
-import { FlagValueSchema, PRONOUNS, SCAR_AREAS } from '../state';
+import { EFFORTS, FlagValueSchema, PRONOUNS, SCAR_AREAS } from '../state';
 import { STAT_IDS } from '../stats';
+import {
+  FRUIT_TYPES,
+  FruitDefSchema,
+  POWER_EVENTS,
+  POWER_LEVELS,
+  PRACTICE_KINDS,
+  RARITIES,
+  TECH_EFFECTS,
+  TECH_FORMS,
+  TECH_RANGES,
+  TECH_TAGS,
+  TechniqueDefSchema,
+  TRACK_FAMILIES,
+  WEAKNESS_KINDS,
+  WhenSchema,
+  ZOAN_KINDS,
+  tickOfWhen,
+  type FruitContainer,
+  type FruitDef,
+  type FruitHolder,
+  type FruitType,
+  type PowerEvent,
+  type PowerLevel,
+  type PracticeKind,
+  type Rarity,
+  type TechEffect,
+  type TechForm,
+  type TechniqueDef,
+  type TechRange,
+  type TechTag,
+  type When,
+} from './defs';
 import {
   APPEARANCE_VARS,
   BACKSTORY_VARS,
@@ -71,14 +103,19 @@ const nonEmptyText = z.string().min(1);
 const tags = z.array(z.string().min(1)).default([]);
 const monthIndex = z.number().int().min(1).max(12);
 
+/** What a check measures: a stat, Combat Power, or seamanship (navigation at sea). */
+export const CHECK_STATS = [...STAT_IDS, 'combatPower', 'navigation'] as const;
+
 // ---------------------------------------------------------------------------------------------
 // calendar.json
 // ---------------------------------------------------------------------------------------------
 
 export const CalendarSchema = z
   .strictObject({
-    /** In-universe calendar year that game Year 0 corresponds to. Display only. */
+    /** In-universe calendar year that game Year 0 corresponds to (1486 SC). Display only. */
     canonYearOffset: z.number().int(),
+    /** The calendar's name, written after the year: "March 1497 SC" (Sea Circle). */
+    era: z.string().min(1).default('SC'),
     /** The tick at which "the present" begins. Move it when the manga advances. */
     presentTick: z.number().int().min(1),
     months: z.array(z.string().min(1)).length(12),
@@ -196,7 +233,58 @@ export const TRAIT_CATEGORIES = [
   'backstory',
   /** Left behind by a severe injury once it heals (Phase 2): a scar, a lost eye or limb. */
   'scar',
+  // Phase 4
+  /** Brave, Greedy, Honest...: a starting roll, then drift from the choices made. */
+  'personality',
+  /** Earned by repeating a behaviour (12 months of Hard training gives Iron Will). */
+  'earned',
+  /** Earned by deeds and the news (Phase 9 fills more). */
+  'reputation',
+  /** Never shown, only hinted: King's Qualities, the Will of D. */
+  'hidden',
+  /** Comes with a power: the curse of a Devil Fruit. */
+  'power',
 ] as const;
+
+/** The plan's kinds of trait, which the sheet groups them by. Each category belongs to one. */
+export const TRAIT_KINDS = [
+  'innate',
+  'upbringing',
+  'personality',
+  'earned',
+  'scar',
+  'reputation',
+  'hidden',
+] as const;
+export type TraitKind = (typeof TRAIT_KINDS)[number];
+export const KIND_OF_CATEGORY: Record<(typeof TRAIT_CATEGORIES)[number], TraitKind> = {
+  racial: 'innate',
+  innate: 'innate',
+  birth: 'upbringing',
+  family: 'upbringing',
+  backstory: 'upbringing',
+  quirk: 'personality',
+  personality: 'personality',
+  earned: 'earned',
+  scar: 'scar',
+  reputation: 'reputation',
+  hidden: 'hidden',
+  power: 'innate',
+};
+
+/** Derived values a trait can add to (each has a bonus stat in character.json). */
+export const DERIVED_BONUSES = ['maxHealth', 'vigor', 'hakiStamina', 'combatPower'] as const;
+export type DerivedBonus = (typeof DERIVED_BONUSES)[number];
+
+/** When an earned trait is gained, or a trait evolves: behaviour counters, stats, time held. */
+export const TraitGateSchema = z.strictObject({
+  /** Behaviour counters (data/personality.json) at least these. */
+  counters: z.record(z.string().regex(/^[a-z_]+$/), z.number().min(0)).default({}),
+  stats: statNumbers,
+  /** Months the trait has been held (for an evolution). */
+  months: z.number().int().min(0).default(0),
+});
+export type TraitGate = z.infer<typeof TraitGateSchema>;
 
 export const TraitSchema = z.strictObject({
   id: slug('trait'),
@@ -213,19 +301,85 @@ export const TraitSchema = z.strictObject({
   flags: z.record(flagName, FlagValueSchema).default({}),
   /** Traits that cannot be held together with this one (Sturdy and Frail). Checked both ways. */
   excludes: z.array(slug('trait')).default([]),
-  /** Backstory event tag -> weight multiplier ("hardship": 1.5 makes hard years likelier). */
+  /**
+   * Event tag -> weight multiplier, for backstory events, random events and activity outcomes
+   * ("misfortune": 2 doubles misfortune events).
+   */
   eventWeights: multipliers,
   /** Relative chance of being drawn from a pool. */
   weight: z.number().min(0).default(1),
+  // ---- Phase 4: full trait mechanics
+  /** The plan's kind; by default the category's (KIND_OF_CATEGORY). */
+  kind: z.enum(TRAIT_KINDS).optional(),
+  /** Percent on training gains for one stat ("Bookworm: +15% Intellect training"). */
+  trainingMods: z.partialRecord(statId, z.number()).default({}),
+  /** Flat changes to derived values: Max Health, Vigor, haki stamina, Combat Power. */
+  derivedMods: z.partialRecord(z.enum(DERIVED_BONUSES), z.number()).default({}),
+  /** Added to the value tested by a check ("Silver-Tongued: +10 on Charisma checks"). */
+  checkBonuses: z.partialRecord(z.enum(CHECK_STATS), z.number()).default({}),
+  /** Things that never happen to them: "seasickness", or an illness id. */
+  immunities: z.array(z.string().regex(/^[a-z_]+$/)).default([]),
+  /** Activities closed to them, for good or for some months after gaining the trait. */
+  locks: z
+    .array(z.strictObject({ activity: slug('act'), months: z.number().int().min(1).optional() }))
+    .default([]),
+  /**
+   * What others feel: an opinion modifier in people of a group (data/personality.json `groups`;
+   * "everyone" means all), or only on first meeting.
+   */
+  opinion: z
+    .array(
+      z.strictObject({
+        group: z.string().regex(/^[a-z]+$/),
+        value: z.number().min(-50).max(50),
+        firstImpression: z.boolean().default(false),
+      }),
+    )
+    .default([]),
+  /** Percent on practice of a track, or of a family of tracks ("family:sword"). */
+  powerMods: z
+    .record(z.string().regex(/^(track_[a-z0-9_]+|family:[a-z_]+)$/), z.number())
+    .default({}),
+  /** Gained by itself once a behaviour has been repeated enough (an earned trait). */
+  earn: TraitGateSchema.optional(),
+  /** Grows into another trait: Brawler -> Street Fighter -> Iron Fist. */
+  evolves: z.strictObject({ to: slug('trait'), when: TraitGateSchema }).optional(),
+  /**
+   * A personality trait held while its hidden counter is past `gainAt`, and lost when it falls
+   * back past `loseAt` (negative values: the counter's other side).
+   */
+  drift: z
+    .strictObject({ axis: z.string().regex(/^[a-z]+$/), gainAt: z.number(), loseAt: z.number() })
+    .refine((d) => d.gainAt !== 0 && Math.sign(d.gainAt) === Math.sign(d.loseAt || d.gainAt), {
+      message: 'gainAt and loseAt sit on the same side of zero',
+    })
+    .refine((d) => Math.abs(d.loseAt) < Math.abs(d.gainAt), {
+      message: 'loseAt is nearer zero than gainAt, so the trait does not flicker',
+    })
+    .optional(),
+  /** Never shown to the player; `hint` is what they are told instead. */
+  hidden: z.boolean().default(false),
+  hint: z.string().optional(),
+  /** The chronicle's line when the trait is gained or lost ("You no longer flinch at a raised fist."). */
+  gainText: lifeTemplate.optional(),
+  loseText: lifeTemplate.optional(),
   tags,
 });
 export type Trait = z.infer<typeof TraitSchema>;
+
+/** The plan's kind of a trait. */
+export function traitKind(trait: Pick<Trait, 'kind' | 'category'>): TraitKind {
+  return trait.kind ?? KIND_OF_CATEGORY[trait.category];
+}
 
 export const WeaponSchema = z.strictObject({
   id: slug('weapon'),
   name: z.string().min(1),
   description: z.string().optional(),
   statMods: z.array(StatModDefSchema).default([]),
+  /** Phase 4: simple gear a style may need (a sword, a gun, a bow), bought in a market. */
+  gear: z.enum(['swords', 'gun', 'bow']).optional(),
+  price: z.number().int().min(0).optional(),
   tags,
 });
 export type Weapon = z.infer<typeof WeaponSchema>;
@@ -339,6 +493,55 @@ const lifeEffectOptions = [
   z.strictObject({ kind: z.literal('overboard') }),
   /** A bounty on the character's head rises (or a pardon lowers it). */
   z.strictObject({ kind: z.literal('bounty'), value: z.number().int() }),
+  // Phase 4: personality, behaviour and powers.
+  /** Nudges the hidden personality counters ("brave", "cruel": data/personality.json tags). */
+  z.strictObject({
+    kind: z.literal('drift'),
+    tags: z.array(z.string().regex(/^[a-z_]+$/)).min(1),
+  }),
+  /** A behaviour counter for earned traits ("fights", "severe_injuries"). */
+  z.strictObject({
+    kind: z.literal('behaviour'),
+    counter: z.string().regex(/^[a-z_]+$/),
+    by: z.number(),
+  }),
+  z.strictObject({ kind: z.literal('loseTrait'), trait: slug('trait') }),
+  /** Something that moves powers happened: may wake haki, and opens stages that need it. */
+  z.strictObject({ kind: z.literal('powerEvent'), event: z.enum(POWER_EVENTS) }),
+  /** Practice points for a track (absent: the focus track), counted by kind (a real fight is x3). */
+  z.strictObject({
+    kind: z.literal('powerPoints'),
+    practice: z.enum(PRACTICE_KINDS),
+    track: slug('track').optional(),
+    points: z.number().min(0),
+  }),
+  /** A breakthrough for a track (absent: the focus track, or the one stalled on a plateau). */
+  z.strictObject({ kind: z.literal('powerBreakthrough'), track: slug('track').optional() }),
+  /** Taken on in a style by an event (an invitation to Kamabakka, a scroll found in a ruin). */
+  z.strictObject({ kind: z.literal('learnTrack'), track: slug('track') }),
+  /**
+   * A Devil Fruit comes into their hands, uneaten: a named canon fruit if it is free, otherwise a
+   * wild fruit near here, otherwise a new one of this rarity.
+   */
+  z.strictObject({
+    kind: z.literal('findFruit'),
+    fruit: slug('fruit').optional(),
+    rarity: z.enum(RARITIES).optional(),
+  }),
+  /** In the sea or touching seastone: a fruit user loses the curse's share of every stat. */
+  z.strictObject({
+    kind: z.literal('immerse'),
+    months: z.number().int().min(1).max(24).default(1),
+  }),
+  /** Their fruit's deeper truth comes out: another name, a new branch of techniques. */
+  z.strictObject({ kind: z.literal('fruitSecret') }),
+  /** A rumour of a Devil Fruit: about a real one out there, or about nothing at all. */
+  z.strictObject({ kind: z.literal('fruitRumour') }),
+  /** A haki colour wakes (an event's crisis already decided it). */
+  z.strictObject({
+    kind: z.literal('wakeHaki'),
+    haki: z.enum(['observation', 'armament', 'conqueror']),
+  }),
 ] as const;
 
 export const LifeEffectSchema = z.discriminatedUnion('kind', [
@@ -580,6 +783,8 @@ export const FocusSchema = z.strictObject({
   /** What an adult with this focus puts aside each year, in Berries. */
   savingsPerYear: intRange(0),
   weight: z.number().min(0).default(1),
+  /** Phase 4: power tracks this past teaches, and the highest stage reached by a grown entry. */
+  tracks: z.record(slug('track'), z.number().int().min(0)).default({}),
   tags,
 });
 export type Focus = z.infer<typeof FocusSchema>;
@@ -770,6 +975,14 @@ const DerivedSchema = z.strictObject({
   round: z.enum(['none', 'floor', 'round']).default('none'),
   /** Shown under the value: "plus weapon, haki and fruit bonuses (later phases)". */
   note: z.string().optional(),
+  /**
+   * Phase 4: an entity stat added to the formula (rule 3: its modifiers name each bonus, such as
+   * "Armament Haki: Harden" or "Sturdy (trait)"). Absent on an entity: nothing is added.
+   */
+  bonusStat: z
+    .string()
+    .regex(/^[a-zA-Z]+$/)
+    .optional(),
 });
 export type DerivedDef = z.infer<typeof DerivedSchema>;
 
@@ -1141,6 +1354,12 @@ const requiresShape = {
   berries: z.number().optional(),
   /** Only on a voyage (true), or only ashore (false) (Phase 3). */
   atSea: z.boolean().optional(),
+  /** Phase 4: power tracks open, at least at a stage ("open": just begun). */
+  tracks: z.record(slug('track'), z.string().regex(/^[a-z0-9_]+$/)).default({}),
+  /** A Devil Fruit user (true), or not one (false). */
+  fruitUser: z.boolean().optional(),
+  /** Gear in hand: swords (count), a gun, a bow. */
+  gear: z.partialRecord(z.enum(['swords', 'gun', 'bow']), z.number().int().min(1)).default({}),
 } as const;
 
 /** Conditions on the character, their home, body, purse and people. All listed must hold. */
@@ -1296,6 +1515,20 @@ export const ActivitySchema = z
     risk: RiskSchema.default(() => RiskSchema.parse({})),
     fame: z.number().default(0),
     infamy: z.number().default(0),
+    /**
+     * Phase 4: practice for power tracks. `tracks` empty means the focus track (or, sparring, the
+     * fighting styles in use); several tracks share one practice by focus, else the least advanced.
+     */
+    practice: z
+      .strictObject({
+        kind: z.enum(PRACTICE_KINDS),
+        tracks: z.array(slug('track')).default([]),
+        /** Base points a month at Normal effort. */
+        points: z.number().min(0).default(1),
+        /** Spends haki stamina (haki training). */
+        stamina: z.boolean().default(false),
+      })
+      .optional(),
     outcomes: z.array(OutcomeSchema).min(1),
     tags,
   })
@@ -1657,14 +1890,37 @@ export type LifeRules = z.infer<typeof LifeRulesSchema>;
 // layer. All numbers are design values to tune, not canon facts.
 // ---------------------------------------------------------------------------------------------
 
-/** "Year 14, month 3" in data: a tick written the way people read dates. */
-export const WhenSchema = z.strictObject({
-  year: z.number().int().min(-1000).max(1000),
-  month: monthIndex.default(1),
-});
-export type When = z.infer<typeof WhenSchema>;
-/** The first tick of a date. */
-export const tickOfWhen = (w: When): number => w.year * 12 + (w.month - 1);
+// "Year 14, month 3" in data (WhenSchema) lives in defs.ts with the other shared definitions.
+export { WhenSchema, tickOfWhen, type When };
+export {
+  FRUIT_TYPES,
+  FruitDefSchema,
+  POWER_EVENTS,
+  POWER_LEVELS,
+  PRACTICE_KINDS,
+  RARITIES,
+  TECH_EFFECTS,
+  TECH_FORMS,
+  TECH_RANGES,
+  TECH_TAGS,
+  TechniqueDefSchema,
+  TRACK_FAMILIES,
+  WEAKNESS_KINDS,
+  ZOAN_KINDS,
+  type FruitContainer,
+  type FruitDef,
+  type FruitHolder,
+  type FruitType,
+  type PowerEvent,
+  type PowerLevel,
+  type PracticeKind,
+  type Rarity,
+  type TechEffect,
+  type TechForm,
+  type TechniqueDef,
+  type TechRange,
+  type TechTag,
+};
 
 export const NODE_KINDS = [
   'island',
@@ -1935,6 +2191,55 @@ export const ConditionSchema = z.discriminatedUnion('kind', [
   }),
   /** A canon character is at the same place (for a "canon" role). */
   z.strictObject({ kind: z.literal('canonHere') }),
+  // Phase 4
+  /** A power track is open, at least at this stage. */
+  z.strictObject({
+    kind: z.literal('track'),
+    track: slug('track'),
+    stage: z
+      .string()
+      .regex(/^[a-z0-9_]+$/)
+      .optional(),
+  }),
+  z.strictObject({ kind: z.literal('notTrack'), track: slug('track') }),
+  /** A Devil Fruit user (of this type), or not one. */
+  z.strictObject({
+    kind: z.literal('fruitUser'),
+    value: z.boolean().default(true),
+    type: z.enum(FRUIT_TYPES).optional(),
+    zoan: z.enum(ZOAN_KINDS).optional(),
+  }),
+  /** Their fruit's mastery (0 to 100). */
+  z.strictObject({
+    kind: z.literal('mastery'),
+    min: z.number().optional(),
+    max: z.number().optional(),
+  }),
+  /** They ate a fruit and do not yet know what it does. */
+  z.strictObject({ kind: z.literal('fruitUnknown') }),
+  /** Their fruit hides a deeper truth they have not found yet. */
+  z.strictObject({ kind: z.literal('fruitHasSecret') }),
+  /** An uneaten Devil Fruit lies somewhere here, unnoticed. */
+  z.strictObject({ kind: z.literal('wildFruitHere') }),
+  /** A hidden personality counter (data/personality.json axes). */
+  z.strictObject({
+    kind: z.literal('personality'),
+    axis: z.string().regex(/^[a-z]+$/),
+    min: z.number().optional(),
+    max: z.number().optional(),
+  }),
+  /** A behaviour counter at least this. */
+  z.strictObject({
+    kind: z.literal('counter'),
+    counter: z.string().regex(/^[a-z_]+$/),
+    min: z.number(),
+  }),
+  /** A haki colour awake (or not). */
+  z.strictObject({
+    kind: z.literal('haki'),
+    haki: z.enum(['observation', 'armament', 'conqueror']),
+    value: z.boolean().default(true),
+  }),
 ]);
 export type Condition = z.infer<typeof ConditionSchema>;
 
@@ -2007,9 +2312,6 @@ export const EffectSchema = z.discriminatedUnion('kind', [
   ...worldEffectOptions,
 ]);
 export type Effect = z.infer<typeof EffectSchema>;
-
-/** What a check measures: a stat, Combat Power, or seamanship (navigation at sea). */
-export const CHECK_STATS = [...STAT_IDS, 'combatPower', 'navigation'] as const;
 
 export const CheckBandSchema = z.strictObject({
   text: template,
@@ -2265,6 +2567,8 @@ export const CastSchema = z
     keyframes: z.array(KeyframeSchema).min(1),
     /** People whose story is bound to theirs: tagged canon-diverged if this one dies early. */
     ties: z.array(slug('char')).default([]),
+    /** Phase 4: traits beyond their race's (hidden ones too: King's Qualities, the Will of D.). */
+    traits: z.array(slug('trait')).default([]),
     dev: z.boolean().default(false),
     tags,
   })
@@ -2777,6 +3081,522 @@ export const CanonRulesSchema = z.strictObject({
 export type CanonRules = z.infer<typeof CanonRulesSchema>;
 
 // ---------------------------------------------------------------------------------------------
+// Phase 4 (Muscle): power tracks, haki, fighting styles, techniques, movesets, Devil Fruits, and
+// the rules for personality drift and earned traits. Every number is a design value to tune.
+// ---------------------------------------------------------------------------------------------
+
+const stageId = z.string().regex(/^[a-z0-9_]+$/);
+
+/** What it takes to enter a stage, beyond the progress. */
+export const StageRequiresSchema = z.strictObject({
+  stats: statNumbers,
+  /** Other tracks at least at these stages (two swords need one sword at Trained). */
+  tracks: z.record(slug('track'), stageId).default({}),
+  /** A living mentor who teaches this track, or a teaching place (the track's `learn`). */
+  teacher: z.boolean().default(false),
+  /** Being at one of these places. */
+  places: z.array(slug('loc')).default([]),
+  features: z.array(z.enum(PLACE_FEATURES)).default([]),
+  flags: z.record(flagName, FlagValueSchema).default({}),
+  anyTraits: z.array(slug('trait')).default([]),
+  notTraits: z.array(slug('trait')).default([]),
+  races: z.array(slug('race')).default([]),
+  /** Something must have happened since the last stage ("a fight against someone clearly stronger"). */
+  event: z.enum(POWER_EVENTS).optional(),
+  /** A plateau: only a breakthrough opens this stage (the Phase 2 rule). */
+  breakthrough: z.boolean().default(false),
+  /** The condition is never shown: the stage appears as "???" until reached. */
+  hidden: z.boolean().default(false),
+  /** Gear in hand: swords (count), a gun, a bow (Phase 6 makes these real items). */
+  gear: z.partialRecord(z.enum(['swords', 'gun', 'bow']), z.number().int().min(1)).default({}),
+});
+export type StageRequires = z.infer<typeof StageRequiresSchema>;
+
+export const StageSchema4 = z.strictObject({
+  id: stageId,
+  name: nonEmptyText,
+  level: z.enum(POWER_LEVELS),
+  /** Cumulative progress (practice points, or fruit mastery 0 to 100) at which it is reached. */
+  at: z.number().min(0),
+  description: nonEmptyText,
+  requires: StageRequiresSchema.default(() => StageRequiresSchema.parse({})),
+  /** Techniques this stage teaches (data/techniques). */
+  techniques: z.array(slug('tech')).default([]),
+  /** Added to Combat Power while held (rule 3: a modifier with the stage as its source). */
+  combat: z.number().min(0).default(0),
+  statMods: z.array(StatModDefSchema).default([]),
+  flags: z.record(flagName, FlagValueSchema).default({}),
+  /** Written into the chronicle on reaching it (second person, past tense). */
+  text: lifeTemplate,
+});
+export type TrackStage = z.infer<typeof StageSchema4>;
+
+/** Who teaches a track, and where. */
+export const TeacherSchema = z.strictObject({
+  /** "a Cipher Pol instructor" */
+  name: nonEmptyText,
+  /** At one of these places, or anywhere with one of these features (an empty list: no limit). */
+  places: z.array(slug('loc')).default([]),
+  features: z.array(z.enum(PLACE_FEATURES)).default([]),
+  regions: z.array(z.enum(REGIONS)).default([]),
+  /** Berries to be taken on. */
+  fee: z.number().int().min(0).default(0),
+  /** The teacher multiplier their lessons give (Rayleigh-tier mentors: 1.5). */
+  mult: z.number().min(1).max(2).default(1.2),
+  requires: RequiresSchema.default(noRequirements),
+  /** The occupation the teacher has, when they become a mentor. */
+  occupation: slug('occ').optional(),
+});
+export type Teacher = z.infer<typeof TeacherSchema>;
+
+export const TrackSchema = z
+  .strictObject({
+    id: slug('track'),
+    name: nonEmptyText,
+    family: z.enum(TRACK_FAMILIES),
+    description: nonEmptyText,
+    /** Fruit tracks: which type of fruit they belong to. */
+    fruitType: z.enum(FRUIT_TYPES).optional(),
+    /** "points": practice points; "mastery": fruit mastery 0 to 100, grown by the training formula. */
+    mode: z.enum(['points', 'mastery']).default('points'),
+    stages: z.array(StageSchema4).min(2),
+    learn: z.strictObject({
+      /**
+       * teacher: taken on by a teacher at their place; wake: haki wakes by itself; fruit: eating a
+       * fruit of `fruitType` opens it; innate: open from birth to those who meet `requires`;
+       * event: only an event opens it (an invitation, a scroll).
+       */
+      how: z.enum(['teacher', 'wake', 'fruit', 'innate', 'event']),
+      teachers: z.array(TeacherSchema).default([]),
+      /** Who may learn it at all. */
+      requires: RequiresSchema.default(noRequirements),
+      /** Learning speed by race (Fish-Men learn Karate at 1, outsiders at 0.5). */
+      raceRates: z.record(slug('race'), z.number().min(0).max(3)).default({}),
+      defaultRate: z.number().min(0).max(3).default(1),
+      /** An outsider (rate below 1) may only begin after this flag (a trust event). */
+      outsiderFlag: flagName.optional(),
+      /** Learning opens these other tracks too (Rokushiki opens the six). */
+      opens: z.array(slug('track')).default([]),
+    }),
+    /** Stats that speed practice: Intellect for Paramecia insight, Endurance for Zoan control. */
+    speedStats: z.partialRecord(statId, z.number().min(0).max(2)).default({}),
+    rust: z
+      .strictObject({ afterMonths: z.number().int().min(1), perYear: z.number().min(0).max(1) })
+      .optional(),
+    /** How far some can go: a race, or anyone without these traits, stops at a stage. */
+    ceilings: z
+      .array(
+        z.strictObject({
+          races: z.array(slug('race')).default([]),
+          traits: z.array(slug('trait')).default([]),
+          stage: stageId,
+          reason: nonEmptyText,
+        }),
+      )
+      .default([]),
+    /** The track is not shown to the player until it opens (Conqueror's Haki). */
+    hidden: z.boolean().default(false),
+    /** A group of tracks counted together ("six_powers": master four for elite ranks). */
+    group: z
+      .string()
+      .regex(/^[a-z_]+$/)
+      .optional(),
+    /** The word generated techniques of this track are named with ("Karate", "Kick"). */
+    word: z.string().optional(),
+    tags,
+  })
+  .superRefine((track, ctx) => {
+    const ids = new Set<string>();
+    let last = -1;
+    track.stages.forEach((stage, i) => {
+      if (ids.has(stage.id))
+        ctx.addIssue({
+          code: 'custom',
+          path: ['stages', i, 'id'],
+          message: `duplicate stage "${stage.id}"`,
+        });
+      ids.add(stage.id);
+      if (stage.at < last)
+        ctx.addIssue({
+          code: 'custom',
+          path: ['stages', i, 'at'],
+          message: 'stages must not go backwards',
+        });
+      last = stage.at;
+    });
+    if (track.stages[0] && track.stages[0].at !== 0)
+      ctx.addIssue({
+        code: 'custom',
+        path: ['stages', 0, 'at'],
+        message: 'the first stage starts at 0',
+      });
+    if (track.family === 'fruit' && (!track.fruitType || track.mode !== 'mastery'))
+      ctx.addIssue({
+        code: 'custom',
+        path: ['fruitType'],
+        message: 'a fruit track names its type and uses mastery',
+      });
+    if (track.learn.how === 'teacher' && track.learn.teachers.length === 0)
+      ctx.addIssue({
+        code: 'custom',
+        path: ['learn', 'teachers'],
+        message: 'a taught track needs a teacher',
+      });
+    for (const ceiling of track.ceilings) {
+      if (!ids.has(ceiling.stage))
+        ctx.addIssue({
+          code: 'custom',
+          path: ['ceilings'],
+          message: `no stage "${ceiling.stage}"`,
+        });
+    }
+  });
+export type Track = z.infer<typeof TrackSchema>;
+
+/** Techniques that are not a fruit's: styles, swords, weapons, haki, brawling, signature moves. */
+export const TechniqueSchema = TechniqueDefSchema;
+export type Technique = TechniqueDef;
+
+/** A canon fighter's moveset by era: someone met in 1516 SC does not yet know their 1524 SC moves. */
+export const MovesetSchema = z.strictObject({
+  id: slug('moveset'),
+  char: slug('char'),
+  eras: z
+    .array(
+      z.strictObject({
+        from: WhenSchema,
+        /** Inclusive; absent: for good. */
+        to: WhenSchema.optional(),
+        techniques: z.array(slug('tech')).min(1),
+        signature: slug('tech').optional(),
+        finisher: slug('tech').optional(),
+        /** Power tracks and the stage reached in this era (haki, styles, swords). */
+        tracks: z.record(slug('track'), stageId).default({}),
+        /** Fruit mastery in this era (the fruit itself comes from data/fruits holders). */
+        mastery: z.number().min(0).max(100).optional(),
+        approx: z.boolean().default(false),
+      }),
+    )
+    .min(1),
+});
+export type Moveset = z.infer<typeof MovesetSchema>;
+
+const priceRow = z.strictObject({
+  power: z.number().min(0),
+  accuracy: z.number().min(0).max(100),
+  cost: z.number().min(0),
+  range: z.enum(TECH_RANGES),
+});
+
+/** A power primitive: the vocabulary canon fruits are described with (grow, coat, spring...). */
+const primitiveWord = z.strictObject({
+  id: z.string().regex(/^[a-z0-9_]+$/),
+  name: nonEmptyText,
+  tags: z.array(z.enum(TECH_TAGS)).min(1),
+});
+
+/** A power concept for a generated fruit: "Chime" (a power), "Salt" (an element). */
+const primitive = z.strictObject({
+  id: z.string().regex(/^[a-z0-9_]+$/),
+  /** The doubled word of the name: "Chime" makes the Chime-Chime Fruit. */
+  word: nonEmptyText,
+  type: z.enum(FRUIT_TYPES),
+  /** A sentence fragment: "rings like a bell, and makes others ring". */
+  gist: nonEmptyText,
+  tags: z.array(z.enum(TECH_TAGS)).min(1),
+  forms: z.array(z.enum(TECH_FORMS)).min(1),
+  weakness: z.enum(WEAKNESS_KINDS).optional(),
+  effects: z.array(z.enum(TECH_EFFECTS)).default([]),
+});
+
+/** The lines the powers' code writes; data/powers.json must give every one. */
+export const POWER_LINE_IDS = [
+  'takenOn',
+  'beganAlone',
+  'breakthrough',
+  'hakiWakes',
+  'conquerorWakes',
+  'conquerorSurge',
+  'fruitReborn',
+  'fruitDiverged',
+  'secondFruit',
+  'smileDud',
+  'ateKnown',
+  'ateUnknown',
+  'identified',
+  'discovered',
+  'discovering',
+  'sankAlone',
+  'sankRescued',
+  'bought',
+  'foundFruit',
+  'rumour',
+  'invented',
+  'inventFailed',
+  'mishap',
+  'secret',
+  'rokuogan',
+] as const;
+
+/** Track ids the engine names (haki colours); data/tracks must define them. */
+export const ENGINE_TRACKS = ['track_observation', 'track_armament', 'track_conqueror'] as const;
+
+/** data/powers.json: how powers grow, are found, priced and named. */
+export const PowerRulesSchema = z.strictObject({
+  levels: z.array(z.strictObject({ id: z.enum(POWER_LEVELS), name: nonEmptyText })).length(6),
+  /** Practice points by kind of practice (x1 drills, x1.5 sparring, x3 real fights, x0.5 teaching). */
+  practice: z.strictObject({
+    drill: z.number(),
+    spar: z.number(),
+    fight: z.number(),
+    teach: z.number(),
+  }),
+  /** Points a breakthrough gives on top of opening a plateau. */
+  breakthroughPoints: z.number().min(0),
+  rust: z.strictObject({ afterMonths: z.number().int().min(1), perYear: z.number().min(0).max(1) }),
+  /** The highest level each hidden talent tier can reach without a hidden condition. */
+  talentCeilings: z.record(z.string(), z.enum(POWER_LEVELS)),
+  /** A stage's mods on Combat Power go to this stat (rule 3: Combat Power's bonus stack). */
+  combatBonusStat: z.string().regex(/^[a-zA-Z]+$/),
+  haki: z.strictObject({
+    /** Months of Train Spirit seeds before a seed can wake, and the chance each month after. */
+    seedMonths: z.number().int().min(1),
+    seedChance: z.number().min(0).max(1),
+    /** Chance a trigger wakes a colour that is not awake yet. */
+    nearDeathChance: z.number().min(0).max(1),
+    crisisChance: z.number().min(0).max(1),
+    teacherChance: z.number().min(0).max(1),
+    /** Willpower needed before a colour can wake at all. */
+    minWillpower: z.number().min(0),
+    /** Haki stamina spent a month of Hard haki training; past the pool it costs Vigor. */
+    trainingStamina: z.number().min(0),
+    vigorPerOverspend: z.number().min(0),
+    /** How rare King's Qualities are at birth (1 in a few million). */
+    kingsQualitiesChance: z.number().min(0).max(1),
+    kingsQualitiesTrait: slug('trait'),
+    voiceTrait: slug('trait'),
+    /** Conqueror's first surge knocks out everyone weaker than this Willpower. */
+    surgeWillpower: z.number().min(0),
+  }),
+  fruit: z.strictObject({
+    /** In the sea or touching seastone: every stat by this percent, and no fruit. */
+    cursePct: z.number().min(-100).max(0),
+    cursedTrait: slug('trait'),
+    /** Rebirth weights: a place near where the user died, near trade, or anywhere (rare fruits). */
+    rebirth: z.strictObject({
+      nearbyMiles: z.number().min(0),
+      nearby: z.number().min(0),
+      trade: z.number().min(0),
+      anywhere: z.number().min(0),
+    }),
+    /** Black market prices in Berries, by rarity (the plan: 100 million and up). */
+    prices: z.record(z.enum(RARITIES), intRange(0)),
+    /** Months of discovery events before an eaten unknown fruit is understood. */
+    discoveryMonths: intRange(1),
+    /** Each year: the chance a wild fruit is found by someone, and that a finder sells it. */
+    wildFoundPerYear: z.number().min(0).max(1),
+    sellChance: z.number().min(0).max(1),
+    /** Each year: the chance a fruit on a black market is bought (and eaten, somewhere). */
+    marketSoldPerYear: z.number().min(0).max(1),
+    /** Generated fruits in a new world: in Canon and Probable worlds, and in Random ones. */
+    generatedPerWorld: z.number().int().min(0),
+    generatedRandomMode: z.number().int().min(0),
+    /** Share of Tier 2 fighters who carry a generated fruit. */
+    fighterChance: z.number().min(0).max(1),
+    identifyFee: z.number().int().min(0),
+    /** Combat Power a point of fruit mastery adds, by rarity. */
+    combatPerMastery: z.record(z.enum(RARITIES), z.number().min(0)),
+    /** A canon user takes their fruit on its date: always (Canon), often (Probable), rarely (Random). */
+    handover: z.record(z.string(), z.number().min(0).max(1)),
+    /** How long a canon handover waits for a fruit still in other hands, in months. */
+    handoverWait: z.number().int().min(0),
+    /** Years an unnamed user (a stranger, a buyer) lives with a fruit before it returns. */
+    strangerYears: intRange(1),
+    encyclopedia: z.strictObject({
+      id: slug('item'),
+      name: nonEmptyText,
+      price: z.number().int().min(0),
+    }),
+    /** Mastery growth: the training formula's points per month of Normal practice. */
+    masteryPoints: z.number().min(0),
+    awakening: z.strictObject({ mastery: z.number(), willpower: z.number() }),
+    /** Effects of awakening by type (design values). */
+    awakened: z.record(
+      z.enum(FRUIT_TYPES),
+      z.array(z.strictObject({ stat: statId, pct: z.number() })),
+    ),
+    /** Mishaps: the chance a month at low mastery brings an accident, falling to zero by this mastery. */
+    mishapChance: z.number().min(0).max(1),
+    mishapUntil: z.number().min(0).max(100),
+    /** SMILEs: share that work; the rest leave the eater only able to smile. */
+    smileWorks: z.number().min(0).max(1),
+    /** Objects and animals with a body that can hold a fruit (Lassoo, Funkfreed). */
+    bodies: z
+      .array(
+        z.strictObject({
+          id: slug('item'),
+          name: nonEmptyText,
+          description: nonEmptyText,
+          place: slug('loc'),
+        }),
+      )
+      .default([]),
+  }),
+  /** The power primitives fruits are built from (about 60): canon fruits name theirs. */
+  primitives: z.array(primitiveWord).min(1),
+  generator: z.strictObject({
+    /** The powers a generated fruit can have: none of them a canon fruit's. */
+    concepts: z.array(primitive).min(1),
+    typeWeights: z.record(z.enum(FRUIT_TYPES), z.number().min(0)),
+    zoanWeights: z.record(z.enum(ZOAN_KINDS), z.number().min(0)),
+    /** Animals no canon fruit uses: [word, gist]. */
+    animals: z
+      .array(z.strictObject({ word: nonEmptyText, animal: nonEmptyText, kind: z.enum(ZOAN_KINDS) }))
+      .min(1),
+    rarityWeights: z.record(z.enum(RARITIES), z.number().min(0)),
+    techniques: intRange(1),
+    /** Technique name grammars by culture (a birthplace id), plus "default". */
+    grammars: z.record(
+      z.string(),
+      z.strictObject({
+        /** "{word} {noun}" style patterns; {word} is the power, {noun} from the form's list. */
+        patterns: z.array(nonEmptyText).min(1),
+        nouns: z.partialRecord(z.enum(TECH_FORMS), z.array(nonEmptyText).min(1)),
+        adjectives: z.array(nonEmptyText).min(1),
+      }),
+    ),
+    looks: z.strictObject({
+      colours: z.array(nonEmptyText).min(1),
+      shapes: z.array(nonEmptyText).min(1),
+    }),
+  }),
+  /** The technique pricer: a form's base, what tags add, and how mastery scales it. */
+  pricing: z.strictObject({
+    forms: z.record(z.enum(TECH_FORMS), priceRow),
+    tags: z.partialRecord(
+      z.enum(TECH_TAGS),
+      z.strictObject({ power: z.number(), accuracy: z.number(), cost: z.number() }),
+    ),
+    effects: z.partialRecord(z.enum(TECH_EFFECTS), z.number()),
+    /** Power multiplier per point of the mastery or stage it needs: 1 + mastery x this. */
+    masteryScale: z.number().min(0),
+    finisher: z.strictObject({ power: z.number(), cost: z.number() }),
+  }),
+  inventing: z.strictObject({
+    /** The chance a month of practice turns a draft into a technique: base + mastery and Intellect. */
+    base: z.number().min(0).max(1),
+    perMastery: z.number().min(0),
+    perIntellect: z.number().min(0),
+    perAttempt: z.number().min(0),
+    maxDrafts: z.number().int().min(1),
+  }),
+  moveset: z.strictObject({
+    /** Techniques kept sharp at once; beyond this the least used fade. */
+    max: z.number().int().min(1),
+    /** Months unused before a technique's mastery starts to fade, and how fast. */
+    fadeAfterMonths: z.number().int().min(1),
+    fadePerYear: z.number().min(0),
+    /** A signature move grows stronger with fame: power x (1 + fame x this), capped. */
+    signatureFame: z.number().min(0),
+    signatureCap: z.number().min(1),
+    /** Each use raises a technique's own mastery by this much (diminishing). */
+    usePoints: z.number().min(0),
+    /** Generated fighters: forms favoured by temperament. */
+    temperaments: z.record(z.string(), z.partialRecord(z.enum(TECH_FORMS), z.number().min(0))),
+    combinationOpinion: z.number().min(0).max(100),
+    /** Which traits make a fighter aggressive or cautious (else "balanced"). */
+    temperamentTraits: z.record(z.string(), z.array(slug('trait'))),
+  }),
+  /**
+   * Generated fighters (Tier 2): by occupation, the tracks they may have and how far (the highest
+   * stage index), and the chance a colour of haki is awake, by sea.
+   */
+  fighters: z.record(
+    slug('occ'),
+    z.strictObject({
+      tracks: z.record(slug('track'), z.number().int().min(0)),
+      /** Of these tracks, how many they know (the first that fit their people). */
+      count: z.number().int().min(1).default(1),
+      gear: z.partialRecord(z.enum(['swords', 'gun', 'bow']), z.number().int().min(1)).default({}),
+    }),
+  ),
+  hakiByRegion: z.record(z.enum(REGIONS), z.number().min(0).max(1)),
+  /** Lines the powers write. */
+  lines: z.record(z.string().regex(/^[a-zA-Z]+$/), lifeTemplate),
+});
+export type PowerRules = z.infer<typeof PowerRulesSchema>;
+
+const MATCH_SIDE = /^(power:[a-z0-9_:]+|tag:[a-z_]+|type:(paramecia|zoan|logia)|seastone|sea|any)$/;
+
+/**
+ * data/fruitMatchups.json: how powers fare against each other, in data not code (Phase 5 reads it).
+ * A side is a fruit's power ("power:rubber"), a technique tag ("tag:lightning"), a fruit type
+ * ("type:logia"), seastone, the sea, or any fruit.
+ */
+export const MatchupRulesSchema = z.strictObject({
+  pairs: z
+    .array(
+      z.strictObject({
+        attacker: z.string().regex(MATCH_SIDE),
+        defender: z.string().regex(MATCH_SIDE),
+        result: z.enum(['immune', 'wins', 'loses', 'weakened', 'solidifies', 'nullifies']),
+        text: nonEmptyText,
+      }),
+    )
+    .min(1),
+});
+export type MatchupRules = z.infer<typeof MatchupRulesSchema>;
+
+/** data/personality.json: hidden personality counters, what nudges them, and earned behaviour. */
+export const PersonalityRulesSchema = z.strictObject({
+  /** Two-sided counters: "courage" runs from cowardly (negative) to brave (positive). */
+  axes: z
+    .array(
+      z.strictObject({
+        id: z.string().regex(/^[a-z]+$/),
+        name: nonEmptyText,
+        /** Each year the counter falls back toward zero by this share. */
+        decayPerYear: z.number().min(0).max(1),
+        max: z.number().min(1),
+      }),
+    )
+    .min(1),
+  /** Choice and outcome tags that nudge an axis ("brave": courage +1). */
+  tags: z.record(
+    z.string().regex(/^[a-z_]+$/),
+    z.strictObject({ axis: z.string(), by: z.number() }),
+  ),
+  /** Behaviour counted month by month, for earned traits ("12 months of Hard training"). */
+  counters: z
+    .array(
+      z.strictObject({
+        id: z.string().regex(/^[a-z_]+$/),
+        name: nonEmptyText,
+        /** A month counts when an activity run that month matches. */
+        categories: z.array(z.enum(ACTIVITY_CATEGORIES)).default([]),
+        activities: z.array(slug('act')).default([]),
+        tags: z.array(z.string()).default([]),
+        effort: z.enum(EFFORTS).optional(),
+        atSea: z.boolean().optional(),
+        /** Counted by events and the body instead (fights, severe injuries, near-death). */
+        manual: z.boolean().default(false),
+      }),
+    )
+    .min(1),
+  /** Who counts as what, for trait opinion modifiers ("Scarred: -5 with nobles"). */
+  groups: z.record(
+    z.string().regex(/^[a-z]+$/),
+    z.strictObject({
+      occupations: z.array(slug('occ')).default([]),
+      flags: z.array(flagName).default([]),
+      races: z.array(slug('race')).default([]),
+    }),
+  ),
+  lines: z.strictObject({ gained: lifeTemplate, lost: lifeTemplate, evolved: lifeTemplate }),
+});
+export type PersonalityRules = z.infer<typeof PersonalityRulesSchema>;
+
+// ---------------------------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------------------------
 
@@ -2800,6 +3620,11 @@ export const COLLECTIONS = {
   factions: { schema: FactionSchema, prefix: 'org', label: 'faction' },
   cast: { schema: CastSchema, prefix: 'char', label: 'canon character' },
   canon: { schema: BeatSchema, prefix: 'beat', label: 'canon beat' },
+  // Phase 4
+  fruits: { schema: FruitDefSchema, prefix: 'fruit', label: 'Devil Fruit' },
+  tracks: { schema: TrackSchema, prefix: 'track', label: 'power track' },
+  techniques: { schema: TechniqueSchema, prefix: 'tech', label: 'technique' },
+  movesets: { schema: MovesetSchema, prefix: 'moveset', label: 'canon moveset' },
 } as const;
 export type CollectionKind = keyof typeof COLLECTIONS;
 export const COLLECTION_KINDS = Object.keys(COLLECTIONS) as CollectionKind[];
@@ -2815,11 +3640,14 @@ export const SINGLETONS = {
   'data/travel.json': { key: 'travel', schema: TravelRulesSchema },
   'data/world.json': { key: 'world', schema: WorldRulesSchema },
   'data/canon.json': { key: 'canonRules', schema: CanonRulesSchema },
+  'data/powers.json': { key: 'powers', schema: PowerRulesSchema },
+  'data/personality.json': { key: 'personality', schema: PersonalityRulesSchema },
+  'data/fruitMatchups.json': { key: 'matchups', schema: MatchupRulesSchema },
 } as const;
 export type SingletonPath = keyof typeof SINGLETONS;
 
 /** Directories that exist in the layout but have no schema yet; files placed there are rejected. */
-export const RESERVED_DIRS = ['fruits', 'news'] as const;
+export const RESERVED_DIRS = ['news'] as const;
 
 export interface GameData {
   calendar: Calendar;
@@ -2831,6 +3659,9 @@ export interface GameData {
   travel: TravelRules;
   world: WorldRules;
   canonRules: CanonRules;
+  powers: PowerRules;
+  personality: PersonalityRules;
+  matchups: MatchupRules;
   traits: Readonly<Record<string, Trait>>;
   weapons: Readonly<Record<string, Weapon>>;
   locations: Readonly<Record<string, Location>>;
@@ -2849,4 +3680,8 @@ export interface GameData {
   factions: Readonly<Record<string, Faction>>;
   cast: Readonly<Record<string, CastMember>>;
   canon: Readonly<Record<string, Beat>>;
+  fruits: Readonly<Record<string, FruitDef>>;
+  tracks: Readonly<Record<string, Track>>;
+  techniques: Readonly<Record<string, Technique>>;
+  movesets: Readonly<Record<string, Moveset>>;
 }

@@ -1,0 +1,24 @@
+{
+  "id": "moveset_rocks_d_xebec",
+  "char": "char_rocks_d_xebec",
+  "eras": [
+    {
+      "from": {
+        "year": -30,
+        "month": 1
+      },
+      "techniques": ["tech_xebec_storm", "tech_haki_internal", "tech_haki_burst"],
+      "tracks": {
+        "track_observation": "future_sight",
+        "track_armament": "internal",
+        "track_conqueror": "clash"
+      },
+      "approx": true,
+      "to": {
+        "year": 0,
+        "month": 3
+      },
+      "signature": "tech_xebec_storm"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "act_armament_training",
+  "name": "Harden your will",
+  "category": "special",
+  "description": "Strike drills with the will behind them: the road into Armament Haki, and along it once it wakes.",
+  "minAge": 12,
+  "physical": true,
+  "usesMentor": true,
+  "requires": {
+    "anyOf": [
+      {
+        "flags": {
+          "haki.seed.armament": 8
+        }
+      },
+      {
+        "tracks": {
+          "track_armament": "open"
+        }
+      }
+    ]
+  },
+  "gains": {
+    "willpower": 0.5,
+    "durability": 0.4
+  },
+  "practice": {
+    "kind": "drill",
+    "tracks": ["track_armament"],
+    "stamina": true
+  },
+  "tags": ["spirit", "haki", "at_sea"],
+  "outcomes": [
+    {
+      "id": "drills",
+      "text": "You struck the post until your knuckles were raw, willing them harder.",
+      "weight": 1.5,
+      "quiet": true,
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "haki.seed.armament",
+          "by": 1
+        }
+      ]
+    },
+    {
+      "id": "flicker",
+      "text": "For a heartbeat your fist went dark, then it was gone.",
+      "weight": 0.4,
+      "statWeights": {
+        "willpower": 0.5
+      },
+      "effects": [
+        {
+          "kind": "count",
+          "flag": "haki.seed.armament",
+          "by": 2
+        }
+      ]
+    }
+  ]
+}

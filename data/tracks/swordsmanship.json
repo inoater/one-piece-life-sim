@@ -1,0 +1,186 @@
+{
+  "id": "track_swordsmanship",
+  "name": "Swordsmanship (one sword)",
+  "family": "sword",
+  "description": "The basic sword style: from grip and stance to cutting what you choose, flying slashes, and a blade turned black.",
+  "stages": [
+    {
+      "id": "grip",
+      "name": "Grip and stance",
+      "level": "novice",
+      "at": 0,
+      "description": "Hold a sword as if it were part of you.",
+      "text": "You stopped holding the sword like a stick.",
+      "requires": {
+        "gear": {
+          "swords": 1
+        }
+      },
+      "techniques": ["tech_sword_slash"],
+      "combat": 4
+    },
+    {
+      "id": "cut_wood",
+      "name": "Cut wood",
+      "level": "trained",
+      "at": 20,
+      "description": "One stroke through a post.",
+      "text": "One stroke, and the post fell in two.",
+      "requires": {
+        "stats": {
+          "dexterity": 30
+        }
+      },
+      "combat": 9
+    },
+    {
+      "id": "cut_stone",
+      "name": "Cut stone",
+      "level": "trained",
+      "at": 50,
+      "description": "One stroke through stone.",
+      "text": "The stone parted and you felt it give.",
+      "requires": {
+        "stats": {
+          "dexterity": 38,
+          "strength": 32
+        }
+      },
+      "techniques": ["tech_sword_shishi_sonson"],
+      "combat": 15
+    },
+    {
+      "id": "cut_steel",
+      "name": "Cut steel",
+      "level": "adept",
+      "at": 90,
+      "description": "One stroke through iron.",
+      "text": "You cut through an iron chain with one stroke.",
+      "requires": {
+        "stats": {
+          "dexterity": 45,
+          "strength": 40
+        }
+      },
+      "combat": 22
+    },
+    {
+      "id": "breath",
+      "name": "Hear the breath of things",
+      "level": "expert",
+      "at": 150,
+      "description": "Cut only what you choose to cut.",
+      "text": "You cut the rope and not the rose that grew through it.",
+      "requires": {
+        "stats": {
+          "perception": 50,
+          "dexterity": 55
+        },
+        "teacher": true
+      },
+      "combat": 32
+    },
+    {
+      "id": "flying_slash",
+      "name": "Flying slash",
+      "level": "expert",
+      "at": 220,
+      "description": "Send the cut through the air.",
+      "text": "Your cut flew across the yard and split the target there.",
+      "requires": {
+        "stats": {
+          "strength": 55,
+          "dexterity": 60
+        }
+      },
+      "techniques": ["tech_sword_36_pound"],
+      "combat": 42
+    },
+    {
+      "id": "coated",
+      "name": "Coated blade",
+      "level": "master",
+      "at": 300,
+      "description": "Wrap the blade in Armament.",
+      "text": "Your blade went black and cut a Logia's smoke.",
+      "requires": {
+        "tracks": {
+          "track_armament": "coat_weapon"
+        }
+      },
+      "techniques": ["tech_sword_daishinkan"],
+      "combat": 55
+    },
+    {
+      "id": "black_blade",
+      "name": "A blade turned black",
+      "level": "master",
+      "at": 400,
+      "description": "A blade that has been coated so long it is black for good.",
+      "text": "Your blade was black for good now.",
+      "requires": {
+        "tracks": {
+          "track_armament": "black_blade"
+        },
+        "breakthrough": true
+      },
+      "combat": 66
+    },
+    {
+      "id": "conqueror_slash",
+      "name": "A Conqueror's-coated slash",
+      "level": "grandmaster",
+      "at": 520,
+      "description": "Wrap the cut in a king's will.",
+      "text": "The cut carried your whole will, and the sky split above it.",
+      "requires": {
+        "tracks": {
+          "track_conqueror": "coating"
+        },
+        "hidden": true
+      },
+      "techniques": ["tech_sword_kamusari"],
+      "combat": 82
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a dojo master",
+        "features": ["dojo"],
+        "fee": 20000
+      },
+      {
+        "name": "a wandering master of Wano",
+        "places": ["loc_wano"],
+        "fee": 50000,
+        "mult": 1.35
+      },
+      {
+        "name": "Dracule Mihawk, if he finds you worth it",
+        "places": ["loc_kuraigana"],
+        "mult": 1.5,
+        "requires": {
+          "stats": {
+            "dexterity": 60
+          }
+        }
+      }
+    ],
+    "requires": {
+      "stats": {
+        "dexterity": 30
+      },
+      "gear": {
+        "swords": 1
+      }
+    }
+  },
+  "speedStats": {
+    "dexterity": 0.6
+  },
+  "ceilings": [],
+  "word": "Slash",
+  "tags": ["sword", "slash"]
+}

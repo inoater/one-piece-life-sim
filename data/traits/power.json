@@ -1,0 +1,39 @@
+[
+  {
+    "id": "trait_devil_fruit_user",
+    "name": "Devil Fruit User",
+    "description": "Ate a Devil Fruit: the sea will never hold them again.",
+    "category": "power",
+    "weight": 0,
+    "locks": [
+      {
+        "activity": "act_swim"
+      }
+    ],
+    "flags": {
+      "fruit.cursed": true
+    },
+    "eventWeights": {
+      "sea": 1.1
+    }
+  },
+  {
+    "id": "trait_only_smile",
+    "name": "Only Able to Smile",
+    "description": "Ate a SMILE that did not work: can only smile, whatever they feel.",
+    "category": "power",
+    "weight": 0,
+    "opinion": [
+      {
+        "group": "everyone",
+        "value": -3
+      }
+    ],
+    "checkBonuses": {
+      "charisma": -10
+    },
+    "flags": {
+      "smile.dud": true
+    }
+  }
+]

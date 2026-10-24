@@ -6,9 +6,18 @@
   "minAge": 8,
   "physical": true,
   "requires": {
-    "flags": {
-      "unlock.electro": true
-    }
+    "anyOf": [
+      {
+        "flags": {
+          "unlock.electro": true
+        }
+      },
+      {
+        "tracks": {
+          "track_electro": "open"
+        }
+      }
+    ]
   },
   "gains": {
     "speed": 0.5,
@@ -34,5 +43,9 @@
         }
       ]
     }
-  ]
+  ],
+  "practice": {
+    "kind": "drill",
+    "tracks": ["track_electro", "track_sulong"]
+  }
 }

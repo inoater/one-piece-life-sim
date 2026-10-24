@@ -1,0 +1,80 @@
+{
+  "id": "track_life_return",
+  "name": "Life Return",
+  "family": "style",
+  "description": "Control of the body's own processes, and faster healing: masters of body control teach it to those with Willpower 60.",
+  "stages": [
+    {
+      "id": "breath",
+      "name": "Control of breath",
+      "level": "novice",
+      "at": 0,
+      "description": "Slow the heart, steady the breath.",
+      "text": "You slowed your own heart and felt it obey.",
+      "techniques": ["tech_life_return"],
+      "combat": 4
+    },
+    {
+      "id": "hair_organs",
+      "name": "Control of hair and organs",
+      "level": "adept",
+      "at": 60,
+      "description": "Move hair, sweat, the stomach, on purpose.",
+      "text": "Your hair moved because you told it to.",
+      "requires": {
+        "stats": {
+          "willpower": 60
+        }
+      },
+      "techniques": ["tech_life_return_hair"],
+      "combat": 12
+    },
+    {
+      "id": "rapid_healing",
+      "name": "Rapid healing",
+      "level": "expert",
+      "at": 150,
+      "description": "Heal in a day what takes a month.",
+      "text": "You closed a wound by will alone.",
+      "requires": {
+        "stats": {
+          "willpower": 70
+        }
+      },
+      "combat": 20,
+      "statMods": [
+        {
+          "stat": "endurance",
+          "value": 5,
+          "kind": "pct"
+        },
+        {
+          "stat": "durability",
+          "value": 5,
+          "kind": "pct"
+        }
+      ]
+    }
+  ],
+  "learn": {
+    "how": "teacher",
+    "teachers": [
+      {
+        "name": "a master of body control",
+        "places": ["loc_amazon_lily", "loc_impel_down", "loc_kuraigana"],
+        "fee": 10000,
+        "mult": 1.3
+      }
+    ],
+    "requires": {
+      "stats": {
+        "willpower": 60
+      }
+    }
+  },
+  "speedStats": {
+    "willpower": 0.6
+  },
+  "word": "Life",
+  "tags": ["body", "heal"]
+}
