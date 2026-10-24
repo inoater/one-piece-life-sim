@@ -5,7 +5,7 @@ import type { WorldState } from '../../engine/state';
 import { formatBerries } from '../genesis/text';
 import { ensureLife } from '../life/body';
 import { pay, type LifeEnv } from '../life/env';
-import { buyFruit, eatFruit, findFruit, identifyFruit } from './fruits';
+import { buyFruit, eatFruit, findFruit, identifyFruit, searchForFruit } from './fruits';
 import { wake } from './haki';
 import { ensurePowers, type HakiColour } from './state';
 import { combine, draftTechnique, moveName } from './techniques';
@@ -86,6 +86,16 @@ export function identifyCommand(
 export function buyFruitCommand(state: WorldState, data: GameData, fruitId: string): void {
   const env = commandEnv(state, data, 'powers/buyFruit');
   guard(() => buyFruit(env, fruitId));
+}
+
+/** Follow a rumour (or a fruit known to lie here) where you stand. */
+export function searchCommand(
+  state: WorldState,
+  data: GameData,
+  lead: { rumour?: number; fruit?: string },
+): void {
+  const env = commandEnv(state, data, 'powers/search');
+  guard(() => searchForFruit(env, lead));
 }
 
 /** A sword, a pistol or a bow from a market or a smithy (Phase 6 makes these real items). */

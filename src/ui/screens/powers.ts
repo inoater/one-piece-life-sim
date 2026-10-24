@@ -1,3 +1,4 @@
+import { renderPowerSummary } from '../components/power-summary';
 import type { PowersView } from '../../worker/protocol';
 import type { App } from '../app';
 import { confirmButton } from '../components/confirm-button';
@@ -511,6 +512,7 @@ export function renderPowers(state: UiState, app: App): (HTMLElement | null)[] {
           : '. No haki has woken in you yet.',
         view.sixPowersMastered > 0 ? ` Six Powers mastered: ${view.sixPowersMastered} of 6.` : '',
       ),
+      renderPowerSummary(view, state.snapshot?.fight ?? null),
       view.combat.bonus.length > 0
         ? h(
             'ul',

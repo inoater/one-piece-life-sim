@@ -4,11 +4,6 @@
   "category": "special",
   "description": "Strange fruits that grant strange powers. Every port has a story, and some of them are true.",
   "minAge": 16,
-  "requires": {
-    "flags": {
-      "rumour.fruit": 2
-    }
-  },
   "gains": {
     "perception": 0.3,
     "charisma": 0.1

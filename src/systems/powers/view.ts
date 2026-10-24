@@ -1,3 +1,4 @@
+import { POWER_LEVELS } from '../../engine/data/defs';
 import { dateOf, formatDate } from '../../engine/calendar';
 import type { GameData, Track } from '../../engine/data/schemas';
 import { TECH_FORMS } from '../../engine/data/schemas';
@@ -56,8 +57,8 @@ export interface TrackView {
   description: string;
   open: boolean;
   focus: boolean;
-  /** The stage reached, or null when not begun. */
-  stage: { name: string; level: string } | null;
+  /** The stage reached, or null when not begun. `levelIndex`: 0 (Novice) to 5 (Grandmaster). */
+  stage: { name: string; level: string; levelIndex: number } | null;
   next: null | { name: string; level: string; progress: number; locks: string[] };
   mode: 'points' | 'mastery';
   progress: number;
@@ -106,7 +107,27 @@ export interface FruitSelfView {
   weaknesses: string[];
 }
 
+/**
+ * The powers at a glance: everything they have and how far along it is (the stage, and its level
+ * out of the six from Novice to Grandmaster), the haki still asleep in them, and a fruit carried
+ * uneaten.
+ */
+export interface PowerSummary {
+  rows: {
+    id: string;
+    group: string;
+    name: string;
+    stage: string;
+    level: string;
+    levelIndex: number;
+    detail: string | null;
+  }[];
+  asleep: string[];
+  carriedFruit: boolean;
+}
+
 export interface PowersView {
+  summary: PowerSummary;
   /** Null until a colour of haki wakes. */
   stamina: { current: number; pool: number } | null;
   combat: { total: number; bonus: { source: string; value: number }[] };
@@ -165,7 +186,11 @@ function trackView(state: WorldState, data: GameData, p: Person, track: Track): 
     open: ts !== undefined,
     focus: p.c.powers?.focus === track.id,
     stage: ts
-      ? { name: stageOf(track, ts).name, level: levelName(data, stageOf(track, ts).level) }
+      ? {
+          name: stageOf(track, ts).name,
+          level: levelName(data, stageOf(track, ts).level),
+          levelIndex: POWER_LEVELS.indexOf(stageOf(track, ts).level),
+        }
       : null,
     next:
       ts && next
@@ -329,7 +354,46 @@ export function powersView(state: WorldState, data: GameData): PowersView | null
   const rokushiki = Object.keys(powers?.tracks ?? {}).some(
     (id) => data.tracks[id]?.group === 'six_powers',
   );
+  const GROUP: Record<string, string> = {
+    haki: 'Haki',
+    fruit: 'Devil Fruit',
+    style: 'Style',
+    sword: 'Sword',
+    six_powers: 'Six Powers',
+    weapon: 'Weapon',
+  };
+  const order = ['haki', 'fruit', 'six_powers', 'sword', 'style', 'weapon'];
+  const summary: PowerSummary = {
+    rows: tracks
+      .filter((t) => t.open && t.stage)
+      .sort(
+        (a, b) =>
+          order.indexOf(a.family) - order.indexOf(b.family) ||
+          (b.stage?.levelIndex ?? 0) - (a.stage?.levelIndex ?? 0) ||
+          (a.name < b.name ? -1 : 1),
+      )
+      .map((t) => ({
+        id: t.id,
+        group: GROUP[t.family] ?? t.family,
+        name:
+          t.family === 'fruit' && fruit
+            ? fruit.name.charAt(0).toUpperCase() + fruit.name.slice(1)
+            : t.name,
+        stage: t.stage?.name ?? '',
+        level: t.stage?.level ?? '',
+        levelIndex: Math.max(0, t.stage?.levelIndex ?? 0),
+        detail:
+          t.family === 'fruit' && fruit
+            ? `mastery ${Math.round(fruit.mastery)} of 100`
+            : t.next
+              ? `next: ${t.next.name}`
+              : 'the last stage',
+      })),
+    asleep: tracks.filter((t) => t.family === 'haki' && !t.open).map((t) => t.name),
+    carriedFruit: (powers?.items ?? []).some((id) => state.entities[id]?.fruit !== undefined),
+  };
   return {
+    summary,
     stamina: HAKI_COLOURS.some((h) => hakiAwake(c, h))
       ? {
           current: Math.round(powers?.stamina ?? 0),
@@ -397,11 +461,15 @@ export interface FruitEntryView {
   canon: boolean;
   /** Shown only because omniscient mode is on. */
   hidden: boolean;
+  /** The player knows it lies wild where they stand: they can look for it. */
+  searchHere: boolean;
 }
 
 export interface FruitsView {
   known: FruitEntryView[];
-  rumours: { name: string; place: string; date: string }[];
+  rumours: { index: number; name: string; place: string; date: string; here: boolean }[];
+  /** Nothing carried and no fruit eaten: how a fruit can be had at all. */
+  howTo: string[] | null;
   carried: {
     id: string;
     look: string;
@@ -476,6 +544,12 @@ export function fruitsView(
       techniques: identified ? def.techniques.map((t) => t.name) : [],
       canon: def.origin === 'canon',
       hidden: !mine && !isPublic,
+      searchHere:
+        !p.place.atSea &&
+        mine !== undefined &&
+        mine.place === p.place.id &&
+        fruit.fruit?.container !== 'eaten' &&
+        fruit.fruit?.container !== 'held',
     });
   }
   const carried = (powers?.items ?? [])
@@ -515,11 +589,22 @@ export function fruitsView(
       }));
   return {
     known: known.sort((a, b) => Number(a.hidden) - Number(b.hidden) || (a.name < b.name ? -1 : 1)),
-    rumours: (powers?.rumours ?? []).map((r) => ({
+    rumours: (powers?.rumours ?? []).map((r, index) => ({
+      index,
       name: r.name,
       place: data.locations[r.place]?.name ?? r.place,
       date: formatDate(dateOf(data.calendar, r.tick)),
+      here: !p.place.atSea && r.place === p.place.id,
     })),
+    howTo:
+      carried.length === 0 && !powers?.fruit
+        ? [
+            'Chase Devil Fruit rumours (an activity, from 16): some point to a real fruit lying wild.',
+            'Sail to where a rumour points and search there: a true one, still there, is yours.',
+            'Black markets sell fruits nobody will name, for a hundred million Berries and up.',
+            'Ruins, chests adrift and the odd auction turn one up now and then.',
+          ]
+        : null,
     carried,
     market,
     counts: {

@@ -164,6 +164,7 @@ describe('keyboard shortcuts', () => {
     key('n');
     await settle(10);
     expect(ui.app.store.get().snapshot?.tick).toBe(before);
+    key('Escape'); // close the shortcuts dialog (its Escape listener would outlive the test)
   });
 });
 
@@ -184,6 +185,28 @@ describe('the Map page', () => {
     navigate('feed');
     await settle();
     expect(q('.map-page-slot')?.hidden).toBe(true);
+  });
+
+  it('opens over the page as a popup: the chronicle and side panel stay, and Close or Escape goes back', async () => {
+    await startLife();
+    navigate('actions');
+    await settle(10);
+    navigate('map');
+    await settle(10);
+    expect(q('.map-page-slot')?.hidden).toBe(false);
+    // The page underneath is still the page: the chronicle and the side panel are there.
+    expect(q('.panel--feed')?.hasAttribute('hidden')).toBe(false);
+    expect(q('.panel--side')?.textContent?.length ?? 0).toBeGreaterThan(0);
+    button(q('.map-page') as HTMLElement, 'Close').click();
+    await settle(10);
+    expect(window.location.hash).toBe('#/actions');
+    expect(q('.map-page-slot')?.hidden).toBe(true);
+    navigate('map');
+    await settle(10);
+    expect(window.location.hash).toBe('#/map');
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    await settle(10);
+    expect(window.location.hash).toBe('#/actions');
   });
 
   it('opens a place with a lane from here, and sets sail from its panel', async () => {

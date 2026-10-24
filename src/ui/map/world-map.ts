@@ -464,6 +464,8 @@ export function createWorldMap(options: WorldMapOptions): WorldMap {
     };
     const act = keys[event.key];
     if (!act) return;
+    // Escape with nothing selected is not the map's: it closes whatever holds the map.
+    if (event.key === 'Escape' && info.hidden && selection.childElementCount === 0) return;
     event.preventDefault();
     event.stopPropagation();
     act();

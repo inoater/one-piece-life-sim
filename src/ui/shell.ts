@@ -135,7 +135,10 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   // half-made character survives a trip to another screen and back.
   const newLife = createNewLife(app);
   const newLifePage = h('div', { class: 'newlife-page', hidden: true }, newLife.el);
-  const mapPage = createMapPage(app);
+  // The Map opens over the page (a popup), and closing it goes back to where you were.
+  let beforeMap: Route = 'feed';
+  const closeMap = () => navigate(beforeMap);
+  const mapPage = createMapPage(app, closeMap);
   const mapPageEl = h('div', { class: 'map-page-slot', hidden: true }, mapPage.el);
   const endPageEl = h('div', { class: 'end-page-slot', hidden: true });
   const canonPage = createCanonPage(app);
@@ -316,6 +319,15 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   }
   const onKey = (event: KeyboardEvent) => {
     if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (
+      event.key === 'Escape' &&
+      store.get().route === 'map' &&
+      !document.querySelector('.modal-backdrop')
+    ) {
+      event.preventDefault();
+      closeMap();
+      return;
+    }
     if (isTypingTarget(event.target) || document.querySelector('.modal-backdrop')) return;
     const state = store.get();
     if (state.route === 'new') return;
@@ -537,6 +549,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
 
   function render(state: UiState, previous: UiState | null): void {
     const mapping = state.route === 'map';
+    if (!mapping && state.route !== 'new') beforeMap = state.route;
     if (mapping !== !mapPageEl.hidden) mapPageEl.hidden = !mapping;
     // The map follows the player (Phase 3): redrawn whenever the world moves while it is open.
     if (mapping && (previous?.route !== 'map' || state.snapshot !== previous.snapshot))
@@ -560,7 +573,13 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     else powersLink.removeAttribute('aria-current');
     const fruiting = state.route === 'fruits';
     if (fruiting !== !fruitsPageEl.hidden) fruitsPageEl.hidden = !fruiting;
-    if (fruiting && (previous?.route !== 'fruits' || state.snapshot !== previous.snapshot))
+    // Redrawn when the app stops being busy too, or its buttons (Eat it) would stay disabled.
+    if (
+      fruiting &&
+      (previous?.route !== 'fruits' ||
+        state.snapshot !== previous.snapshot ||
+        state.busy !== previous.busy)
+    )
       void fruitsPage.show(state);
     const ending = state.route === 'end';
     if (ending !== !endPageEl.hidden) endPageEl.hidden = !ending;

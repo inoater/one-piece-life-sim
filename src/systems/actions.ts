@@ -25,6 +25,7 @@ import {
   abandonDraft,
   buyEncyclopedia,
   buyFruitCommand,
+  searchCommand,
   buyGear,
   combineCommand,
   debugGiveFruit,
@@ -164,6 +165,11 @@ export const ActionSchema = z.discriminatedUnion('type', [
     how: z.enum(['encyclopedia', 'scholar']),
   }),
   z.strictObject({ type: z.literal('powers/buyFruit'), fruit: z.string().min(1) }),
+  z.strictObject({
+    type: z.literal('powers/search'),
+    rumour: z.number().int().min(0).optional(),
+    fruit: z.string().min(1).optional(),
+  }),
   z.strictObject({ type: z.literal('powers/buyGear'), weapon: z.string().min(1) }),
   z.strictObject({ type: z.literal('powers/buyEncyclopedia') }),
   z.strictObject({
@@ -356,6 +362,7 @@ export function applyAction(
     case 'powers/eat':
     case 'powers/identify':
     case 'powers/buyFruit':
+    case 'powers/search':
     case 'powers/buyGear':
     case 'powers/buyEncyclopedia':
     case 'powers/invent':
@@ -518,6 +525,12 @@ function applyPowersAction(state: WorldState, data: GameData, action: PowersActi
       break;
     case 'powers/buyFruit':
       buyFruitCommand(state, data, action.fruit);
+      break;
+    case 'powers/search':
+      searchCommand(state, data, {
+        ...(action.rumour !== undefined ? { rumour: action.rumour } : {}),
+        ...(action.fruit !== undefined ? { fruit: action.fruit } : {}),
+      });
       break;
     case 'powers/buyGear':
       buyGear(state, data, action.weapon);

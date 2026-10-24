@@ -68,33 +68,10 @@
       padding-right: calc(var(--s-6) + 2rem);
     }
   }
-  .shell[data-route='new'] .year-rail,
-  .shell[data-route='map'] .year-rail {
+  .shell[data-route='new'] .year-rail {
     display: none !important;
   }
-
-  /* The Map page fills the space of the chronicle and the side panel; time can still move. */
-  .map-page-slot {
-    grid-row: 4;
-    grid-column: 1 / -1;
-    min-height: 0;
-    display: flex;
-  }
-  .map-page-slot[hidden] {
-    display: none;
-  }
-  .shell[data-route='map'] .panel {
-    display: none !important;
-  }
-  @media (min-width: 700px) {
-    .shell[data-route='map'] .tabs {
-      grid-column: 1 / -1;
-      border-left: 0;
-    }
-    .shell[data-route='map'] .tab--feed {
-      display: block;
-    }
-  }
+  /* The Map is a popup over the page (styles/picker.css): the chronicle and the side panel stay. */
 }
 
 @layer components {

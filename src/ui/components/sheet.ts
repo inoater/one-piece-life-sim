@@ -110,6 +110,39 @@ function lifeBlock(life: NonNullable<CharacterSheet['life']>): HTMLElement {
   );
 }
 
+/** The backstory kept up to date: how it began, the years since (the latest open), and now. */
+function storyBlock(story: NonNullable<CharacterSheet['story']>): HTMLElement {
+  const chapter = (c: NonNullable<CharacterSheet['story']>['chapters'][number]) =>
+    h(
+      'li',
+      { class: 'story__chapter' },
+      h('span', { class: 'story__when' }, c.when, h('span', { class: 'muted' }, ` · age ${c.age}`)),
+      h(
+        'ul',
+        { class: 'story__lines' },
+        c.lines.map((l) => h('li', null, l)),
+      ),
+    );
+  const recent = story.chapters.slice(-4);
+  const older = story.chapters.slice(0, -4);
+  return h(
+    'div',
+    { class: 'story' },
+    h('p', { class: 'sheet__backstory' }, story.opening),
+    story.chapters.length > 0 ? h('h4', { class: 'story__since' }, 'Since then') : null,
+    older.length > 0
+      ? h(
+          'details',
+          { class: 'story__older' },
+          h('summary', null, `Earlier years (${older.length})`),
+          h('ol', { class: 'story__chapters' }, older.map(chapter)),
+        )
+      : null,
+    recent.length > 0 ? h('ol', { class: 'story__chapters' }, recent.map(chapter)) : null,
+    h('p', { class: 'story__now' }, story.now),
+  );
+}
+
 export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions): SheetHandle {
   const cleanups: (() => void)[] = [];
   const { tick, compact = false, previous = null, place = 'sheet' } = options;
@@ -358,9 +391,11 @@ export function renderSheet(sheet: CharacterSheet, options: SheetRenderOptions):
         sheet.life && sheet.life.debt > 0 ? `, and ${formatInteger(sheet.life.debt)} owed` : '',
       ),
     ),
-    sheet.backstory
-      ? section('Backstory', h('p', { class: 'sheet__backstory' }, sheet.backstory))
-      : null,
+    sheet.story && sheet.story.chapters.length > 0
+      ? section('Your story', storyBlock(sheet.story))
+      : sheet.backstory
+        ? section('Backstory', h('p', { class: 'sheet__backstory' }, sheet.backstory))
+        : null,
   );
 
   // Bars that changed start at their old width and grow (or shrink) to the new one.

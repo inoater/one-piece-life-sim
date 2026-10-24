@@ -42,12 +42,17 @@ async function startLife(over: Record<string, unknown> = {}): Promise<void> {
   await settle(10);
 }
 
+/** Open the activity picker for a slot and choose a card in it. */
 async function choose(slot: number, activity: string): Promise<void> {
-  const select = qa('.routine__select')[slot] as HTMLSelectElement;
-  const option = [...select.options].find((o) => o.value === activity);
+  const card = qa('.routine__slot')[slot];
+  const open = card?.querySelector<HTMLButtonElement>('.slot-card--empty, .slot-card .button');
+  if (!open) throw new Error(`no slot ${slot}`);
+  open.click();
+  const option = document.querySelector<HTMLButtonElement>(
+    `.activity-card[data-activity="${activity}"]`,
+  );
   if (!option) throw new Error(`no option ${activity}`);
-  option.selected = true;
-  select.dispatchEvent(new Event('change'));
+  option.click();
   await until(() => ui.app.store.get().snapshot?.life?.routine[slot]?.activity === activity);
   await settle(10);
 }
@@ -70,11 +75,15 @@ describe('the Actions planner', () => {
     await settle();
     expect(qa('.routine__slot')).toHaveLength(3);
     await choose(0, 'act_spar');
-    expect((qa('.routine__select')[0] as HTMLSelectElement).value).toBe('act_spar');
+    expect(q('.routine__slot .slot-card')?.dataset['activity']).toBe('act_spar');
+    expect(document.querySelector('.modal-backdrop')).toBeNull();
     expect(text(q('.planner__vigor'))).toContain('Vigor 2 of');
-    button(q('.routine__slot') as HTMLElement, 'Hard').click();
+    // Each effort says what it costs in Vigor.
+    button(q('.routine__slot') as HTMLElement, /^Hard/).click();
     await settle(10);
-    expect(q('.routine__slot .effort__option[aria-pressed="true"]')?.textContent).toBe('Hard');
+    expect(q('.routine__slot .effort__option[aria-pressed="true"]')?.textContent).toMatch(
+      /^Hard \d+$/,
+    );
     expect(
       ui.core.peekState().entities[ui.core.peekState().playerId!]?.character?.life?.routine,
     ).toEqual([{ activity: 'act_spar', effort: 'hard' }]);
@@ -87,16 +96,29 @@ describe('the Actions planner', () => {
     await startLife();
     navigate('actions');
     await settle();
-    const option = [...(qa('.routine__select')[0] as HTMLSelectElement).options].find(
-      (o) => o.value === 'act_search_ruins',
+    // The picker hides what is out of reach until asked, then says why.
+    (q('.routine__slot .slot-card--empty') as HTMLButtonElement).click();
+    expect(document.querySelector('.activity-card[data-activity="act_search_ruins"]')).toBeNull();
+    const toggle = document.querySelector<HTMLInputElement>('.picker__toggle')!;
+    toggle.checked = true;
+    toggle.dispatchEvent(new Event('change'));
+    const card = document.querySelector<HTMLButtonElement>(
+      '.activity-card[data-activity="act_search_ruins"]',
     )!;
-    expect(option.disabled).toBe(true);
-    expect(option.textContent).toContain('needs ruins nearby');
-    const row = qa('.option').find(
-      (o) => text(o.querySelector('.option__name')) === 'Search the ruins',
-    )!;
-    expect(row.dataset['locked']).toBe('true');
-    expect(text(row.querySelector('.option__lock'))).toBe('Needs ruins nearby');
+    expect(card.disabled).toBe(true);
+    expect(text(card.querySelector('.activity-card__lock'))).toBe('Needs ruins nearby');
+    // Search narrows it down; a kind narrows it further.
+    const search = document.querySelector<HTMLInputElement>('.picker__search')!;
+    search.value = 'spar';
+    search.dispatchEvent(new Event('input'));
+    expect(
+      [...document.querySelectorAll('.activity-card')].map(
+        (c) => (c as HTMLElement).dataset['activity'],
+      ),
+    ).toContain('act_spar');
+    expect(document.querySelectorAll('.activity-card').length).toBeLessThan(10);
+    (document.querySelector('.modal .button--quiet') as HTMLButtonElement).click();
+    expect(document.querySelector('.modal-backdrop')).toBeNull();
   });
 
   it('takes a job, puts a shift in the routine, and pays it', async () => {

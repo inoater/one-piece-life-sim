@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { navigate } from '../../src/ui/router';
 import { MemorySaveStore } from '../../src/engine/saves/store';
-import { button, link, mountUi, settle, text, type Mounted } from '../helpers/ui';
+import { button, link, mountUi, settle, text, until, type Mounted } from '../helpers/ui';
 
 let ui: Mounted;
 beforeEach(async () => {
@@ -42,6 +42,7 @@ describe('the masthead', () => {
 
   it('follows the clock', async () => {
     await click('Next month');
+    await until(() => text(q('.masthead__title')) === 'February 1486 SC');
     expect(text(q('.masthead__title'))).toBe('February 1486 SC');
     await ui.app.advance({ kind: 'months', count: 14 }, 'test');
     expect(text(q('.masthead__title'))).toBe('April 1487 SC');

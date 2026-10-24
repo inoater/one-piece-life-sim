@@ -1928,6 +1928,9 @@
     "inventFailed": "Another try at {title} came to nothing, but you are closer.",
     "mishap": "Your power slipped its leash and hurt you.",
     "secret": "Your fruit was never what you thought it was: {title}. {other}",
-    "rokuogan": "With all six of the Six Powers mastered, you found the seventh: {title}."
+    "rokuogan": "With all six of the Six Powers mastered, you found the seventh: {title}.",
+    "searchFound": "You searched {destination} where the rumour said, and there it was: {title}.",
+    "searchMarket": "The rumour was true, but late: the fruit is on a black-market stall in {destination} now.",
+    "searchNothing": "You searched {destination} high and low. Whatever the rumour said, there is nothing here now."
   }
 }

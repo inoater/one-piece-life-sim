@@ -24,6 +24,18 @@ export function renderFruits(view: FruitsView, app: App, busy: boolean): (HTMLEl
         `One fruit, one power, one world: when a user dies, their fruit grows again somewhere, and nobody knows where. You know of ${plural(view.known.filter((k) => !k.hidden).length, 'fruit')}.`,
       ),
     ),
+    view.howTo
+      ? h(
+          'section',
+          { class: 'powers-page__section fruit-howto' },
+          h('h3', { class: 'powers-page__heading' }, 'How to get one'),
+          h(
+            'ul',
+            { class: 'fruit-howto__list' },
+            view.howTo.map((t) => h('li', null, t)),
+          ),
+        )
+      : null,
     view.carried.length > 0
       ? h(
           'section',
@@ -171,6 +183,18 @@ export function renderFruits(view: FruitsView, app: App, busy: boolean): (HTMLEl
                 k.hidden
                   ? h('span', { class: 'fruit-entry__hidden' }, 'Known to nobody (omniscient view)')
                   : null,
+                k.searchHere
+                  ? h(
+                      'button',
+                      {
+                        class: 'button button--tiny fruit-entry__action',
+                        type: 'button',
+                        disabled: busy,
+                        onclick: () => void app.dispatch({ type: 'powers/search', fruit: k.id }),
+                      },
+                      'Look for it here',
+                    )
+                  : null,
               ),
             ),
           ),
@@ -180,17 +204,34 @@ export function renderFruits(view: FruitsView, app: App, busy: boolean): (HTMLEl
       { class: 'powers-page__section' },
       h('h3', { class: 'powers-page__heading' }, 'Rumours'),
       view.rumours.length === 0
-        ? h('p', { class: 'muted' }, 'No rumours yet. Chase them in port: some are true.')
+        ? h(
+            'p',
+            { class: 'muted' },
+            'No rumours yet. Put "Chase Devil Fruit rumours" in your routine: some are true.',
+          )
         : h(
             'ul',
             { class: 'fruit-list' },
             view.rumours.map((r) =>
               h(
                 'li',
-                { class: 'fruit-entry' },
+                { class: 'fruit-entry', dataset: { here: String(r.here) } },
                 h('span', { class: 'fruit-entry__name' }, r.name),
                 h('span', { class: 'fruit-entry__user' }, `said to be on ${r.place}`),
                 h('span', { class: 'fruit-entry__meta' }, r.date),
+                r.here
+                  ? h(
+                      'button',
+                      {
+                        class: 'button button--tiny fruit-entry__action',
+                        type: 'button',
+                        disabled: busy,
+                        onclick: () =>
+                          void app.dispatch({ type: 'powers/search', rumour: r.index }),
+                      },
+                      'Search here',
+                    )
+                  : h('span', { class: 'muted' }, 'Sail there to look (the Map shows the way).'),
               ),
             ),
           ),

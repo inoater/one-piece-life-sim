@@ -218,8 +218,18 @@ function placePanel(
   ];
 }
 
-export function createMapPage(app: App): MapPage {
+export function createMapPage(app: App, onClose?: () => void): MapPage {
   const body = h('div', { class: 'map-page__map' });
+  const closeButton = h(
+    'button',
+    {
+      class: 'button button--tiny map-page__close',
+      type: 'button',
+      'aria-label': 'Close the map',
+      onclick: () => onClose?.(),
+    },
+    'Close',
+  );
   const hereButton = h(
     'button',
     { class: 'button button--tiny', type: 'button', hidden: true },
@@ -240,6 +250,7 @@ export function createMapPage(app: App): MapPage {
       h('h2', { class: 'map-page__title', id: 'map-title' }, 'The world'),
       status,
       hereButton,
+      closeButton,
     ),
     body,
   );
@@ -257,6 +268,13 @@ export function createMapPage(app: App): MapPage {
     selected = null;
     panel.hidden = true;
   };
+  // Escape closes the place panel first; with it closed, the map itself (see shell.ts).
+  el.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || panel.hidden) return;
+    event.preventDefault();
+    event.stopPropagation();
+    close();
+  });
 
   async function openPlace(id: string): Promise<void> {
     selected = id;

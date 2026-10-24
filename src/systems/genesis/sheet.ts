@@ -20,6 +20,7 @@ import { traitKind } from '../../engine/data/schemas';
 import { describeTrait } from '../life/traits';
 import { appearanceSentence, heightFraction } from './appearance';
 import { ageAt, humanAgeFor, stageAt } from './stages';
+import { lifeStory, type StoryView } from './story';
 import { formatBerries } from './text';
 
 /**
@@ -145,6 +146,8 @@ export interface CharacterSheet {
   berries: number;
   focus: { id: string; name: string; description: string } | null;
   backstory: string;
+  /** The backstory kept up to date: the opening, the life since, year by year, and now. */
+  story: StoryView | null;
   flags: Record<string, FlagValue>;
   /** The life loop (Phase 2): body, work, reputation, money, deeds. Null before it starts. */
   life: null | {
@@ -480,6 +483,7 @@ export function characterSheet(
           }
         : null,
     backstory: c.backstory ?? '',
+    story: lifeStory(data, state, entity),
     flags: options.omniscient ? { ...entity.flags } : {},
     life: lifeSection(data, entity, tick),
   };

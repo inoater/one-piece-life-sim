@@ -1083,6 +1083,53 @@ export function hearRumour(env: LifeEnv): void {
   reportLine(env, text, 'plain');
 }
 
+/**
+ * Follow a lead where you stand: a rumour that points here (it is used up either way), or a fruit
+ * you know lies here. A true lead to a fruit still lying wild is found and carried; one sold on
+ * meanwhile is on a stall here; anything else, there is nothing to find.
+ */
+export function searchForFruit(
+  env: LifeEnv,
+  lead: { rumour?: number; fruit?: string },
+): Entity | null {
+  const { state, data, p, tick } = env;
+  if (p.place.atSea) throw new Error('There is nothing to search at sea');
+  const powers = ensurePowers(p.c);
+  let fruitId: string | null = null;
+  let title = 'a Devil Fruit';
+  if (lead.rumour !== undefined) {
+    const rumour = powers.rumours[lead.rumour];
+    if (!rumour) throw new Error('There is no such rumour');
+    if (rumour.place !== p.place.id) throw new Error('The rumour points somewhere else');
+    powers.rumours.splice(lead.rumour, 1);
+    fruitId = rumour.fruitId;
+    title = rumour.name;
+  } else if (lead.fruit) {
+    if (!powers.known[lead.fruit]) throw new Error('You know of no such fruit');
+    fruitId = lead.fruit;
+  }
+  const destination = data.locations[p.place.id]?.name ?? p.place.id;
+  const fruit = fruitId ? state.entities[fruitId] : undefined;
+  const f = fruit?.fruit;
+  const vars = { destination, title };
+  if (
+    fruit &&
+    f &&
+    f.place === p.place.id &&
+    ['tree', 'chest', 'unknown', 'sea'].includes(f.container)
+  ) {
+    carryFruit(state, fruit, p.entity, tick, `Found by ${p.entity.name}, following a rumour.`);
+    tell(powerCtxOf(env), line(data, 'searchFound'), vars, ['fruit']);
+    return fruit;
+  }
+  if (fruit && f && f.place === p.place.id && f.container === 'market') {
+    tell(powerCtxOf(env), line(data, 'searchMarket'), vars, ['fruit']);
+    return null;
+  }
+  tell(powerCtxOf(env), line(data, 'searchNothing'), vars, ['fruit']);
+  return null;
+}
+
 /** A Devil Fruit carried by the dead passes with their Berries (it is a thing, not a power). */
 export function passCarriedFruits(
   state: WorldState,

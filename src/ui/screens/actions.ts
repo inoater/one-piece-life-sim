@@ -1,5 +1,6 @@
-import type { ActivityView, LifeView } from '../../worker/protocol';
+import type { LifeView } from '../../worker/protocol';
 import type { App } from '../app';
+import { activityFacts, openActivityPicker } from '../components/activity-picker';
 import { confirmButton } from '../components/confirm-button';
 import { h, type Child } from '../dom';
 import { formatInteger, plural } from '../format';
@@ -16,13 +17,6 @@ import { travelSections } from './travel';
 
 type Effort = LifeView['efforts'][number]['id'];
 
-const RISK_LABEL: Record<ActivityView['risk'], string> = {
-  none: '',
-  low: 'small risk',
-  some: 'some risk',
-  high: 'dangerous',
-};
-
 function sendRoutine(
   app: App,
   life: LifeView,
@@ -36,48 +30,88 @@ function current(life: LifeView): { activity: string; effort: Effort }[] {
   return life.routine.slice(0, life.slots).map((s) => ({ activity: s.activity, effort: s.effort }));
 }
 
-function activitySelect(life: LifeView, index: number, app: App, busy: boolean): HTMLSelectElement {
-  const chosen = life.routine[index]?.activity ?? '';
-  const select = h('select', {
-    class: 'routine__select',
-    'aria-label': `Activity ${index + 1}`,
-    disabled: busy,
-  });
-  select.append(h('option', { value: '', selected: chosen === '' }, 'Nothing planned'));
-  for (const category of life.categories) {
-    const acts = life.activities.filter((a) => a.category === category.id);
-    if (acts.length === 0) continue;
-    const group = h('optgroup', { label: category.label });
-    for (const a of acts) {
-      const taken =
-        a.id !== chosen && life.routine.slice(0, life.slots).some((s) => s.activity === a.id);
-      const reason = a.lock ?? (taken ? 'Already planned' : null);
-      group.append(
-        h(
-          'option',
-          { value: a.id, disabled: reason !== null && a.id !== chosen, selected: a.id === chosen },
-          reason ? `${a.name} (${reason.charAt(0).toLowerCase()}${reason.slice(1)})` : a.name,
-        ),
-      );
-    }
-    select.append(group);
+function choose(life: LifeView, index: number | null, app: App, activity: string): void {
+  const routine = current(life);
+  const name = life.activities.find((a) => a.id === activity)?.name ?? activity;
+  if (index === null || index >= routine.length) routine.push({ activity, effort: 'normal' });
+  else routine[index] = { activity, effort: routine[index]?.effort ?? 'normal' };
+  sendRoutine(app, life, routine, `Planned: ${name}.`);
+}
+
+/** One slot of the month: what is planned in it, or a button to choose something. */
+function slotCard(life: LifeView, index: number, app: App, busy: boolean): HTMLElement {
+  const slot = life.routine[index];
+  const act = slot ? life.activities.find((a) => a.id === slot.activity) : undefined;
+  const pick = () =>
+    openActivityPicker({ life, slot: index, onChoose: (id) => choose(life, index, app, id) });
+  if (!slot || !act) {
+    return h(
+      'button',
+      {
+        class: 'slot-card slot-card--empty',
+        type: 'button',
+        disabled: busy,
+        'aria-label': `Choose an activity for slot ${index + 1}`,
+        onclick: pick,
+      },
+      h('span', { class: 'slot-card__plus', 'aria-hidden': 'true' }, '+'),
+      h('span', null, 'Choose an activity'),
+    );
   }
-  select.value = chosen;
-  select.addEventListener('change', () => {
-    const routine = current(life);
-    if (select.value === '') routine.splice(index, 1);
-    else if (index < routine.length)
-      routine[index] = { activity: select.value, effort: routine[index]?.effort ?? 'normal' };
-    else routine.push({ activity: select.value, effort: 'normal' });
-    const name = life.activities.find((a) => a.id === select.value)?.name;
-    sendRoutine(app, life, routine, name ? `Planned: ${name}.` : 'Slot cleared.');
-  });
-  return select;
+  return h(
+    'div',
+    { class: 'slot-card', dataset: { activity: act.id, category: act.category } },
+    h(
+      'div',
+      { class: 'slot-card__head' },
+      h('span', { class: 'slot-card__name' }, act.name),
+      h(
+        'span',
+        { class: 'slot-card__buttons' },
+        h(
+          'button',
+          {
+            class: 'button button--tiny',
+            type: 'button',
+            disabled: busy,
+            'aria-label': `Change activity ${index + 1}`,
+            onclick: pick,
+          },
+          'Change',
+        ),
+        h(
+          'button',
+          {
+            class: 'button button--tiny button--quiet',
+            type: 'button',
+            disabled: busy,
+            'aria-label': `Clear activity ${index + 1}`,
+            onclick: () => {
+              const routine = current(life);
+              routine.splice(index, 1);
+              sendRoutine(app, life, routine, 'Slot cleared.');
+            },
+          },
+          'Clear',
+        ),
+      ),
+    ),
+    h('p', { class: 'slot-card__text' }, act.description),
+    h(
+      'p',
+      { class: 'slot-card__facts' },
+      activityFacts(act, life)
+        .slice(1)
+        .map((f) => h('span', { class: 'chip-fact' }, f)),
+    ),
+  );
 }
 
 function effortPicker(life: LifeView, index: number, app: App, busy: boolean): HTMLElement {
   const slot = life.routine[index];
-  const restful = life.activities.find((a) => a.id === slot?.activity)?.restful ?? false;
+  const act = life.activities.find((a) => a.id === slot?.activity);
+  const restful = act?.restful ?? false;
+  const extra = act?.extraVigor ?? 0;
   return h(
     'div',
     { class: 'effort', role: 'group', 'aria-label': `Effort for activity ${index + 1}` },
@@ -89,7 +123,7 @@ function effortPicker(life: LifeView, index: number, app: App, busy: boolean): H
           type: 'button',
           'aria-pressed': String(slot?.effort === e.id),
           disabled: busy || !slot || restful,
-          title: restful ? 'Rest costs no Vigor' : `${e.name}: ${e.vigor} Vigor`,
+          title: restful ? 'Rest costs no Vigor' : `${e.name}: ${e.vigor + extra} Vigor`,
           onclick: () => {
             const routine = current(life);
             const at = routine[index];
@@ -99,6 +133,7 @@ function effortPicker(life: LifeView, index: number, app: App, busy: boolean): H
           },
         },
         e.name,
+        restful ? null : h('span', { class: 'effort__cost' }, ` ${e.vigor + extra}`),
       ),
     ),
   );
@@ -126,8 +161,8 @@ function routineSection(life: LifeView, app: App, busy: boolean): HTMLElement {
         h(
           'div',
           { class: 'routine__body' },
-          activitySelect(life, i, app, busy),
-          effortPicker(life, i, app, busy),
+          slotCard(life, i, app, busy),
+          slot ? effortPicker(life, i, app, busy) : null,
           slot?.lock ? h('p', { class: 'routine__lock' }, `Will be skipped: ${slot.lock}.`) : null,
         ),
       ),
@@ -368,72 +403,27 @@ function healthSection(life: LifeView): HTMLElement {
 }
 
 function catalogue(life: LifeView, app: App, busy: boolean): HTMLElement {
-  const free = life.routine.length < life.slots;
+  const open = life.activities.filter((a) => a.lock === null).length;
   return h(
     'section',
     { class: 'planner__section', 'aria-labelledby': 'catalogue-title' },
     h('h2', { class: 'side-screen__title', id: 'catalogue-title' }, 'Everything you could do'),
-    life.categories.map((category) => {
-      const acts = life.activities.filter((a) => a.category === category.id);
-      if (acts.length === 0) return null;
-      const open = acts.filter((a) => a.lock === null).length;
-      return h(
-        'details',
-        { class: 'planner__more' },
-        h('summary', null, `${category.label} (${open} of ${acts.length} open)`),
-        h(
-          'ul',
-          { class: 'options' },
-          acts.map((a) => {
-            const facts = [
-              a.trains.length > 0 ? `Trains ${a.trains.join(', ')}` : '',
-              a.practice ? `practises ${a.practice}` : '',
-              a.earns ? `earns ${a.earns}` : '',
-              a.costs ? `costs ${a.costs}` : '',
-              a.restful ? 'restful' : '',
-              a.oneOff ? 'once, then off the routine' : '',
-              RISK_LABEL[a.risk],
-              a.usesMentor ? 'better with a mentor' : '',
-            ].filter((t) => t !== '');
-            const planned = life.routine.some((s) => s.activity === a.id);
-            return h(
-              'li',
-              { class: 'option', dataset: { locked: String(a.lock !== null) } },
-              h(
-                'div',
-                { class: 'option__main' },
-                h('span', { class: 'option__name' }, a.name),
-                facts.length > 0
-                  ? h('span', { class: 'option__meta' }, `${facts.join('; ')}.`)
-                  : null,
-                h('span', { class: 'option__text' }, a.description),
-                a.lock ? h('span', { class: 'option__lock' }, a.lock) : null,
-              ),
-              a.lock === null && !planned && free
-                ? h(
-                    'button',
-                    {
-                      class: 'button button--tiny',
-                      type: 'button',
-                      disabled: busy,
-                      onclick: () =>
-                        sendRoutine(
-                          app,
-                          life,
-                          [...current(life), { activity: a.id, effort: 'normal' }],
-                          `Planned: ${a.name}.`,
-                        ),
-                    },
-                    'Add',
-                  )
-                : planned
-                  ? h('span', { class: 'option__tag' }, 'Planned')
-                  : null,
-            );
-          }),
-        ),
-      );
-    }),
+    h(
+      'p',
+      { class: 'muted' },
+      `${open} of ${life.activities.length} activities are open to you here and now; the rest say what stands in the way.`,
+    ),
+    h(
+      'button',
+      {
+        class: 'button',
+        type: 'button',
+        disabled: busy,
+        onclick: () =>
+          openActivityPicker({ life, slot: null, onChoose: (id) => choose(life, null, app, id) }),
+      },
+      'Browse them all',
+    ),
   );
 }
 

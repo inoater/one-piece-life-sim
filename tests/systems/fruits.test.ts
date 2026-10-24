@@ -12,7 +12,15 @@ import { giveTraitTo } from '../../src/systems/life/traits';
 import { lanesFrom } from '../../src/systems/places/graph';
 import { ensureWorldLayer } from '../../src/systems/places/history';
 import { canonIndex, fruitDefOf, generateFruit } from '../../src/systems/powers/catalogue';
-import { cursedNow, eatenFruit, findFruit, fruitEntities } from '../../src/systems/powers/fruits';
+import {
+  cursedNow,
+  eatenFruit,
+  findFruit,
+  fruitEntities,
+  searchForFruit,
+} from '../../src/systems/powers/fruits';
+import { powersView, fruitsView } from '../../src/systems/powers/view';
+import { characterSheet } from '../../src/systems/genesis/sheet';
 import { overboard, setSail } from '../../src/systems/voyage/sea';
 import { data } from '../helpers/data';
 import { startLife, type TestLife } from '../helpers/life';
@@ -341,5 +349,86 @@ describe('matchups live in data (Phase 5 reads them)', () => {
           p.attacker === 'tag:water' && p.defender === 'power:sand' && p.result === 'solidifies',
       ),
     ).toBe(true);
+  });
+});
+
+describe('getting a fruit, and eating it', () => {
+  it('a rumour that points here, followed, finds a fruit lying wild; then it can be eaten', () => {
+    const t = life('rumour-search');
+    const p = playerPerson(t.state, data)!;
+    // A fruit lying wild where the player stands, and a true rumour of it.
+    const wild = fruitEntities(t.state).find(
+      (f) => f.fruit?.container !== 'eaten' && f.origin === 'generated',
+    )!;
+    wild.fruit!.container = 'tree';
+    wild.fruit!.place = p.place.id;
+    wild.fruit!.holderId = null;
+    wild.fruit!.userId = null;
+    // Any power command makes sure the powers block exists.
+    t.act({ type: 'debug/powerPoints', track: 'track_brawling', points: 0, breakthrough: false });
+    p.c.powers!.rumours.push({
+      tick: t.state.tick,
+      fruitId: wild.id,
+      name: 'a Devil Fruit',
+      place: p.place.id,
+    });
+    const view = fruitsView(t.state, data, false)!;
+    expect(view.howTo).not.toBeNull();
+    expect(view.rumours.at(-1)?.here).toBe(true);
+    t.act({ type: 'powers/search', rumour: p.c.powers!.rumours.length - 1 });
+    expect(p.c.powers!.items).toContain(wild.id);
+    expect(t.state.log.at(-1)?.summary).toMatch(/there it was/);
+    expect(fruitsView(t.state, data, false)!.carried).toHaveLength(1);
+    expect(powersView(t.state, data)!.summary.carriedFruit).toBe(true);
+    t.act({ type: 'powers/eat', fruit: wild.id });
+    expect(eatenFruit(t.state, p.entity)?.id).toBe(wild.id);
+    // The power summary now lists the fruit, with its stage and mastery.
+    const rows = powersView(t.state, data)!.summary.rows;
+    expect(rows.some((r) => r.group === 'Devil Fruit' && /mastery/.test(r.detail ?? ''))).toBe(
+      true,
+    );
+  });
+
+  it('a false rumour (or one somebody beat you to) turns up nothing, and is used up', () => {
+    const t = life('rumour-false');
+    const p = playerPerson(t.state, data)!;
+    t.act({ type: 'debug/powerPoints', track: 'track_brawling', points: 0, breakthrough: false });
+    p.c.powers!.rumours.push({
+      tick: t.state.tick,
+      fruitId: null,
+      name: 'the Flame-Flame Fruit',
+      place: p.place.id,
+    });
+    const n = p.c.powers!.rumours.length;
+    expect(searchForFruit(env(t, 'search'), { rumour: n - 1 })).toBeNull();
+    expect(p.c.powers!.rumours).toHaveLength(n - 1);
+    expect(t.state.log.at(-1)?.summary).toMatch(/nothing here now/);
+  });
+
+  it('Chase Devil Fruit rumours is open to anyone of sixteen or more', () => {
+    expect(data.activities['act_fruit_rumours']?.requires.flags).toEqual({});
+  });
+});
+
+describe('the backstory keeps up', () => {
+  it('the sheet tells the story since: milestones by year, the opening in the past tense, and now', () => {
+    const t = life('story', { entryYear: 20, entryAge: 18 });
+    t.act({ type: 'debug/wakeHaki', haki: 'observation' });
+    eatOne(t);
+    t.run(14);
+    const sheet = characterSheet(data, t.state, t.state.playerId!, { omniscient: false })!;
+    const story = sheet.story!;
+    expect(story.opening).toMatch(/That was .+ when your story began\./);
+    expect(story.opening).not.toMatch(/Now it is/);
+    expect(story.chapters.length).toBeGreaterThan(0);
+    const lines = story.chapters.flatMap((c) => c.lines).join(' ');
+    expect(lines).toMatch(/Observation Haki/);
+    expect(story.now).toMatch(/^Now it is .+ SC\. You are /);
+    // The power summary shows the haki woken, at its stage, out of six levels.
+    const summary = powersView(t.state, data)!.summary;
+    const haki = summary.rows.find((r) => r.id === 'track_observation')!;
+    expect(haki.group).toBe('Haki');
+    expect(haki.levelIndex).toBeGreaterThanOrEqual(0);
+    expect(summary.asleep).toContain('Armament Haki');
   });
 });

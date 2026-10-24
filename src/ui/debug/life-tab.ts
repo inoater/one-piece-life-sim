@@ -16,6 +16,8 @@ import type { DebugTab } from './tab';
  *  - Tools to hurt or end the current life, to look at injuries and the death screen quickly.
  */
 export function createLifeTab(app: App): DebugTab {
+  // Every place on the map, filled the first time the tab opens (debug/teleport).
+  const placeSelect = h('select', { class: 'debug__input', 'aria-label': 'Place to go to' });
   const num = (value: string, label: string, step = '1') =>
     h('input', {
       class: 'debug__input debug__input--short',
@@ -277,6 +279,41 @@ export function createLifeTab(app: App): DebugTab {
     h(
       'section',
       { class: 'debug__section' },
+      h('h3', null, 'Go anywhere'),
+      h(
+        'div',
+        { class: 'debug__inline' },
+        placeSelect,
+        h(
+          'button',
+          {
+            class: 'button button--tiny',
+            type: 'button',
+            onclick: () =>
+              void app.dispatch(
+                { type: 'debug/teleport', location: placeSelect.value },
+                'Debug: moved.',
+              ),
+          },
+          'Go there',
+        ),
+      ),
+      h('h3', null, 'Powers (Phase 4)'),
+      h(
+        'div',
+        { class: 'debug__inline' },
+        tool('Give a Devil Fruit', { type: 'debug/giveFruit' }, 'Debug: a Devil Fruit to carry.'),
+        tool(
+          'Wake Observation',
+          { type: 'debug/wakeHaki', haki: 'observation' },
+          'Debug: Observation Haki woke.',
+        ),
+        tool(
+          'Wake Armament',
+          { type: 'debug/wakeHaki', haki: 'armament' },
+          'Debug: Armament Haki woke.',
+        ),
+      ),
       h('h3', null, 'Fights (Phase 5)'),
       h(
         'p',
@@ -361,6 +398,12 @@ export function createLifeTab(app: App): DebugTab {
         raceSelect.value =
           setup.races.find((r) => r.id === 'race_human')?.id ?? setup.races[0]?.id ?? '';
         await drawCurve();
+        const map = await app.host.call('world/map', {});
+        placeSelect.replaceChildren(
+          ...[...map.places]
+            .sort((a, b) => (a.name < b.name ? -1 : 1))
+            .map((p) => h('option', { value: p.id }, p.name)),
+        );
       } catch (error) {
         loaded = false;
         curveNote.textContent = errorMessage(error);

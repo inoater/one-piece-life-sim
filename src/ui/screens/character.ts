@@ -1,3 +1,4 @@
+import { renderPowerSummary } from '../components/power-summary';
 import type { CharacterSheet } from '../../worker/protocol';
 import type { App } from '../app';
 import { renderSheet, type SheetHandle } from '../components/sheet';
@@ -24,7 +25,12 @@ export function renderCharacter(state: UiState, app: App): HTMLElement {
         : null;
     current = renderSheet(snapshot.sheet, { tick: snapshot.tick, previous, place: 'character' });
     lastSheet = snapshot.sheet;
-    return h('div', { class: 'side-screen side-screen--sheet' }, current.el);
+    return h(
+      'div',
+      { class: 'side-screen side-screen--sheet' },
+      renderPowerSummary(snapshot.powers, snapshot.fight, { link: true }),
+      current.el,
+    );
   }
   return h(
     'div',
