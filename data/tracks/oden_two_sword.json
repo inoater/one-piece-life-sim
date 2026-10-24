@@ -16,7 +16,7 @@
           "swords": 2
         }
       },
-      "combat": 10
+      "combat": 65
     },
     {
       "id": "togen",
@@ -34,7 +34,7 @@
         }
       },
       "techniques": ["tech_oden_togen_totsuka"],
-      "combat": 26
+      "combat": 350
     },
     {
       "id": "falling_heaven",
@@ -52,7 +52,7 @@
         }
       },
       "techniques": ["tech_oden_falling_heaven"],
-      "combat": 44
+      "combat": 905
     },
     {
       "id": "oden_master",
@@ -67,7 +67,7 @@
           "strength": 75
         }
       },
-      "combat": 60
+      "combat": 1585
     }
   ],
   "learn": {

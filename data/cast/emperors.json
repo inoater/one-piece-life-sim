@@ -88,7 +88,44 @@
       }
     ],
     "ties": ["char_marco", "char_portgas_d_ace", "char_marshall_d_teach", "char_kozuki_oden"],
-    "traits": ["trait_kings_qualities"]
+    "traits": ["trait_kings_qualities"],
+    "power": [
+      {
+        "from": {
+          "year": -36,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -22,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": 1,
+          "month": 1
+        },
+        "tier": "peak"
+      }
+    ]
   },
   {
     "id": "char_marco",
@@ -166,6 +203,43 @@
         "title": "Doctor of Sphinx",
         "status": "retired",
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -7,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 8,
+          "month": 1
+        },
+        "tier": "officer"
+      },
+      {
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "tier": "monster"
       }
     ]
   },
@@ -274,7 +348,44 @@
         "approx": true
       }
     ],
-    "traits": ["trait_kings_qualities"]
+    "traits": ["trait_kings_qualities"],
+    "power": [
+      {
+        "from": {
+          "year": -30,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -24,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "tier": "peak"
+      }
+    ]
   },
   {
     "id": "char_kaido",
@@ -373,7 +484,44 @@
         "approx": true
       }
     ],
-    "traits": ["trait_kings_qualities"]
+    "traits": ["trait_kings_qualities"],
+    "power": [
+      {
+        "from": {
+          "year": -21,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -11,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 8,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": 14,
+          "month": 1
+        },
+        "tier": "peak"
+      }
+    ]
   },
   {
     "id": "char_shiki",
@@ -473,7 +621,30 @@
         "approx": true
       }
     ],
-    "traits": ["trait_kings_qualities"]
+    "traits": ["trait_kings_qualities"],
+    "power": [
+      {
+        "from": {
+          "year": -38,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "tier": "monster"
+      }
+    ]
   },
   {
     "id": "char_kozuki_oden",
@@ -550,7 +721,37 @@
       }
     ],
     "ties": ["char_kurozumi_orochi"],
-    "traits": ["trait_kings_qualities", "trait_voice_of_all_things"]
+    "traits": ["trait_kings_qualities", "trait_voice_of_all_things"],
+    "power": [
+      {
+        "from": {
+          "year": -21,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -5,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": 3,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 11,
+          "month": 1
+        },
+        "tier": "monster"
+      }
+    ]
   },
   {
     "id": "char_kurozumi_orochi",
@@ -596,6 +797,22 @@
         "affiliation": "org_kingdom_wano",
         "title": "Shogun of Wano",
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -18,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "tier": "thug"
       }
     ]
   }

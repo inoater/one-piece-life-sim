@@ -1,4 +1,6 @@
 import type {
+  FightSpec,
+  BattleRules,
   Activity,
   Appearance,
   BackstoryEvent,
@@ -69,7 +71,10 @@ export type RefTarget =
   | 'counters'
   | 'groups'
   | 'primitives'
-  | 'immunities';
+  | 'immunities'
+  // Phase 5
+  | 'foes'
+  | 'contests';
 
 export interface Ref {
   /** Where the reference was written: the field path inside the file. */
@@ -118,6 +123,8 @@ export const TARGET_LABEL: Record<RefTarget, string> = {
   groups: 'opinion group',
   primitives: 'power primitive',
   immunities: 'immunity ("seasickness" or an illness)',
+  foes: 'foe',
+  contests: 'contest',
 };
 
 /** Where an author fixes a missing id of this kind. */
@@ -160,6 +167,8 @@ export const TARGET_HOME: Record<RefTarget, string> = {
   groups: 'data/personality.json (groups)',
   primitives: 'data/powers.json (primitives)',
   immunities: 'data/life.json (illnesses), or "seasickness"',
+  foes: 'data/battle.json (foes)',
+  contests: 'data/battle.json (contests)',
 };
 
 const each = (target: RefTarget, ids: readonly string[], field: string): Ref[] =>
@@ -305,7 +314,36 @@ function activityRefs(act: Activity): Ref[] {
     ...riskRefs(act.risk, 'risk'),
     ...outcomeRefs(act.outcomes, 'outcomes'),
     ...each('tracks', act.practice?.tracks ?? [], 'practice.tracks'),
+    ...one('foes', act.fight?.foe, 'fight.foe'),
+    ...one('contests', act.fight?.contest, 'fight.contest'),
   ];
+}
+
+/** An event's or a beat's fight (Phase 5): its foes, contest, ship, commanders and bands. */
+function fightRefs(fight: FightSpec, base: string): Ref[] {
+  const refs: Ref[] = [];
+  fight.foes.forEach((f, i) => {
+    if (f.kind === 'foe') refs.push({ field: `${base}.foes[${i}].foe`, target: 'foes', id: f.foe });
+    if (f.kind === 'cast')
+      refs.push({ field: `${base}.foes[${i}].char`, target: 'cast', id: f.char });
+  });
+  refs.push(...one('contests', fight.contest, `${base}.contest`));
+  refs.push(...one('vessels', fight.ship?.vessel, `${base}.ship.vessel`));
+  fight.fronts.forEach((fr, i) => {
+    refs.push(...one('cast', fr.mine.commander, `${base}.fronts[${i}].mine.commander`));
+    refs.push(...one('cast', fr.theirs.commander, `${base}.fronts[${i}].theirs.commander`));
+  });
+  for (const band of [
+    'criticalSuccess',
+    'success',
+    'failure',
+    'criticalFailure',
+    'fled',
+  ] as const) {
+    const b = fight[band];
+    if (b) refs.push(...effectRefs(b.effects, `${base}.${band}.effects`));
+  }
+  return refs;
 }
 
 function jobRefs(job: Job): Ref[] {
@@ -325,6 +363,7 @@ export function eventRefs(event: EventDef): Ref[] {
   event.choices.forEach((choice, i) => {
     refs.push(...conditionRefs(choice.requires, `choices[${i}].requires`));
     refs.push(...effectRefs(choice.effects, `choices[${i}].effects`));
+    if (choice.fight) refs.push(...fightRefs(choice.fight, `choices[${i}].fight`));
     const check = choice.check;
     if (!check) return;
     for (const band of ['criticalSuccess', 'success', 'failure', 'criticalFailure'] as const) {
@@ -417,7 +456,10 @@ function beatRefs(beat: Beat): Ref[] {
     refs.push({ field: `roles.${name}.char`, target: 'cast', id: role.char });
     refs.push(...each('cast', role.substitutes, `roles.${name}.substitutes`));
   }
-  beat.choices.forEach((c, i) => refs.push(...effectRefs(c.effects, `choices[${i}].effects`)));
+  beat.choices.forEach((c, i) => {
+    refs.push(...effectRefs(c.effects, `choices[${i}].effects`));
+    if (c.fight) refs.push(...fightRefs(c.fight, `choices[${i}].fight`));
+  });
   return refs;
 }
 
@@ -543,6 +585,18 @@ export function powerRulesRefs(powers: PowerRules): Ref[] {
     if (key !== 'default')
       refs.push({ field: `generator.grammars.${key}`, target: 'birthplaces', id: key });
   }
+  return refs;
+}
+
+/** data/battle.json (Phase 5): the techniques foes know, the traits that make someone take a blow. */
+export function battleRulesRefs(battle: BattleRules): Ref[] {
+  const refs: Ref[] = [
+    ...keys('traits', battle.protect.traits, 'protect.traits'),
+    ...keys('techniques', battle.overdrive.techniques, 'overdrive.techniques'),
+  ];
+  battle.foes.forEach((f, i) =>
+    refs.push(...each('techniques', f.techniques, `foes[${i}].techniques`)),
+  );
   return refs;
 }
 
@@ -701,6 +755,7 @@ export function singletonTargets(singletons: {
   npcGoalIds?: readonly string[];
   personality?: PersonalityRules;
   powers?: PowerRules;
+  battle?: BattleRules;
 }): Partial<Record<RefTarget, Set<string>>> {
   const out: Partial<Record<RefTarget, Set<string>>> = {};
   if (singletons.npcGoalIds) out.npcGoals = new Set(singletons.npcGoalIds);
@@ -717,6 +772,10 @@ export function singletonTargets(singletons: {
     out.groups = new Set(['everyone', ...Object.keys(personality.groups)]);
   }
   if (powers) out.primitives = new Set(powers.primitives.map((p) => p.id));
+  if (singletons.battle) {
+    out.foes = new Set(singletons.battle.foes.map((f) => f.id));
+    out.contests = new Set(singletons.battle.contests.map((c) => c.id));
+  }
   if (singletons.seasonIds) out.seasons = new Set(singletons.seasonIds);
   if (creation) {
     out.wealthTiers = new Set(creation.wealthTiers.map((t) => t.id));

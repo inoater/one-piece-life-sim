@@ -380,6 +380,9 @@ export const WeaponSchema = z.strictObject({
   /** Phase 4: simple gear a style may need (a sword, a gun, a bow), bought in a market. */
   gear: z.enum(['swords', 'gun', 'bow']).optional(),
   price: z.number().int().min(0).optional(),
+  /** Phase 5: what it adds to Combat Power, and to the attack of blows made with it. */
+  combat: z.number().int().min(0).default(0),
+  attack: z.number().min(0).default(0),
   tags,
 });
 export type Weapon = z.infer<typeof WeaponSchema>;
@@ -626,6 +629,8 @@ export const PLACE_FEATURES = [
   'underworld',
   'clouds',
   'deep_sea',
+  /** Phase 5: a colosseum or a fighting pit (tournaments, pit fights). */
+  'arena',
 ] as const;
 export const SAFETY_LEVELS = ['very_low', 'low', 'medium', 'high'] as const;
 
@@ -1474,6 +1479,75 @@ function uniqueOutcomeIds(
   });
 }
 
+// ---------------------------------------------------------------------------------------------
+// Phase 5: battles (the vocabulary; data/battle.json's schema is at the end)
+// ---------------------------------------------------------------------------------------------
+
+/** The Combat Power ladder's tiers, weakest first. */
+export const LADDER_TIERS = [
+  'civilian',
+  'thug',
+  'officer',
+  'captain',
+  'grand_line',
+  'commander',
+  'monster',
+  'peak',
+] as const;
+export type LadderTier = (typeof LADDER_TIERS)[number];
+
+/** What each side means to do to the other. Deaths come only from Kill, or from the field. */
+export const INTENTS = ['spare', 'capture', 'kill'] as const;
+export type Intent = (typeof INTENTS)[number];
+
+/** The verbs of an exchange (the plan's ten, techniques included). */
+export const BATTLE_VERBS = [
+  'strike',
+  'technique',
+  'guard',
+  'evade',
+  'feint',
+  'grapple',
+  'haki',
+  'item',
+  'talk',
+  'flee',
+] as const;
+export type BattleVerb = (typeof BATTLE_VERBS)[number];
+
+export const BATTLE_ROLES = [
+  'vanguard',
+  'striker',
+  'guard',
+  'support',
+  'ranged',
+  'commander',
+] as const;
+export type BattleRole = (typeof BATTLE_ROLES)[number];
+export const BATTLE_ZONES = ['front', 'middle', 'rear', 'high', 'rigging', 'water'] as const;
+export type BattleZone = (typeof BATTLE_ZONES)[number];
+export const TEAM_ORDERS = [
+  'none',
+  'focus',
+  'protect',
+  'fall_back',
+  'swap',
+  'combo',
+  'rally',
+  'retreat',
+] as const;
+export type TeamOrder = (typeof TEAM_ORDERS)[number];
+/** How a spar stops. */
+export const STOP_RULES = ['first_hit', 'first_knockdown', 'time_limit', 'yield'] as const;
+export type StopRule = (typeof STOP_RULES)[number];
+export const BATTLE_SCALES = ['duel', 'skirmish', 'crew', 'naval', 'war'] as const;
+export type BattleScale = (typeof BATTLE_SCALES)[number];
+export const BATTLE_MODES = ['tactical', 'quick', 'narrated'] as const;
+export type BattleMode = (typeof BATTLE_MODES)[number];
+/** What the winner does with the loser. */
+export const FATES = ['let_go', 'hand_over', 'recruit', 'rob', 'kill'] as const;
+export type Fate = (typeof FATES)[number];
+
 export const ActivitySchema = z
   .strictObject({
     id: slug('act'),
@@ -1527,6 +1601,24 @@ export const ActivitySchema = z
         points: z.number().min(0).default(1),
         /** Spends haki stamina (haki training). */
         stamina: z.boolean().default(false),
+      })
+      .optional(),
+    /**
+     * Phase 5: the month's activity is a fight the battle engine plays: a spar (Spare, a stop rule,
+     * training by how strong the partner is), a brawl, or a contest (data/battle.json). Its outcome
+     * is the one named for the result ("won", "lost", "draw") when there is one.
+     */
+    fight: z
+      .strictObject({
+        kind: z.enum(['spar', 'brawl', 'contest', 'group']),
+        partner: z.enum(['mentor', 'rival', 'friend', 'local', 'crew', 'any']).default('any'),
+        stop: z.enum(STOP_RULES).optional(),
+        contest: z
+          .string()
+          .regex(/^[a-z_]+$/)
+          .optional(),
+        /** A nameless foe when nobody suitable is at hand (data/battle.json `foes`). */
+        foe: slug('foe').optional(),
       })
       .optional(),
     outcomes: z.array(OutcomeSchema).min(1),
@@ -2332,20 +2424,86 @@ export const CheckSchema = z.strictObject({
 });
 export type Check = z.infer<typeof CheckSchema>;
 
-export const ChoiceSchema = z.strictObject({
-  id: z
-    .string()
-    .regex(/^[a-z0-9_]+$/, { message: 'choice ids use lowercase letters, digits and "_"' }),
-  /** May name the event's roles: "Try to speak to {role.famous.name}". */
-  label: template,
-  text: z.string().optional(),
-  /** Only offered when these hold (paying a toll needs the Berries). */
-  requires: z.array(ConditionSchema).default([]),
-  /** Applied whatever the result. */
-  effects: z.array(EffectSchema).default([]),
-  /** A skill check with four result bands, each with its own text and effects. */
-  check: CheckSchema.optional(),
+/** Who stands on the other side of an event's fight. */
+export const FoeRefSchema = z.discriminatedUnion('kind', [
+  /** Nameless foes from data/battle.json (a thug, a crew's gunners): `count` of them. */
+  z.strictObject({
+    kind: z.literal('foe'),
+    foe: slug('foe'),
+    count: z.number().int().min(1).max(100).default(1),
+  }),
+  /** Someone the event cast in a role. */
+  z.strictObject({ kind: z.literal('role'), role: z.string().regex(/^[a-z][a-z0-9_]*$/) }),
+  /** A canon character, wherever they are. */
+  z.strictObject({ kind: z.literal('cast'), char: slug('char') }),
+]);
+export type FoeRef = z.infer<typeof FoeRefSchema>;
+
+/** One front of a war: each side's strength (a number of fighters) and who commands it. */
+export const FrontSpecSchema = z.strictObject({
+  name: nonEmptyText,
+  mine: z.strictObject({ strength: z.number().int().min(1), commander: slug('char').optional() }),
+  theirs: z.strictObject({ strength: z.number().int().min(1), commander: slug('char').optional() }),
 });
+export type FrontSpec = z.infer<typeof FrontSpecSchema>;
+
+/**
+ * A fight in an event (Phase 5): who is on the other side, what each side means to do, how it is
+ * played, and the result bands, as a check has (a decisive win, a win, a loss, a heavy loss, and
+ * getting away).
+ */
+export const FightSpecSchema = z.strictObject({
+  scale: z.enum(BATTLE_SCALES).default('duel'),
+  foes: z.array(FoeRefSchema).min(1),
+  /** The other side's intent (absent: each foe's own). */
+  intent: z.enum(INTENTS).optional(),
+  /** The player's side's intent. */
+  mine: z.enum(INTENTS).default('spare'),
+  /** Who fights beside the player: nobody, the ship's hands, friends at the same place. */
+  allies: z.enum(['none', 'crew', 'friends']).default('none'),
+  /** tactical: every exchange is chosen; quick: a stance; prefer: the player's setting. */
+  mode: z.enum(['tactical', 'quick', 'prefer']).default('prefer'),
+  stop: z.enum(STOP_RULES).optional(),
+  /** Ship against ship: the enemy's vessel and hands (a boarding opens a crew battle). */
+  ship: z.strictObject({ vessel: slug('vessel'), crew: z.number().int().min(1) }).optional(),
+  /** War fronts (scale "war"). */
+  fronts: z.array(FrontSpecSchema).default([]),
+  /** Fought in or over the water (fruit users who fall do not get up without a rescuer). */
+  water: z.boolean().default(false),
+  /** The contest it is part of (data/battle.json `contests`): its rules apply. */
+  contest: z
+    .string()
+    .regex(/^[a-z_]+$/)
+    .optional(),
+  criticalSuccess: CheckBandSchema.optional(),
+  success: CheckBandSchema,
+  failure: CheckBandSchema,
+  criticalFailure: CheckBandSchema.optional(),
+  fled: CheckBandSchema.optional(),
+});
+export type FightSpec = z.infer<typeof FightSpecSchema>;
+
+export const ChoiceSchema = z
+  .strictObject({
+    id: z
+      .string()
+      .regex(/^[a-z0-9_]+$/, { message: 'choice ids use lowercase letters, digits and "_"' }),
+    /** May name the event's roles: "Try to speak to {role.famous.name}". */
+    label: template,
+    text: z.string().optional(),
+    /** Only offered when these hold (paying a toll needs the Berries). */
+    requires: z.array(ConditionSchema).default([]),
+    /** Applied whatever the result. */
+    effects: z.array(EffectSchema).default([]),
+    /** A skill check with four result bands, each with its own text and effects. */
+    check: CheckSchema.optional(),
+    /** Phase 5: a fight, played out by the battle engine, with result bands like a check's. */
+    fight: FightSpecSchema.optional(),
+  })
+  .refine((c) => !(c.check && c.fight), {
+    message: 'a choice has a check or a fight, not both',
+    path: ['fight'],
+  });
 export type Choice = z.infer<typeof ChoiceSchema>;
 
 /** Someone an event casts, named in its text as {role.<name>.name}. */
@@ -2569,6 +2727,19 @@ export const CastSchema = z
     ties: z.array(slug('char')).default([]),
     /** Phase 4: traits beyond their race's (hidden ones too: King's Qualities, the Will of D.). */
     traits: z.array(slug('trait')).default([]),
+    /**
+     * Phase 5: Combat Power by era, as a rung of the ladder (and, if known, a number). Their powers
+     * are calibrated to land there, so someone young in 1496 SC is weaker than in 1524 SC.
+     */
+    power: z
+      .array(
+        z.strictObject({
+          from: WhenSchema,
+          tier: z.enum(LADDER_TIERS),
+          cp: z.number().int().min(0).optional(),
+        }),
+      )
+      .default([]),
     dev: z.boolean().default(false),
     tags,
   })
@@ -2649,6 +2820,11 @@ export const BeatChoiceSchema = z.strictObject({
   diverge: z.boolean().default(false),
   /** Only offered to an instigator (who meets the beat's `instigate` bar). */
   instigator: z.boolean().default(false),
+  /**
+   * Phase 5: the choice is a fight (a war at Marineford). With `diverge`, the beat diverges only
+   * if the player's side wins it.
+   */
+  fight: FightSpecSchema.optional(),
 });
 export type BeatChoice = z.infer<typeof BeatChoiceSchema>;
 
@@ -3629,6 +3805,474 @@ export const COLLECTIONS = {
 export type CollectionKind = keyof typeof COLLECTIONS;
 export const COLLECTION_KINDS = Object.keys(COLLECTIONS) as CollectionKind[];
 
+// ---------------------------------------------------------------------------------------------
+// Phase 5: data/battle.json
+// ---------------------------------------------------------------------------------------------
+
+const share = z.number().min(0).max(1);
+const OverdriveSchema = z.strictObject({
+  /** Exchanges it lasts. */
+  exchanges: z.number().int().min(1),
+  /** Percent added to attack, defence and speed while it lasts. */
+  boost: z.number().min(0),
+  /** What it costs afterwards: exhaustion, a shrunken body for some exchanges, months of Vigor. */
+  after: z.strictObject({
+    kind: z.enum(['exhausted', 'shrunk', 'vigor', 'none']),
+    /** Exchanges shrunk, or months of lost Vigor. */
+    value: z.number().min(0).default(0),
+    text: nonEmptyText,
+  }),
+});
+export type Overdrive = z.infer<typeof OverdriveSchema>;
+
+export const BattleRulesSchema = z.strictObject({
+  /**
+   * The Combat Power ladder (the plan's design values). Each tier runs from its `min` up to the next
+   * tier's; the cast's `power` keyframes name a tier for each era.
+   */
+  ladder: z
+    .array(
+      z.strictObject({
+        id: z.enum(LADDER_TIERS),
+        name: nonEmptyText,
+        min: z.number().int().min(0),
+        who: nonEmptyText,
+        /** Bounties that usually go with it, for the calibration table. */
+        bounty: z.strictObject({ min: z.number().int().min(0), max: z.number().int().min(0) }),
+      }),
+    )
+    .length(LADDER_TIERS.length),
+  /** Initiative = Speed + 0.5 x Perception + 10 x Observation stage + a d20. */
+  initiative: z.strictObject({
+    speed: z.number(),
+    perception: z.number(),
+    observationPerStage: z.number(),
+    die: z.number().int().min(1),
+  }),
+  /**
+   * Hit chance = clamp(base + slope x (accuracy - evasion) / max(accuracy, evasion), min, max).
+   * The plan's "(accuracy - evasion) / 2" in a form that holds at every scale (the same near 100).
+   */
+  hit: z.strictObject({
+    base: z.number(),
+    slope: z.number(),
+    min: z.number().min(0).max(100),
+    max: z.number().min(0).max(100),
+    observationPerStage: z.number().min(0),
+  }),
+  /**
+   * Damage = attack x technique power / 100 x attack / (attack + defence) x scale. Attack and
+   * defence are the fighter's stats times their power (Combat Power over what their stats alone
+   * give), so a blow means the same at every rung of the ladder.
+   */
+  damage: z.strictObject({
+    scale: z.number().min(0),
+    /** attack / (attack + defence), to this power: lower makes a stronger fighter's edge gentler. */
+    ratioExponent: z.number().min(0),
+    /** A telling blow: this chance, this many times the damage (where upsets come from). */
+    crit: z.strictObject({ chance: share, mult: z.number().min(1) }),
+    variance: share,
+    /** Guarding takes this share off; each Armament stage takes `armamentGuardPerStage` more. */
+    guard: share,
+    armamentGuardPerStage: share,
+    /** A coat of Armament: more damage and more defence per stage. */
+    coatDamagePerStage: z.number().min(0),
+    coatDefencePerStage: z.number().min(0),
+    /** "internal" techniques (emission, Ryuo) ignore this share of defence. */
+    internalIgnores: share,
+    /** Empty fight stamina: damage and evasion are multiplied by this. */
+    emptyStamina: share,
+    /** A hit worth this share of max Health rolls an injury (player only). */
+    injuryShare: share,
+    /** The roll: the hit's share of max Health times this; at most `maxInjuries` a fight. */
+    injuryChance: z.number().min(0),
+    maxInjuries: z.number().int().min(0),
+    /** Knocked out (not killed): Health is left at this share of max at least. */
+    knockedOutHealth: share,
+    /** Which severity an injury is, by the hit's share of max Health. */
+    severities: z
+      .array(z.strictObject({ atLeast: share, severity: z.enum(['minor', 'serious', 'severe']) }))
+      .min(1),
+    /** How each technique form hits: power multiplier and number of hits. */
+    forms: z.partialRecord(
+      z.enum(TECH_FORMS),
+      z.strictObject({ power: z.number().min(0), hits: z.number().int().min(1).default(1) }),
+    ),
+    /** An area technique's hits on each other enemy in reach. */
+    areaSplash: share,
+    /** A weapon's attack, added to Strength (Dexterity for guns and bows). */
+    weaponAttack: z.partialRecord(z.enum(['swords', 'gun', 'bow']), z.number().min(0)),
+  }),
+  evade: z.strictObject({
+    /** Evading adds this percent to evasion; each Observation stage adds more. */
+    bonus: z.number().min(0),
+    observationPerStage: z.number().min(0),
+    /** Observation's read: this percent more evasion this exchange and the next. */
+    read: z.number().min(0),
+  }),
+  /** Fight stamina: a pool from Endurance; every action costs some. */
+  stamina: z.strictObject({
+    constant: z.number().min(0),
+    endurance: z.number().min(0),
+    regen: z.number().min(0),
+    costs: z.record(z.enum(BATTLE_VERBS), z.number().min(0)),
+    /** A technique costs its own cost times this. */
+    techniqueCostMult: z.number().min(0),
+  }),
+  haki: z.strictObject({
+    read: z.strictObject({ cost: z.number().min(0) }),
+    coat: z.strictObject({ cost: z.number().min(0), exchanges: z.number().int().min(1) }),
+    /**
+     * A Conqueror's burst knocks out everyone whose will (Willpower times power) is below this
+     * share of the user's, and costs the rest of the side this much morale.
+     */
+    burst: z.strictObject({ cost: z.number().min(0), ratio: share, morale: z.number().min(0) }),
+  }),
+  /** What a matchup result does to damage (data/fruitMatchups.json). */
+  matchups: z.record(
+    z.enum(['immune', 'wins', 'loses', 'weakened', 'solidifies', 'nullifies']),
+    z.number().min(0),
+  ),
+  /** The shonen rule: once a fight, at 0 Health, a Willpower roll to stand again. */
+  secondWind: z.strictObject({
+    restore: share,
+    base: share,
+    /** Each point of Willpower over 50 adds this much chance. */
+    willpower: z.number().min(0),
+    /** The share of max Health the blow took, times this, comes off the chance. */
+    blow: z.number().min(0),
+    max: share,
+  }),
+  /** At 0 Health from someone meaning to kill: the chance it is death (plus overkill). */
+  death: z.strictObject({ killBlow: share, overkill: z.number().min(0) }),
+  feint: z.strictObject({
+    /** The opened guard: accuracy bonus for the next attack, and guard ignored. */
+    accuracy: z.number().min(0),
+    difficulty: z.number().min(0),
+  }),
+  grapple: z.strictObject({
+    pinExchanges: z.number().int().min(1),
+    throwPower: z.number().min(0),
+    /** Pinned and below this share of Health: captured, by someone meaning to capture. */
+    captureBelow: share,
+  }),
+  flee: z.strictObject({
+    base: z.number(),
+    slope: z.number(),
+    smoke: z.number().min(0),
+  }),
+  talk: z.strictObject({
+    tauntAccuracy: z.number().min(0),
+    /** Demand surrender: below this share of Health, a Charisma roll against Willpower. */
+    surrenderBelow: share,
+    surrenderBase: share,
+    /** Both sides meaning to spare: persuading them to stop. */
+    persuadeBase: share,
+    stallStamina: z.number().min(0),
+  }),
+  overdrive: z.strictObject({
+    default: OverdriveSchema,
+    techniques: z.record(slug('tech'), OverdriveSchema).default({}),
+  }),
+  /** Things to use in a fight, bought in markets. */
+  items: z
+    .array(
+      z.strictObject({
+        id: slug('kit'),
+        name: nonEmptyText,
+        description: nonEmptyText,
+        price: z.number().int().min(0),
+        effect: z.enum(['heal', 'smoke', 'call']),
+        value: z.number().min(0),
+      }),
+    )
+    .min(1),
+  /** How the computer fights, by temperament: weights for each verb. */
+  ai: z.record(
+    z.enum(['aggressive', 'cautious', 'balanced']),
+    z.partialRecord(z.enum(BATTLE_VERBS), z.number().min(0)),
+  ),
+  /** Quick mode: a plan the player sets instead of choosing each exchange. */
+  stances: z
+    .array(
+      z.strictObject({
+        id: z.string().regex(/^[a-z_]+$/),
+        name: nonEmptyText,
+        description: nonEmptyText,
+        weights: z.partialRecord(z.enum(BATTLE_VERBS), z.number().min(0)),
+        /** Flee when Health falls below this share (0: never). */
+        fleeAt: share,
+        /** Stand in front of allies. */
+        protect: z.boolean().default(false),
+      }),
+    )
+    .min(1),
+  roles: z
+    .array(
+      z.strictObject({
+        id: z.enum(BATTLE_ROLES),
+        name: nonEmptyText,
+        zone: z.enum(BATTLE_ZONES),
+        attack: z.number(),
+        defence: z.number(),
+        description: nonEmptyText,
+      }),
+    )
+    .length(BATTLE_ROLES.length),
+  zones: z
+    .array(
+      z.strictObject({
+        id: z.enum(BATTLE_ZONES),
+        name: nonEmptyText,
+        /** How far a melee blow must reach to strike someone standing here. */
+        depth: z.number().int().min(0),
+        /** Ranged attacks from here: percent added to accuracy. */
+        rangedAccuracy: z.number(),
+      }),
+    )
+    .length(BATTLE_ZONES.length),
+  orders: z
+    .array(z.strictObject({ id: z.enum(TEAM_ORDERS), name: nonEmptyText, text: nonEmptyText }))
+    .length(TEAM_ORDERS.length),
+  morale: z.strictObject({
+    start: z.number().min(1),
+    memberDown: z.number().min(0),
+    leaderDown: z.number().min(0),
+    leaderWin: z.number().min(0),
+    /** Rally restores Charisma times this. */
+    rally: z.number().min(0),
+    /** A side breaks and flees at this morale. */
+    breakAt: z.number().min(0),
+  }),
+  /** Taking the blow: the chance a friend throws themselves in front. */
+  protect: z.strictObject({
+    base: share,
+    /** Opinion of the one in danger, over 100, times this. */
+    bond: z.number().min(0),
+    /** A blow worth less than this share of the target's Health is not worth it. */
+    minShare: share,
+    traits: z.record(slug('trait'), z.number()),
+    /** The guard role, protecting its charge. */
+    guardRole: share,
+  }),
+  /** Combination attacks: the bond they need and how much stronger together. */
+  combo: z.strictObject({ bond: z.number(), power: z.number().min(1) }),
+  /** A fresh fighter swapping in for a hurt one, below this share of Health. */
+  tagIn: z.strictObject({ below: share }),
+  spar: z.strictObject({
+    /** Injury chance times this (the plan: a tenth). */
+    injuryMult: share,
+    /** The share of a spar's damage that stays as lost Health afterwards (bruises, not blood). */
+    healthCost: share,
+    /** Exchanges before a time limit calls it. */
+    timeLimit: z.number().int().min(1),
+    /** "yield": the loser gives up below this share of Health. */
+    yieldBelow: share,
+    /** Training against a partner: x maxMult at `stronger` (20% stronger); a much weaker one floor. */
+    partner: z.strictObject({
+      stronger: z.number().min(0),
+      maxMult: z.number().min(1),
+      floor: share,
+    }),
+    /** Opinion moves: respect for the winner, a rivalry after a close match, a bad loser's grudge. */
+    respect: z.number(),
+    closeShare: share,
+    grudge: z.number(),
+    /** A crew training day: Vigor per spar. */
+    groupVigor: z.number().min(0),
+  }),
+  crew: z.strictObject({
+    maxSide: z.number().int().min(2),
+    /** Fronts: the share of the weaker side's numbers lost a round, at even odds. */
+    frontLoss: share,
+    maxRounds: z.number().int().min(1),
+    /** Exchanges each duel on the board plays per round. */
+    exchangesPerRound: z.number().int().min(1),
+    /** Rank and file: how strong one of them is, as a share of their side's average officer. */
+    rankAndFile: share,
+  }),
+  naval: z.strictObject({
+    ranges: z.array(z.enum(['far', 'near', 'adjacent'])).length(3),
+    /** Cannon fire: hull damage per cannon at even skill, and how often a shot tells. */
+    cannon: z.strictObject({ damage: z.number().min(0), accuracy: share }),
+    ram: z.strictObject({ damage: z.number().min(0), self: share }),
+    fire: z.strictObject({ chance: share, damage: z.number().min(0) }),
+    /** Weather: multiplies accuracy (storms halve it) and the chance to close unseen (fog). */
+    weather: z.record(
+      z.string().regex(/^[a-z_]+$/),
+      z.strictObject({ accuracy: z.number().min(0), ambush: z.number().min(0) }),
+    ),
+    /** A struck flag: below this share of hull and morale. */
+    strikeBelow: share,
+    maxRounds: z.number().int().min(1),
+    /** Cannons on a vessel without its own number: per point of hull. */
+    cannonsPerHull: z.number().min(0),
+  }),
+  war: z.strictObject({
+    maxRounds: z.number().int().min(1),
+    frontLoss: share,
+    /** Morale a front loses when its commander falls. */
+    commanderFalls: z.number().min(0),
+    /** A Conqueror's burst breaks a front whose strength is below this share of the user's power. */
+    burstBreaks: share,
+    /** A front breaks at this morale. */
+    breakAt: z.number().min(0),
+  }),
+  contests: z
+    .array(
+      z.strictObject({
+        id: z.string().regex(/^[a-z_]+$/),
+        name: nonEmptyText,
+        description: nonEmptyText,
+        kind: z.enum(['tournament', 'pit', 'davy_back', 'sumo']),
+        rounds: z.number().int().min(1),
+        noFruits: z.boolean().default(false),
+        noWeapons: z.boolean().default(false),
+        stop: z.enum(STOP_RULES).optional(),
+        /** Entrants' Combat Power, as ladder tiers. */
+        tiers: z.array(z.enum(LADDER_TIERS)).min(1),
+        purse: z.number().int().min(0),
+        entry: z.number().int().min(0).default(0),
+        betting: z.boolean().default(false),
+      }),
+    )
+    .min(1),
+  /**
+   * The abstract resolver for fights nobody plays: P(A wins) = a^g / (a^g + b^g), where a and b
+   * are each side's effective power. `gamma` is fitted against the tactical engine (npm run battle).
+   */
+  abstract: z.strictObject({
+    gamma: z.number().min(0),
+    /** A side that cannot hurt the other (a Logia without haki to answer it) keeps this share. */
+    blocked: share,
+    /** Matchups shift power by this much per result step. */
+    matchup: z.number().min(0),
+    /** Team strength: the sum of each fighter's power to this exponent (Lanchester-ish). */
+    teamExponent: z.number().min(0),
+  }),
+  /** What a fight teaches and earns. */
+  rewards: z.strictObject({
+    gains: statNumbers,
+    /** Practice points for the fighting tracks (counted as "fight", x3). */
+    trackPoints: z.number().min(0),
+    /** Fame for beating someone, per their tier above civilian; infamy when they were not a criminal. */
+    famePerTier: z.number().min(0),
+    infamyForKill: z.number().min(0),
+    /** A pirate who beats a Marine: bounty up by this share of the Marine's power x 1,000. */
+    bountyPerPower: z.number().min(0),
+    /** News when someone this famous (or canon, or with this bounty) fought. */
+    newsFame: z.number().min(0),
+    newsBounty: z.number().int().min(0),
+  }),
+  /** Foes events can name without making a person of them: a thug, a pirate crew's gunner. */
+  foes: z
+    .array(
+      z.strictObject({
+        id: slug('foe'),
+        name: nonEmptyText,
+        /** A plural for crowds: "thugs". */
+        plural: nonEmptyText,
+        tier: z.enum(LADDER_TIERS),
+        /** Where in the tier: 0 its bottom, 1 its top. */
+        within: z.strictObject({ min: share, max: share }),
+        weapon: z.enum(['swords', 'gun', 'bow']).optional(),
+        intent: z.enum(INTENTS).default('capture'),
+        /** Techniques they may know (data/techniques ids). */
+        techniques: z.array(slug('tech')).default([]),
+        armament: z.number().int().min(0).default(0),
+        observation: z.number().int().min(0).default(0),
+        fruitChance: share.default(0),
+        criminal: z.boolean().default(true),
+      }),
+    )
+    .min(1),
+  /** NPC fights in the world: how often Tier 2 people come to blows, and why. */
+  npc: z.strictObject({
+    /** A quarter's chance that a bounty hunter or Marine goes after a pirate at the same place. */
+    hunt: share,
+    /** A pirate crew raiding the place it is at (never a stronghold). */
+    raid: share,
+    /** A quarter spent going after a rival: the chance it comes to blows (else words, or nothing). */
+    quarrel: share,
+    /** At sea: a Tier 2 voyage meets pirates or a storm. */
+    seaTrouble: share,
+    /** Pirates' intent toward Marines and toward anyone else. */
+    pirateKills: share,
+  }),
+  /** Every line battles write, by id (the loader checks the ones the engine needs). */
+  lines: z.record(z.string().regex(/^[a-z_]+$/), z.string().min(1)),
+});
+export type BattleRules = z.infer<typeof BattleRulesSchema>;
+export type LadderRung = BattleRules['ladder'][number];
+export type FoeDef = BattleRules['foes'][number];
+export type ContestDef = BattleRules['contests'][number];
+
+/** The lines battles need (data/battle.json `lines`); the loader rejects a file missing one. */
+export const BATTLE_LINE_IDS = [
+  'begin',
+  'strike_hit',
+  'strike_miss',
+  'technique_hit',
+  'technique_miss',
+  'guard',
+  'evade',
+  'feint_ok',
+  'feint_fail',
+  'grapple_pin',
+  'grapple_miss',
+  'grapple_throw',
+  'captured',
+  'read',
+  'coat',
+  'burst',
+  'burst_out',
+  'item_heal',
+  'item_smoke',
+  'item_call',
+  'call_arrives',
+  'taunt',
+  'surrender_yes',
+  'surrender_no',
+  'persuade_yes',
+  'persuade_no',
+  'stall',
+  'flee_ok',
+  'flee_fail',
+  'logia',
+  'matchup',
+  'knocked_out',
+  'killed',
+  'second_wind',
+  'drowned',
+  'rescued',
+  'overdrive',
+  'overdrive_end',
+  'protect',
+  'combo',
+  'tag_in',
+  'rally',
+  'morale_break',
+  'stop_spar',
+  'exhausted',
+  'won',
+  'lost',
+  'fled',
+  'draw',
+  'naval_fire',
+  'naval_ram',
+  'naval_board',
+  'naval_sunk',
+  'naval_struck',
+  'war_front',
+  'war_broken',
+  'npc_hunt',
+  'npc_raid',
+  'npc_quarrel',
+  'npc_sea',
+  'npc_killed',
+  'news_fight',
+] as const;
+
 /** Single files at the top of /data. Every one is required. */
 export const SINGLETONS = {
   'data/calendar.json': { key: 'calendar', schema: CalendarSchema },
@@ -3643,6 +4287,7 @@ export const SINGLETONS = {
   'data/powers.json': { key: 'powers', schema: PowerRulesSchema },
   'data/personality.json': { key: 'personality', schema: PersonalityRulesSchema },
   'data/fruitMatchups.json': { key: 'matchups', schema: MatchupRulesSchema },
+  'data/battle.json': { key: 'battle', schema: BattleRulesSchema },
 } as const;
 export type SingletonPath = keyof typeof SINGLETONS;
 
@@ -3662,6 +4307,7 @@ export interface GameData {
   powers: PowerRules;
   personality: PersonalityRules;
   matchups: MatchupRules;
+  battle: BattleRules;
   traits: Readonly<Record<string, Trait>>;
   weapons: Readonly<Record<string, Weapon>>;
   locations: Readonly<Record<string, Location>>;

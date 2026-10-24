@@ -17,7 +17,7 @@
         }
       },
       "techniques": ["tech_sword_slash"],
-      "combat": 4
+      "combat": 10
     },
     {
       "id": "cut_wood",
@@ -31,7 +31,7 @@
           "dexterity": 30
         }
       },
-      "combat": 9
+      "combat": 50
     },
     {
       "id": "cut_stone",
@@ -47,7 +47,7 @@
         }
       },
       "techniques": ["tech_sword_shishi_sonson"],
-      "combat": 15
+      "combat": 130
     },
     {
       "id": "cut_steel",
@@ -62,7 +62,7 @@
           "strength": 40
         }
       },
-      "combat": 22
+      "combat": 260
     },
     {
       "id": "breath",
@@ -78,7 +78,7 @@
         },
         "teacher": true
       },
-      "combat": 32
+      "combat": 510
     },
     {
       "id": "flying_slash",
@@ -94,7 +94,7 @@
         }
       },
       "techniques": ["tech_sword_36_pound"],
-      "combat": 42
+      "combat": 835
     },
     {
       "id": "coated",
@@ -109,7 +109,7 @@
         }
       },
       "techniques": ["tech_sword_daishinkan"],
-      "combat": 55
+      "combat": 1355
     },
     {
       "id": "black_blade",
@@ -124,7 +124,7 @@
         },
         "breakthrough": true
       },
-      "combat": 66
+      "combat": 1880
     },
     {
       "id": "conqueror_slash",
@@ -140,7 +140,7 @@
         "hidden": true
       },
       "techniques": ["tech_sword_kamusari"],
-      "combat": 82
+      "combat": 2780
     }
   ],
   "learn": {

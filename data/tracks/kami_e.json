@@ -12,7 +12,7 @@
       "description": "Kami-e: bending with blows.",
       "text": "You managed Kami-e for the first time: bending with blows.",
       "techniques": ["tech_kami_e"],
-      "combat": 6
+      "combat": 25
     },
     {
       "id": "second",
@@ -26,7 +26,7 @@
           "dexterity": 60
         }
       },
-      "combat": 14
+      "combat": 105
     },
     {
       "id": "mastered",
@@ -42,7 +42,7 @@
         "teacher": true
       },
       "techniques": ["tech_kami_e_2"],
-      "combat": 24,
+      "combat": 275,
       "flags": {
         "six_powers.kami_e": true
       }

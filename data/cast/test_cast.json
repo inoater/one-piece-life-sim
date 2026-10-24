@@ -44,7 +44,23 @@
     ],
     "ties": ["char_test_mate"],
     "dev": true,
-    "tags": ["dev"]
+    "tags": ["dev"],
+    "power": [
+      {
+        "from": {
+          "year": -30,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -12,
+          "month": 1
+        },
+        "tier": "captain"
+      }
+    ]
   },
   {
     "id": "char_test_mate",
@@ -90,7 +106,23 @@
       }
     ],
     "dev": true,
-    "tags": ["dev"]
+    "tags": ["dev"],
+    "power": [
+      {
+        "from": {
+          "year": -28,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "tier": "officer"
+      }
+    ]
   },
   {
     "id": "char_test_rival",
@@ -135,6 +167,22 @@
       }
     ],
     "dev": true,
-    "tags": ["dev"]
+    "tags": ["dev"],
+    "power": [
+      {
+        "from": {
+          "year": -29,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -11,
+          "month": 1
+        },
+        "tier": "officer"
+      }
+    ]
   }
 ]

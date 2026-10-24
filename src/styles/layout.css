@@ -80,6 +80,9 @@
   }
 
   .panel {
+    /* The containing block for anything absolute inside (screen-reader labels), so a long
+       chronicle scrolls inside its panel and never stretches the page. */
+    position: relative;
     grid-row: 4;
     min-height: 0;
     overflow-y: auto;

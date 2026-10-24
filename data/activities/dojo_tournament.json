@@ -1,0 +1,48 @@
+{
+  "id": "act_dojo_tournament",
+  "name": "Enter a dojo tournament",
+  "category": "train_body",
+  "description": "Ranking matches with wooden blades and a referee: three rounds, first clean hit wins.",
+  "minAge": 12,
+  "physical": true,
+  "requires": {
+    "features": ["dojo"],
+    "atSea": false
+  },
+  "gains": {
+    "strength": 0.4,
+    "dexterity": 0.5,
+    "speed": 0.3
+  },
+  "practice": {
+    "kind": "spar"
+  },
+  "fight": {
+    "kind": "contest",
+    "contest": "dojo_tournament"
+  },
+  "outcomes": [
+    {
+      "id": "won",
+      "text": "You won every round, and your name went up on the dojo wall.",
+      "weight": 1,
+      "effects": [
+        {
+          "kind": "fame",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "draw",
+      "text": "You went out in the later rounds, with a bruise or two to show for it.",
+      "weight": 1
+    },
+    {
+      "id": "lost",
+      "text": "First round, first hit: you sat the rest out on the bench.",
+      "weight": 1
+    }
+  ],
+  "tags": ["training", "fight", "contest"]
+}

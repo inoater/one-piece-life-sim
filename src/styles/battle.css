@@ -1,0 +1,184 @@
+@layer components {
+  /* ---- Phase 5: the battle panel and the fighting settings ------------------------------- */
+  .battle {
+    display: grid;
+    gap: var(--s-3);
+  }
+  .battle__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-2);
+  }
+  .battle__title {
+    font-family: var(--font-text);
+    font-size: var(--text-3);
+    font-weight: 650;
+  }
+  .battle__counter,
+  .battle__aim {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .battle__sides {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+    gap: var(--s-3);
+  }
+  .battle-side__name {
+    font-weight: 650;
+  }
+  .battle-side__morale {
+    margin: var(--s-1) 0;
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .battle-fighters,
+  .battle-actions,
+  .battle-log,
+  .battle-board,
+  .battle-fronts,
+  .battle-ships,
+  .battle-card__lines,
+  .fight-ladder {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .battle-fighter {
+    display: grid;
+    gap: 2px;
+    margin-bottom: var(--s-1);
+    padding: var(--s-2);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+  .battle-fighter--you {
+    border-color: var(--rule-strong);
+  }
+  .battle-fighter--target {
+    outline: 2px solid var(--ink);
+    outline-offset: -2px;
+  }
+  .battle-fighter--out {
+    opacity: 0.55;
+  }
+  .battle-fighter__head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-2);
+  }
+  .battle-fighter__name {
+    font-weight: 600;
+    text-align: left;
+  }
+  .battle-fighter__tier,
+  .battle-fighter__meta,
+  .battle-fighter__status {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .battle-fighter__bars {
+    display: grid;
+    gap: 3px;
+  }
+  .battle-bar {
+    display: block;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: var(--rule);
+  }
+  .battle-side__morale .battle-bar,
+  .battle-ships .battle-bar {
+    display: inline-block;
+    width: 8rem;
+    margin: 0 var(--s-1);
+    vertical-align: middle;
+  }
+  .battle-bar__fill {
+    display: block;
+    height: 100%;
+    background: var(--ink);
+  }
+  .battle-bar--stamina .battle-bar__fill {
+    background: var(--mist);
+  }
+  .battle-bar--haki .battle-bar__fill,
+  .battle-bar--morale .battle-bar__fill,
+  .battle-bar--hull .battle-bar__fill {
+    background: var(--rule-strong);
+  }
+  .battle-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
+    gap: var(--s-1);
+  }
+  .battle-action__button {
+    display: grid;
+    width: 100%;
+    gap: 2px;
+    padding: var(--s-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .battle-action__button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .battle-action__label {
+    font-weight: 600;
+  }
+  .battle-action__words {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .battle-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .battle-sub {
+    font-weight: 650;
+  }
+  .battle-front--here {
+    font-weight: 600;
+  }
+  .battle-log {
+    max-height: 16rem;
+    overflow-y: auto;
+    padding: var(--s-2) 0;
+    border-top: 1px solid var(--rule);
+    font-size: var(--text-0);
+  }
+  .battle-log__n {
+    display: inline-block;
+    min-width: 1.6rem;
+    color: var(--mist);
+  }
+  .battle-log__line--bad,
+  .battle-log__line--alert {
+    font-weight: 600;
+  }
+  .fight-settings {
+    display: grid;
+    gap: var(--s-2);
+    margin-bottom: var(--s-3);
+  }
+  .fight-ladder {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    font-size: var(--text-0);
+  }
+  .fight-ladder__rung--here {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+}

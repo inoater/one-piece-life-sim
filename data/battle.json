@@ -1,0 +1,1027 @@
+{
+  "ladder": [
+    {
+      "id": "civilian",
+      "name": "Civilian",
+      "min": 0,
+      "who": "Townsfolk",
+      "bounty": {
+        "min": 0,
+        "max": 0
+      }
+    },
+    {
+      "id": "thug",
+      "name": "Thug",
+      "min": 150,
+      "who": "Bandits, street gangs",
+      "bounty": {
+        "min": 0,
+        "max": 5000000
+      }
+    },
+    {
+      "id": "officer",
+      "name": "Officer",
+      "min": 300,
+      "who": "Marine officers, small crews' fighters",
+      "bounty": {
+        "min": 1000000,
+        "max": 15000000
+      }
+    },
+    {
+      "id": "captain",
+      "name": "Captain",
+      "min": 600,
+      "who": "East Blue captains, 10 to 50 million bounties",
+      "bounty": {
+        "min": 10000000,
+        "max": 50000000
+      }
+    },
+    {
+      "id": "grand_line",
+      "name": "Grand Line threat",
+      "min": 1200,
+      "who": "Paradise crews, 100 million bounties",
+      "bounty": {
+        "min": 50000000,
+        "max": 300000000
+      }
+    },
+    {
+      "id": "commander",
+      "name": "Commander",
+      "min": 2500,
+      "who": "Emperors' officers, Vice Admirals",
+      "bounty": {
+        "min": 300000000,
+        "max": 1000000000
+      }
+    },
+    {
+      "id": "monster",
+      "name": "Monster",
+      "min": 5000,
+      "who": "Emperors' top commanders, Admirals",
+      "bounty": {
+        "min": 1000000000,
+        "max": 3000000000
+      }
+    },
+    {
+      "id": "peak",
+      "name": "Peak",
+      "min": 9000,
+      "who": "Emperors, the strongest of any era",
+      "bounty": {
+        "min": 3000000000,
+        "max": 6000000000
+      }
+    }
+  ],
+  "initiative": {
+    "speed": 1,
+    "perception": 0.5,
+    "observationPerStage": 10,
+    "die": 20
+  },
+  "hit": {
+    "base": 50,
+    "slope": 25,
+    "min": 5,
+    "max": 95,
+    "observationPerStage": 4
+  },
+  "damage": {
+    "scale": 8,
+    "ratioExponent": 0.25,
+    "crit": {
+      "chance": 0.2,
+      "mult": 2
+    },
+    "variance": 0.15,
+    "guard": 0.5,
+    "armamentGuardPerStage": 0.05,
+    "coatDamagePerStage": 0.05,
+    "coatDefencePerStage": 0.06,
+    "internalIgnores": 0.5,
+    "emptyStamina": 0.5,
+    "injuryShare": 0.15,
+    "injuryChance": 1.5,
+    "maxInjuries": 2,
+    "knockedOutHealth": 0.25,
+    "severities": [
+      {
+        "atLeast": 0.15,
+        "severity": "minor"
+      },
+      {
+        "atLeast": 0.3,
+        "severity": "serious"
+      },
+      {
+        "atLeast": 0.5,
+        "severity": "severe"
+      }
+    ],
+    "forms": {
+      "strike": {
+        "power": 1,
+        "hits": 1
+      },
+      "barrage": {
+        "power": 0.45,
+        "hits": 3
+      },
+      "projectile": {
+        "power": 0.9,
+        "hits": 1
+      },
+      "area": {
+        "power": 0.8,
+        "hits": 1
+      },
+      "counter": {
+        "power": 1.2,
+        "hits": 1
+      },
+      "movement": {
+        "power": 0.6,
+        "hits": 1
+      },
+      "boost": {
+        "power": 0,
+        "hits": 1
+      },
+      "grapple": {
+        "power": 0.8,
+        "hits": 1
+      },
+      "guard": {
+        "power": 0,
+        "hits": 1
+      },
+      "support": {
+        "power": 0,
+        "hits": 1
+      }
+    },
+    "areaSplash": 0.6,
+    "weaponAttack": {
+      "swords": 14,
+      "gun": 10,
+      "bow": 8
+    }
+  },
+  "evade": {
+    "bonus": 30,
+    "observationPerStage": 6,
+    "read": 25
+  },
+  "stamina": {
+    "constant": 20,
+    "endurance": 0.5,
+    "regen": 2,
+    "costs": {
+      "strike": 3,
+      "technique": 0,
+      "guard": 1,
+      "evade": 2,
+      "feint": 2,
+      "grapple": 4,
+      "haki": 0,
+      "item": 1,
+      "talk": 0,
+      "flee": 4
+    },
+    "techniqueCostMult": 0.6
+  },
+  "haki": {
+    "read": {
+      "cost": 3
+    },
+    "coat": {
+      "cost": 4,
+      "exchanges": 3
+    },
+    "burst": {
+      "cost": 12,
+      "ratio": 0.45,
+      "morale": 25
+    }
+  },
+  "matchups": {
+    "immune": 0,
+    "nullifies": 0,
+    "weakened": 0.6,
+    "loses": 0.5,
+    "wins": 1.6,
+    "solidifies": 1.25
+  },
+  "secondWind": {
+    "restore": 0.1,
+    "base": 0.25,
+    "willpower": 0.004,
+    "blow": 0.3,
+    "max": 0.6
+  },
+  "death": {
+    "killBlow": 0.4,
+    "overkill": 0.6
+  },
+  "feint": {
+    "accuracy": 25,
+    "difficulty": 0
+  },
+  "grapple": {
+    "pinExchanges": 1,
+    "throwPower": 14,
+    "captureBelow": 0.35
+  },
+  "flee": {
+    "base": 40,
+    "slope": 50,
+    "smoke": 35
+  },
+  "talk": {
+    "tauntAccuracy": 15,
+    "surrenderBelow": 0.35,
+    "surrenderBase": 0.3,
+    "persuadeBase": 0.35,
+    "stallStamina": 6
+  },
+  "overdrive": {
+    "default": {
+      "exchanges": 4,
+      "boost": 30,
+      "after": {
+        "kind": "exhausted",
+        "value": 0,
+        "text": "{name} is spent: the form gives out and leaves them breathing hard."
+      }
+    },
+    "techniques": {}
+  },
+  "items": [
+    {
+      "id": "kit_medicine",
+      "name": "Field medicine",
+      "description": "Bandages, salve and something bitter to chew: back on your feet for one more round.",
+      "price": 3000,
+      "effect": "heal",
+      "value": 0.25
+    },
+    {
+      "id": "kit_smoke",
+      "name": "Smoke bomb",
+      "description": "A clay ball of powder that fills a street with smoke.",
+      "price": 5000,
+      "effect": "smoke",
+      "value": 35
+    },
+    {
+      "id": "kit_den_den",
+      "name": "Baby Den Den Mushi",
+      "description": "A small snail for calling for help: someone may come.",
+      "price": 20000,
+      "effect": "call",
+      "value": 3
+    }
+  ],
+  "ai": {
+    "aggressive": {
+      "strike": 4,
+      "technique": 6,
+      "guard": 0.6,
+      "evade": 0.6,
+      "feint": 1,
+      "grapple": 1,
+      "haki": 2,
+      "item": 0.5,
+      "talk": 0.4,
+      "flee": 0.2
+    },
+    "balanced": {
+      "strike": 3,
+      "technique": 4,
+      "guard": 1.2,
+      "evade": 1.2,
+      "feint": 1,
+      "grapple": 0.8,
+      "haki": 2,
+      "item": 0.8,
+      "talk": 0.5,
+      "flee": 0.3
+    },
+    "cautious": {
+      "strike": 2,
+      "technique": 3,
+      "guard": 2.2,
+      "evade": 2.2,
+      "feint": 1.2,
+      "grapple": 0.6,
+      "haki": 2,
+      "item": 1.2,
+      "talk": 0.8,
+      "flee": 0.6
+    }
+  },
+  "stances": [
+    {
+      "id": "all_out",
+      "name": "All-out",
+      "description": "Hit hard and keep hitting: your strongest techniques, little thought for defence.",
+      "weights": {
+        "strike": 4,
+        "technique": 8,
+        "guard": 0.3,
+        "evade": 0.3,
+        "feint": 0.5,
+        "grapple": 0.8,
+        "haki": 2,
+        "item": 0.3,
+        "talk": 0,
+        "flee": 0
+      },
+      "fleeAt": 0,
+      "protect": false
+    },
+    {
+      "id": "careful",
+      "name": "Careful",
+      "description": "Guard, dodge and wait for an opening.",
+      "weights": {
+        "strike": 2,
+        "technique": 3,
+        "guard": 3,
+        "evade": 3,
+        "feint": 1.5,
+        "grapple": 0.5,
+        "haki": 2,
+        "item": 1.2,
+        "talk": 0.5,
+        "flee": 0
+      },
+      "fleeAt": 0,
+      "protect": false
+    },
+    {
+      "id": "protect",
+      "name": "Protect",
+      "description": "Stand in front of your friends and take the blows meant for them.",
+      "weights": {
+        "strike": 2,
+        "technique": 3,
+        "guard": 4,
+        "evade": 1,
+        "feint": 0.5,
+        "grapple": 0.5,
+        "haki": 2,
+        "item": 1.5,
+        "talk": 0.3,
+        "flee": 0
+      },
+      "fleeAt": 0,
+      "protect": true
+    },
+    {
+      "id": "flee_early",
+      "name": "Flee early",
+      "description": "Fight while it goes well, and run the moment it does not.",
+      "weights": {
+        "strike": 3,
+        "technique": 3,
+        "guard": 1.5,
+        "evade": 2,
+        "feint": 1,
+        "grapple": 0.5,
+        "haki": 1,
+        "item": 1,
+        "talk": 0.5,
+        "flee": 0
+      },
+      "fleeAt": 0.5,
+      "protect": false
+    }
+  ],
+  "roles": [
+    {
+      "id": "vanguard",
+      "name": "Vanguard",
+      "zone": "front",
+      "attack": 0,
+      "defence": 15,
+      "description": "First in, takes the brunt."
+    },
+    {
+      "id": "striker",
+      "name": "Striker",
+      "zone": "front",
+      "attack": 12,
+      "defence": 0,
+      "description": "Hits the enemy's best."
+    },
+    {
+      "id": "guard",
+      "name": "Guard",
+      "zone": "middle",
+      "attack": -10,
+      "defence": 10,
+      "description": "Shields someone and takes blows meant for them."
+    },
+    {
+      "id": "support",
+      "name": "Support",
+      "zone": "rear",
+      "attack": -20,
+      "defence": 0,
+      "description": "Items, healing, and keeping others standing."
+    },
+    {
+      "id": "ranged",
+      "name": "Ranged",
+      "zone": "rear",
+      "attack": 5,
+      "defence": -5,
+      "description": "Shoots from where blades cannot reach."
+    },
+    {
+      "id": "commander",
+      "name": "Commander",
+      "zone": "middle",
+      "attack": 0,
+      "defence": 5,
+      "description": "Gives the orders; their fall shakes the side."
+    }
+  ],
+  "zones": [
+    {
+      "id": "front",
+      "name": "Front",
+      "depth": 0,
+      "rangedAccuracy": 0
+    },
+    {
+      "id": "middle",
+      "name": "Middle",
+      "depth": 1,
+      "rangedAccuracy": 0
+    },
+    {
+      "id": "rear",
+      "name": "Rear",
+      "depth": 2,
+      "rangedAccuracy": 5
+    },
+    {
+      "id": "high",
+      "name": "High ground",
+      "depth": 2,
+      "rangedAccuracy": 15
+    },
+    {
+      "id": "rigging",
+      "name": "Rigging",
+      "depth": 2,
+      "rangedAccuracy": 10
+    },
+    {
+      "id": "water",
+      "name": "In the water",
+      "depth": 1,
+      "rangedAccuracy": -20
+    }
+  ],
+  "orders": [
+    {
+      "id": "none",
+      "name": "Fight as you see fit",
+      "text": "Everyone picks their own fight."
+    },
+    {
+      "id": "focus",
+      "name": "Focus",
+      "text": "Everyone goes for one enemy."
+    },
+    {
+      "id": "protect",
+      "name": "Protect",
+      "text": "Everyone keeps one friend standing."
+    },
+    {
+      "id": "fall_back",
+      "name": "Fall back",
+      "text": "Guard and give ground."
+    },
+    {
+      "id": "swap",
+      "name": "Swap opponents",
+      "text": "Trade foes, to put the right fighter on each."
+    },
+    {
+      "id": "combo",
+      "name": "Combination attack",
+      "text": "Two who fight well together strike as one."
+    },
+    {
+      "id": "rally",
+      "name": "Rally",
+      "text": "The leader's voice puts heart back into the side."
+    },
+    {
+      "id": "retreat",
+      "name": "Retreat",
+      "text": "Everyone gets out while they can."
+    }
+  ],
+  "morale": {
+    "start": 100,
+    "memberDown": 12,
+    "leaderDown": 30,
+    "leaderWin": 10,
+    "rally": 0.25,
+    "breakAt": 20
+  },
+  "protect": {
+    "base": 0.08,
+    "bond": 0.35,
+    "minShare": 0.12,
+    "traits": {
+      "trait_loyal": 0.15,
+      "trait_brave": 0.08,
+      "trait_kind": 0.06,
+      "trait_cowardly": -0.1
+    },
+    "guardRole": 0.55
+  },
+  "combo": {
+    "bond": 30,
+    "power": 1.4
+  },
+  "tagIn": {
+    "below": 0.3
+  },
+  "spar": {
+    "injuryMult": 0.1,
+    "healthCost": 0.15,
+    "timeLimit": 8,
+    "yieldBelow": 0.4,
+    "partner": {
+      "stronger": 0.2,
+      "maxMult": 2,
+      "floor": 0.2
+    },
+    "respect": 4,
+    "closeShare": 0.15,
+    "grudge": -6,
+    "groupVigor": 1
+  },
+  "crew": {
+    "maxSide": 100,
+    "frontLoss": 0.12,
+    "maxRounds": 12,
+    "exchangesPerRound": 2,
+    "rankAndFile": 0.35
+  },
+  "naval": {
+    "ranges": ["far", "near", "adjacent"],
+    "cannon": {
+      "damage": 1.6,
+      "accuracy": 0.45
+    },
+    "ram": {
+      "damage": 22,
+      "self": 0.4
+    },
+    "fire": {
+      "chance": 0.12,
+      "damage": 3
+    },
+    "weather": {
+      "clear": {
+        "accuracy": 1,
+        "ambush": 0
+      },
+      "fog": {
+        "accuracy": 0.8,
+        "ambush": 0.5
+      },
+      "storm": {
+        "accuracy": 0.5,
+        "ambush": 0.15
+      },
+      "calm": {
+        "accuracy": 1.1,
+        "ambush": 0
+      }
+    },
+    "strikeBelow": 0.25,
+    "maxRounds": 10,
+    "cannonsPerHull": 0.12
+  },
+  "war": {
+    "maxRounds": 8,
+    "frontLoss": 0.1,
+    "commanderFalls": 25,
+    "burstBreaks": 0.35,
+    "breakAt": 20
+  },
+  "contests": [
+    {
+      "id": "colosseum",
+      "name": "The Corrida Colosseum",
+      "description": "Rounds of single combat before a roaring crowd; no Devil Fruit powers in the ring, and betting in the stands.",
+      "kind": "tournament",
+      "rounds": 3,
+      "noFruits": true,
+      "noWeapons": false,
+      "stop": "first_knockdown",
+      "tiers": ["officer", "captain", "grand_line"],
+      "purse": 5000000,
+      "entry": 0,
+      "betting": true
+    },
+    {
+      "id": "pit_fight",
+      "name": "A pit fight",
+      "description": "Bare knuckles in a cellar for whoever is paying.",
+      "kind": "pit",
+      "rounds": 1,
+      "noFruits": false,
+      "noWeapons": true,
+      "stop": "first_knockdown",
+      "tiers": ["thug", "officer"],
+      "purse": 30000,
+      "entry": 2000,
+      "betting": true
+    },
+    {
+      "id": "dojo_tournament",
+      "name": "A dojo tournament",
+      "description": "Ranking matches with wooden blades and a referee.",
+      "kind": "tournament",
+      "rounds": 3,
+      "noFruits": true,
+      "noWeapons": false,
+      "stop": "first_hit",
+      "tiers": ["thug", "officer"],
+      "purse": 20000,
+      "entry": 1000,
+      "betting": false
+    },
+    {
+      "id": "sumo",
+      "name": "Sumo",
+      "description": "Push them out of the ring, or put them down.",
+      "kind": "sumo",
+      "rounds": 1,
+      "noFruits": true,
+      "noWeapons": true,
+      "stop": "first_knockdown",
+      "tiers": ["thug", "officer"],
+      "purse": 10000,
+      "entry": 0,
+      "betting": false
+    },
+    {
+      "id": "davy_back",
+      "name": "A Davy Back Fight",
+      "description": "Three games between two crews, and each one won takes a member of the other.",
+      "kind": "davy_back",
+      "rounds": 3,
+      "noFruits": false,
+      "noWeapons": true,
+      "stop": "first_knockdown",
+      "tiers": ["thug", "officer", "captain"],
+      "purse": 0,
+      "entry": 0,
+      "betting": false
+    }
+  ],
+  "abstract": {
+    "gamma": 5.4,
+    "blocked": 0.04,
+    "matchup": 0.35,
+    "teamExponent": 1
+  },
+  "rewards": {
+    "gains": {
+      "strength": 0.5,
+      "speed": 0.35,
+      "durability": 0.35,
+      "dexterity": 0.3,
+      "willpower": 0.2,
+      "endurance": 0.2
+    },
+    "trackPoints": 1,
+    "famePerTier": 2,
+    "infamyForKill": 6,
+    "bountyPerPower": 30,
+    "newsFame": 40,
+    "newsBounty": 30000000
+  },
+  "foes": [
+    {
+      "id": "foe_thug",
+      "name": "a thug",
+      "plural": "thugs",
+      "tier": "thug",
+      "within": {
+        "min": 0,
+        "max": 0.5
+      },
+      "intent": "capture",
+      "techniques": []
+    },
+    {
+      "id": "foe_drunk",
+      "name": "a drunk",
+      "plural": "drunks",
+      "tier": "civilian",
+      "within": {
+        "min": 0.5,
+        "max": 1
+      },
+      "intent": "spare",
+      "techniques": [],
+      "criminal": false
+    },
+    {
+      "id": "foe_bandit",
+      "name": "a bandit",
+      "plural": "bandits",
+      "tier": "thug",
+      "within": {
+        "min": 0.2,
+        "max": 0.9
+      },
+      "weapon": "swords",
+      "intent": "kill",
+      "techniques": []
+    },
+    {
+      "id": "foe_pirate",
+      "name": "a pirate",
+      "plural": "pirates",
+      "tier": "thug",
+      "within": {
+        "min": 0.4,
+        "max": 1
+      },
+      "weapon": "swords",
+      "intent": "capture",
+      "techniques": []
+    },
+    {
+      "id": "foe_pirate_gunner",
+      "name": "a pirate gunner",
+      "plural": "pirate gunners",
+      "tier": "thug",
+      "within": {
+        "min": 0.3,
+        "max": 0.9
+      },
+      "weapon": "gun",
+      "intent": "capture",
+      "techniques": []
+    },
+    {
+      "id": "foe_pirate_officer",
+      "name": "a pirate officer",
+      "plural": "pirate officers",
+      "tier": "officer",
+      "within": {
+        "min": 0.2,
+        "max": 0.8
+      },
+      "weapon": "swords",
+      "intent": "capture",
+      "techniques": [],
+      "fruitChance": 0.05
+    },
+    {
+      "id": "foe_pirate_captain",
+      "name": "a pirate captain",
+      "plural": "pirate captains",
+      "tier": "captain",
+      "within": {
+        "min": 0,
+        "max": 0.6
+      },
+      "weapon": "swords",
+      "intent": "kill",
+      "techniques": [],
+      "armament": 0,
+      "observation": 0,
+      "fruitChance": 0.2
+    },
+    {
+      "id": "foe_marine",
+      "name": "a Marine",
+      "plural": "Marines",
+      "tier": "thug",
+      "within": {
+        "min": 0.3,
+        "max": 1
+      },
+      "weapon": "gun",
+      "intent": "capture",
+      "techniques": [],
+      "criminal": false
+    },
+    {
+      "id": "foe_marine_officer",
+      "name": "a Marine officer",
+      "plural": "Marine officers",
+      "tier": "officer",
+      "within": {
+        "min": 0.3,
+        "max": 1
+      },
+      "weapon": "swords",
+      "intent": "capture",
+      "techniques": [],
+      "criminal": false
+    },
+    {
+      "id": "foe_cp_agent",
+      "name": "a Cipher Pol agent",
+      "plural": "Cipher Pol agents",
+      "tier": "captain",
+      "within": {
+        "min": 0.2,
+        "max": 0.8
+      },
+      "intent": "kill",
+      "techniques": ["tech_soru", "tech_shigan", "tech_tekkai"],
+      "criminal": false
+    },
+    {
+      "id": "foe_bounty_hunter",
+      "name": "a bounty hunter",
+      "plural": "bounty hunters",
+      "tier": "officer",
+      "within": {
+        "min": 0,
+        "max": 0.7
+      },
+      "weapon": "swords",
+      "intent": "capture",
+      "techniques": [],
+      "criminal": false
+    },
+    {
+      "id": "foe_gladiator",
+      "name": "a gladiator",
+      "plural": "gladiators",
+      "tier": "officer",
+      "within": {
+        "min": 0.2,
+        "max": 1
+      },
+      "weapon": "swords",
+      "intent": "spare",
+      "techniques": [],
+      "criminal": false
+    },
+    {
+      "id": "foe_pit_fighter",
+      "name": "a pit fighter",
+      "plural": "pit fighters",
+      "tier": "thug",
+      "within": {
+        "min": 0.3,
+        "max": 1
+      },
+      "intent": "spare",
+      "techniques": [],
+      "criminal": false
+    },
+    {
+      "id": "foe_dojo_student",
+      "name": "a dojo student",
+      "plural": "dojo students",
+      "tier": "thug",
+      "within": {
+        "min": 0,
+        "max": 0.6
+      },
+      "weapon": "swords",
+      "intent": "spare",
+      "techniques": [],
+      "criminal": false
+    },
+    {
+      "id": "foe_sea_king",
+      "name": "a Sea King",
+      "plural": "Sea Kings",
+      "tier": "grand_line",
+      "within": {
+        "min": 0,
+        "max": 0.5
+      },
+      "intent": "kill",
+      "techniques": [],
+      "criminal": false
+    },
+    {
+      "id": "foe_wild_beast",
+      "name": "a wild beast",
+      "plural": "wild beasts",
+      "tier": "thug",
+      "within": {
+        "min": 0.2,
+        "max": 0.8
+      },
+      "intent": "kill",
+      "techniques": [],
+      "criminal": false
+    },
+    {
+      "id": "foe_pacifista",
+      "name": "a Pacifista",
+      "plural": "Pacifistas",
+      "tier": "commander",
+      "within": {
+        "min": 0,
+        "max": 0.3
+      },
+      "intent": "kill",
+      "techniques": [],
+      "criminal": false
+    }
+  ],
+  "npc": {
+    "hunt": 0.22,
+    "raid": 0.05,
+    "quarrel": 0.15,
+    "seaTrouble": 0.08,
+    "pirateKills": 0.3
+  },
+  "lines": {
+    "begin": "{sides}.",
+    "strike_hit": "{a} hits {b}{how}.",
+    "strike_miss": "{a} swings at {b} and misses.",
+    "technique_hit": "{a}: {move}! It catches {b}{how}.",
+    "technique_miss": "{a}: {move}! {b} is not there when it lands.",
+    "guard": "{a} sets their guard.",
+    "evade": "{a} keeps moving, hard to pin down.",
+    "feint_ok": "{a} feints, and {b}'s guard opens.",
+    "feint_fail": "{a} feints; {b} does not bite.",
+    "grapple_pin": "{a} gets hold of {b} and pins them.",
+    "grapple_miss": "{a} grabs for {b} and gets nothing.",
+    "grapple_throw": "{a} throws {b} down hard.",
+    "captured": "{a} has {b} bound: {b} is captured.",
+    "read": "{a} reaches out with Observation Haki and reads what is coming.",
+    "coat": "{a} coats in Armament Haki: black spreads over the skin.",
+    "burst": "{a} lets their will loose: a Conqueror's burst rolls over everyone.",
+    "burst_out": "{b} drops, eyes rolled back, before the will of a king.",
+    "item_heal": "{a} gets a moment to patch up: {item}.",
+    "item_smoke": "{a} throws a smoke bomb.",
+    "item_call": "{a} calls for help on a Den Den Mushi.",
+    "call_arrives": "Help arrives: {b} joins {a}'s side.",
+    "taunt": "{a} taunts {b}.",
+    "surrender_yes": "{a} demands surrender, and {b} gives up.",
+    "surrender_no": "{a} demands surrender; {b} would rather fall.",
+    "persuade_yes": "{a} talks {b} down: nobody needs to be hurt.",
+    "persuade_no": "{a} tries to talk; {b} is past listening.",
+    "stall": "{a} plays for time, catching their breath.",
+    "flee_ok": "{a} breaks away and gets clear.",
+    "flee_fail": "{a} tries to run; {b} cuts them off.",
+    "logia": "The blow passes straight through {b}: a Logia, and no haki behind it.",
+    "matchup": "{text}",
+    "knocked_out": "{b} goes down and stays down.",
+    "killed": "{b} falls, and does not get up again.",
+    "second_wind": "{b} should be finished, and stands anyway.",
+    "drowned": "{b} goes into the water and the sea takes their strength: they sink.",
+    "rescued": "{a} dives in after {b} and hauls them out.",
+    "overdrive": "{a}: {move}! Their whole body changes gear.",
+    "overdrive_end": "{text}",
+    "protect": "{a} throws themselves in front of the blow meant for {b}.",
+    "combo": "{a} and {b} strike as one: {move}!",
+    "tag_in": "{a} steps in for {b}.",
+    "rally": "{a} rallies the side: {side} finds its nerve.",
+    "morale_break": "{side} breaks and runs.",
+    "stop_spar": "The spar is called: {reason}.",
+    "exhausted": "{a} is out of breath; every blow comes slower.",
+    "won": "{side} won the day.",
+    "lost": "{side} lost the day.",
+    "fled": "It ends with one side running.",
+    "draw": "It ends with neither side the winner.",
+    "naval_fire": "{a}'s guns fire on {b}: {damage} damage to the hull.",
+    "naval_ram": "{a} rams {b}: timbers splinter on both.",
+    "naval_board": "Grapples fly: {a} boards {b}.",
+    "naval_sunk": "{b} goes down by the stern.",
+    "naval_struck": "{b} strikes its colours.",
+    "war_front": "On {front}: {a} pushes, and {b} gives ground.",
+    "war_broken": "{front} breaks: {side} is driven off it.",
+    "npc_hunt": "{a}, {reason}, went after {b}.",
+    "npc_raid": "{a} and their crew raided {place}.",
+    "npc_quarrel": "{a} and {b} came to blows: {reason}.",
+    "npc_sea": "{a}'s ship met trouble at sea: {reason}.",
+    "npc_killed": "{b} was killed by {a}.",
+    "news_fight": "{a} defeated {b} at {place}."
+  }
+}

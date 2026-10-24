@@ -11,7 +11,7 @@
       "at": 0,
       "description": "Use the power on purpose, a little.",
       "text": "You did it on purpose for the first time.",
-      "combat": 4
+      "combat": 15
     },
     {
       "id": "first_techniques",
@@ -20,7 +20,7 @@
       "at": 15,
       "description": "Shape the power into moves of your own.",
       "text": "The power did what you asked, and you gave the move a name.",
-      "combat": 10
+      "combat": 85
     },
     {
       "id": "combat_style",
@@ -34,7 +34,7 @@
           "intellect": 30
         }
       },
-      "combat": 18
+      "combat": 245
     },
     {
       "id": "haki_synergy",
@@ -48,7 +48,7 @@
           "track_armament": "coat"
         }
       },
-      "combat": 28
+      "combat": 550
     },
     {
       "id": "creative_leaps",
@@ -62,7 +62,7 @@
           "intellect": 50
         }
       },
-      "combat": 40
+      "combat": 1040
     },
     {
       "id": "awakening",
@@ -77,7 +77,7 @@
         },
         "breakthrough": true
       },
-      "combat": 60,
+      "combat": 2160,
       "flags": {
         "fruit.awakened": true
       }

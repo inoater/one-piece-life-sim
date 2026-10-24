@@ -9,7 +9,14 @@ import { buyFruit, eatFruit, findFruit, identifyFruit } from './fruits';
 import { wake } from './haki';
 import { ensurePowers, type HakiColour } from './state';
 import { combine, draftTechnique, moveName } from './techniques';
-import { addProgress, breakthroughTrack, learnFromTeacher, openTrack, powerCtxOf } from './tracks';
+import {
+  addProgress,
+  breakthroughTrack,
+  learnFromTeacher,
+  openTrack,
+  powerCtxOf,
+  refreshPowerMods,
+} from './tracks';
 
 /**
  * What the player can do with their powers between months (Phase 4): be taken on in a style,
@@ -95,6 +102,9 @@ export function buyGear(state: WorldState, data: GameData, weaponId: string): vo
   pay(env, -weapon.price);
   const gear = ensurePowers(p.c).gear;
   gear[weapon.gear] = (gear[weapon.gear] ?? 0) + 1;
+  // Phase 5: which weapon it is, so its own Combat Power and attack count.
+  gear[weapon.id] = (gear[weapon.id] ?? 0) + 1;
+  refreshPowerMods(data, p.entity, state.tick, state);
 }
 
 export function buyEncyclopedia(state: WorldState, data: GameData): void {

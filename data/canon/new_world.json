@@ -74,10 +74,6 @@
         "text": "You fought through the Colosseum's blocks for the prize everyone wanted.",
         "effects": [
           {
-            "kind": "findFruit",
-            "fruit": "fruit_mera_mera"
-          },
-          {
             "kind": "drift",
             "tags": ["brave"]
           },
@@ -85,7 +81,41 @@
             "kind": "powerEvent",
             "event": "stronger_foe"
           }
-        ]
+        ],
+        "fight": {
+          "scale": "duel",
+          "contest": "colosseum",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_gladiator"
+            }
+          ],
+          "intent": "spare",
+          "mode": "tactical",
+          "success": {
+            "text": "You won your block and the final, and the Flame-Flame Fruit was yours.",
+            "effects": [
+              {
+                "kind": "findFruit",
+                "fruit": "fruit_mera_mera"
+              },
+              {
+                "kind": "fame",
+                "value": 20
+              }
+            ]
+          },
+          "failure": {
+            "text": "You went down in your block; someone else walked off with the prize.",
+            "effects": [
+              {
+                "kind": "fame",
+                "value": 3
+              }
+            ]
+          }
+        }
       }
     ],
     "participate": {

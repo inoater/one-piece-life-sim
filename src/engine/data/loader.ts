@@ -8,6 +8,7 @@ import {
   lifeRefs,
   personalityRefs,
   powerRulesRefs,
+  battleRulesRefs,
   REF_EXTRACTORS,
   singletonTargets,
   TARGET_HOME,
@@ -33,7 +34,11 @@ import {
   type CanonRules,
   ENGINE_TRACKS,
   POWER_LINE_IDS,
+  BATTLE_LINE_IDS,
+  LADDER_TIERS,
   TECH_TAGS,
+  type BattleRules,
+  type CastMember,
   type FruitDef,
   type MatchupRules,
   type Moveset,
@@ -266,6 +271,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   const canonRules = singletons['data/canon.json'] as CanonRules | undefined;
   const powers = singletons['data/powers.json'] as PowerRules | undefined;
   const personality = singletons['data/personality.json'] as PersonalityRules | undefined;
+  const battle = singletons['data/battle.json'] as BattleRules | undefined;
 
   // ---- Pass 2: references --------------------------------------------------------------------
 
@@ -278,6 +284,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     ...(worldRules ? { npcGoalIds: worldRules.npc.goals.map((g) => g.id) } : {}),
     ...(personality ? { personality } : {}),
     ...(powers ? { powers } : {}),
+    ...(battle ? { battle } : {}),
   });
   /** Is the target's id list available? If its file is broken, its references are not checked. */
   const has = (target: RefTarget, id: string): boolean | null => {
@@ -325,6 +332,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   if (canonRules) checkRefs('data/canon.json', '', canonRulesRefs(canonRules));
   if (powers) checkRefs('data/powers.json', '', powerRulesRefs(powers));
   if (personality) checkRefs('data/personality.json', '', personalityRefs(personality));
+  if (battle) checkRefs('data/battle.json', '', battleRulesRefs(battle));
 
   // ---- Pass 3: coherence ---------------------------------------------------------------------
 
@@ -724,6 +732,59 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
           `"${c.word}" names a canon fruit; the generator will skip it`,
         );
       }
+    });
+  }
+  // Phase 5: battles. Every line the engine writes; the ladder climbs; each contest once; every
+  // canon character (fixtures aside) on the ladder, their rungs in date order.
+  if (battle) {
+    for (const id of BATTLE_LINE_IDS) {
+      if (!(id in battle.lines))
+        error(
+          'data/battle.json',
+          `lines.${id}`,
+          'Missing line',
+          'the battle engine writes this line',
+        );
+    }
+    battle.ladder.forEach((rung, i) => {
+      if (rung.id !== LADDER_TIERS[i])
+        error(
+          'data/battle.json',
+          `ladder[${i}].id`,
+          `Expected "${LADDER_TIERS[i]}" here`,
+          'the ladder runs from civilian to peak',
+        );
+      const prev = battle.ladder[i - 1];
+      if (prev && rung.min <= prev.min)
+        error(
+          'data/battle.json',
+          `ladder[${i}].min`,
+          'Each rung must start above the one below it',
+        );
+    });
+    const contests = new Set<string>();
+    battle.contests.forEach((c, i) => {
+      if (contests.has(c.id))
+        error('data/battle.json', `contests[${i}].id`, `Duplicate contest "${c.id}"`);
+      contests.add(c.id);
+    });
+  }
+  for (const [, entry] of parsed.cast) {
+    const cast = entry.value as CastMember;
+    if (cast.dev) continue;
+    if (cast.power.length === 0)
+      warn(
+        entry.file,
+        `${entry.field}.power`,
+        `${cast.name} has no Combat Power keyframes`,
+        'they will not be placed on the ladder',
+      );
+    let last = -Infinity;
+    cast.power.forEach((k, i) => {
+      const t = k.from.year * 12 + (k.from.month - 1);
+      if (t < last)
+        error(entry.file, `${entry.field}.power[${i}].from`, 'Power keyframes in date order');
+      last = t;
     });
   }
   const matchups = singletons['data/fruitMatchups.json'] as MatchupRules | undefined;

@@ -265,6 +265,12 @@ function person(
   }
   const bounty = other.flags['bounty'];
   if (typeof bounty === 'number') notes.push(`Bounty ${formatBerries(bounty)} Berries`);
+  // Phase 5: every pair's record, spars and fights together.
+  const tally = viewer.character?.fights?.against[other.id];
+  if (tally) {
+    const [won, lost, drawn] = tally;
+    notes.push(`Against them: won ${won}, lost ${lost}${drawn > 0 ? `, drawn ${drawn}` : ''}`);
+  }
   const out: SheetPerson = {
     id: other.id,
     name: other.name,

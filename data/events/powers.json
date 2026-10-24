@@ -396,10 +396,15 @@
             "event": "crisis"
           }
         ],
-        "check": {
-          "stat": "combatPower",
-          "difficulty": 60,
-          "perDanger": 10,
+        "fight": {
+          "scale": "duel",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_bandit"
+            }
+          ],
+          "intent": "capture",
           "success": {
             "text": "They backed off. The child ran home.",
             "effects": [
@@ -421,25 +426,12 @@
                 "kind": "behaviour",
                 "counter": "rescues",
                 "by": 1
-              },
-              {
-                "kind": "injury",
-                "severity": "roll",
-                "area": "roll",
-                "cause": "violence"
               }
             ]
           },
           "criticalFailure": {
             "text": "They beat you badly.",
-            "effects": [
-              {
-                "kind": "injury",
-                "severity": "serious",
-                "area": "roll",
-                "cause": "violence"
-              }
-            ]
+            "effects": []
           }
         }
       },
@@ -495,9 +487,17 @@
             "points": 3
           }
         ],
-        "check": {
-          "stat": "combatPower",
-          "difficulty": 140,
+        "fight": {
+          "scale": "duel",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_pirate_captain"
+            }
+          ],
+          "intent": "spare",
+          "mode": "tactical",
+          "stop": "first_knockdown",
           "success": {
             "text": "Somehow you held your own, and they bowed before they left.",
             "effects": [
@@ -526,12 +526,6 @@
               {
                 "kind": "powerEvent",
                 "event": "defeat"
-              },
-              {
-                "kind": "injury",
-                "severity": "severe",
-                "area": "roll",
-                "cause": "violence"
               }
             ]
           }
@@ -1226,10 +1220,15 @@
             "points": 2
           }
         ],
-        "check": {
-          "stat": "combatPower",
-          "difficulty": 80,
-          "perDanger": 10,
+        "fight": {
+          "scale": "duel",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_pirate"
+            }
+          ],
+          "intent": "capture",
           "success": {
             "text": "He went down, and the stallholders cheered.",
             "effects": [
@@ -1246,14 +1245,7 @@
           },
           "failure": {
             "text": "He beat you and laughed about it.",
-            "effects": [
-              {
-                "kind": "injury",
-                "severity": "roll",
-                "area": "roll",
-                "cause": "violence"
-              }
-            ]
+            "effects": []
           }
         }
       },

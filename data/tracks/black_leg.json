@@ -15,7 +15,7 @@
         "notTraits": ["trait_lost_leg"]
       },
       "techniques": ["tech_black_leg_collier", "tech_black_leg_epaule"],
-      "combat": 6
+      "combat": 25
     },
     {
       "id": "heated",
@@ -31,7 +31,7 @@
         }
       },
       "techniques": ["tech_black_leg_diable", "tech_black_leg_concasse"],
-      "combat": 20
+      "combat": 200
     },
     {
       "id": "burning",
@@ -49,7 +49,7 @@
         }
       },
       "techniques": ["tech_black_leg_hell_memories"],
-      "combat": 34
+      "combat": 520
     },
     {
       "id": "black_leg_master",
@@ -64,7 +64,7 @@
           "speed": 70
         }
       },
-      "combat": 46
+      "combat": 895
     }
   ],
   "learn": {

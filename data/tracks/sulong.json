@@ -15,7 +15,7 @@
         "event": "moon"
       },
       "techniques": ["tech_sulong"],
-      "combat": 30
+      "combat": 415
     },
     {
       "id": "hold",
@@ -31,7 +31,7 @@
         }
       },
       "techniques": ["tech_sulong_luna"],
-      "combat": 46
+      "combat": 895
     },
     {
       "id": "longer",
@@ -46,7 +46,7 @@
         },
         "breakthrough": true
       },
-      "combat": 62
+      "combat": 1530
     }
   ],
   "learn": {

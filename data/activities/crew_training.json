@@ -1,0 +1,44 @@
+{
+  "id": "act_crew_training",
+  "name": "Crew training day",
+  "category": "train_body",
+  "description": "Everyone spars in turn on the deck: cheaper on the legs than a real spar, and you learn from all of them.",
+  "minAge": 14,
+  "physical": true,
+  "requires": {
+    "atSea": true
+  },
+  "gains": {
+    "strength": 0.5,
+    "speed": 0.3,
+    "durability": 0.3,
+    "dexterity": 0.3
+  },
+  "practice": {
+    "kind": "spar"
+  },
+  "fight": {
+    "kind": "group",
+    "partner": "crew",
+    "stop": "first_knockdown",
+    "foe": "foe_pirate"
+  },
+  "outcomes": [
+    {
+      "id": "won",
+      "text": "You worked through half the crew on the deck before anyone put you down.",
+      "weight": 1
+    },
+    {
+      "id": "lost",
+      "text": "The bosun put you on the planks three times before noon.",
+      "weight": 1
+    },
+    {
+      "id": "draw",
+      "text": "A long day of trading blows with everyone aboard, and nobody keeping score.",
+      "weight": 1
+    }
+  ],
+  "tags": ["training", "fight", "at_sea"]
+}

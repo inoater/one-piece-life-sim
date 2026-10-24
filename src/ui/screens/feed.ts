@@ -1,3 +1,4 @@
+import { renderBattle } from './battle';
 import type { Category, DecisionView, FeedEntry } from '../../worker/protocol';
 import type { App } from '../app';
 import { h, srOnly } from '../dom';
@@ -257,9 +258,20 @@ export function renderFeed(
     filter !== 'all' && visible.length === 0
       ? h('p', { class: 'feed__hint' }, `No ${FILTER_LABEL[filter].toLowerCase()} lines yet.`)
       : null,
-    snapshot.pending.map((d) =>
-      renderDecision(d, state.busy !== null, !shown.has(d.recordSeq), app),
-    ),
+    snapshot.pending.map((d) => {
+      // Phase 5: the player's fight shows as the battle panel, not as a choice.
+      const battle = snapshot.battle;
+      if (d.battle && battle) {
+        const build = (): HTMLElement => {
+          const el: HTMLElement = renderBattle(battle, d, state.busy !== null, app, () =>
+            el.replaceWith(build()),
+          );
+          return el;
+        };
+        return build();
+      }
+      return renderDecision(d, state.busy !== null, !shown.has(d.recordSeq), app);
+    }),
     waiting
       ? h(
           'p',

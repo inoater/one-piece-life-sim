@@ -12,7 +12,7 @@
       "description": "Shigan: a finger strike.",
       "text": "You managed Shigan for the first time: a finger strike.",
       "techniques": ["tech_shigan"],
-      "combat": 6
+      "combat": 25
     },
     {
       "id": "second",
@@ -26,7 +26,7 @@
           "strength": 60
         }
       },
-      "combat": 14
+      "combat": 105
     },
     {
       "id": "mastered",
@@ -42,7 +42,7 @@
         "teacher": true
       },
       "techniques": ["tech_shigan_2"],
-      "combat": 24,
+      "combat": 275,
       "flags": {
         "six_powers.shigan": true
       }

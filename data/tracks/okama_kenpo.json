@@ -12,7 +12,7 @@
       "description": "Ballet stances that are also guards.",
       "text": "You took a ballet stance, and it was a fighting stance too.",
       "techniques": ["tech_okama_arabesque"],
-      "combat": 6
+      "combat": 25
     },
     {
       "id": "ballet_kicks",
@@ -28,7 +28,7 @@
         }
       },
       "techniques": ["tech_okama_pirouette"],
-      "combat": 18
+      "combat": 165
     },
     {
       "id": "angles",
@@ -42,7 +42,7 @@
           "dexterity": 60
         }
       },
-      "combat": 30
+      "combat": 415
     }
   ],
   "learn": {

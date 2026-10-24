@@ -1,3 +1,5 @@
+import { weaponCombat } from '../battle/fighters';
+import { calibrateCast } from '../battle/ladder';
 import type { GameData, PracticeKind, Teacher, Track, TrackStage } from '../../engine/data/schemas';
 import { POWER_LEVELS } from '../../engine/data/schemas';
 import type { Rng } from '../../engine/rng';
@@ -623,7 +625,17 @@ export function refreshPowerMods(
     }
   }
   applyFruitMods(state, data, entity);
-  void tick;
+  // Phase 5: the weapon term of Combat Power (the best weapon they carry).
+  const weapon = weaponCombat(data, entity);
+  if (weapon) {
+    addMod(bonusStat(entity, data.powers.combatBonusStat), {
+      source: powerSource(weapon.name),
+      value: weapon.value,
+      kind: 'flat',
+    });
+  }
+  // A canon character's powers changed: put them back on their rung for the era.
+  if (entity.id in data.cast) calibrateCast(data, entity, tick);
 }
 
 /** The level a track's stage belongs to, as a word ("Adept"). */

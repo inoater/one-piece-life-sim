@@ -4,7 +4,7 @@ import { appendLog } from '../../engine/log';
 import type { NewsDraft } from '../../engine/pipeline';
 import type { Rng } from '../../engine/rng';
 import type { CharacterData, Entity, WorldState } from '../../engine/state';
-import { addMod, makeStat, STAT_IDS } from '../../engine/stats';
+import { makeStat, STAT_IDS } from '../../engine/stats';
 import { cutoffTick, killCharacter } from '../canon/cast';
 import { fullName, givenNames, namePool, npcTraits, rollPronouns } from '../genesis/family';
 import { raceAgeFor } from '../genesis/stages';
@@ -14,6 +14,7 @@ import { relate } from '../life/people';
 import { lanesFrom, locations, withDevFixtures } from './graph';
 import { priceMult } from './place';
 import { armFighter } from '../powers/month';
+import { huntReason, npcFight, npcRaid, npcSeaTrouble, quarrelReason } from '../battle/world';
 import { entityIds } from '../../engine/entities';
 
 /**
@@ -297,7 +298,7 @@ function turnPirate(site: NpcSite, entity: Entity, rng: Rng): void {
 }
 
 function scheme(site: NpcSite, entity: Entity, rng: Rng): void {
-  const { state, data, tick } = site;
+  const { state, tick } = site;
   const c = entity.character as CharacterData;
   const here = (peopleAt(state, tick).get(c.place ?? '') ?? []).filter(
     (id) => id !== entity.id && state.entities[id]?.character?.alive,
@@ -309,39 +310,20 @@ function scheme(site: NpcSite, entity: Entity, rng: Rng): void {
     marine && pirates.length > 0 ? rng.fork('target').pick(pirates) : rng.fork('target').pick(here);
   const target = state.entities[targetId];
   if (!target?.character) return;
-  const mine = combatPowerOf(data, entity, tick) + rng.fork('me').normal(0, 30);
-  const theirs = combatPowerOf(data, target, tick) + rng.fork('them').normal(0, 30);
-  const [winner, loser] = mine >= theirs ? [entity, target] : [target, entity];
-  if (marine && winner === entity && typeof target.flags['bounty'] === 'number') {
-    target.flags['status'] = 'imprisoned';
-    delete target.flags['affiliation'];
-    if (target.character.npc) {
-      delete target.character.npc.crewId;
-      target.character.npc.goal = 'freedom';
-    }
-    log(site, entity, `${entity.name} of the Marines arrested the pirate ${target.name}.`, [
-      'marine',
-      'pirate',
-    ]);
-    return;
-  }
-  if (rng.fork('deadly').chance(0.06)) {
-    killCharacter(state, data, loser, {
-      tick,
-      canon: false,
-      cause: `killed in a quarrel with ${winner.name}`,
-      newsDrafts: site.newsDrafts,
-    });
-    return;
-  }
-  const strength = loser.stats['strength'];
-  if (strength)
-    addMod(strength, {
-      source: 'Beaten in a quarrel',
-      value: -10,
-      kind: 'pct',
-      expiresTick: tick + 6,
-    });
+  // Phase 5: the same rules as anyone's fight, in one roll; a Marine takes a pirate alive. Most
+  // grudges never come to blows.
+  const hunting = marine && typeof target.flags['bounty'] === 'number';
+  if (!hunting && !rng.fork('blows?').chance(site.data.battle.npc.quarrel)) return;
+  npcFight(
+    site,
+    entity,
+    target,
+    hunting ? 'capture' : rng.fork('deadly').chance(0.1) ? 'kill' : 'spare',
+    hunting
+      ? () => `${entity.name}, ${huntReason(entity, target)}, went after ${target.name}.`
+      : () => `${entity.name} and ${target.name} came to blows: ${quarrelReason(entity)}.`,
+    hunting ? ['hunt', 'marine', 'pirate'] : ['quarrel'],
+  );
 }
 
 function settle(site: NpcSite, entity: Entity, rng: Rng): void {
@@ -387,6 +369,8 @@ function act(site: NpcSite, entity: Entity, action: NpcAction, rng: Rng): void {
     case 'voyage': {
       const edges = lanesFrom(data, c.place ?? '');
       if (edges.length > 0) c.place = rng.pick(edges).to;
+      // Phase 5: the sea is the sea for everyone (pirates, storms, fruit users who go over).
+      if (rng.fork('sea?').chance(data.battle.npc.seaTrouble)) npcSeaTrouble(site, entity);
       break;
     }
     case 'piracy':
@@ -409,6 +393,52 @@ function act(site: NpcSite, entity: Entity, action: NpcAction, rng: Rng): void {
   if (c.npc) c.npc.last = action;
 }
 
+/**
+ * Phase 5: fights people go looking for. A Marine or a bounty hunter goes after a pirate at the
+ * same place; a pirate captain raids the town the crew is in. Returns true if the quarter went on it.
+ */
+function huntsOrRaids(site: NpcSite, entity: Entity, rng: Rng): boolean {
+  const { state, data, tick } = site;
+  const c = entity.character as CharacterData;
+  const here = (peopleAt(state, tick).get(c.place ?? '') ?? []).filter((id) => {
+    const e = state.entities[id];
+    return id !== entity.id && e?.character?.alive && e.flags['status'] !== 'imprisoned';
+  });
+  if (here.length === 0) return false;
+  const marine = entity.flags['affiliation'] === 'org_marines';
+  const hunter = marine || c.occupation === 'occ_bounty_hunter';
+  if (hunter && rng.fork('hunt?').chance(data.battle.npc.hunt)) {
+    const pirates = here.filter((id) => typeof state.entities[id]?.flags['bounty'] === 'number');
+    if (pirates.length === 0) return false;
+    const target = state.entities[rng.fork('target').pick(pirates)] as Entity;
+    npcFight(
+      site,
+      entity,
+      target,
+      'capture',
+      () => `${entity.name}, ${huntReason(entity, target)}, went after ${target.name}.`,
+      ['hunt', marine ? 'marine' : 'bounty_hunter', 'pirate'],
+    );
+    return true;
+  }
+  const crewId = c.npc?.crewId;
+  const crew = crewId ? state.entities[crewId] : undefined;
+  const loc = c.place ? data.locations[c.place] : undefined;
+  if (
+    crew?.org?.leaderId === entity.id &&
+    loc?.kind !== 'stronghold' &&
+    rng.fork('raid?').chance(data.battle.npc.raid)
+  ) {
+    const defenders = here
+      .map((id) => state.entities[id] as Entity)
+      .filter((e) => e.flags['affiliation'] === 'org_marines' || e.character?.npc?.goal === 'glory')
+      .filter((e) => e.flags['affiliation'] !== crewId);
+    npcRaid(site, entity, defenders);
+    return true;
+  }
+  return false;
+}
+
 /** A Tier 2 person's quarter: score every open action by their goal, plus noise; do the best. */
 export function npcQuarter(site: NpcSite, entity: Entity): void {
   const { data, tick } = site;
@@ -419,6 +449,10 @@ export function npcQuarter(site: NpcSite, entity: Entity): void {
   const age = humanAgeOf(data, p, tick);
   if (age < 12) return;
   const rng = site.rng.fork(entity.id);
+  if (age >= 16 && age < 65 && huntsOrRaids(site, entity, rng.fork('fight'))) {
+    c.npc.last = 'fight';
+    return;
+  }
   let best: { action: NpcAction; score: number } | null = null;
   for (const option of data.world.npc.actions) {
     if (age < option.ages.min || age > option.ages.max) continue;

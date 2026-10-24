@@ -12,7 +12,7 @@
       "description": "Fists, elbows, whatever is to hand.",
       "text": "You stopped flailing and started fighting.",
       "techniques": ["tech_brawl_haymaker", "tech_brawl_headbutt"],
-      "combat": 3
+      "combat": 5
     },
     {
       "id": "street",
@@ -27,7 +27,7 @@
         }
       },
       "techniques": ["tech_brawl_throw"],
-      "combat": 8
+      "combat": 30
     },
     {
       "id": "brawler",
@@ -43,7 +43,7 @@
         }
       },
       "techniques": ["tech_brawl_rush"],
-      "combat": 15
+      "combat": 95
     },
     {
       "id": "iron_fists",
@@ -58,7 +58,7 @@
           "strength": 60
         }
       },
-      "combat": 24
+      "combat": 220
     }
   ],
   "learn": {

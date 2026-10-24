@@ -35,6 +35,7 @@ import { ensureWorldLayer } from '../systems/places/history';
 import { canonView, factionViews, mapView, placeView, worldSummary } from '../systems/places/view';
 import { travelView } from '../systems/voyage/view';
 import { fruitsView, powersView } from '../systems/powers/view';
+import { battleView, fightSelfView } from '../systems/battle/view';
 import { entryWarnings } from '../systems/genesis/warnings';
 import type {
   AdvanceReport,
@@ -674,6 +675,7 @@ export class SimCore {
       text: d.text,
       dateLabel: label(d.firedTick),
       choices: d.choices.map((c) => ({ ...c })),
+      ...(d.battle ? { battle: true } : {}),
     }));
 
     const byType: Record<string, number> = {};
@@ -702,6 +704,8 @@ export class SimCore {
       life: lifeView(state, data),
       travel: travelView(state, data),
       powers: powersView(state, data),
+      battle: battleView(state, data),
+      fight: fightSelfView(state, data),
       world: worldSummary(state, data),
       epilogue:
         !state.openEnded && hasReachedPresent(cal, state.tick)

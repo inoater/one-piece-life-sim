@@ -17,7 +17,7 @@
         }
       },
       "techniques": ["tech_nitoryu_taka_nami"],
-      "combat": 6
+      "combat": 25
     },
     {
       "id": "paired_cuts",
@@ -32,7 +32,7 @@
         }
       },
       "techniques": ["tech_nitoryu_rashomon"],
-      "combat": 16
+      "combat": 145
     },
     {
       "id": "crossing",
@@ -47,7 +47,7 @@
           "speed": 55
         }
       },
-      "combat": 26
+      "combat": 350
     },
     {
       "id": "two_master",
@@ -62,7 +62,7 @@
           "dexterity": 70
         }
       },
-      "combat": 38
+      "combat": 695
     }
   ],
   "learn": {

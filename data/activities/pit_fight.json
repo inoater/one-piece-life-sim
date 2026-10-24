@@ -1,0 +1,42 @@
+{
+  "id": "act_pit_fight",
+  "name": "Fight in the pits",
+  "category": "work",
+  "description": "Bare knuckles in a cellar or a colosseum's lower ring, for a purse and whatever you bet on yourself.",
+  "minAge": 16,
+  "physical": true,
+  "requires": {
+    "anyFeatures": ["underworld", "arena"],
+    "atSea": false
+  },
+  "gains": {
+    "strength": 0.4,
+    "durability": 0.4
+  },
+  "practice": {
+    "kind": "fight"
+  },
+  "fight": {
+    "kind": "contest",
+    "contest": "pit_fight"
+  },
+  "infamy": 1,
+  "outcomes": [
+    {
+      "id": "won",
+      "text": "You took the purse, and the crowd went home poorer for betting against you.",
+      "weight": 1
+    },
+    {
+      "id": "draw",
+      "text": "You won a fight and lost one, and broke about even.",
+      "weight": 1
+    },
+    {
+      "id": "lost",
+      "text": "You went down in the first, and the cellar cheered somebody else.",
+      "weight": 1
+    }
+  ],
+  "tags": ["fight", "crime", "contest", "money"]
+}

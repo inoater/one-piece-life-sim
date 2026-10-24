@@ -17,7 +17,7 @@
         }
       },
       "techniques": ["tech_iai_draw"],
-      "combat": 6
+      "combat": 25
     },
     {
       "id": "lightning_draw",
@@ -32,7 +32,7 @@
           "dexterity": 50
         }
       },
-      "combat": 16
+      "combat": 145
     },
     {
       "id": "single_breath",
@@ -48,7 +48,7 @@
         }
       },
       "techniques": ["tech_iai_shishi"],
-      "combat": 28
+      "combat": 400
     },
     {
       "id": "iai_master",
@@ -63,7 +63,7 @@
           "speed": 70
         }
       },
-      "combat": 40
+      "combat": 765
     }
   ],
   "learn": {

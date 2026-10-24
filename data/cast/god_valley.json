@@ -59,7 +59,37 @@
         "haki": ["observation", "armament", "conqueror"]
       }
     ],
-    "traits": ["trait_kings_qualities", "trait_will_of_d"]
+    "traits": ["trait_kings_qualities", "trait_will_of_d"],
+    "power": [
+      {
+        "from": {
+          "year": -50,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -34,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "tier": "peak"
+      }
+    ]
   },
   {
     "id": "char_gol_d_roger",
@@ -172,7 +202,37 @@
       "char_scopper_gaban",
       "char_portgas_d_rouge"
     ],
-    "traits": ["trait_kings_qualities", "trait_voice_of_all_things", "trait_will_of_d"]
+    "traits": ["trait_kings_qualities", "trait_voice_of_all_things", "trait_will_of_d"],
+    "power": [
+      {
+        "from": {
+          "year": -39,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -25,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": -16,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": -5,
+          "month": 1
+        },
+        "tier": "peak"
+      }
+    ]
   },
   {
     "id": "char_monkey_d_garp",
@@ -238,6 +298,50 @@
       }
     ],
     "ties": ["char_monkey_d_dragon", "char_monkey_d_luffy"],
-    "traits": ["trait_will_of_d"]
+    "traits": ["trait_will_of_d"],
+    "power": [
+      {
+        "from": {
+          "year": -40,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -25,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": -18,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": -5,
+          "month": 1
+        },
+        "tier": "peak"
+      },
+      {
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "tier": "monster"
+      }
+    ]
   }
 ]

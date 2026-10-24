@@ -15,6 +15,7 @@ import { reapplyTraits } from '../life/traits';
 import { withDevFixtures } from '../places/graph';
 import { releaseFruitOf } from '../powers/fruits';
 import { applyCanonEra } from '../powers/movesets';
+import { calibrateCast } from '../battle/ladder';
 import { Rng } from '../../engine/rng';
 import { entityIds } from '../../engine/entities';
 
@@ -136,6 +137,8 @@ function makeCastEntity(
   // Phase 4: traits' modifiers (King's Qualities is hidden), and their powers by era.
   reapplyTraits(data, entity);
   applyCanonEra(state, data, entity, tick);
+  // Phase 5: their rung on the power ladder for this era.
+  calibrateCast(data, entity, tick);
   return entity;
 }
 
@@ -168,9 +171,12 @@ export function followCanon(
   const c = entity.character;
   if (!cast || !c?.alive) return;
   if (tick > c.birthTick && (tick - c.birthTick) % 12 === 0) setStats(data, entity, cast, tick);
-  if (entity.origin !== 'canon' || tick > cutoffTick(data)) return;
-  applyKeyframe(entity, keyframeAt(cast, tick), c.place ?? cast.birthplace);
-  if (state) applyCanonEra(state, data, entity, tick);
+  if (entity.origin === 'canon' && tick <= cutoffTick(data)) {
+    applyKeyframe(entity, keyframeAt(cast, tick), c.place ?? cast.birthplace);
+    if (state) applyCanonEra(state, data, entity, tick);
+  }
+  // Phase 5: their rung on the power ladder for this era (off the story's path too).
+  calibrateCast(data, entity, tick);
 }
 
 // ---- Deaths -------------------------------------------------------------------------------------

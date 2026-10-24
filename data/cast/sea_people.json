@@ -85,7 +85,37 @@
         "approx": true
       }
     ],
-    "ties": ["char_jinbe", "char_arlong"]
+    "ties": ["char_jinbe", "char_arlong"],
+    "power": [
+      {
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 0,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 21,
+          "month": 1
+        },
+        "tier": "commander"
+      }
+    ]
   },
   {
     "id": "char_jinbe",
@@ -191,6 +221,43 @@
         "bounty": 1100000000,
         "approx": true
       }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -8,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "tier": "officer"
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 3
+        },
+        "tier": "monster"
+      }
     ]
   },
   {
@@ -258,6 +325,29 @@
         "bounty": 20000000,
         "status": "imprisoned",
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -3,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "tier": "officer"
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 1
+        },
+        "tier": "captain"
       }
     ]
   },
@@ -347,6 +437,36 @@
         "approx": true
       }
     ],
-    "traits": ["trait_kings_qualities"]
+    "traits": ["trait_kings_qualities"],
+    "power": [
+      {
+        "from": {
+          "year": 7,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": 26,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "tier": "commander"
+      }
+    ]
   }
 ]

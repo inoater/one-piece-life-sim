@@ -15,14 +15,20 @@ pushed by the canon mode, with a Divergence Log of every way the world leaves it
 choices made, the three colours of haki, 136 canon Devil Fruits (one entity each, reborn when a user
 dies) and a generator for new ones, fighting styles from Rokushiki to Fish-Man Karate, one engine
 of power tracks that every power climbs, techniques and movesets (40 canon fighters by era), and a
-technique creator. Status reports: `docs/PHASE0.md` to `docs/PHASE4.md`.
+technique creator. **Phase 5** (reflexes) gives it fights: one battle engine for a bar brawl, a
+duel, a skirmish, a crew battle with its match-up board, a sea fight between two ships and a war
+of fronts, played exchange by exchange (the player choosing every action, or a stance in quick
+mode); the Logia rule and fruit matchups; intent (spare, capture, kill) and the fate of the beaten;
+injuries, scars and second winds; sparring that trains by its partner; contests; the canon cast on
+a power ladder by era; and Tier 2 people who hunt, raid and quarrel by the same rules, resolved in
+one roll fitted to the engine. Status reports: `docs/PHASE0.md` to `docs/PHASE5.md`.
 
 ## Quick start
 
 ```bash
 npm install          # also points git at .githooks (the pre-commit data check)
 npm run dev          # http://localhost:5173 opens New Life; debug panel on (press ` to toggle)
-npm test             # 960 unit and integration tests, a few minutes
+npm test             # 988 unit and integration tests, a few minutes
 npm run check        # typecheck, validate data, source rules, tests, formatting
 ```
 
@@ -42,6 +48,7 @@ Node 20 or newer (`.nvmrc` pins 22).
 | `npm run lives`         | Phase 2 balance: whole headless lives per race on every core: `-- --lives 1000 --race all`. Lifespans, causes, outcomes.                            |
 | `npm run world`         | Phase 3: Year 0 to the present with nobody in it; prints the world's timeline. `-- --rates 100`: how often each beat fires per canon mode.          |
 | `npm run powers`        | Phase 4 evidence: the catalogue, 1,000 generated fruits, `-- --kings 10000` (Conqueror's Haki only with King's Qualities), `--drift 20`, `--world`. |
+| `npm run battle`        | Phase 5 evidence: 1,000 pairings, tactical against abstract, and the gamma that fits; `-- --spars 1000`, `--world` (NPC fights), `--ladder`.        |
 | `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                                                               |
 | `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                                                                |
 | `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                                                              |
@@ -55,6 +62,7 @@ src/systems/   seven of the eight pipeline steps (actions, travel, population, w
 src/systems/genesis/  character genesis: New Life options, family, backfill, appearance, the sheet
 src/systems/life/     the life loop: routine, training, health, jobs, money, family, death, traits, personality
 src/systems/powers/   power tracks, haki, Devil Fruits (catalogue, world, generator), techniques, movesets, views
+src/systems/battle/   the battle engine: fighters, exchanges, AI, scales, aftermath, sparring, NPC fights, the ladder
 src/core.ts    wires engine + systems: tick(state, data, rng) -> state
 src/worker/    runs the simulation off the main thread; the typed message protocol
 src/ui/        hash router, shell, screens (New Life at #/new), menu, debug panel (vanilla DOM)
@@ -63,6 +71,7 @@ data/          calendar, settings, character (growth, talent, stages), creation 
                life (slots, effort, health, money, death); races/ birthplaces/ legacies/ occupations/ names/ foci/
                backstory/ activities/ jobs/ traits/ events/ weapons/ locations/ lanes/ vessels/ factions/ cast/ canon/
                powers.json personality.json fruitMatchups.json; fruits/ tracks/ techniques/ movesets/ (Phase 4)
+               battle.json (Phase 5)
                (news/ reserved)
 tools/         validate-data, headless-sim, canon-lint, lint-sim, update-golden, build helpers
 tests/         engine/ worker/ ui/ tools/ e2e/ fixtures/golden/

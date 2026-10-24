@@ -12,7 +12,7 @@
       "description": "Wrap a limb in an invisible armour of will.",
       "text": "Your fist struck as if wrapped in iron, though nothing was there.",
       "techniques": ["tech_haki_coat"],
-      "combat": 6
+      "combat": 35
     },
     {
       "id": "harden",
@@ -28,7 +28,7 @@
         }
       },
       "techniques": ["tech_haki_harden"],
-      "combat": 14
+      "combat": 155
     },
     {
       "id": "coat_weapon",
@@ -44,7 +44,7 @@
         }
       },
       "techniques": ["tech_haki_coat_weapon"],
-      "combat": 22
+      "combat": 355
     },
     {
       "id": "full_body",
@@ -60,7 +60,7 @@
           "endurance": 50
         }
       },
-      "combat": 34
+      "combat": 775
     },
     {
       "id": "emission",
@@ -78,7 +78,7 @@
         "event": "stronger_foe"
       },
       "techniques": ["tech_haki_ryuo"],
-      "combat": 48
+      "combat": 1445
     },
     {
       "id": "internal",
@@ -95,7 +95,7 @@
         "breakthrough": true
       },
       "techniques": ["tech_haki_internal"],
-      "combat": 62
+      "combat": 2290
     },
     {
       "id": "black_blade",
@@ -112,7 +112,7 @@
           "swords": 1
         }
       },
-      "combat": 72,
+      "combat": 3000,
       "flags": {
         "blade.black": true
       }

@@ -12,7 +12,7 @@
       "description": "Feel where living things are without seeing them.",
       "text": "You knew someone was behind you before you turned.",
       "techniques": ["tech_haki_sense"],
-      "combat": 5
+      "combat": 25
     },
     {
       "id": "wider_range",
@@ -28,7 +28,7 @@
         }
       },
       "techniques": ["tech_haki_read_strike"],
-      "combat": 12
+      "combat": 120
     },
     {
       "id": "read_intent",
@@ -43,7 +43,7 @@
           "perception": 45
         }
       },
-      "combat": 22
+      "combat": 355
     },
     {
       "id": "track_crowds",
@@ -59,7 +59,7 @@
         },
         "event": "stronger_foe"
       },
-      "combat": 35
+      "combat": 820
     },
     {
       "id": "future_sight",
@@ -76,7 +76,7 @@
         "breakthrough": true
       },
       "techniques": ["tech_haki_future_sight"],
-      "combat": 55
+      "combat": 1845
     },
     {
       "id": "voice",
@@ -93,7 +93,7 @@
         "anyTraits": ["trait_voice_of_all_things"],
         "hidden": true
       },
-      "combat": 70
+      "combat": 2850
     }
   ],
   "learn": {

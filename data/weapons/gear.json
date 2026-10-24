@@ -5,7 +5,9 @@
     "description": "A plain sailor's sword.",
     "gear": "swords",
     "price": 30000,
-    "tags": ["sword"]
+    "tags": ["sword"],
+    "combat": 40,
+    "attack": 10
   },
   {
     "id": "weapon_katana",
@@ -13,7 +15,9 @@
     "description": "A good Wano blade.",
     "gear": "swords",
     "price": 200000,
-    "tags": ["sword"]
+    "tags": ["sword"],
+    "combat": 90,
+    "attack": 16
   },
   {
     "id": "weapon_flintlock",
@@ -21,7 +25,9 @@
     "description": "One shot, then a reload.",
     "gear": "gun",
     "price": 50000,
-    "tags": ["gun"]
+    "tags": ["gun"],
+    "combat": 50,
+    "attack": 12
   },
   {
     "id": "weapon_bow",
@@ -29,6 +35,8 @@
     "description": "Yew and gut.",
     "gear": "bow",
     "price": 15000,
-    "tags": ["bow"]
+    "tags": ["bow"],
+    "combat": 30,
+    "attack": 8
   }
 ]

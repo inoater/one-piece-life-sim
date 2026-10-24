@@ -2,7 +2,7 @@
   "id": "act_spar",
   "name": "Spar",
   "category": "train_body",
-  "description": "Real fights with rules, against whoever will stand across from you.",
+  "description": "Real fights with rules, against whoever will stand across from you: a stronger partner teaches more.",
   "minAge": 12,
   "physical": true,
   "usesMentor": true,
@@ -130,5 +130,10 @@
   ],
   "practice": {
     "kind": "spar"
+  },
+  "fight": {
+    "kind": "spar",
+    "partner": "any",
+    "stop": "first_knockdown"
   }
 }

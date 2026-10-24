@@ -68,7 +68,8 @@
       "school",
       "doctor",
       "farmland",
-      "underworld"
+      "underworld",
+      "arena"
     ],
     "eventTags": {
       "fight": 2,

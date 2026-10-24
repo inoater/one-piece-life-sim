@@ -1,3 +1,4 @@
+import { activityFight } from '../battle/spar';
 import { dateOf, formatDate } from '../../engine/calendar';
 import type { Activity, Job, Outcome, Risk } from '../../engine/data/schemas';
 import type { Rng } from '../../engine/rng';
@@ -285,6 +286,8 @@ export function runOutcome(
 
 // ---- One activity -------------------------------------------------------------------------------
 
+const RESULT_IDS = new Set(['won', 'lost', 'draw']);
+
 function rollRisk(env: LifeEnv, risk: Risk, effortRisk: number, rng: Rng): void {
   const exhaustedMult = env.life.exhausted ? 1.5 : 1;
   if (risk.injury > 0 && rng.fork('injury?').chance(risk.injury * effortRisk * exhaustedMult)) {
@@ -376,13 +379,21 @@ export function runActivity(
   }
   const eff = data.life.efforts[effort];
   const rng = env.rng.fork('slot', index, act.id);
-  const vigor = act.restful ? 0 : eff.vigor + act.extraVigor;
+  // Phase 5: a crew training day costs less than a real spar.
+  const vigor = act.restful
+    ? 0
+    : act.fight?.kind === 'group'
+      ? data.battle.spar.groupVigor
+      : eff.vigor + act.extraVigor;
   const atSea = p.place.atSea && act.category === 'train_body' ? data.travel.atSea.trainBody : 1;
   const scale = eff.gain * stageOf(data, p, tick).training * teacherMultiplier(env, act) * atSea;
   const actEnv = withCause(env, act.id, undefined, rng);
 
   if (act.cost) pay(actEnv, -rng.fork('cost').int(act.cost.min, act.cost.max));
-  trainGains(actEnv, act.gains, scale, effort, rng.fork('train'));
+  // Phase 5: a spar, a brawl or a contest is a real fight; a spar trains by its partner.
+  const fought = act.fight ? activityFight(actEnv, act, rng.fork('fight')) : null;
+  const fightMult = fought?.mult ?? 1;
+  trainGains(actEnv, act.gains, scale * fightMult, effort, rng.fork('train'));
   if (act.earn) pay(actEnv, Math.round(rng.fork('earn').int(act.earn.min, act.earn.max) * eff.pay));
   if (act.regen > 0) restore(actEnv, act.regen);
   if (act.speedsHealing > 0) speedHealing(actEnv, act.speedsHealing);
@@ -395,7 +406,7 @@ export function runActivity(
         actEnv,
         act,
         effort,
-        eff.gain * stageOf(data, p, tick).training,
+        eff.gain * stageOf(data, p, tick).training * fightMult,
         rng.fork('practice'),
       )
     : null;
@@ -407,7 +418,10 @@ export function runActivity(
     category: act.category,
     tags: act.tags,
     effort,
-    vars: { technique: practised?.technique ?? 'a plain punch' },
+    vars: {
+      technique: practised?.technique ?? 'a plain punch',
+      partner: fought?.partner ?? 'someone',
+    },
   };
   let risk = act.risk;
   let chosen: Outcome | undefined;
@@ -433,9 +447,23 @@ export function runActivity(
     }
   }
   if (act.doctor) chosen = doctorVisit(actEnv, act, rng.fork('visit'));
+  if (fought) {
+    // The outcome named for the result; otherwise one of the others (the fight was its own story).
+    chosen = outcomes.find((o) => o.id === fought.result);
+    if (!chosen) {
+      const others = outcomes.filter((o) => !RESULT_IDS.has(o.id));
+      chosen = pickOutcome(
+        actEnv,
+        others.length > 0 ? others : outcomes,
+        cast,
+        rng.fork('outcome'),
+      );
+    }
+  }
   chosen ??= pickOutcome(actEnv, outcomes, cast, rng.fork('outcome'));
-  if (chosen) runOutcome(actEnv, source, chosen, cast, rng.fork('apply'));
-  if (p.c.alive) rollRisk(actEnv, risk, eff.risk, rng.fork('risk'));
+  if (chosen && p.c.alive) runOutcome(actEnv, source, chosen, cast, rng.fork('apply'));
+  // A fight's blows were its risk (a spar's, a tenth as often).
+  if (p.c.alive && !fought) rollRisk(actEnv, risk, eff.risk, rng.fork('risk'));
   return { ran: true, vigor: vigor + (practised?.vigor ?? 0), restful: act.restful };
 }
 

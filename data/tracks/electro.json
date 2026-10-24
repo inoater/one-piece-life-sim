@@ -12,7 +12,7 @@
       "description": "Let a spark jump from your fur.",
       "text": "A spark jumped from your fur to the iron door.",
       "techniques": ["tech_electro"],
-      "combat": 6
+      "combat": 25
     },
     {
       "id": "charged",
@@ -27,7 +27,7 @@
         }
       },
       "techniques": ["tech_electro_claw"],
-      "combat": 18
+      "combat": 165
     },
     {
       "id": "discharge",
@@ -42,7 +42,7 @@
         }
       },
       "techniques": ["tech_electro_discharge"],
-      "combat": 32
+      "combat": 465
     }
   ],
   "learn": {

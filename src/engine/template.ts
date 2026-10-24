@@ -78,6 +78,8 @@ export const BACKSTORY_VARS = [
  */
 export const LIFE_VARS = [
   ...WORLD_VARS,
+  // Phase 5: who a spar or a fight was against.
+  'partner',
   'age',
   'ageWords',
   'home',

@@ -68,10 +68,26 @@
             "modes": ["own"]
           }
         ],
-        "check": {
-          "stat": "combatPower",
-          "difficulty": 220,
-          "perDanger": 10,
+        "fight": {
+          "scale": "naval",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_bounty_hunter"
+            },
+            {
+              "kind": "foe",
+              "foe": "foe_thug",
+              "count": 6
+            }
+          ],
+          "intent": "capture",
+          "mine": "capture",
+          "allies": "crew",
+          "ship": {
+            "vessel": "vessel_merchant_sloop",
+            "crew": 6
+          },
           "success": {
             "text": "Their guards threw down their weapons and you emptied the hold.",
             "effects": [
@@ -100,11 +116,6 @@
               {
                 "kind": "hull",
                 "value": -10
-              },
-              {
-                "kind": "injury",
-                "severity": "minor",
-                "cause": "violence"
               },
               {
                 "kind": "infamy",
@@ -148,10 +159,29 @@
       {
         "id": "fight",
         "label": "Fight them off",
-        "check": {
-          "stat": "combatPower",
-          "difficulty": 230,
-          "perDanger": 25,
+        "fight": {
+          "scale": "naval",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_pirate_captain"
+            },
+            {
+              "kind": "foe",
+              "foe": "foe_pirate_officer"
+            },
+            {
+              "kind": "foe",
+              "foe": "foe_pirate",
+              "count": 10
+            }
+          ],
+          "intent": "capture",
+          "allies": "crew",
+          "ship": {
+            "vessel": "vessel_caravel",
+            "crew": 10
+          },
           "criticalSuccess": {
             "text": "You boarded them first and took their whole hold as a prize.",
             "effects": [
@@ -194,11 +224,6 @@
                 "kind": "berries",
                 "min": -8000,
                 "max": -2000
-              },
-              {
-                "kind": "injury",
-                "severity": "serious",
-                "cause": "violence"
               }
             ]
           },
@@ -216,11 +241,6 @@
               {
                 "kind": "supplies",
                 "months": -2
-              },
-              {
-                "kind": "injury",
-                "severity": "severe",
-                "cause": "violence"
               }
             ]
           }
@@ -784,5 +804,109 @@
       }
     ],
     "tags": ["voyage", "discovery", "fortune"]
+  },
+  {
+    "id": "evt_voyage_davy_back",
+    "type": "voyage",
+    "title": "A Davy Back Fight",
+    "text": "A ship with a grinning skull on every sail hailed you: its captain challenges your crew to a Davy Back Fight, three games, a member of the loser's crew to the winner for each.",
+    "trigger": "voyage",
+    "weight": 0.3,
+    "cooldown": 36,
+    "conditions": [
+      {
+        "kind": "travelMode",
+        "modes": ["own"]
+      }
+    ],
+    "choices": [
+      {
+        "id": "accept",
+        "label": "Accept the challenge",
+        "fight": {
+          "scale": "duel",
+          "contest": "davy_back",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_pirate_officer"
+            }
+          ],
+          "intent": "spare",
+          "mode": "quick",
+          "criticalSuccess": {
+            "text": "You took all three games, and three of their crew came over with their sea bags.",
+            "effects": [
+              {
+                "kind": "crew",
+                "value": 3
+              },
+              {
+                "kind": "fame",
+                "value": 6
+              },
+              {
+                "kind": "morale",
+                "value": 15
+              }
+            ]
+          },
+          "success": {
+            "text": "You took the Davy Back Fight, and the hands you won came aboard.",
+            "effects": [
+              {
+                "kind": "crew",
+                "value": 1
+              },
+              {
+                "kind": "fame",
+                "value": 3
+              },
+              {
+                "kind": "morale",
+                "value": 8
+              }
+            ]
+          },
+          "failure": {
+            "text": "They took the games, and one of your hands went across to them.",
+            "effects": [
+              {
+                "kind": "crew",
+                "value": -1
+              },
+              {
+                "kind": "morale",
+                "value": -10
+              }
+            ]
+          },
+          "criticalFailure": {
+            "text": "They took every game, and your crew is thinner for it.",
+            "effects": [
+              {
+                "kind": "crew",
+                "value": -2
+              },
+              {
+                "kind": "morale",
+                "value": -15
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "decline",
+        "label": "Turn it down",
+        "effects": [
+          {
+            "kind": "morale",
+            "value": -2
+          }
+        ]
+      }
+    ],
+    "tags": ["voyage", "encounter", "pirate", "contest"]
   }
 ]

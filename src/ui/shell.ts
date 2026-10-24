@@ -231,6 +231,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     jumpCount,
   );
   let unseen = 0;
+  /** The "seen up to" mark of the last snapshot drawn (lines after it ink in). */
+  let drawnSeenSeq = Infinity;
 
   const shell = h(
     'div',
@@ -596,6 +598,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       snapshotChanged ||
       state.omniscient !== previous?.omniscient ||
       state.feedFilter !== previous?.feedFilter ||
+      // Buttons drawn while the app was busy (a battle's actions) come alive when it is not.
+      (state.busy === null) !== (previous?.busy === null) ||
       !previous
     ) {
       const stick = !previous || atBottom(feedPanel);
@@ -603,13 +607,21 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       const sameWorld =
         previous?.snapshot && state.snapshot && previous.snapshot.seed === state.snapshot.seed;
       const lastSeq = previous?.snapshot?.feed[previous.snapshot.feed.length - 1]?.seq;
-      const seenSeq = sameWorld && lastSeq !== undefined ? lastSeq : Infinity;
+      // A redraw for anything but a new snapshot keeps the last one's new lines inking in.
+      const seenSeq = !snapshotChanged
+        ? drawnSeenSeq
+        : sameWorld && lastSeq !== undefined
+          ? lastSeq
+          : Infinity;
+      drawnSeenSeq = seenSeq;
       const focusedFilter = (document.activeElement as HTMLElement | null)?.dataset?.['filter'];
       feedPanel.replaceChildren(renderFeed(state, app, { seenSeq }), jumpButton);
       if (focusedFilter) {
         feedPanel.querySelector<HTMLElement>(`[data-filter="${focusedFilter}"]`)?.focus();
       }
-      const arrived = state.snapshot?.feed.filter((e) => e.seq > seenSeq).length ?? 0;
+      const arrived = snapshotChanged
+        ? (state.snapshot?.feed.filter((e) => e.seq > seenSeq).length ?? 0)
+        : 0;
       if (stick) {
         feedPanel.scrollTop = feedPanel.scrollHeight;
         unseen = 0;

@@ -1,3 +1,4 @@
+import { applyBattleCommand } from './battle/commands';
 import { z } from 'zod';
 import type { GameData } from '../engine/data/schemas';
 import { appendLog } from '../engine/log';
@@ -10,7 +11,16 @@ import {
   type QueuedAction,
   type WorldState,
 } from '../engine/state';
-import { CAPTAIN_ORDERS, TECH_FORMS, TECH_TAGS, TRAVEL_MODES } from '../engine/data/schemas';
+import {
+  BATTLE_SCALES,
+  BATTLE_VERBS,
+  CAPTAIN_ORDERS,
+  INTENTS,
+  TEAM_ORDERS,
+  TECH_FORMS,
+  TECH_TAGS,
+  TRAVEL_MODES,
+} from '../engine/data/schemas';
 import {
   abandonDraft,
   buyEncyclopedia,
@@ -187,6 +197,43 @@ export const ActionSchema = z.discriminatedUnion('type', [
     points: z.number().min(0).max(10000).default(0),
     breakthrough: z.boolean().default(false),
   }),
+  // ---- Battles (Phase 5)
+  z.strictObject({
+    type: z.literal('battle/act'),
+    verb: z.enum(BATTLE_VERBS),
+    move: z.string().min(1).optional(),
+    target: z.string().min(1).optional(),
+    item: z.string().min(1).optional(),
+    haki: z.enum(['read', 'coat', 'burst']).optional(),
+    talk: z.enum(['taunt', 'surrender', 'persuade', 'stall']).optional(),
+    partner: z.string().min(1).optional(),
+  }),
+  z.strictObject({
+    type: z.literal('battle/naval'),
+    move: z.enum(['close', 'hold', 'flee']),
+    attack: z.enum(['fire', 'ram', 'board', 'none']),
+  }),
+  z.strictObject({ type: z.literal('battle/stance'), stance: z.string().min(1) }),
+  z.strictObject({ type: z.literal('battle/mode'), mode: z.enum(['tactical', 'quick']) }),
+  z.strictObject({
+    type: z.literal('battle/order'),
+    order: z.enum(TEAM_ORDERS),
+    target: z.string().min(1).nullable().default(null),
+  }),
+  z.strictObject({
+    type: z.literal('battle/board'),
+    pairs: z.array(z.tuple([z.string().min(1), z.string().min(1)])).max(100),
+  }),
+  z.strictObject({ type: z.literal('battle/front'), index: z.number().int().min(0) }),
+  z.strictObject({ type: z.literal('battle/buyKit'), item: z.string().min(1) }),
+  z.strictObject({
+    type: z.literal('debug/fight'),
+    foe: z.string().min(1),
+    count: z.number().int().min(1).max(100).default(1),
+    scale: z.enum(BATTLE_SCALES).default('duel'),
+    intent: z.enum(INTENTS).default('capture'),
+    mode: z.enum(['tactical', 'quick']).default('tactical'),
+  }),
 ]);
 export type Action = z.infer<typeof ActionSchema>;
 
@@ -326,6 +373,25 @@ export function applyAction(
       }
       // Eating a fruit, choosing a style: decisions that survive closing the tab.
       if (action.type.startsWith('powers/')) effects.push({ kind: 'autosave' });
+      break;
+
+    case 'battle/act':
+    case 'battle/naval':
+    case 'battle/stance':
+    case 'battle/mode':
+    case 'battle/order':
+    case 'battle/board':
+    case 'battle/front':
+    case 'battle/buyKit':
+    case 'debug/fight':
+      try {
+        applyBattleCommand(state, data, action);
+      } catch (error) {
+        if (error instanceof ActionError) throw error;
+        throw new ActionError(error instanceof Error ? error.message : String(error));
+      }
+      // Each exchange, like each decision, survives closing the tab.
+      effects.push({ kind: 'autosave' });
       break;
 
     case 'debug/setOpenEnded':

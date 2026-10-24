@@ -112,6 +112,22 @@ describe('golden saves: every old save version must keep loading', () => {
     ).toBe(true);
   });
 
+  it('world_v5.opsim, saved before battles, has no fight under way and plays on with them', async () => {
+    const bytes = new Uint8Array(readFileSync(join(dir, 'world_v5.opsim')));
+    const { state, report } = await deserializeSave(bytes, { dataHash, limits: LIMITS });
+    expect(report.migratedFrom).toBe(5);
+    expect(state.battle).toBeNull();
+    expect(state.counters.battleId).toBe(0);
+    advance(state, data, Rng.root(state.seed), { kind: 'months', count: 6 }, 'auto-random');
+    expect(state.battle).toBeNull();
+    // The canon cast stand on their rungs of the ladder from the first month on.
+    expect(
+      Object.values(state.entities).some((e) =>
+        e.stats['combatBonus']?.mods.some((m) => m.source === 'Strength of their era'),
+      ),
+    ).toBe(true);
+  });
+
   it('world_v3.opsim, saved before the world, gets its map, factions, canon cast and past', async () => {
     const bytes = new Uint8Array(readFileSync(join(dir, 'world_v3.opsim')));
     const { state, report } = await deserializeSave(bytes, { dataHash, limits: LIMITS });

@@ -11,7 +11,7 @@
       "at": 0,
       "description": "Make a little of it, on purpose.",
       "text": "A little of the element came from your hand when you wanted it to.",
-      "combat": 8
+      "combat": 55
     },
     {
       "id": "controlled",
@@ -20,7 +20,7 @@
       "at": 15,
       "description": "Let a blow pass through on purpose.",
       "text": "A blade went through you and you let it.",
-      "combat": 18
+      "combat": 245
     },
     {
       "id": "reflex",
@@ -34,7 +34,7 @@
           "perception": 40
         }
       },
-      "combat": 28
+      "combat": 550
     },
     {
       "id": "large_scale",
@@ -48,7 +48,7 @@
           "willpower": 50
         }
       },
-      "combat": 40
+      "combat": 1040
     },
     {
       "id": "element_haki",
@@ -62,7 +62,7 @@
           "track_armament": "harden"
         }
       },
-      "combat": 54
+      "combat": 1785
     },
     {
       "id": "awakening",
@@ -77,7 +77,7 @@
         },
         "breakthrough": true
       },
-      "combat": 72,
+      "combat": 3000,
       "flags": {
         "fruit.awakened": true
       }

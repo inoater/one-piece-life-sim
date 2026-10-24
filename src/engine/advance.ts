@@ -76,8 +76,9 @@ function autoResolve(
   decision: PendingDecision,
   options: AdvanceOptions,
 ): void {
+  // A fight in progress has one choice: let it play out (the computer fights for them).
   const choice =
-    options.decisions === 'auto-first'
+    options.decisions === 'auto-first' || decision.battle
       ? decision.choices[0]
       : rng.fork('autoresolve', decision.id).pick(decision.choices);
   if (!choice) throw new Error(`Decision ${decision.id} has no choices`);

@@ -36,7 +36,16 @@
       }
     ],
     "ties": ["char_portgas_d_ace"],
-    "traits": ["trait_will_of_d"]
+    "traits": ["trait_will_of_d"],
+    "power": [
+      {
+        "from": {
+          "year": -12,
+          "month": 1
+        },
+        "tier": "civilian"
+      }
+    ]
   },
   {
     "id": "char_portgas_d_ace",
@@ -136,7 +145,44 @@
       }
     ],
     "ties": ["char_monkey_d_luffy", "char_sabo"],
-    "traits": ["trait_kings_qualities", "trait_will_of_d"]
+    "traits": ["trait_kings_qualities", "trait_will_of_d"],
+    "power": [
+      {
+        "from": {
+          "year": 16,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 27,
+          "month": 1
+        },
+        "tier": "thug"
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "tier": "officer"
+      },
+      {
+        "from": {
+          "year": 33,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "tier": "commander"
+      }
+    ]
   },
   {
     "id": "char_monkey_d_luffy",
@@ -338,7 +384,58 @@
       }
     ],
     "ties": ["char_portgas_d_ace", "char_sabo", "char_nami", "char_nico_robin", "char_jinbe"],
-    "traits": ["trait_kings_qualities", "trait_voice_of_all_things", "trait_will_of_d"]
+    "traits": ["trait_kings_qualities", "trait_voice_of_all_things", "trait_will_of_d"],
+    "power": [
+      {
+        "from": {
+          "year": 19,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 29,
+          "month": 1
+        },
+        "tier": "thug"
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 3
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 7
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 11
+        },
+        "tier": "peak"
+      }
+    ]
   },
   {
     "id": "char_nami",
@@ -510,6 +607,36 @@
         "title": "Navigator of the Straw Hat Pirates",
         "approx": true
       }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": 18,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "tier": "thug"
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 5
+        },
+        "tier": "officer"
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 3
+        },
+        "tier": "captain"
+      }
     ]
   },
   {
@@ -609,7 +736,51 @@
         "approx": true
       }
     ],
-    "traits": ["trait_will_of_d", "trait_anomalous_body"]
+    "traits": ["trait_will_of_d", "trait_anomalous_body"],
+    "power": [
+      {
+        "from": {
+          "year": -2,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 8
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 1
+        },
+        "tier": "peak"
+      }
+    ]
   },
   {
     "id": "char_donquixote_doflamingo",
@@ -696,7 +867,37 @@
         "approx": true
       }
     ],
-    "traits": ["trait_kings_qualities"]
+    "traits": ["trait_kings_qualities"],
+    "power": [
+      {
+        "from": {
+          "year": -3,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "tier": "officer"
+      },
+      {
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "tier": "commander"
+      }
+    ]
   },
   {
     "id": "char_crocodile",
@@ -795,6 +996,36 @@
         "bounty": 1965000000,
         "approx": true
       }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -8,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 22,
+          "month": 1
+        },
+        "tier": "commander"
+      }
     ]
   },
   {
@@ -886,6 +1117,43 @@
         "title": "Swordsman of the Cross Guild",
         "bounty": 3590000000,
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -5,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 10,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 15,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "tier": "peak"
       }
     ]
   },
@@ -1015,7 +1283,51 @@
         "approx": true
       }
     ],
-    "traits": ["trait_will_of_d"]
+    "traits": ["trait_will_of_d"],
+    "power": [
+      {
+        "from": {
+          "year": 12,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 26,
+          "month": 1
+        },
+        "tier": "thug"
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "tier": "officer"
+      },
+      {
+        "from": {
+          "year": 34,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 5
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 8
+        },
+        "tier": "monster"
+      }
+    ]
   },
   {
     "id": "char_nefertari_cobra",
@@ -1061,6 +1373,15 @@
         "affiliation": "org_kingdom_alabasta",
         "title": "King of Alabasta",
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -19,
+          "month": 1
+        },
+        "tier": "civilian"
       }
     ]
   },
@@ -1119,6 +1440,15 @@
         "affiliation": "org_world_government",
         "title": "Government scientist",
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -28,
+          "month": 1
+        },
+        "tier": "civilian"
       }
     ]
   }

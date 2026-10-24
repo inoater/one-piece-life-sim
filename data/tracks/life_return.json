@@ -12,7 +12,7 @@
       "description": "Slow the heart, steady the breath.",
       "text": "You slowed your own heart and felt it obey.",
       "techniques": ["tech_life_return"],
-      "combat": 4
+      "combat": 10
     },
     {
       "id": "hair_organs",
@@ -27,7 +27,7 @@
         }
       },
       "techniques": ["tech_life_return_hair"],
-      "combat": 12
+      "combat": 80
     },
     {
       "id": "rapid_healing",
@@ -41,7 +41,7 @@
           "willpower": 70
         }
       },
-      "combat": 20,
+      "combat": 200,
       "statMods": [
         {
           "stat": "endurance",

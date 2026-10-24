@@ -6,6 +6,10 @@ import { PUBLIC_KNOWLEDGE, type EventRecord, type WorldState } from '../engine/s
 import { Rng } from '../engine/rng';
 import { renderTemplate } from '../engine/template';
 import { orderedBeats, resolveBeatChoice, runBeats, type BeatSite } from './canon/beats';
+import type { BattleState } from '../engine/battle-state';
+import type { CheckBand, FightSpec } from '../engine/data/schemas';
+import { beginContest, beginFight, buildFight, resolveBattleDecision } from './battle/player';
+import { onFightFinished } from './battle/finish-hooks';
 import { ensureLife, isJailed, livingRelations, relationKind } from './life/body';
 import { applyLifeEffect } from './life/effects';
 import { firstImpressions } from './life/traits';
@@ -381,6 +385,11 @@ export function resolveDecision(
       `"${choiceId}" is not a choice of ${decision.eventId} (choices: ${valid})`,
     );
   }
+  // Phase 5: the player's fight in progress (play it out, or decide the fate of the beaten).
+  if (decision.battle) {
+    resolveBattleDecision(state, data, decision, choiceId);
+    return;
+  }
   const date = dateOf(data.calendar, state.tick);
   const roles = decision.roles ?? {};
   const place = decision.place ?? null;
@@ -421,6 +430,24 @@ export function resolveDecision(
       });
     }
     applyEffects(state, data, choice?.effects ?? [], site);
+    if (choice?.fight) {
+      // The beat's outcome waits on the fight (a war at Marineford): see the finisher below.
+      startFight(
+        state,
+        data,
+        choice.fight,
+        {
+          kind: 'beat',
+          id: beat.id,
+          choice: choice.id,
+          roles: { ...roles },
+          causeSeq: record.seq,
+        },
+        place,
+        decision.title,
+      );
+      return;
+    }
     const beatSite: BeatSite = {
       state,
       data,
@@ -469,6 +496,24 @@ export function resolveDecision(
     newsDrafts,
   };
   applyEffects(state, data, choice.effects, site);
+  if (choice.fight) {
+    flushNews(state, newsDrafts, state.tick);
+    startFight(
+      state,
+      data,
+      choice.fight,
+      {
+        kind: 'event',
+        id: def.id,
+        choice: choice.id,
+        roles: { ...roles },
+        causeSeq: record.seq,
+      },
+      place,
+      def.title,
+    );
+    return;
+  }
   if (choice.check) {
     const story = playerStory(state, data, state.tick);
     const result = rollCheck(story, choice.check, Rng.root(state.seed).fork('check', decision.id));
@@ -490,8 +535,123 @@ export function resolveDecision(
   flushNews(state, newsDrafts, state.tick);
 }
 
+// ---- Fights (Phase 5) ------------------------------------------------------------------------
+
+function startFight(
+  state: WorldState,
+  data: GameData,
+  spec: FightSpec,
+  source: BattleState['source'],
+  place: string | null,
+  title: string,
+): void {
+  const contest = spec.contest
+    ? data.battle.contests.find((c) => c.id === spec.contest)
+    : undefined;
+  if (contest && contest.rounds > 1) {
+    beginContest(state, data, contest, {
+      tick: state.tick,
+      place,
+      roles: source.roles ?? {},
+      source,
+    });
+    return;
+  }
+  const battle = buildFight(state, data, spec, {
+    tick: state.tick,
+    place,
+    roles: source.roles ?? {},
+    source,
+  });
+  beginFight(state, data, battle, title);
+}
+
+/** The result band a fight lands in: a decisive win, a win, a loss, a heavy loss, or getting away. */
+export function fightBand(spec: FightSpec, battle: BattleState): CheckBand {
+  const r = battle.result;
+  if (!r) return spec.failure;
+  if (r.how === 'won') return r.decisive ? (spec.criticalSuccess ?? spec.success) : spec.success;
+  if (r.how === 'fled') return spec.fled ?? spec.failure;
+  if (r.how === 'draw') return spec.fled ?? spec.success;
+  return r.decisive ? (spec.criticalFailure ?? spec.failure) : spec.failure;
+}
+
+onFightFinished('event', (state, data, battle) => {
+  const def = data.events[battle.source.id];
+  const choice = def?.choices.find((c) => c.id === battle.source.choice);
+  if (!def || !choice?.fight) return;
+  const band = fightBand(choice.fight, battle);
+  const knownBy = def.visibility === 'public' ? [PUBLIC_KNOWLEDGE] : [];
+  const date = dateOf(data.calendar, state.tick);
+  const newsDrafts: NewsDraft[] = [];
+  const site: EffectSite = {
+    tick: state.tick,
+    date,
+    cause: def.id,
+    causeSeq: battle.source.causeSeq ?? 0,
+    knownBy,
+    place: battle.place,
+    roles: battle.source.roles ?? {},
+    newsDrafts,
+  };
+  const record = appendLog(state, state.tick, {
+    kind: 'event',
+    summary: sentence(renderTemplate(band.text, textVars(state, data, site))),
+    tags: unique(['check', 'fight', ...(def.type === 'world' ? [] : ['personal']), ...def.tags]),
+    cause: def.id,
+    ...(battle.source.causeSeq !== undefined ? { causeSeq: battle.source.causeSeq } : {}),
+    knownBy,
+  });
+  applyEffects(state, data, band.effects, { ...site, causeSeq: record.seq });
+  flushNews(state, newsDrafts, state.tick);
+});
+
+onFightFinished('beat', (state, data, battle) => {
+  const beat = data.canon[battle.source.id];
+  const choice = beat?.choices.find((c) => c.id === battle.source.choice);
+  if (!beat || !choice) return;
+  const won = battle.result?.how === 'won';
+  const beatSite: BeatSite = {
+    state,
+    data,
+    tick: state.tick,
+    rng: Rng.root(state.seed).fork('beatChoice', battle.source.causeSeq ?? battle.id),
+    newsDrafts: [],
+  };
+  // The story breaks only if the player's side won what they fought for.
+  resolveBeatChoice(
+    beatSite,
+    beat,
+    battle.source.roles ?? {},
+    choice.diverge && won,
+    battle.source.causeSeq ?? 0,
+  );
+  if (choice.fight) {
+    const band = fightBand(choice.fight, battle);
+    const site: EffectSite = {
+      tick: state.tick,
+      date: dateOf(data.calendar, state.tick),
+      cause: beat.id,
+      causeSeq: battle.source.causeSeq ?? 0,
+      knownBy: state.playerId ? [state.playerId] : [],
+      place: battle.place,
+      roles: battle.source.roles ?? {},
+      newsDrafts: beatSite.newsDrafts,
+    };
+    const record = appendLog(state, state.tick, {
+      kind: 'event',
+      summary: sentence(renderTemplate(band.text, textVars(state, data, site))),
+      tags: ['personal', 'canon', 'fight'],
+      cause: beat.id,
+      knownBy: site.knownBy,
+    });
+    applyEffects(state, data, band.effects, { ...site, causeSeq: record.seq });
+  }
+  flushNews(state, beatSite.newsDrafts, state.tick);
+});
+
 /** News raised between ticks (a decision's effects) goes out at once, the way step 6 would. */
-function flushNews(state: WorldState, drafts: readonly NewsDraft[], tick: number): void {
+export function flushNews(state: WorldState, drafts: readonly NewsDraft[], tick: number): void {
   if (drafts.length === 0) return;
   for (const draft of drafts) {
     state.counters.newsSeq += 1;

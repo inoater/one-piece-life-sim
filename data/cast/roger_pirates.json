@@ -88,7 +88,44 @@
         "approx": true
       }
     ],
-    "traits": ["trait_kings_qualities"]
+    "traits": ["trait_kings_qualities"],
+    "power": [
+      {
+        "from": {
+          "year": -40,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -25,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": -16,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": -5,
+          "month": 1
+        },
+        "tier": "peak"
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 1
+        },
+        "tier": "monster"
+      }
+    ]
   },
   {
     "id": "char_crocus",
@@ -144,6 +181,22 @@
         "title": "Keeper of the Twin Cape lighthouse",
         "status": "retired",
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -33,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "tier": "thug"
       }
     ]
   },
@@ -231,6 +284,36 @@
         "title": "Retired pirate",
         "status": "retired",
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -38,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": -20,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": -10,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 1
+        },
+        "tier": "commander"
       }
     ]
   },
@@ -355,7 +438,58 @@
       }
     ],
     "ties": ["char_buggy"],
-    "traits": ["trait_kings_qualities"]
+    "traits": ["trait_kings_qualities"],
+    "power": [
+      {
+        "from": {
+          "year": -1,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 9,
+          "month": 1
+        },
+        "tier": "thug"
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": 16,
+          "month": 1
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "tier": "commander"
+      },
+      {
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "tier": "monster"
+      },
+      {
+        "from": {
+          "year": 30,
+          "month": 1
+        },
+        "tier": "peak"
+      }
+    ]
   },
   {
     "id": "char_buggy",
@@ -450,6 +584,36 @@
         "title": "Warlord of the Sea",
         "bounty": 3189000000,
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": -1,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 13,
+          "month": 1
+        },
+        "tier": "thug"
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "tier": "officer"
+      },
+      {
+        "from": {
+          "year": 25,
+          "month": 1
+        },
+        "tier": "captain"
       }
     ]
   }

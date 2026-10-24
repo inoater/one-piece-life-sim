@@ -12,7 +12,7 @@
       "description": "Know where everyone should be on a deck in a fight.",
       "text": "You saw the fight on deck the way a captain sees it.",
       "techniques": ["tech_naval_broadside"],
-      "combat": 2
+      "combat": 5
     },
     {
       "id": "tactician",
@@ -27,7 +27,7 @@
         }
       },
       "techniques": ["tech_naval_pincer"],
-      "combat": 6
+      "combat": 10
     },
     {
       "id": "admiral",
@@ -42,7 +42,7 @@
           "charisma": 50
         }
       },
-      "combat": 10
+      "combat": 30
     }
   ],
   "learn": {

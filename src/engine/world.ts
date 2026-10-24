@@ -37,7 +37,7 @@ export function createWorld(options: CreateWorldOptions): WorldState {
     openEnded: false,
     config: { ...(options.config ?? DEFAULT_WORLD_CONFIG) },
     playerId: null,
-    counters: { genId: 0, logSeq: 0, decisionId: 0, newsSeq: 0 },
+    counters: { genId: 0, logSeq: 0, decisionId: 0, newsSeq: 0, battleId: 0 },
     entities: {},
     log: [],
     news: [],
@@ -47,6 +47,7 @@ export function createWorld(options: CreateWorldOptions): WorldState {
     flags: {},
     canon: { beats: {}, divergences: [] },
     eventState: {},
+    battle: null,
   };
   if (options.probe) state.flags['dev.probe'] = true;
   if (options.intro === false) return state;

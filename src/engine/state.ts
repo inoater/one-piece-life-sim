@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BattleStateSchema, FightRecordSchema } from './battle-state';
 import { FRUIT_CONTAINERS, FruitDefSchema, TechniqueDefSchema } from './data/defs';
 import { ID_FORMAT_HINT, isEntityId } from './ids';
 
@@ -34,6 +35,9 @@ import { ID_FORMAT_HINT, isEntityId } from './ids';
  *    haki stamina, the moveset, technique drafts, fruits and gear carried, fruit knowledge),
  *    `character.personality` (hidden counters), `character.traitInfo` (when and how each trait
  *    was gained), and the `fruit` block of fruit entities (one entity per fruit in the world).
+ *  - Save version 6 (Phase 5, battles): `battle` (the player's tactical fight in progress, while
+ *    it waits for their next action), `character.fights` (each person's tally, and against whom),
+ *    `counters.battleId`, and decisions marked `battle` (the one that holds time still for it).
  */
 
 export const ENTITY_TYPES = [
@@ -460,6 +464,8 @@ export const CharacterSchema = z.strictObject({
     .optional(),
   /** Haki, the Devil Fruit, styles and techniques (save version 5). */
   powers: PowersSchema.optional(),
+  /** Fights won, lost and drawn, and against whom (save version 6). */
+  fights: FightRecordSchema.optional(),
 });
 export type CharacterData = z.infer<typeof CharacterSchema>;
 
@@ -657,6 +663,8 @@ export const PendingDecisionSchema = z.strictObject({
   place: z.string().optional(),
   /** A canon beat waiting on the player's part in it (save version 4). */
   beat: z.boolean().optional(),
+  /** The player's fight in progress (save version 6): its one choice plays the rest out. */
+  battle: z.boolean().optional(),
 });
 export type PendingDecision = z.infer<typeof PendingDecisionSchema>;
 
@@ -711,6 +719,8 @@ export const CountersSchema = z.strictObject({
   logSeq: z.number().int().min(0),
   decisionId: z.number().int().min(0),
   newsSeq: z.number().int().min(0),
+  /** Save version 6. */
+  battleId: z.number().int().min(0),
 });
 export type Counters = z.infer<typeof CountersSchema>;
 
@@ -737,6 +747,8 @@ export const WorldStateSchema = z
       z.string(),
       z.strictObject({ last: z.number().int(), count: z.number().int().min(0) }),
     ),
+    /** The player's tactical fight in progress (save version 6). */
+    battle: BattleStateSchema.nullable(),
   })
   .superRefine((state, ctx) => {
     for (const [key, entity] of Object.entries(state.entities)) {

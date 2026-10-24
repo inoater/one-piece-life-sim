@@ -12,7 +12,7 @@
       "description": "A surge of will that bursts out with no aim.",
       "text": "A surge left you, and weak-willed people around you dropped.",
       "techniques": ["tech_haki_burst"],
-      "combat": 10
+      "combat": 85
     },
     {
       "id": "willed",
@@ -26,7 +26,7 @@
           "willpower": 60
         }
       },
-      "combat": 24
+      "combat": 415
     },
     {
       "id": "selective",
@@ -41,7 +41,7 @@
         },
         "event": "crisis"
       },
-      "combat": 40
+      "combat": 1040
     },
     {
       "id": "coating",
@@ -57,7 +57,7 @@
         "event": "stronger_foe"
       },
       "techniques": ["tech_haki_conqueror_coat"],
-      "combat": 62
+      "combat": 2290
     },
     {
       "id": "clash",
@@ -73,7 +73,7 @@
         "event": "clash",
         "breakthrough": true
       },
-      "combat": 85
+      "combat": 4045
     }
   ],
   "learn": {

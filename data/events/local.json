@@ -136,10 +136,21 @@
             "min": 14
           }
         ],
-        "check": {
-          "stat": "combatPower",
-          "difficulty": 190,
-          "perDanger": 20,
+        "fight": {
+          "scale": "skirmish",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_pirate_officer"
+            },
+            {
+              "kind": "foe",
+              "foe": "foe_pirate",
+              "count": 2
+            }
+          ],
+          "intent": "capture",
+          "allies": "friends",
           "criticalSuccess": {
             "text": "You threw their captain off the pier, and the rest of them followed him.",
             "effects": [
@@ -158,22 +169,12 @@
               {
                 "kind": "fame",
                 "value": 5
-              },
-              {
-                "kind": "injury",
-                "severity": "minor",
-                "cause": "violence"
               }
             ]
           },
           "failure": {
             "text": "They beat you down in the street and took your purse as a lesson.",
             "effects": [
-              {
-                "kind": "injury",
-                "severity": "serious",
-                "cause": "violence"
-              },
               {
                 "kind": "berries",
                 "min": -3000,
@@ -669,9 +670,17 @@
       {
         "id": "free",
         "label": "Free the captives",
-        "check": {
-          "stat": "combatPower",
-          "difficulty": 210,
+        "fight": {
+          "scale": "skirmish",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_bandit",
+              "count": 2
+            }
+          ],
+          "intent": "capture",
+          "allies": "friends",
           "success": {
             "text": "You broke the locks and the captives scattered into the town before the slavers knew what had happened.",
             "effects": [
@@ -695,11 +704,6 @@
           "failure": {
             "text": "The slavers' guards were waiting.",
             "effects": [
-              {
-                "kind": "injury",
-                "severity": "severe",
-                "cause": "violence"
-              },
               {
                 "kind": "infamy",
                 "value": 3

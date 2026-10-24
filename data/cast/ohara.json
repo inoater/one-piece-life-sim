@@ -53,7 +53,16 @@
         "approx": true
       }
     ],
-    "ties": ["char_nico_robin"]
+    "ties": ["char_nico_robin"],
+    "power": [
+      {
+        "from": {
+          "year": -22,
+          "month": 1
+        },
+        "tier": "civilian"
+      }
+    ]
   },
   {
     "id": "char_clover",
@@ -92,7 +101,16 @@
         "approx": true
       }
     ],
-    "ties": ["char_nico_robin"]
+    "ties": ["char_nico_robin"],
+    "power": [
+      {
+        "from": {
+          "year": -45,
+          "month": 1
+        },
+        "tier": "civilian"
+      }
+    ]
   },
   {
     "id": "char_nico_robin",
@@ -234,6 +252,43 @@
         "affiliation": "org_straw_hat_pirates",
         "title": "Archaeologist of the Straw Hat Pirates",
         "approx": true
+      }
+    ],
+    "power": [
+      {
+        "from": {
+          "year": 8,
+          "month": 1
+        },
+        "tier": "civilian"
+      },
+      {
+        "from": {
+          "year": 20,
+          "month": 1
+        },
+        "tier": "officer"
+      },
+      {
+        "from": {
+          "year": 28,
+          "month": 1
+        },
+        "tier": "captain"
+      },
+      {
+        "from": {
+          "year": 36,
+          "month": 7
+        },
+        "tier": "grand_line"
+      },
+      {
+        "from": {
+          "year": 38,
+          "month": 3
+        },
+        "tier": "commander"
       }
     ]
   }

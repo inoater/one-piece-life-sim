@@ -15,7 +15,7 @@
         "event": "water_time"
       },
       "techniques": ["tech_jujutsu_grip"],
-      "combat": 20
+      "combat": 200
     },
     {
       "id": "currents",
@@ -30,7 +30,7 @@
         }
       },
       "techniques": ["tech_jujutsu_yarinami", "tech_jujutsu_kairyu"],
-      "combat": 34
+      "combat": 520
     },
     {
       "id": "wave",
@@ -47,7 +47,7 @@
         }
       },
       "techniques": ["tech_jujutsu_wave"],
-      "combat": 50
+      "combat": 1035
     }
   ],
   "learn": {

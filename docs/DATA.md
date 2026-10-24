@@ -235,6 +235,30 @@ How the files fit together, and the rules the loader enforces beyond each schema
   `personality`, `counter`, `haki`. Requirements gain `tracks`, `fruitUser` and `gear`. Activities
   gain `practice`. Outcome text may use `{technique}`.
 
+## Battles (Phase 5)
+
+- **data/battle.json**: the ladder (eight rungs, their Combat Power and bounties); initiative, hit
+  chance and damage (scale, the attack-to-defence exponent, telling blows, guard, coats, injuries:
+  their chance by a blow's size, at most a few a fight, and the Health a knockout leaves); evasion,
+  stamina and costs, haki costs, matchup multipliers, second wind, death, feint, grapple, flight,
+  talk, overdrive forms (by technique, or the default), fight kit, the computer's weights by
+  temperament, quick-mode stances, roles, zones, team orders, morale, taking the blow, combinations,
+  tagging in, sparring (injuries a tenth as often, the Health a spar costs, training by partner),
+  crew battles, naval battles (cannon, ram, fire, weather), wars, contests, the abstract resolver's
+  gamma (fitted by `npm run battle`), rewards, nameless foes, NPC fight chances, and every line.
+- **Events and beats**: a choice may carry a `fight` instead of a `check`: its scale, foes (nameless
+  ones from battle.json with a count, a role, or a canon character), both sides' intent, allies
+  (the ship's hands, friends here), mode, stop rule, an enemy ship, war fronts, water, a contest,
+  and result bands like a check's (`criticalSuccess` for a decisive win, `success`, `failure`,
+  `criticalFailure` for a heavy loss, `fled`). A beat choice with `diverge` diverges only if the
+  fight is won.
+- **Activities**: `fight` makes the month's activity a fight: a `spar`, a `brawl`, a `contest`, or a
+  crew's `group` training day, with the partner it looks for and a nameless foe if nobody is at
+  hand. Outcomes named `won`, `lost` and `draw` follow the result; `{partner}` names who it was.
+- **Cast**: `power` keyframes, a ladder rung (and optionally a number) from a date.
+- **Weapons**: `combat` (their Combat Power) and `attack` (added to blows made with them).
+- **Places**: the `arena` feature (pit fights, the colosseum).
+
 ## Dev fixtures
 
 Phase 3 adds a test crew, three test characters and a test duel beat (`dev: true`), and a dev place

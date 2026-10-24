@@ -144,10 +144,16 @@
       {
         "id": "fight",
         "label": "Fight it",
-        "check": {
-          "stat": "combatPower",
-          "difficulty": 260,
-          "perDanger": 30,
+        "fight": {
+          "scale": "duel",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_sea_king"
+            }
+          ],
+          "intent": "kill",
+          "water": true,
           "criticalSuccess": {
             "text": "You knocked the sea king senseless, and everyone aboard ate sea king steak for a month.",
             "effects": [
@@ -184,11 +190,6 @@
               {
                 "kind": "hull",
                 "value": -20
-              },
-              {
-                "kind": "injury",
-                "severity": "serious",
-                "cause": "violence"
               }
             ]
           },
@@ -202,11 +203,6 @@
               {
                 "kind": "crew",
                 "value": -3
-              },
-              {
-                "kind": "injury",
-                "severity": "severe",
-                "cause": "violence"
               }
             ]
           }

@@ -205,6 +205,43 @@ rust, fading moves, an eaten fruit being understood, haki seeds, personality); t
 move in step 4. The Powers page (`#/powers`) reads `snapshot.powers`; the Devil Fruit page
 (`#/fruits`) asks `powers/fruits`, which shows only what the player knows unless omniscient.
 
+## Battles (Phase 5)
+
+`src/systems/battle/` is one engine for every fight. A **fighter** (`fighters.ts`) is a person as
+they stand when it starts: their stats, Health, stamina, haki stages, fruit, weapon and moves, and
+their power `k`, Combat Power over what their stats alone give. Every number in a fight is a stat
+times `k`, so the plan's formulas (hit chance, damage, defence) mean the same for a bar brawl and
+for two Emperors. **The exchange** (`engine.ts`): everyone declares; defences take hold; actions
+resolve by initiative; then burns, stamina, overdrives running out, morale. It carries the Logia
+rule, fruit matchups, guard, Armament coats, Observation reads, Conqueror's bursts, feints,
+grapples and seastone, items, talk, flight, second winds, taking the blow for a friend,
+combination attacks and tagging in. `ai.ts` decides for anyone not steered (by temperament, or the
+player's quick-mode stance). **Scales** (`scales.ts`): duels and skirmishes are exchanges; a crew
+battle pairs named fighters on a match-up board and resolves the rest at the fronts in rounds; a
+naval battle is rounds of range, cannon, ram and boarding (which turns into a crew battle); a war is
+fronts with strength, morale and commanders, the player's named duel on the front they stand at.
+
+**The abstract resolver** (`battle.ts`) answers the same question in one roll, for fights nobody
+plays: P = a^g / (a^g + b^g) on effective power (Combat Power, Health left, the Logia rule,
+matchups). `npm run battle` fits g against the tactical engine over 1,000 pairings. Tier 2 people
+and the canon cast fight by it (`world.ts`): hunts, raids, quarrels, trouble at sea, each logged with
+its reason.
+
+**The player's fights** (`player.ts`): an event choice, a canon beat or a debug command with a
+`fight` builds a battle with the player on side 0. Tactical, it waits in `state.battle` behind a
+decision marked `battle`, so time holds still and skips stop; each `battle/act` plays one exchange,
+and the decision's one choice plays the rest (which is also how headless runs play it). When it
+ends, `aftermath.ts` applies injuries (a roll for each big blow), Health, death, training, practice,
+haki moments, fame, bounty and records; the event's result band or the beat's fate follows (through
+`finish-hooks.ts`, a module with no imports so registration never meets a half-loaded module); a
+winner who beat someone decides their fate. Activities with a `fight` (spars, brawls, contests,
+a crew training day) are quick fights inside the month; a spar's partner sets its training.
+
+**The ladder** (`ladder.ts`): the cast's `power` keyframes name a rung per era; when their own powers
+do not reach it (or overshoot), a modifier, "Strength of their era", closes the gap, recalculated
+whenever their powers change. Stage Combat Power in data/tracks was rescaled so a lifetime of haki,
+fruit and style can climb from Thug to Peak.
+
 ## Worker protocol
 
 `src/worker/protocol.ts` types every request and response (`boot`, `newWorld`, `advance`, `dispatch`,
@@ -213,6 +250,13 @@ move in step 4. The Powers page (`#/powers`) reads `snapshot.powers`; the Devil 
 (even one that fails halfway) leaves the world untouched. The UI never receives the whole state, only a
 `Snapshot` projection (header facts, the last 300 visible log lines, counts), which keeps messages small
 when the world has thousands of entities.
+
+## Performance (Phase 5)
+
+A 40-year headless life takes about the same as in Phase 4 (a month's spar is a few dozen
+exchanges); a full world's 39 years about 13 s, a little more than Phase 4 for its NPC fights,
+which take one roll each. A duel of about ten exchanges takes well under a millisecond, so the
+1,000-pairing calibration runs in under half a second.
 
 ## Performance (Phase 4)
 

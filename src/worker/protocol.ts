@@ -22,8 +22,11 @@ import type {
 } from '../systems/places/view';
 import type { TravelView } from '../systems/voyage/view';
 import type { FruitsView, PowersView } from '../systems/powers/view';
+import type { BattleView, FightSelfView } from '../systems/battle/view';
 
 export type {
+  BattleView,
+  FightSelfView,
   FruitsView,
   PowersView,
   CanonView,
@@ -89,6 +92,8 @@ export interface DecisionView {
   text: string;
   dateLabel: string;
   choices: { id: string; label: string; text?: string }[];
+  /** Phase 5: the player's fight (the battle panel shows it; its one choice plays it out). */
+  battle?: boolean;
 }
 
 export interface LoadInfo {
@@ -129,6 +134,10 @@ export interface Snapshot {
   world: WorldSummary;
   /** Powers (Phase 4): tracks, techniques, the fruit, gear. Null with nobody alive to play. */
   powers: PowersView | null;
+  /** Phase 5: the player's fight in progress (or waiting on the fate of the beaten). */
+  battle: BattleView | null;
+  /** Phase 5: the player's rung on the ladder, record, fight settings and kit. */
+  fight: FightSelfView | null;
   /** At the present, before open-ended play: the epilogue to show. */
   epilogue: null | { title: string; text: string };
   /** The player's character sheet. Hidden facts are included only in omniscient views. */

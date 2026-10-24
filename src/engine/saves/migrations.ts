@@ -75,6 +75,20 @@ export const MIGRATIONS: Readonly<Record<number, Migration>> = {
    * cast's old `fruit` flag (a name) is replaced by the fruit's own record then.
    */
   4: (envelope) => ({ ...envelope, saveVersion: 5, state: { ...stateOf(envelope) } }),
+  /**
+   * 5 -> 6 (Phase 5, battles): no fight is in progress, and the battle counter starts at 0.
+   * Characters' fight records begin with their next fight; the canon cast's Combat Power is
+   * calibrated to its ladder rung the next month it is updated.
+   */
+  5: (envelope) => {
+    const state = stateOf(envelope);
+    const counters = (state['counters'] ?? {}) as Record<string, unknown>;
+    return {
+      ...envelope,
+      saveVersion: 6,
+      state: { ...state, battle: null, counters: { ...counters, battleId: 0 } },
+    };
+  },
 };
 
 export interface MigrationResult {

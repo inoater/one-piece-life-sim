@@ -65,7 +65,7 @@
       "weight": 0.8
     },
     {
-      "id": "outclassed",
+      "id": "lost",
       "text": "You picked a fight with someone far stronger, and {technique} was not nearly enough.",
       "weight": 0.3,
       "effects": [
@@ -89,5 +89,10 @@
   ],
   "practice": {
     "kind": "fight"
+  },
+  "fight": {
+    "kind": "brawl",
+    "partner": "any",
+    "foe": "foe_drunk"
   }
 }

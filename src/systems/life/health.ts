@@ -88,6 +88,8 @@ export interface InjurySpec {
   cause: string;
   /** Weights from the activity's risk, for "roll". */
   risk?: Pick<Risk, 'areas' | 'severities'>;
+  /** False: the injury is recorded but takes no Health (a fight's blows already did, Phase 5). */
+  hurts?: boolean;
 }
 
 export function injure(env: LifeEnv, spec: InjurySpec): Injury | null {
@@ -129,7 +131,7 @@ export function injure(env: LifeEnv, spec: InjurySpec): Injury | null {
     tags: ['personal', 'injury', ...(spec.cause === 'violence' ? ['combat'] : [])],
   });
   reportLine(env, text, 'bad');
-  hurt(env, severity.damage, spec.cause, name);
+  if (spec.hurts !== false) hurt(env, severity.damage, spec.cause, name);
   return injury;
 }
 

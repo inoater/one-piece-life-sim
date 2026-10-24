@@ -11,7 +11,7 @@
       "at": 0,
       "description": "Change on purpose, and back.",
       "text": "You changed and changed back, on purpose, and nothing broke.",
-      "combat": 6
+      "combat": 35
     },
     {
       "id": "hybrid",
@@ -20,7 +20,7 @@
       "at": 15,
       "description": "Hold the form between human and beast.",
       "text": "You held the half-beast form and kept your head.",
-      "combat": 14
+      "combat": 155
     },
     {
       "id": "full_form",
@@ -34,7 +34,7 @@
           "endurance": 35
         }
       },
-      "combat": 22
+      "combat": 355
     },
     {
       "id": "extra_forms",
@@ -48,7 +48,7 @@
           "endurance": 45
         }
       },
-      "combat": 32
+      "combat": 695
     },
     {
       "id": "stamina",
@@ -62,7 +62,7 @@
           "endurance": 60
         }
       },
-      "combat": 44
+      "combat": 1235
     },
     {
       "id": "awakening",
@@ -77,7 +77,7 @@
         },
         "breakthrough": true
       },
-      "combat": 64,
+      "combat": 2425,
       "flags": {
         "fruit.awakened": true
       }

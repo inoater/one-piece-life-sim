@@ -377,6 +377,104 @@ function comboForm(view: PowersView, app: App, busy: boolean): HTMLElement | nul
   );
 }
 
+/** Phase 5: your rung on the ladder, your record, how fights are played, and fight kit. */
+function fightSettings(state: UiState, app: App, busy: boolean): HTMLElement | null {
+  const fight = state.snapshot?.fight;
+  if (!fight) return null;
+  const r = fight.record;
+  const stance = h(
+    'select',
+    {
+      'aria-label': 'Stance when a fight plays itself',
+      disabled: busy,
+      onchange: (e: Event) =>
+        void app.dispatch({ type: 'battle/stance', stance: (e.target as HTMLSelectElement).value }),
+    },
+    fight.stances.map((s) =>
+      h('option', { value: s.id, selected: s.id === fight.stance, title: s.description }, s.name),
+    ),
+  );
+  const mode = (m: 'tactical' | 'quick', label: string) =>
+    h(
+      'button',
+      {
+        class: 'button button--tiny',
+        type: 'button',
+        'aria-pressed': String(fight.mode === m),
+        disabled: busy,
+        onclick: () => void app.dispatch({ type: 'battle/mode', mode: m }),
+      },
+      label,
+    );
+  return h(
+    'div',
+    { class: 'fight-settings' },
+    h(
+      'p',
+      null,
+      h('strong', null, fight.tier),
+      ` on the ladder (Combat Power ${formatInteger(fight.cp)}). `,
+      `Fights won ${r.won}, lost ${r.lost}, drawn ${r.drawn}; ${r.spars} of them spars.`,
+    ),
+    h(
+      'ol',
+      { class: 'fight-ladder', 'aria-label': 'The power ladder' },
+      fight.ladder.map((l) =>
+        h(
+          'li',
+          {
+            class: l.here ? 'fight-ladder__rung fight-ladder__rung--here' : 'fight-ladder__rung',
+            title: l.who,
+          },
+          h('span', null, l.name),
+          h('span', { class: 'muted' }, ` ${formatInteger(l.min)}+`),
+        ),
+      ),
+    ),
+    h(
+      'p',
+      { class: 'fight-settings__row' },
+      'Fights: ',
+      mode('tactical', 'You choose every exchange'),
+      ' ',
+      mode('quick', 'Quick, by your stance'),
+    ),
+    h('label', { class: 'fight-settings__row' }, 'Stance ', stance),
+    h(
+      'ul',
+      { class: 'power-learns' },
+      fight.kit.map((k) =>
+        h(
+          'li',
+          { class: 'power-learn' },
+          h('span', { class: 'power-learn__name' }, `${k.name}${k.have > 0 ? ` (${k.have})` : ''}`),
+          h(
+            'span',
+            { class: 'power-learn__desc' },
+            `${k.description} ${formatInteger(k.price)} Berries.`,
+          ),
+          k.lock
+            ? h('span', { class: 'power-learn__lock' }, k.lock)
+            : h(
+                'button',
+                {
+                  class: 'button',
+                  type: 'button',
+                  disabled: busy,
+                  onclick: () =>
+                    void app.dispatch(
+                      { type: 'battle/buyKit', item: k.id },
+                      `You bought ${k.name.toLowerCase()}.`,
+                    ),
+                },
+                'Buy',
+              ),
+        ),
+      ),
+    ),
+  );
+}
+
 export function renderPowers(state: UiState, app: App): (HTMLElement | null)[] {
   const view = state.snapshot?.powers;
   if (!view) {
@@ -570,11 +668,8 @@ export function renderPowers(state: UiState, app: App): (HTMLElement | null)[] {
     section(
       'fight-title',
       'In a fight',
-      h(
-        'p',
-        { class: 'muted' },
-        'What you could do in a fight, as the battles to come will offer it.',
-      ),
+      fightSettings(state, app, busy),
+      h('p', { class: 'muted' }, 'What you can do in a fight, besides your techniques:'),
       h(
         'ul',
         { class: 'fight-actions' },

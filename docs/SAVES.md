@@ -57,6 +57,7 @@ expands to gigabytes is rejected mid-stream), and unknown fields in the state ar
 | 3       | 2     | `character.life` (health, injuries, routine, job, debt, deeds); no data is moved                     |
 | 4       | 3     | `state.canon`, `state.eventState`, `config.population`; places, factions, ships, travel, news places |
 | 5       | 4     | `character.powers`, `traitInfo`, `personality`; `fruit` entities; no data is moved                   |
+| 6       | 5     | `state.battle`, `character.fights`, `counters.battleId`; decisions marked `battle`                   |
 
 A version 2 world gains its life block the first month it is played (full Health, an empty
 routine): `world_v2.opsim` is loaded and lived for three months in `tests/engine/golden.test.ts`.
@@ -65,6 +66,9 @@ the first month it is played, headless): `world_v3.opsim` is loaded and lived in
 A version 4 world gains its Devil Fruits (one entity per canon fruit, the canon users of its month
 holding theirs), the canon cast's powers by era and its fighters' powers the first month it is
 played: `world_v4.opsim` is loaded and lived in the same test.
+A version 5 world has no fight under way and its battle counter starts at 0; the canon cast are put
+on their rungs of the ladder the first month it is played: `world_v5.opsim` is loaded and lived in
+the same test.
 
 ## Changing the saved shape
 

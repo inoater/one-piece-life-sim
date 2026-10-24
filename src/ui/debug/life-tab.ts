@@ -274,6 +274,80 @@ export function createLifeTab(app: App): DebugTab {
       ),
       toolsNote,
     ),
+    h(
+      'section',
+      { class: 'debug__section' },
+      h('h3', null, 'Fights (Phase 5)'),
+      h(
+        'p',
+        { class: 'debug__note' },
+        'Start a fight with nameless foes from data/battle.json: a tactical one shows the battle panel in the chronicle.',
+      ),
+      h(
+        'div',
+        { class: 'debug__inline' },
+        tool(
+          'Duel: a pirate',
+          {
+            type: 'debug/fight',
+            foe: 'foe_pirate',
+            count: 1,
+            scale: 'duel',
+            intent: 'capture',
+            mode: 'tactical',
+          },
+          'Debug: a duel.',
+        ),
+        tool(
+          'Skirmish: three thugs',
+          {
+            type: 'debug/fight',
+            foe: 'foe_thug',
+            count: 3,
+            scale: 'skirmish',
+            intent: 'capture',
+            mode: 'tactical',
+          },
+          'Debug: a skirmish.',
+        ),
+        tool(
+          'Crew battle',
+          {
+            type: 'debug/fight',
+            foe: 'foe_pirate',
+            count: 30,
+            scale: 'crew',
+            intent: 'capture',
+            mode: 'tactical',
+          },
+          'Debug: a crew battle.',
+        ),
+        tool(
+          'Sea fight',
+          {
+            type: 'debug/fight',
+            foe: 'foe_pirate',
+            count: 10,
+            scale: 'naval',
+            intent: 'capture',
+            mode: 'tactical',
+          },
+          'Debug: a sea fight.',
+        ),
+        tool(
+          'War',
+          {
+            type: 'debug/fight',
+            foe: 'foe_marine',
+            count: 2,
+            scale: 'war',
+            intent: 'kill',
+            mode: 'tactical',
+          },
+          'Debug: a war.',
+        ),
+      ),
+    ),
   );
 
   return {

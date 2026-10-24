@@ -15,7 +15,7 @@
         "anyTraits": ["trait_demon_aura"],
         "hidden": true
       },
-      "combat": 30
+      "combat": 455
     },
     {
       "id": "asura",
@@ -30,7 +30,7 @@
         "hidden": true
       },
       "techniques": ["tech_asura_ichibugin"],
-      "combat": 70
+      "combat": 2090
     }
   ],
   "learn": {

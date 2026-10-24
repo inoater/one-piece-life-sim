@@ -17,7 +17,7 @@
         }
       },
       "techniques": ["tech_gun_shot"],
-      "combat": 6
+      "combat": 15
     },
     {
       "id": "trick",
@@ -33,7 +33,7 @@
         }
       },
       "techniques": ["tech_gun_trick"],
-      "combat": 18
+      "combat": 125
     },
     {
       "id": "coated",
@@ -48,7 +48,7 @@
         }
       },
       "techniques": ["tech_gun_coated"],
-      "combat": 32
+      "combat": 350
     }
   ],
   "learn": {

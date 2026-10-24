@@ -11,7 +11,7 @@
       "at": 0,
       "description": "The Skypiean road into Observation: listen to everything.",
       "text": "You heard the voices of the island in the quiet.",
-      "combat": 3
+      "combat": 5
     },
     {
       "id": "voices",
@@ -26,7 +26,7 @@
         }
       },
       "techniques": ["tech_mantra"],
-      "combat": 10
+      "combat": 35
     },
     {
       "id": "mantra_master",
@@ -40,7 +40,7 @@
           "perception": 60
         }
       },
-      "combat": 18
+      "combat": 100
     }
   ],
   "learn": {

@@ -12,7 +12,7 @@
       "description": "A water-shock strike.",
       "text": "You were given the 1st dan of Fish-Man Karate.",
       "techniques": ["tech_karate_seiken"],
-      "combat": 6
+      "combat": 25
     },
     {
       "id": "second_dan",
@@ -21,7 +21,7 @@
       "at": 20,
       "description": "Fish-Man Karate, 2nd dan.",
       "text": "You were given the 2nd dan of Fish-Man Karate.",
-      "combat": 13
+      "combat": 90
     },
     {
       "id": "third_dan",
@@ -36,7 +36,7 @@
         }
       },
       "techniques": ["tech_karate_senmaigawara"],
-      "combat": 20
+      "combat": 200
     },
     {
       "id": "fourth_dan",
@@ -52,7 +52,7 @@
         }
       },
       "techniques": ["tech_karate_samehada", "tech_karate_inner_water"],
-      "combat": 27
+      "combat": 340
     },
     {
       "id": "fifth_dan",
@@ -67,7 +67,7 @@
         },
         "teacher": true
       },
-      "combat": 34
+      "combat": 520
     },
     {
       "id": "sixth_dan",
@@ -76,7 +76,7 @@
       "at": 150,
       "description": "Fish-Man Karate, 6th dan.",
       "text": "You were given the 6th dan of Fish-Man Karate.",
-      "combat": 41
+      "combat": 725
     },
     {
       "id": "seventh_dan",
@@ -92,7 +92,7 @@
         "breakthrough": true
       },
       "techniques": ["tech_karate_uchimizu", "tech_karate_buraikan"],
-      "combat": 48
+      "combat": 965
     },
     {
       "id": "eighth_dan",
@@ -101,7 +101,7 @@
       "at": 245,
       "description": "Fish-Man Karate, 8th dan.",
       "text": "You were given the 8th dan of Fish-Man Karate.",
-      "combat": 55
+      "combat": 1230
     },
     {
       "id": "ninth_dan",
@@ -117,7 +117,7 @@
         },
         "teacher": true
       },
-      "combat": 62
+      "combat": 1530
     },
     {
       "id": "tenth_dan",
@@ -132,7 +132,7 @@
         },
         "breakthrough": true
       },
-      "combat": 69
+      "combat": 1855
     }
   ],
   "learn": {

@@ -242,6 +242,7 @@ export const FEATURE_LABEL: Record<Feature, string> = {
   underworld: 'an underworld',
   clouds: 'a sea of clouds',
   deep_sea: 'the deep sea',
+  arena: 'an arena',
 };
 
 const ROLE_LABEL: Record<string, string> = {

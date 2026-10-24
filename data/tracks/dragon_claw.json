@@ -12,7 +12,7 @@
       "description": "Strike with the fingers curled like a claw.",
       "text": "Your fingers left marks in the stone.",
       "techniques": ["tech_dragon_claw"],
-      "combat": 8
+      "combat": 40
     },
     {
       "id": "crushing",
@@ -27,7 +27,7 @@
         }
       },
       "techniques": ["tech_dragon_breath"],
-      "combat": 22
+      "combat": 235
     },
     {
       "id": "haki_crush",
@@ -41,7 +41,7 @@
           "track_armament": "harden"
         }
       },
-      "combat": 38
+      "combat": 635
     }
   ],
   "learn": {

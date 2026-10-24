@@ -73,5 +73,11 @@
         }
       ]
     }
-  ]
+  ],
+  "fight": {
+    "kind": "spar",
+    "partner": "friend",
+    "stop": "first_hit",
+    "foe": "foe_dojo_student"
+  }
 }

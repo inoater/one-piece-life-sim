@@ -710,21 +710,89 @@
         "text": "You cut Ace's chains in the confusion and carried him to Whitebeard's ship. Nobody died on the scaffold that day.",
         "diverge": true,
         "instigator": true,
-        "effects": [
-          {
-            "kind": "fame",
-            "value": 60
+        "effects": [],
+        "fight": {
+          "scale": "war",
+          "foes": [
+            {
+              "kind": "foe",
+              "foe": "foe_marine_officer"
+            }
+          ],
+          "intent": "kill",
+          "mine": "spare",
+          "mode": "tactical",
+          "fronts": [
+            {
+              "name": "The plaza",
+              "mine": {
+                "strength": 700,
+                "commander": "char_edward_newgate"
+              },
+              "theirs": {
+                "strength": 900,
+                "commander": "char_sengoku"
+              }
+            },
+            {
+              "name": "The bay",
+              "mine": {
+                "strength": 500,
+                "commander": "char_marco"
+              },
+              "theirs": {
+                "strength": 600,
+                "commander": "char_borsalino"
+              }
+            },
+            {
+              "name": "The execution platform",
+              "mine": {
+                "strength": 120,
+                "commander": "char_jinbe"
+              },
+              "theirs": {
+                "strength": 300,
+                "commander": "char_sakazuki"
+              }
+            }
+          ],
+          "success": {
+            "text": "You cut Ace's chains in the confusion and carried him to Whitebeard's ship. Nobody died on the scaffold that day.",
+            "effects": [
+              {
+                "kind": "fame",
+                "value": 60
+              },
+              {
+                "kind": "bounty",
+                "value": 400000000
+              }
+            ]
           },
-          {
-            "kind": "bounty",
-            "value": 400000000
+          "failure": {
+            "text": "The Marines held the platform. You were carried off the field with the war still raging behind you.",
+            "effects": [
+              {
+                "kind": "fame",
+                "value": 15
+              },
+              {
+                "kind": "bounty",
+                "value": 100000000
+              }
+            ]
           },
-          {
-            "kind": "injury",
-            "severity": "severe",
-            "cause": "violence"
+          "fled": {
+            "text": "You broke off and got away through the ice, and never reached the scaffold.",
+            "effects": [
+              {
+                "kind": "fame",
+                "value": 5
+              }
+            ]
           }
-        ]
+        }
       }
     ],
     "tags": ["marineford", "emperor"]
