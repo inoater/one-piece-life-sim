@@ -13,6 +13,9 @@ import { countBehaviour, drift, driftCtxOf } from './personality';
 import { dateOf, formatDate } from '../../engine/calendar';
 import { hasKingsQualities, powerEvent, wake } from '../powers/haki';
 import { curse, findFruit, hearRumour, revealSecret } from '../powers/fruits';
+import { findSomething } from '../hands/gear';
+import { giveMap } from '../hands/treasure';
+import { loseCargo } from '../hands/market';
 import {
   addProgress,
   breakthroughTrack,
@@ -315,6 +318,16 @@ export function applyLifeEffect(env: LifeEnv, effect: LifeEffect, scope: EffectS
         wake(ctx, effect.haki, 'event');
       break;
     }
+    // Phase 6: things in hand, maps, cargo.
+    case 'findItem':
+      findSomething(env, effect.item, effect.graded);
+      break;
+    case 'treasureMap':
+      giveMap(env, effect.mapKind);
+      break;
+    case 'cargo':
+      loseCargo(env, effect.share);
+      break;
   }
 }
 

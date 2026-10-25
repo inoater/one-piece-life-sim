@@ -1,14 +1,14 @@
 {
   "note": "Recorded by `npm run golden:update`. See tools/lib/golden-session.ts before changing this by hand.",
   "seed": "golden-v1",
-  "saveVersion": 6,
-  "engineVersion": "0.6.0",
+  "saveVersion": 7,
+  "engineVersion": "0.7.0",
   "finalTick": 286,
-  "stateHash": "1a8d2d6c7fc46967eee29c03147d4940",
+  "stateHash": "4c264fb01d5e4e23b02f387dadc97d3c",
   "counts": {
-    "log": 2407,
-    "news": 322,
-    "entities": 3177
+    "log": 2423,
+    "news": 327,
+    "entities": 3367
   },
   "probe": {
     "acc": -2069190714,

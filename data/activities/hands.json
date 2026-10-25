@@ -1,0 +1,117 @@
+[
+  {
+    "id": "act_craft",
+    "name": "Work on your project",
+    "category": "special",
+    "description": "A month at the forge, the bench, the stove or the slipway on whatever you have set out to make. Choose the project on the Gear page.",
+    "minAge": 10,
+    "physical": true,
+    "craft": true,
+    "gains": { "dexterity": 0.4, "intellect": 0.3 },
+    "risk": {
+      "injury": 0.015,
+      "cause": "accident",
+      "areas": { "arms": 2, "eyes": 1 },
+      "severities": { "minor": 9, "serious": 1 }
+    },
+    "tags": ["craft", "at_sea"],
+    "outcomes": [
+      {
+        "id": "steady",
+        "text": "Steady work, and the thing takes shape under your hands.",
+        "weight": 3,
+        "quiet": true
+      },
+      {
+        "id": "trick",
+        "text": "You found a better way to do it halfway through, and started that part again.",
+        "weight": 1,
+        "statWeights": { "intellect": 0.6 },
+        "effects": [{ "kind": "train", "stats": { "intellect": 0.3 } }]
+      },
+      {
+        "id": "burn",
+        "text": "A slip of the hand left a burn across your palm and a lesson in your head.",
+        "weight": 0.4,
+        "statWeights": { "dexterity": -0.5 },
+        "effects": [{ "kind": "train", "stats": { "dexterity": 0.2 } }]
+      }
+    ]
+  },
+  {
+    "id": "act_weapon_drills",
+    "name": "Weapon drills",
+    "category": "train_body",
+    "description": "Forms, footwork and a thousand repetitions with the weapon in your hand, whatever it is.",
+    "minAge": 10,
+    "physical": true,
+    "usesMentor": true,
+    "hand": "drill",
+    "gains": { "dexterity": 0.6, "strength": 0.3 },
+    "risk": {
+      "injury": 0.02,
+      "cause": "accident",
+      "areas": { "arms": 2, "legs": 1 },
+      "severities": { "minor": 9, "serious": 1 }
+    },
+    "tags": ["training", "at_sea"],
+    "outcomes": [
+      {
+        "id": "forms",
+        "text": "Forms at dawn, forms at dusk. The weapon feels lighter than it did.",
+        "weight": 3,
+        "quiet": true
+      },
+      {
+        "id": "balance",
+        "text": "You found the balance point of your weapon and stopped fighting it.",
+        "weight": 1,
+        "statWeights": { "dexterity": 0.6 }
+      },
+      {
+        "id": "mentor",
+        "text": "{mentor} corrected your grip and your stance in the same breath.",
+        "requires": { "relation": "mentor" },
+        "effects": [{ "kind": "train", "stats": { "dexterity": 0.3 } }]
+      }
+    ]
+  },
+  {
+    "id": "act_treasure_hunt",
+    "name": "Hunt for treasure",
+    "category": "explore",
+    "description": "Dig where the map says, sound the cliffs, comb the ruins and the beaches. With a true map it is a matter of time; without one, a matter of luck.",
+    "minAge": 12,
+    "physical": true,
+    "hand": "treasure",
+    "requires": { "atSea": false },
+    "gains": { "perception": 0.5, "endurance": 0.3 },
+    "risk": {
+      "injury": 0.025,
+      "cause": "accident",
+      "areas": { "legs": 1, "arms": 1, "torso": 1 },
+      "severities": { "minor": 8, "serious": 2 }
+    },
+    "tags": ["explore", "treasure"],
+    "outcomes": [
+      {
+        "id": "search",
+        "text": "Hours of searching, a sunburn and a feeling you are close.",
+        "weight": 3,
+        "quiet": true
+      },
+      {
+        "id": "rival",
+        "text": "Another treasure hunter was digging on the far side of the island. You kept your distance; so did they.",
+        "weight": 0.6
+      },
+      {
+        "id": "coin",
+        "text": "A single old gold coin turned up in the sand: not the treasure, but a start.",
+        "weight": 0.5,
+        "statWeights": { "perception": 0.5 },
+        "effects": [{ "kind": "berries", "min": 500, "max": 3000 }]
+      }
+    ]
+  }
+]

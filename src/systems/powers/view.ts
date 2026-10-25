@@ -5,6 +5,7 @@ import { TECH_FORMS } from '../../engine/data/schemas';
 import { PUBLIC_KNOWLEDGE, type Entity, type WorldState } from '../../engine/state';
 import { statBreakdown } from '../../engine/stats';
 import { formatBerries } from '../genesis/text';
+import { stockHere } from '../hands/market';
 import { combatPowerOf, playerPerson, type Person } from '../life/body';
 import { fruitDefOf } from './catalogue';
 import { cursedNow, eatenFruit, fruitEntities, fruitMastery, marketHere } from './fruits';
@@ -314,20 +315,31 @@ export function powersView(state: WorldState, data: GameData): PowersView | null
           weaknesses: record.identified ? fdef.weaknesses.map((w) => w.text) : [],
         }
       : null;
-  const atMarket = !p.place.atSea && p.place.features.some((f) => f === 'market' || f === 'smithy');
+  // Phase 6: weapons are items, sold where a place has the right trade (the Gear page's market).
+  const forSale = new Map(stockHere(state, data, p).map((l) => [l.key, l]));
   const shop = Object.values(data.weapons)
-    .filter((w) => w.gear && w.price !== undefined)
-    .map((w) => ({
-      id: w.id,
-      name: w.name,
-      gear: w.gear as string,
-      price: w.price as number,
-      lock: !atMarket
-        ? 'No market or smithy here'
-        : c.berries < (w.price ?? 0)
-          ? `Costs ${formatBerries(w.price ?? 0)} Berries`
-          : null,
-    }));
+    .filter((w) => w.gear && w.price !== undefined && !w.template && !w.canon)
+    .filter(
+      (w) =>
+        forSale.has(w.id) ||
+        w.id === 'weapon_sword' ||
+        w.id === 'weapon_flintlock' ||
+        w.id === 'weapon_bow',
+    )
+    .map((w) => {
+      const line = forSale.get(w.id);
+      return {
+        id: w.id,
+        name: w.name,
+        gear: w.gear as string,
+        price: line?.price ?? (w.price as number),
+        lock: !line
+          ? 'Not sold here'
+          : c.berries < line.price
+            ? `Costs ${formatBerries(line.price)} Berries`
+            : null,
+      };
+    });
   const encyclopediaRules = data.powers.fruit.encyclopedia;
   const owned = (powers?.items ?? []).some(
     (id) => state.entities[id]?.flags['item.kind'] === 'encyclopedia',

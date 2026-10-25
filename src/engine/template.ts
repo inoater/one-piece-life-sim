@@ -105,6 +105,11 @@ export const LIFE_VARS = [
   'name',
   // Phase 4: the technique used in a fight or a spar ("Your Gum-Gum Pistol caught them").
   'technique',
+  // Phase 6: the thing in hand, how good it is, its grade, a trade good.
+  'item',
+  'quality',
+  'grade',
+  'good',
 ] as const;
 
 /**

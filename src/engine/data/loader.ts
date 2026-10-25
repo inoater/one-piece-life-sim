@@ -9,6 +9,8 @@ import {
   personalityRefs,
   powerRulesRefs,
   battleRulesRefs,
+  handsRulesRefs,
+  shipRulesRefs,
   REF_EXTRACTORS,
   singletonTargets,
   TARGET_HOME,
@@ -38,6 +40,10 @@ import {
   LADDER_TIERS,
   TECH_TAGS,
   type BattleRules,
+  type HandsRules,
+  type ShipRules,
+  type Weapon,
+  HANDS_LINE_IDS,
   type CastMember,
   type FruitDef,
   type MatchupRules,
@@ -272,6 +278,8 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   const powers = singletons['data/powers.json'] as PowerRules | undefined;
   const personality = singletons['data/personality.json'] as PersonalityRules | undefined;
   const battle = singletons['data/battle.json'] as BattleRules | undefined;
+  const hands = singletons['data/hands.json'] as HandsRules | undefined;
+  const ships = singletons['data/ships.json'] as ShipRules | undefined;
 
   // ---- Pass 2: references --------------------------------------------------------------------
 
@@ -285,6 +293,8 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     ...(personality ? { personality } : {}),
     ...(powers ? { powers } : {}),
     ...(battle ? { battle } : {}),
+    ...(hands ? { hands } : {}),
+    ...(ships ? { ships } : {}),
   });
   /** Is the target's id list available? If its file is broken, its references are not checked. */
   const has = (target: RefTarget, id: string): boolean | null => {
@@ -333,6 +343,8 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   if (powers) checkRefs('data/powers.json', '', powerRulesRefs(powers));
   if (personality) checkRefs('data/personality.json', '', personalityRefs(personality));
   if (battle) checkRefs('data/battle.json', '', battleRulesRefs(battle));
+  if (hands) checkRefs('data/hands.json', '', handsRulesRefs(hands));
+  if (ships) checkRefs('data/ships.json', '', shipRulesRefs(ships));
 
   // ---- Pass 3: coherence ---------------------------------------------------------------------
 
@@ -733,6 +745,41 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
         );
       }
     });
+  }
+  // Phase 6: every line the hands write; canon blades never outnumber their grade's count, and
+  // each counted grade has one template its generated swords are made from.
+  if (hands) {
+    for (const id of HANDS_LINE_IDS) {
+      if (!(id in hands.lines))
+        error('data/hands.json', `lines.${id}`, 'Missing line', 'the game writes this line');
+    }
+    const canonByGrade = new Map<string, number>();
+    const templates = new Map<string, number>();
+    for (const [, entry] of parsed.weapons) {
+      const w = entry.value as Weapon;
+      if (w.template) templates.set(w.grade, (templates.get(w.grade) ?? 0) + 1);
+      else if (w.grade !== 'ungraded' && w.canon)
+        canonByGrade.set(w.grade, (canonByGrade.get(w.grade) ?? 0) + 1);
+      if (w.grade !== 'ungraded' && !w.canon && !w.template)
+        error(
+          entry.file,
+          `${entry.field}.grade`,
+          `A graded weapon is either canon (with holders) or a template`,
+          'graded swords are tracked entities: one per sword in the world',
+        );
+    }
+    for (const [grade, rule] of Object.entries(hands.grades)) {
+      if (rule.count === null) continue;
+      const canon = canonByGrade.get(grade) ?? 0;
+      if (canon > rule.count)
+        error(
+          'data/hands.json',
+          `grades.${grade}.count`,
+          `${canon} canon ${grade} blades, but only ${rule.count} exist`,
+        );
+      if ((templates.get(grade) ?? 0) !== 1)
+        error('data/weapons/', '(file)', `Exactly one template for ${grade} swords is needed`);
+    }
   }
   // Phase 5: battles. Every line the engine writes; the ladder climbs; each contest once; every
   // canon character (fixtures aside) on the ladder, their rungs in date order.

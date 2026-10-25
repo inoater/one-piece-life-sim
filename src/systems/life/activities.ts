@@ -28,6 +28,9 @@ import { breakthrough, trainStat } from './training';
 import { tagWeight, traitLock } from './traits';
 import { practise } from '../powers/practice';
 import { monthsLeft } from '../voyage/progress';
+import { commitMults, commitOf, overtimeSlots, slotVigor } from './drive';
+import { craftMonth } from '../hands/crafting';
+import { handsActivity } from '../hands/month';
 
 /**
  * The player's month (step 1 of the tick): each activity in the routine, in order, up to the
@@ -360,12 +363,19 @@ export interface SlotResult {
   restful: boolean;
 }
 
+/** How a slot is pushed (Phase 6): Vigor committed past Hard, and whether it is overtime. */
+export interface SlotDrive {
+  commit: number;
+  overtime: boolean;
+}
+
 export function runActivity(
   env: LifeEnv,
   act: Activity,
   effort: Effort,
   index: number,
   cast: Cast,
+  drive: SlotDrive = { commit: 0, overtime: false },
 ): SlotResult {
   const { data, p, life, tick } = env;
   const reason = lockReason(env, act);
@@ -379,14 +389,20 @@ export function runActivity(
   }
   const eff = data.life.efforts[effort];
   const rng = env.rng.fork('slot', index, act.id);
-  // Phase 5: a crew training day costs less than a real spar.
-  const vigor = act.restful
-    ? 0
-    : act.fight?.kind === 'group'
-      ? data.battle.spar.groupVigor
-      : eff.vigor + act.extraVigor;
+  // Phase 5: a crew training day costs less than a real spar. Phase 6: commitment past Hard and
+  // overtime cost more Vigor; commitment multiplies what the slot gives, and its risk.
+  const commit = effort === 'hard' ? drive.commit : 0;
+  const vigor = slotVigor(
+    data,
+    act,
+    { activity: act.id, effort, ...(commit > 0 ? { commit } : {}) },
+    drive.overtime,
+    Number.POSITIVE_INFINITY,
+  );
+  const push = commitMults(data, commit);
   const atSea = p.place.atSea && act.category === 'train_body' ? data.travel.atSea.trainBody : 1;
-  const scale = eff.gain * stageOf(data, p, tick).training * teacherMultiplier(env, act) * atSea;
+  const scale =
+    eff.gain * push.gain * stageOf(data, p, tick).training * teacherMultiplier(env, act) * atSea;
   const actEnv = withCause(env, act.id, undefined, rng);
 
   if (act.cost) pay(actEnv, -rng.fork('cost').int(act.cost.min, act.cost.max));
@@ -394,7 +410,8 @@ export function runActivity(
   const fought = act.fight ? activityFight(actEnv, act, rng.fork('fight')) : null;
   const fightMult = fought?.mult ?? 1;
   trainGains(actEnv, act.gains, scale * fightMult, effort, rng.fork('train'));
-  if (act.earn) pay(actEnv, Math.round(rng.fork('earn').int(act.earn.min, act.earn.max) * eff.pay));
+  if (act.earn)
+    pay(actEnv, Math.round(rng.fork('earn').int(act.earn.min, act.earn.max) * eff.pay * push.pay));
   if (act.regen > 0) restore(actEnv, act.regen);
   if (act.speedsHealing > 0) speedHealing(actEnv, act.speedsHealing);
   if (act.fame) reputation(p.entity, 'fame').base += act.fame;
@@ -406,10 +423,15 @@ export function runActivity(
         actEnv,
         act,
         effort,
-        eff.gain * stageOf(data, p, tick).training * fightMult,
+        eff.gain * push.gain * stageOf(data, p, tick).training * fightMult,
         rng.fork('practice'),
       )
     : null;
+  // Phase 6: a month at the bench, the forge or the slipway moves the project on; drills, a
+  // treasure hunt, ship care and cooking do what they do with the hands.
+  if (act.craft) craftMonth(actEnv, eff.gain * push.gain, rng.fork('craft'));
+  if (act.hand || act.tags.includes('blade') || act.id === 'act_marksmanship')
+    handsActivity(actEnv, act, eff.gain * push.gain, rng.fork('hands'));
 
   let outcomes: readonly Outcome[] = act.outcomes;
   let source: OutcomeSource = {
@@ -429,7 +451,10 @@ export function runActivity(
   if (act.worksJob && life.job) {
     const job: Job | undefined = data.jobs[life.job.id];
     if (job) {
-      pay(actEnv, Math.round(rng.fork('wage').int(job.income.min, job.income.max) * eff.pay));
+      pay(
+        actEnv,
+        Math.round(rng.fork('wage').int(job.income.min, job.income.max) * eff.pay * push.pay),
+      );
       trainGains(actEnv, job.gains, scale, effort, rng.fork('jobTrain'));
       if (job.fame) reputation(p.entity, 'fame').base += job.fame;
       if (job.infamy) reputation(p.entity, 'infamy').base += job.infamy;
@@ -463,7 +488,7 @@ export function runActivity(
   chosen ??= pickOutcome(actEnv, outcomes, cast, rng.fork('outcome'));
   if (chosen && p.c.alive) runOutcome(actEnv, source, chosen, cast, rng.fork('apply'));
   // A fight's blows were its risk (a spar's, a tenth as often).
-  if (p.c.alive && !fought) rollRisk(actEnv, risk, eff.risk, rng.fork('risk'));
+  if (p.c.alive && !fought) rollRisk(actEnv, risk, eff.risk * push.risk, rng.fork('risk'));
   return { ran: true, vigor: vigor + (practised?.vigor ?? 0), restful: act.restful };
 }
 
@@ -480,6 +505,8 @@ export function resolveRoutine(env: LifeEnv): void {
   }
   const cast = chooseCast(env, env.rng.fork('cast'));
   const slots = slotsOf(data, p, tick);
+  // Phase 6: a deep pool opens overtime slots beyond the stage's own.
+  const overtime = slots > 0 ? overtimeSlots(data, pool, slots) : 0;
   let spent = 0;
   let rested = false;
   const ran: number[] = [];
@@ -491,7 +518,7 @@ export function resolveRoutine(env: LifeEnv): void {
     automatic.forEach((act, i) => runActivity(env, act, 'normal', i, cast));
   }
 
-  const count = Math.min(slots, life.routine.length);
+  const count = Math.min(slots + overtime, life.routine.length);
   for (let i = 0; i < count && p.c.alive; i++) {
     const slot = life.routine[i];
     if (!slot) continue;
@@ -500,11 +527,21 @@ export function resolveRoutine(env: LifeEnv): void {
       reportLine(env, `An activity in your routine no longer exists (${slot.activity}).`, 'plain');
       continue;
     }
-    const result = runActivity(env, act, slot.effort, i, cast);
+    const result = runActivity(env, act, slot.effort, i, cast, {
+      commit: commitOf(data, slot, pool),
+      overtime: i >= slots,
+    });
     if (!result.ran) continue;
     spent += result.vigor;
     rested ||= result.restful;
     if (act.oneOff) ran.push(i);
+  }
+  if (life.routine.length > slots + overtime && slots > 0) {
+    reportLine(
+      env,
+      `Not enough Vigor for overtime: ${life.routine.length - slots - overtime === 1 ? 'one slot' : `${life.routine.length - slots - overtime} slots`} skipped.`,
+      'plain',
+    );
   }
   if (ran.length > 0) life.routine = life.routine.filter((_, i) => !ran.includes(i));
   report.vigor.spent = spent;

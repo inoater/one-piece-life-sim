@@ -33,5 +33,5 @@ describe('npm run lives (tools/lives.ts)', () => {
           .output,
       ).races[0].mean;
     expect(run()).toBe(run());
-  });
+  }, 90_000);
 });

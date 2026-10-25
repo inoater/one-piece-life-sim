@@ -1,6 +1,16 @@
 import { z } from 'zod';
 import { BattleStateSchema, FightRecordSchema } from './battle-state';
-import { FRUIT_CONTAINERS, FruitDefSchema, TechniqueDefSchema } from './data/defs';
+import {
+  CRAFTS,
+  CURSES,
+  FRUIT_CONTAINERS,
+  FruitDefSchema,
+  ITEM_CONTAINERS,
+  ShipDesignSchema,
+  SWORD_GRADES,
+  TechniqueDefSchema,
+  WEAPON_FAMILIES,
+} from './data/defs';
 import { ID_FORMAT_HINT, isEntityId } from './ids';
 
 /**
@@ -38,6 +48,11 @@ import { ID_FORMAT_HINT, isEntityId } from './ids';
  *  - Save version 6 (Phase 5, battles): `battle` (the player's tactical fight in progress, while
  *    it waits for their next action), `character.fights` (each person's tally, and against whom),
  *    `counters.battleId`, and decisions marked `battle` (the one that holds time still for it).
+ *  - Save version 7 (Phase 6, hands): the `item` block of item entities (weapons with their grade,
+ *    wear, blackness, curse and wielders; gear with charges; treasure caches and maps; one entity
+ *    per graded sword), `character.hands` (what a person carries and wields, weapon and craft
+ *    skills, the project at the bench, a ship being built, cargo, saved designs), a ship's design,
+ *    history and spirit, each place's market supply, and a routine slot's commitment past Hard.
  */
 
 export const ENTITY_TYPES = [
@@ -164,6 +179,8 @@ export const RoutineSlotSchema = z.strictObject({
   /** An activity id from data/activities. */
   activity: z.string().min(1),
   effort: z.enum(EFFORTS),
+  /** Save version 7: Vigor committed past Hard (each point one more Vigor, a bigger month). */
+  commit: z.number().int().min(1).optional(),
 });
 export type RoutineSlot = z.infer<typeof RoutineSlotSchema>;
 
@@ -398,6 +415,64 @@ export const PowersSchema = z.strictObject({
 });
 export type PowersData = z.infer<typeof PowersSchema>;
 
+/** A project at the bench, the forge or the slipway (Phase 6): a recipe worked month by month. */
+export const ProjectSchema = z.strictObject({
+  /** A recipe id, or "temper:<item id>" for raising a blade's grade. */
+  recipe: z.string().min(1),
+  /** Months of work done (Normal effort is one a month) against what it needs. */
+  done: z.number().min(0),
+  needed: z.number().min(0),
+  /** Where the work is being done (a location id): it continues only there. */
+  place: z.string().min(1),
+  sinceTick: z.number().int(),
+  /** Quality earned so far by the hands that worked it (averaged over the months). */
+  quality: z.number(),
+});
+export type Project = z.infer<typeof ProjectSchema>;
+
+/** A ship on the slipway (Phase 6): a yard's build, or the player's own. */
+export const BuildSchema = z.strictObject({
+  design: ShipDesignSchema,
+  /** The yard's place; the ship is launched there. */
+  place: z.string().min(1),
+  /** Built by the yard (paid in full) or by the player's own hands (materials only). */
+  by: z.enum(['yard', 'self']),
+  done: z.number().min(0),
+  needed: z.number().min(0),
+  sinceTick: z.number().int(),
+  /** The quality of the work, 0 to 100 (50 is the design as drawn). */
+  quality: z.number(),
+});
+export type Build = z.infer<typeof BuildSchema>;
+
+/** What a person carries and can do with their hands (Phase 6, save version 7). */
+export const HandsSchema = z.strictObject({
+  /** Item entities carried. */
+  items: z.array(z.string()),
+  /** Weapons in hand (up to three swords, or one other weapon). */
+  wield: z.array(z.string()),
+  /** The armour worn. */
+  armour: z.string().nullable(),
+  /** Weapon skill by family, 0 to 100. */
+  skills: z.record(z.string(), z.number().min(0).max(100)),
+  /** Craft skill, 0 to 100. */
+  crafts: z.partialRecord(z.enum(CRAFTS), z.number().min(0).max(100)),
+  project: ProjectSchema.nullable(),
+  build: BuildSchema.nullable(),
+  /** Trade goods in the hold, and what they cost all told (for the profit). */
+  cargo: z.record(z.string(), z.number().int().min(0)),
+  paid: z.record(z.string(), z.number().min(0)),
+  /** Ship designs saved for later (the creator's blueprints). */
+  designs: z.array(ShipDesignSchema),
+  /** Den Den Mushi numbers: people they can call. */
+  contacts: z.array(z.string()),
+  /** The month they last did something limited (a call, a bet, a meal), by kind. */
+  last: z.record(z.string(), z.number().int()),
+  /** Tallies: Berries won and lost gambling, caches dug up, trades made. */
+  tally: z.record(z.string(), z.number()),
+});
+export type HandsData = z.infer<typeof HandsSchema>;
+
 /**
  * What makes an entity a person. Present on every `character` entity created from Phase 1 on.
  *
@@ -466,11 +541,18 @@ export const CharacterSchema = z.strictObject({
   powers: PowersSchema.optional(),
   /** Fights won, lost and drawn, and against whom (save version 6). */
   fights: FightRecordSchema.optional(),
+  /** Weapons, gear, skills, projects and cargo (save version 7). */
+  hands: HandsSchema.optional(),
 });
 export type CharacterData = z.infer<typeof CharacterSchema>;
 
 /** A place on the map, as it stands in the world (save version 4): who holds it, who lives there. */
 export const PlaceStateSchema = z.strictObject({
+  /**
+   * Save version 7: the market's stock of each trade good against its usual (1 is ordinary, 0.3
+   * scarce, 2 a glut). Prices follow it; buying drains it, selling floods it, months restore it.
+   */
+  market: z.record(z.string(), z.number().min(0)).optional(),
   /** The faction that holds it, or null. */
   controller: z.string().nullable(),
   /** 0 to 100: prices, wages and the mood of the place (rule 3: a Stat with its causes). */
@@ -515,6 +597,17 @@ export const ShipStateSchema = z.strictObject({
   supplies: z.number(),
   coated: z.boolean(),
   sunk: z.boolean(),
+  /** Save version 7: how she was built (the ship creator); absent for a stock hull. */
+  design: ShipDesignSchema.optional(),
+  /** Months of care (repaired, crewed, never abandoned): a well-loved ship may gain a spirit. */
+  care: z.number().int().min(0).optional(),
+  /** Her guardian spirit: once, it keeps her afloat when she should sink. */
+  spirit: z.enum(['dormant', 'awake', 'spent']).optional(),
+  /** In the yard being refitted until this month (she cannot sail before). */
+  refitUntil: z.number().int().optional(),
+  builtTick: z.number().int().optional(),
+  /** Her story: launched, named, battles and storms survived (rule 6). */
+  history: z.array(z.strictObject({ tick: z.number().int(), text: z.string().min(1) })).optional(),
 });
 export type ShipState = z.infer<typeof ShipStateSchema>;
 
@@ -552,6 +645,73 @@ export const FruitStateSchema = z.strictObject({
 });
 export type FruitState = z.infer<typeof FruitStateSchema>;
 
+/**
+ * An item as it stands in the world (save version 7): a weapon with its grade, wear, blackness,
+ * curse and the hands it has passed through (rule 6); a piece of gear with charges; a treasure
+ * cache or a map to one. One entity per graded sword, so counts can never exceed canon's.
+ */
+export const ItemStateSchema = z.strictObject({
+  /** A weapon id or an item id from data, or "cache" for a treasure cache. */
+  defId: z.string().min(1),
+  container: z.enum(ITEM_CONTAINERS),
+  /** Who carries it. */
+  holderId: z.string().nullable(),
+  /** A canon holder the world does not simulate, known only by name. */
+  holderName: z.string().nullable(),
+  /** Where it lies when nobody carries it (a location id). */
+  place: z.string().nullable(),
+  /** For sale here (market container): its price in Berries. */
+  price: z.number().int().nullable(),
+  /** Weapons. */
+  family: z.enum(WEAPON_FAMILIES).optional(),
+  grade: z.enum(SWORD_GRADES).optional(),
+  /** 0 to 100: how well it was made (a smith's roll, a canon blade's fame). */
+  quality: z.number().min(0).max(100),
+  /** 0 to 100: a blade's edge; fights dull it, a smith restores it. */
+  sharpness: z.number().min(0).max(100).optional(),
+  durability: z.number().min(0).optional(),
+  maxDurability: z.number().min(0).optional(),
+  /** Months coated in Armament by a strong wielder; enough of them and it turns black for good. */
+  blackness: z.number().min(0).optional(),
+  black: z.boolean().optional(),
+  seastone: z.boolean().optional(),
+  curse: z
+    .strictObject({
+      id: z.enum(CURSES),
+      tamed: z.boolean(),
+      /** Willpower checks passed toward taming (bloodthirst). */
+      checks: z.number().int().min(0),
+    })
+    .optional(),
+  /** Dials, doses: uses left. */
+  charges: z.number().int().min(0).optional(),
+  /** Canon weapons: the index of the holder keyframe last applied; -1 once off the story. */
+  canonNext: z.number().int().optional(),
+  /** A Vivre Card's owner, a map's cache: the entity it points at. */
+  target: z.string().nullable().optional(),
+  /** A treasure map: true, partial (the right island, not the spot) or fake. */
+  mapKind: z.enum(['true', 'partial', 'fake']).optional(),
+  /** A cache's Berries, and an item buried with it. */
+  value: z.number().int().min(0).optional(),
+  contents: z.string().nullable().optional(),
+  /** A blueprint carried: the design. */
+  design: ShipDesignSchema.optional(),
+  madeBy: z.string().optional(),
+  madeTick: z.number().int().optional(),
+  wielders: z
+    .array(
+      z.strictObject({
+        id: z.string().nullable(),
+        name: z.string().min(1),
+        from: z.number().int(),
+        to: z.number().int().nullable(),
+      }),
+    )
+    .optional(),
+  history: z.array(z.strictObject({ tick: z.number().int(), text: z.string().min(1) })),
+});
+export type ItemState = z.infer<typeof ItemStateSchema>;
+
 export const EntitySchema = z.strictObject({
   id: EntityIdSchema,
   type: EntityTypeSchema,
@@ -571,6 +731,8 @@ export const EntitySchema = z.strictObject({
   ship: ShipStateSchema.optional(),
   /** Phase 4: present on fruit entities. */
   fruit: FruitStateSchema.optional(),
+  /** Phase 6: present on item entities. */
+  item: ItemStateSchema.optional(),
 });
 export type Entity = z.infer<typeof EntitySchema>;
 

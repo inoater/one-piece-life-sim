@@ -22,6 +22,8 @@ import { renderFeed } from './screens/feed';
 import { createCanonPage } from './screens/canon';
 import { createFruitsPage } from './screens/fruits';
 import { createPowersPage } from './screens/powers';
+import { createGearPage } from './screens/gear';
+import { createShipPage } from './screens/ship';
 import { createMapPage } from './screens/map';
 import { renderEnd } from './screens/end';
 import { createNewLife } from './screens/new-life';
@@ -111,10 +113,15 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   }
   const mapLink = h('a', { class: 'tab tab--map', href: '#/map' }, ROUTE_LABELS.map);
   const powersLink = h('a', { class: 'tab tab--powers', href: '#/powers' }, ROUTE_LABELS.powers);
+  // Phase 6: what the character carries, and their ship.
+  const gearLink = h('a', { class: 'tab tab--gear', href: '#/gear' }, ROUTE_LABELS.gear);
+  const shipLink = h('a', { class: 'tab tab--ship', href: '#/ship' }, ROUTE_LABELS.ship);
   const nav = h('nav', { class: 'tabs', 'aria-label': 'Sections' }, [
     ...links.values(),
     mapLink,
     powersLink,
+    gearLink,
+    shipLink,
   ]);
 
   // ---- Panels
@@ -155,6 +162,19 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     'div',
     { class: 'canon-page-slot fruits-page-slot', hidden: true },
     fruitsPage.el,
+  );
+  // Phase 6: the Gear page and the Ship page (with the ship creator), drawn from the snapshot.
+  const gearPage = createGearPage(app);
+  const gearPageEl = h(
+    'div',
+    { class: 'canon-page-slot gear-page-slot', hidden: true },
+    gearPage.el,
+  );
+  const shipPage = createShipPage(app);
+  const shipPageEl = h(
+    'div',
+    { class: 'canon-page-slot ship-page-slot', hidden: true },
+    shipPage.el,
   );
 
   // ---- Controls
@@ -252,6 +272,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     canonPageEl,
     powersPageEl,
     fruitsPageEl,
+    gearPageEl,
+    shipPageEl,
     controls,
     toasts,
   );
@@ -292,7 +314,10 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     { keys: 'N', does: 'Next month' },
     { keys: 'S', does: 'Skip a few months' },
     { keys: 'E', does: 'Skip to the next event' },
-    { keys: '1 to 8', does: 'Feed, Character, Actions, World, News, Map, Powers, Devil Fruits' },
+    {
+      keys: '1 to 9, 0',
+      does: 'Feed, Character, Actions, World, News, Map, Powers, Devil Fruits, Gear, Ship',
+    },
     { keys: 'L', does: 'Start a new life' },
     { keys: 'M', does: 'Menu: saves and appearance' },
     { keys: '?', does: 'This list' },
@@ -344,6 +369,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       'map',
       'powers',
       'fruits',
+      'gear',
+      'ship',
     ];
     if (key === 'n') press(nextButton);
     else if (key === 's') press(skipButton);
@@ -351,7 +378,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     else if (key === 'm') menuButton.click();
     else if (key === 'l') navigate('new');
     else if (key === '?' || (key === '/' && event.shiftKey)) openShortcuts();
-    else if (/^[1-8]$/.test(key)) navigate(sections[Number(key) - 1] as Route);
+    else if (/^[1-9]$/.test(key)) navigate(sections[Number(key) - 1] as Route);
+    else if (key === '0') navigate('ship');
     else return;
     event.preventDefault();
   };
@@ -386,7 +414,9 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       state.route === 'map' ||
       state.route === 'canon' ||
       state.route === 'powers' ||
-      state.route === 'fruits'
+      state.route === 'fruits' ||
+      state.route === 'gear' ||
+      state.route === 'ship'
         ? null
         : isWide() && !isSideRoute(state.route)
           ? state.sideTab
@@ -581,6 +611,23 @@ export function mountShell(root: HTMLElement, app: App): Shell {
         state.busy !== previous.busy)
     )
       void fruitsPage.show(state);
+    // Phase 6: redrawn when the world moves or the app stops being busy (its buttons).
+    for (const [route, pageEl, page, link] of [
+      ['gear', gearPageEl, gearPage, gearLink],
+      ['ship', shipPageEl, shipPage, shipLink],
+    ] as const) {
+      const on = state.route === route;
+      if (on !== !pageEl.hidden) pageEl.hidden = !on;
+      if (
+        on &&
+        (previous?.route !== route ||
+          state.snapshot !== previous.snapshot ||
+          state.busy !== previous.busy)
+      )
+        page.show(state);
+      if (on) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    }
     const ending = state.route === 'end';
     if (ending !== !endPageEl.hidden) endPageEl.hidden = !ending;
     if (

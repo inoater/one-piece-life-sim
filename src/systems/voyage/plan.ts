@@ -14,6 +14,7 @@ import {
 import { lanesFrom, laneZone, withDevFixtures } from '../places/graph';
 import { priceMult } from '../places/place';
 import { monthlyMiles, modeSpeed, monthsToCover, navigatorBonus } from './progress';
+import { shipNumbers } from '../hands/ships';
 
 /**
  * The planning screen (Phase 3): from where the player stands, every place a lane reaches, and for
@@ -128,10 +129,13 @@ function modeLock(
   switch (mode) {
     case 'own': {
       if (!ship?.ship) return 'You have no ship moored here';
-      const vessel = data.vessels[ship.ship.vessel];
       if (ship.ship.hull <= 0) return 'Your ship needs repairs';
-      if (vessel && ship.ship.crew + 1 < vessel.minCrew) {
-        return `Needs a crew of ${vessel.minCrew} (you have ${ship.ship.crew + 1} with yourself)`;
+      // Phase 6: in the yard for a refit; the hands her own design needs.
+      if (ship.ship.refitUntil !== undefined && ship.ship.refitUntil > tick)
+        return 'She is in the yard being refitted';
+      const minCrew = shipNumbers(data, ship).minCrew;
+      if (ship.ship.crew + 1 < minCrew) {
+        return `Needs a crew of ${minCrew} (you have ${ship.ship.crew + 1} with yourself)`;
       }
       if (lane.requires === 'log_pose' && !p.c.travel?.logPose && !hasEternalPose(p, to)) {
         return 'Needs a Log Pose';

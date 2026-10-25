@@ -381,3 +381,89 @@ export const FruitDefSchema = z
     });
   });
 export type FruitDef = z.infer<typeof FruitDefSchema>;
+
+// ---- Phase 6: weapons, gear, ships ---------------------------------------------------------
+
+/** The plan's weapon families. */
+export const WEAPON_FAMILIES = ['blade', 'heavy', 'polearm', 'firearm', 'bow', 'unusual'] as const;
+export type WeaponFamily = (typeof WEAPON_FAMILIES)[number];
+
+/** Sword grades, best first. Graded and better swords are each one tracked entity. */
+export const SWORD_GRADES = ['supreme', 'great', 'skillful', 'graded', 'ungraded'] as const;
+export type SwordGrade = (typeof SWORD_GRADES)[number];
+
+/** The four curses a blade can carry. */
+export const CURSES = ['misfortune', 'haki_hunger', 'bloodthirst', 'haunting'] as const;
+export type CurseId = (typeof CURSES)[number];
+
+/** Crafts that share the one crafting schema. */
+export const CRAFTS = [
+  'smithing',
+  'gunsmithing',
+  'shipbuilding',
+  'medicine',
+  'cooking',
+  'invention',
+] as const;
+export type Craft = (typeof CRAFTS)[number];
+
+/** Kinds of item that are not weapons. */
+export const ITEM_KINDS = [
+  'dial',
+  'seastone',
+  'den_den',
+  'vivre',
+  'navigation',
+  'medicine',
+  'prosthetic',
+  'armour',
+  'clothing',
+  'meal',
+  'blueprint',
+  'map',
+  'material',
+  'tool',
+  'document',
+  'story',
+] as const;
+export type ItemKind = (typeof ITEM_KINDS)[number];
+
+/** Where an item is when nobody carries it, or that it is gone. */
+export const ITEM_CONTAINERS = [
+  'held',
+  'lying',
+  'market',
+  'collection',
+  'buried',
+  'sunken',
+  'ruins',
+  'destroyed',
+] as const;
+export type ItemContainer = (typeof ITEM_CONTAINERS)[number];
+
+/**
+ * A ship's design (the ship creator): hull, length, material, rig, extra drives, rooms, weapons,
+ * figurehead and look. Ids name entries in data/ships.json. Stored in saves (a ship's design, a
+ * saved blueprint) with exactly the shape a data file gives it, so it lives here with the state.
+ */
+export const ShipDesignSchema = z.strictObject({
+  name: z.string().min(1).max(60).optional(),
+  hull: z.string().regex(/^[a-z_]+$/),
+  /** Length against the hull's usual: 0.8 is a short build, 1.25 a long one (skill permitting). */
+  length: z.number().min(0.5).max(2).default(1),
+  material: z.string().regex(/^[a-z_]+$/),
+  rig: z.string().regex(/^[a-z_]+$/),
+  drives: z.array(z.string().regex(/^[a-z_]+$/)).default([]),
+  rooms: z.array(z.string().regex(/^[a-z_]+$/)).default([]),
+  /** Weapon id -> how many (cannons by the gun, one ram). */
+  weapons: z.record(z.string().regex(/^[a-z_]+$/), z.number().int().min(0)).default({}),
+  figurehead: z
+    .string()
+    .regex(/^[a-z_]+$/)
+    .default('none'),
+  hullColour: z.string().min(1).max(30).default('black'),
+  sailColour: z.string().min(1).max(30).default('white'),
+  /** The Jolly Roger in words, until Phase 14 draws it. */
+  jollyRoger: z.string().max(120).optional(),
+});
+export type ShipDesign = z.infer<typeof ShipDesignSchema>;

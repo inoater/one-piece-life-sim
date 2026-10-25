@@ -1,0 +1,58 @@
+[
+  {
+    "id": "weapon_template_supreme",
+    "name": "Supreme Grade sword",
+    "description": "One of the twelve greatest swords in the world, whose name is known to every swordsman.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "supreme",
+    "quality": 94,
+    "combat": 340,
+    "attack": 23,
+    "template": true,
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_template_great",
+    "name": "Great Grade sword",
+    "description": "One of the twenty-one Great Grade swords, a blade that swordsmen cross oceans to see.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "great",
+    "quality": 86,
+    "combat": 200,
+    "attack": 19,
+    "template": true,
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_template_skillful",
+    "name": "Skillful Grade sword",
+    "description": "One of the fifty Skillful Grade swords: a masterwork, if not a legend.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "skillful",
+    "quality": 76,
+    "combat": 110,
+    "attack": 15,
+    "template": true,
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_template_graded",
+    "name": "Graded sword",
+    "description": "A named blade with a smith's mark, a grade above everyday steel.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "graded",
+    "quality": 66,
+    "combat": 70,
+    "attack": 13,
+    "template": true,
+    "tags": ["sword"]
+  }
+]

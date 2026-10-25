@@ -21,7 +21,13 @@ of fronts, played exchange by exchange (the player choosing every action, or a s
 mode); the Logia rule and fruit matchups; intent (spare, capture, kill) and the fate of the beaten;
 injuries, scars and second winds; sparring that trains by its partner; contests; the canon cast on
 a power ladder by era; and Tier 2 people who hunt, raid and quarrel by the same rules, resolved in
-one roll fitted to the engine. Status reports: `docs/PHASE0.md` to `docs/PHASE5.md`.
+one roll fitted to the engine. **Phase 6** (hands) fills its hands and hold: weapons of six families
+as items with a grade, an edge, wear and a history; the 12 Supreme, 21 Great and 50 Skillful blades
+once each, the canon ones following the story; black blades and four kinds of cursed blade; dials,
+seastone, Den Den Mushi and Vivre Cards; a ship creator with live numbers, yards, refits and a ship's
+spirit; six crafts on one schema; markets, trade goods, treasure and gambling; and a month that
+scales with Vigor (overtime slots, and pushing a Hard slot further). Status reports:
+`docs/PHASE0.md` to `docs/PHASE6.md`.
 
 ## Quick start
 
@@ -49,6 +55,7 @@ Node 20 or newer (`.nvmrc` pins 22).
 | `npm run world`         | Phase 3: Year 0 to the present with nobody in it; prints the world's timeline. `-- --rates 100`: how often each beat fires per canon mode.          |
 | `npm run powers`        | Phase 4 evidence: the catalogue, 1,000 generated fruits, `-- --kings 10000` (Conqueror's Haki only with King's Qualities), `--drift 20`, `--world`. |
 | `npm run battle`        | Phase 5 evidence: 1,000 pairings, tactical against abstract, and the gamma that fits; `-- --spars 1000`, `--world` (NPC fights), `--ladder`.        |
+| `npm run economy`       | Phase 6 evidence: hard-working lives per job (`-- --lives 100`): years to afford a caravel, and who affords a galleon.                              |
 | `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                                                               |
 | `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                                                                |
 | `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                                                              |
@@ -71,7 +78,7 @@ data/          calendar, settings, character (growth, talent, stages), creation 
                life (slots, effort, health, money, death); races/ birthplaces/ legacies/ occupations/ names/ foci/
                backstory/ activities/ jobs/ traits/ events/ weapons/ locations/ lanes/ vessels/ factions/ cast/ canon/
                powers.json personality.json fruitMatchups.json; fruits/ tracks/ techniques/ movesets/ (Phase 4)
-               battle.json (Phase 5)
+               battle.json (Phase 5); hands.json ships.json; items/ recipes/ (Phase 6)
                (news/ reserved)
 tools/         validate-data, headless-sim, canon-lint, lint-sim, update-golden, build helpers
 tests/         engine/ worker/ ui/ tools/ e2e/ fixtures/golden/

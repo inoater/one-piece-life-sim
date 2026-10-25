@@ -111,6 +111,7 @@
     "minAge": 10,
     "requires": { "atSea": true },
     "gains": { "dexterity": 0.2, "charisma": 0.2, "intellect": 0.1 },
+    "hand": "cook",
     "tags": ["at_sea", "ship_duty", "cooking"],
     "outcomes": [
       {
@@ -147,6 +148,7 @@
     "physical": true,
     "requires": { "atSea": true },
     "gains": { "dexterity": 0.4, "strength": 0.2 },
+    "hand": "ship",
     "tags": ["at_sea", "ship_duty", "craft"],
     "outcomes": [
       {

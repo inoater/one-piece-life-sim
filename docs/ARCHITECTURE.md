@@ -242,6 +242,50 @@ do not reach it (or overshoot), a modifier, "Strength of their era", closes the 
 whenever their powers change. Stage Combat Power in data/tracks was rescaled so a lifetime of haki,
 fruit and style can climb from Thug to Peak.
 
+## Hands (Phase 6)
+
+`src/systems/hands/` is everything a person holds or owns. **Items are entities** (rule 2): every
+weapon, piece of gear, treasure cache and map that matters carries an `item` block (its data id,
+where it is or who carries it, grade, quality, edge, wear, blackness, curse, charges, wielders and
+history). `items.ts` makes, gives, places and destroys them, and `syncGear` keeps what carrying
+does in step: the counts fighting styles ask for (swords, a gun, a bow), the modifiers worn things
+give (armour's weight, clothes, a prosthetic's restored strength), and the weapon term of Combat
+Power. **Weapons** (`weapons.ts`) turn an item into the battle engine's weapon: family attack times
+grade, quality, edge, black and curse, plus the wielder's skill with the family; up to three blades
+are wielded. The engine adds skill to accuracy, armour to defence (none in the water), a hungry
+blade's drain on haki, and dials and seastone gear as things to use (`kit`). `fight.ts` writes a
+fight back: blades dull and wear (the best grades never break, black ones never chip), skill
+grows, charges are spent, a sea fight's damage stays on the ship.
+
+**The world's blades** (`swords.ts`) are built with the world layer: each canon weapon once,
+following holder keyframes by date unless someone takes it off the story; the graded swords canon
+counts but never names, with names of their own; caches of treasure (`treasure.ts`). A grade's
+count can never be exceeded: swords are moved, sold, lost and destroyed, never copied, and
+tempering a grade up is refused when the grade is full. A death leaves weapons where the person
+fell; the player's pass to their heir.
+
+**Curses** (`curses.ts`) set a flag the curses' events read, make monthly mischief, push a
+bloodthirsty wielder toward Kill intent, and are tamed four ways. **Crafting** (`crafting.ts`) is
+one schema: a project is started (materials bought), worked by the "Work on your project" activity
+whose effort and commitment set the pace, and finished with the average of each month's quality
+roll; schools speed it. **Ships** (`ships.ts`): the creator's maths (`designStats`), building at a
+yard or by hand (a slipway month by month, a launch that trades in the old ship), refits, a ship's
+history, upkeep, rot, care and the spirit that once keeps her afloat; a ship's speed, hull and
+cargo stay the entity's stats, so the voyage code reads them as before (`shipNumbers`).
+**Markets** (`market.ts`): trade goods priced by prosperity and stock, which trading moves and
+months restore; gear sold by a place's trades; one-of-a-kind things on shelves. Gambling, Den Den
+Mushi calls and Vivre Cards are `gambling.ts` and `gear.ts`.
+
+The player's hands run in step 7 (`month.ts`: dials, a yard's month, a ship's month, curses, a
+blade turning black) and through activities in step 1; the world's in step 4 (canon weapons,
+markets, others digging). The Gear and Ship pages read `snapshot.hands`; the ship creator asks
+`hands/design` for live numbers as the design changes.
+
+**A month scaled by Vigor** (`life/drive.ts`): a deep pool opens overtime slots beyond the stage's
+own, and a Hard slot may be pushed further, each point a Vigor more and a multiplier on training,
+practice, pay and a project's pace. `resolveRoutine`, `setRoutine`, the life view and the planner
+all read the same functions.
+
 ## Worker protocol
 
 `src/worker/protocol.ts` types every request and response (`boot`, `newWorld`, `advance`, `dispatch`,
@@ -250,6 +294,12 @@ fruit and style can climb from Thug to Peak.
 (even one that fails halfway) leaves the world untouched. The UI never receives the whole state, only a
 `Snapshot` projection (header facts, the last 300 visible log lines, counts), which keeps messages small
 when the world has thousands of entities.
+
+## Performance (Phase 6)
+
+A world gains about 190 item entities (canon weapons, graded swords, caches). A headless life is
+the same speed as before Phase 6 (2.87 s against 2.88 s for the same seeds); the economy sweep's
+1,000 lives of 15 years take about two minutes on 11 workers.
 
 ## Performance (Phase 5)
 

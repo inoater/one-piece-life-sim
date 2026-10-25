@@ -626,7 +626,7 @@ export function refreshPowerMods(
   }
   applyFruitMods(state, data, entity);
   // Phase 5: the weapon term of Combat Power (the best weapon they carry).
-  const weapon = weaponCombat(data, entity);
+  const weapon = weaponCombat(data, entity, state);
   if (weapon) {
     addMod(bonusStat(entity, data.powers.combatBonusStat), {
       source: powerSource(weapon.name),

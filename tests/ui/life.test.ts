@@ -73,7 +73,10 @@ describe('the Actions planner', () => {
     await startLife();
     navigate('actions');
     await settle();
-    expect(qa('.routine__slot')).toHaveLength(3);
+    expect(qa('.routine__slot:not(.routine__slot--overtime)')).toHaveLength(3);
+    // Phase 6: the Vigor pool opens overtime slots after the stage's own.
+    const overtime = ui.app.store.get().snapshot?.life?.drive.overtime ?? 0;
+    expect(qa('.routine__slot--overtime')).toHaveLength(overtime);
     await choose(0, 'act_spar');
     expect(q('.routine__slot .slot-card')?.dataset['activity']).toBe('act_spar');
     expect(document.querySelector('.modal-backdrop')).toBeNull();

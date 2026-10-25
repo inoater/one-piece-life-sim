@@ -17,6 +17,7 @@ import { HAKI_TRACKS, trackStateOf } from '../powers/state';
 import { useMove } from '../powers/techniques';
 import { addProgress, fightingTracks, powerCtxOf } from '../powers/tracks';
 import { tierIndex, tierOf } from './ladder';
+import { handsAfterFight } from '../hands/fight';
 
 /**
  * What a fight leaves (Phase 5): for the player, injuries by the size of each blow (a spar a tenth
@@ -176,6 +177,8 @@ function playerAftermath(
     out.lines.push({ text: 'You did not survive it.', tone: 'alert' });
     return;
   }
+  // Phase 6: blades dull and wear, skill grows, gear is spent, the ship keeps her damage.
+  handsAfterFight(env, battle, out.lines);
 
   // Injuries: each blow worth one rolls for it, by its size (a spar's a tenth as often), the
   // heaviest first and at most a few a fight. Then Health; a knockout is not a death.

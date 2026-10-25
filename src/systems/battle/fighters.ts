@@ -11,6 +11,8 @@ import { temperamentOf } from '../powers/movesets';
 import { HAKI_TRACKS, hakiAwake, stageOf, trackStateOf } from '../powers/state';
 import { battleActions, moveDef, pricedTechnique, techniqueIndex } from '../powers/techniques';
 import { tierSpan } from './ladder';
+import { armourOf, weaponOfEntity } from '../hands/weapons';
+import { battleKit } from '../hands/gear';
 
 /**
  * Fighters (Phase 5): a person as they stand when a fight begins, or a nameless foe made from a
@@ -90,36 +92,22 @@ function hakiStage(entity: Entity, colour: keyof typeof HAKI_TRACKS): number {
   return (trackStateOf(c, HAKI_TRACKS[colour])?.stage ?? 0) + 1;
 }
 
-/** The weapon a person fights with: the best they carry (bought ones are named in their gear). */
-function weaponOf(
-  data: GameData,
-  entity: Entity,
-): { name: string; kind: string; attack: number; combat: number } | null {
-  const gear = entity.character?.powers?.gear ?? {};
-  let best: { name: string; kind: string; attack: number; combat: number } | null = null;
-  for (const weapon of Object.values(data.weapons)) {
-    if (!weapon.gear || (gear[weapon.gear] ?? 0) <= 0) continue;
-    // A named purchase counts as itself; otherwise the plainest weapon of the kind.
-    const owned = (gear[weapon.id] ?? 0) > 0;
-    const plain = !Object.values(data.weapons).some(
-      (w) => w.gear === weapon.gear && (w.price ?? 0) < (weapon.price ?? 0),
-    );
-    if (!owned && !plain) continue;
-    const attack = (data.battle.damage.weaponAttack[weapon.gear] ?? 0) + weapon.attack;
-    if (!best || weapon.combat > best.combat)
-      best = { name: weapon.name, kind: weapon.gear, attack, combat: weapon.combat };
-  }
-  return best;
-}
-
-/** The best weapon's Combat Power (Phase 5 fills in the formula's weapon term). */
+/**
+ * The weapon's Combat Power (Phase 5 fills in the formula's weapon term; Phase 6 makes weapons
+ * items with a grade, an edge and a wielder's skill). Without the world at hand, items cannot be
+ * looked up, and the plain weapon of the person's gear stands in.
+ */
 export function weaponCombat(
   data: GameData,
   entity: Entity,
+  state?: WorldState,
 ): { name: string; value: number } | null {
-  const w = weaponOf(data, entity);
+  const w = weaponOfEntity(state ?? EMPTY_WORLD, data, entity);
   return w && w.combat > 0 ? { name: w.name, value: w.combat } : null;
 }
+
+/** Stands in for the world where only a person is at hand (their items cannot be looked up). */
+const EMPTY_WORLD = { entities: {} } as unknown as WorldState;
 
 function toMove(action: ReturnType<typeof battleActions>[number], effects: string[]): FighterMove {
   return {
@@ -177,7 +165,7 @@ export function fighterOf(
       };
     }
   }
-  let weapon = weaponOf(data, entity);
+  let weapon = weaponOfEntity(state, data, entity);
   if (weapon && opts.noWeapons) {
     cp -= weapon.combat;
     weapon = null;
@@ -240,8 +228,18 @@ export function fighterOf(
     fruit,
     cursed: fruit !== null && cursedNow(entity, tick),
     swimmer: SWIMMERS.has(c?.race ?? ''),
-    weapon: weapon ? { name: weapon.name, kind: weapon.kind, attack: weapon.attack } : null,
-    seastone: marine,
+    weapon: weapon
+      ? {
+          name: weapon.name,
+          kind: weapon.kind,
+          attack: weapon.attack,
+          ...(weapon.accuracy > 0 ? { accuracy: weapon.accuracy } : {}),
+          ...(weapon.drain > 0 ? { drain: weapon.drain } : {}),
+          ...(weapon.items.length > 0 ? { items: weapon.items } : {}),
+        }
+      : null,
+    seastone: marine || (weapon?.seastone ?? false),
+    ...(armourOf(state, data, entity) > 0 ? { armour: armourOf(state, data, entity) } : {}),
     temperament: temperamentOf(data, entity),
     moves,
     status: freshStatus(),
@@ -256,9 +254,13 @@ export function fighterOf(
     bounty,
     fame,
     leader: opts.leader ?? false,
-    kit: Object.fromEntries(
-      Object.entries(c?.powers?.gear ?? {}).filter(([id, n]) => id.startsWith('kit_') && n > 0),
-    ),
+    kit: {
+      ...Object.fromEntries(
+        Object.entries(c?.powers?.gear ?? {}).filter(([id, n]) => id.startsWith('kit_') && n > 0),
+      ),
+      // Phase 6: dials, nets and doses carried.
+      ...(c?.hands ? battleKit(state, data, entity) : {}),
+    },
     reserve: opts.reserve ?? false,
     front: false,
   };

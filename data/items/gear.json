@@ -1,0 +1,191 @@
+[
+  {
+    "id": "item_seastone_cuffs",
+    "name": "Seastone cuffs",
+    "description": "Cuffs of the stone that holds the sea's power: a fruit user who wears them cannot use the fruit, or stand straight.",
+    "kind": "seastone",
+    "price": 800000,
+    "soldAt": ["marine_base", "underworld"],
+    "charges": 1,
+    "battle": { "effect": "net", "value": 3 },
+    "tags": ["seastone"]
+  },
+  {
+    "id": "item_seastone_net",
+    "name": "Seastone net",
+    "description": "A net woven with seastone threads. Whoever is caught is held; a fruit user caught goes limp.",
+    "kind": "seastone",
+    "price": 1200000,
+    "soldAt": ["marine_base", "underworld"],
+    "charges": 1,
+    "battle": { "effect": "net", "value": 2 },
+    "tags": ["seastone"]
+  },
+  {
+    "id": "item_seastone_bullets",
+    "name": "Seastone bullets",
+    "description": "Rounds with seastone cores. Fired from a gun of yours, they touch a Logia and weaken any fruit user they hit.",
+    "kind": "seastone",
+    "price": 600000,
+    "soldAt": ["marine_base", "underworld"],
+    "tags": ["seastone", "gun"]
+  },
+  {
+    "id": "item_seastone_edge",
+    "name": "Seastone edge",
+    "description": "A seastone strip a smith fits along a blade's edge: the sword you carry will touch what a sword should not.",
+    "kind": "seastone",
+    "price": 2500000,
+    "soldAt": ["marine_base", "underworld"],
+    "places": [],
+    "tags": ["seastone", "sword"]
+  },
+  {
+    "id": "item_den_den_mushi",
+    "name": "Den Den Mushi",
+    "description": "A snail that carries a voice to its kin across any sea. With it you can call anyone whose number you have.",
+    "kind": "den_den",
+    "price": 60000,
+    "soldAt": ["market"],
+    "tags": ["snail"]
+  },
+  {
+    "id": "item_black_den_den",
+    "name": "Black Den Den Mushi",
+    "description": "A small black snail that listens in on other snails' calls. Every harbour's news reaches you as it happens.",
+    "kind": "den_den",
+    "price": 3000000,
+    "soldAt": ["underworld", "marine_base"],
+    "tags": ["snail", "news"]
+  },
+  {
+    "id": "item_white_den_den",
+    "name": "White Den Den Mushi",
+    "description": "A snail that jams the snails around it: nobody calls for help while it is out.",
+    "kind": "den_den",
+    "price": 2000000,
+    "soldAt": ["underworld", "marine_base"],
+    "battle": { "effect": "smoke", "value": 20 },
+    "charges": 2,
+    "recharge": 1,
+    "tags": ["snail"]
+  },
+  {
+    "id": "item_visual_den_den",
+    "name": "Visual Den Den Mushi",
+    "description": "A snail that sees and shows what it saw: a camera with a shell.",
+    "kind": "den_den",
+    "price": 400000,
+    "soldAt": ["market"],
+    "statMods": [{ "stat": "perception", "value": 1, "kind": "flat" }],
+    "tags": ["snail"]
+  },
+  {
+    "id": "item_broadcast_den_den",
+    "name": "Broadcast Den Den Mushi",
+    "description": "A great snail that speaks to every snail in the world at once. Only the World Government keeps them.",
+    "kind": "den_den",
+    "storyLocked": true,
+    "tags": ["snail"]
+  },
+  {
+    "id": "item_vivre_card",
+    "name": "Vivre Card",
+    "description": "A scrap of paper made from a person's nail clipping. It creeps toward its owner, and burns down as their life fades.",
+    "kind": "vivre",
+    "tags": ["paper"]
+  },
+  {
+    "id": "item_sea_charts",
+    "name": "Sea charts",
+    "description": "Good charts of the currents and reefs, copied by someone who sailed them.",
+    "kind": "navigation",
+    "price": 20000,
+    "soldAt": ["market", "library"],
+    "navigation": 1.05,
+    "tags": ["navigation"]
+  },
+  {
+    "id": "item_navigator_kit",
+    "name": "Navigator's kit",
+    "description": "Sextant, compass, chronometer and dividers in a brass-bound case.",
+    "kind": "navigation",
+    "price": 90000,
+    "soldAt": ["market", "shipyard"],
+    "navigation": 1.08,
+    "tags": ["navigation"]
+  },
+  {
+    "id": "item_weather_almanac",
+    "name": "Weather almanac",
+    "description": "A scholar's tables of the Grand Line's moods, as far as they can be tabled.",
+    "kind": "navigation",
+    "price": 50000,
+    "places": ["loc_weatheria", "loc_water_seven", "loc_ohara"],
+    "navigation": 1.04,
+    "tags": ["navigation"]
+  },
+  {
+    "id": "item_diving_bell",
+    "name": "Diving bell",
+    "description": "An iron bell with a window and an air hose: a way down to wrecks for those without gills.",
+    "kind": "tool",
+    "price": 350000,
+    "places": ["loc_fishman_island", "loc_sabaody", "loc_water_seven"],
+    "tags": ["diving"]
+  },
+  {
+    "id": "item_adam_wood",
+    "name": "Treasure tree wood",
+    "description": "Timber of the treasure tree Adam, sold in pieces on the black market for a fortune: enough for one ship's hull.",
+    "kind": "material",
+    "price": 30000000,
+    "places": ["loc_water_seven", "loc_sabaody"],
+    "soldAt": ["underworld"],
+    "tags": ["timber"]
+  },
+  {
+    "id": "item_forged_papers",
+    "name": "Forged papers",
+    "description": "A name, a port of origin and a stamp that will fool most harbourmasters.",
+    "kind": "document",
+    "price": 250000,
+    "soldAt": ["underworld"],
+    "tags": ["crime"]
+  },
+  {
+    "id": "item_freedom_papers",
+    "name": "Freedom papers",
+    "description": "A bought, forged or stolen document that says someone once owned is free. On Sabaody it is worth a life.",
+    "kind": "document",
+    "price": 5000000,
+    "places": ["loc_sabaody"],
+    "soldAt": ["underworld"],
+    "tags": ["crime"]
+  },
+  {
+    "id": "item_pacifista",
+    "name": "Pacifista",
+    "description": "A cyborg weapon of the World Government, built in the image of a Warlord. Nobody outside the Government has one.",
+    "kind": "story",
+    "storyLocked": true,
+    "tags": ["science"]
+  },
+  {
+    "id": "item_seraphim",
+    "name": "Seraphim",
+    "description": "The Government's newest weapon: a child-sized giant made from the lineage of the strongest. Not for anyone's hands.",
+    "kind": "story",
+    "storyLocked": true,
+    "tags": ["science"]
+  },
+  {
+    "id": "item_raid_suit",
+    "name": "Raid suit",
+    "description": "A suit of science from a kingdom of soldiers, stored in a can and worn like a second skin.",
+    "kind": "armour",
+    "armour": 40,
+    "storyLocked": true,
+    "tags": ["science"]
+  }
+]

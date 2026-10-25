@@ -2,7 +2,8 @@ import type { GameData } from '../../engine/data/schemas';
 import { appendLog } from '../../engine/log';
 import { Rng } from '../../engine/rng';
 import { SCAR_AREAS, type RoutineSlot, type WorldState } from '../../engine/state';
-import { ensureLife, playerPerson, slotsOf } from './body';
+import { ensureLife, playerPerson, slotsOf, vigorPoolOf } from './body';
+import { commitMax, overtimeSlots } from './drive';
 import { continueAs, type ContinueMode } from './death';
 import type { LifeEnv } from './env';
 import { die, injure } from './health';
@@ -43,17 +44,36 @@ export function setRoutine(
 ): void {
   const env = commandEnv(state, data, 'life/routine');
   const slots = slotsOf(data, env.p, state.tick);
-  if (routine.length > slots) {
+  // Phase 6: a deep Vigor pool opens overtime slots, and lets a Hard slot be pushed further.
+  const pool = vigorPoolOf(data, env.p.entity, state.tick);
+  const overtime = slots > 0 ? overtimeSlots(data, pool, slots) : 0;
+  if (routine.length > slots + overtime) {
     throw new LifeError(
-      `You have ${slots} activity slot${slots === 1 ? '' : 's'} a month at this age`,
+      overtime > 0
+        ? `You have ${slots} activity slot${slots === 1 ? '' : 's'} a month, and Vigor for ${overtime} more`
+        : `You have ${slots} activity slot${slots === 1 ? '' : 's'} a month at this age`,
     );
   }
+  const most = commitMax(data, pool);
   for (const slot of routine) {
     const act = data.activities[slot.activity];
     if (!act) throw new LifeError(`There is no activity "${slot.activity}"`);
     if (act.automatic) throw new LifeError(`${act.name} happens by itself`);
+    if (slot.commit && slot.effort !== 'hard')
+      throw new LifeError('Only a Hard effort can be pushed further');
+    if (slot.commit && act.restful) throw new LifeError(`${act.name} cannot be pushed`);
+    if ((slot.commit ?? 0) > most)
+      throw new LifeError(
+        most === 0
+          ? 'Your Vigor is too low to push past Hard'
+          : `Your Vigor allows pushing ${most} past Hard at most`,
+      );
   }
-  env.life.routine = routine.map((s) => ({ activity: s.activity, effort: s.effort }));
+  env.life.routine = routine.map((s) => ({
+    activity: s.activity,
+    effort: s.effort,
+    ...(s.commit && s.effort === 'hard' ? { commit: s.commit } : {}),
+  }));
 }
 
 export function chooseJob(state: WorldState, data: GameData, jobId: string | null): void {

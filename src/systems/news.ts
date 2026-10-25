@@ -21,6 +21,20 @@ function listenerPlace(state: WorldState, data: GameData): string | null | undef
   return locationIdOf(data, c);
 }
 
+/**
+ * Phase 6: a black Den Den Mushi listens in on every snail's calls, so the player hears the news
+ * as it happens, wherever they are (an item tagged "news").
+ */
+function wiretapped(state: WorldState, data: GameData): boolean {
+  const c = state.playerId ? state.entities[state.playerId]?.character : undefined;
+  for (const id of c?.hands?.items ?? []) {
+    const item = state.entities[id]?.item;
+    if (item?.holderId === state.playerId && data.items[item.defId]?.tags.includes('news'))
+      return true;
+  }
+  return false;
+}
+
 export function reachTickFor(
   state: WorldState,
   data: GameData,
@@ -28,6 +42,7 @@ export function reachTickFor(
   tick: number,
 ): number | null {
   if (!place) return tick;
+  if (wiretapped(state, data)) return tick;
   const listener = listenerPlace(state, data);
   if (listener === undefined) return tick + newsDelay(data, place, place);
   if (listener === null) return null;

@@ -259,6 +259,48 @@ How the files fit together, and the rules the loader enforces beyond each schema
 - **Weapons**: `combat` (their Combat Power) and `attack` (added to blows made with them).
 - **Places**: the `arena` feature (pit fights, the colosseum).
 
+## Hands (Phase 6)
+
+- **data/weapons/**: every weapon gains a `family` (blade, heavy, polearm, firearm, bow, unusual),
+  a `kind`, a `grade` (supreme, great, skillful, graded, ungraded), `quality`, where it is sold
+  (`soldAt` features, `regions`), `seastone`, `black`, a `curse`, and for canon weapons `canon`:
+  holder keyframes by date (a cast id, or a `holderName` and a `place` with a `container`), and a
+  date it is destroyed. One `template` per grade is what generated graded swords are made from.
+  The loader refuses a graded weapon that is neither canon nor a template, more canon blades of a
+  grade than the grade's count, and a missing template.
+- **data/items/** (prefix `item`): everything that is not a weapon: dials, seastone gear, Den Den
+  Mushi, Vivre Cards, navigation, medicine, prosthetics, armour, clothing, meals, blueprints, maps,
+  materials, documents, story-locked things. Each may have a price and where it is sold, charges and
+  a monthly recharge, a `battle` effect (heal, smoke, call, impact, reject, flame, flash, gust,
+  net), stat modifiers while carried, `armour`, an `effect` when eaten or taken (months of
+  modifiers, Health, a cure, faster healing), a `navigation` bonus, the lost part a prosthetic
+  `restores`, a blueprint's `design`, and `storyLocked`.
+- **data/recipes/** (prefix `recipe`): one crafting schema for smithing, gunsmithing, shipbuilding,
+  medicine, cooking and invention: what it `makes` (a weapon or an item, and how many), materials
+  (`cost` and trade `goods`), tools (`features` or `places`), the craft `skill` needed, the `stats`
+  that help, `months` of work, the `quality` roll (base, per skill point, per stat point above 50,
+  spread) and `requires`.
+- **data/hands.json**: weapon families and grades (counts, attack, Combat Power, price), quality
+  and edge, weapon skill, black blades, tempering a grade up, the four curses (what they do and how
+  each is tamed), generated swords (name parts, where they lie, who carries them, curse chance, how
+  many lesser graded blades), Vivre Cards, calls, markets (spread, Charisma, resale, drift, impact,
+  elasticity, the black market's markup, cargo), trade goods (what makes and wants them), gambling,
+  treasure (caches by region, famous treasures, map odds, finding, divers, others digging), craft
+  schools, plain weapons for NPCs by occupation, and every line the hands write.
+- **data/ships.json**: the ship creator's parts: hulls (the vessel class each sails as, size,
+  speed, hull, cargo, berths, crew, cost, months, cannon decks, room slots, length range, the
+  shipwright skill needed, blueprint-only hulls), materials, rigs, extra drives, rooms (with their
+  effect), weapons, figureheads, colours; yards (by feature, and special places), building (the
+  saving for your own hands, hurrying, shortfall, refits, resale), upkeep, the ship's spirit, and
+  the Marines' standard designs by rank.
+- **data/life.json `drive`**: the month scaled by Vigor: one overtime slot per `perSlot` Vigor (up
+  to `max`, from a stage with `fromSlots` slots, each costing `surcharge` more), and commitment past
+  Hard (one point per `per` Vigor, the gain each point adds in order, and pay and risk per point).
+- **Activities**: `craft` (a month on the project or the ship on your own slipway), `hand` (`drill`
+  for weapon skill, `treasure` for a hunt, `ship` for care, `cook` for the cook's craft).
+- **New effects**: `findItem`, `treasureMap`, `cargo`. Text may use `{item}`, `{quality}`,
+  `{grade}` and `{good}`. Vessel prices were lowered by the economy pass (see PHASE6.md).
+
 ## Dev fixtures
 
 Phase 3 adds a test crew, three test characters and a test duel beat (`dev: true`), and a dev place

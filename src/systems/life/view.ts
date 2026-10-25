@@ -19,6 +19,7 @@ import {
 } from './body';
 import { continueOptions, lifeRecap, type ContinueOption, type LifeRecap } from './death';
 import type { LifeEnv } from './env';
+import { commitMax, commitMults, commitOf, overtimeSlots, slotVigor } from './drive';
 import { jobLock } from './jobs';
 import { loanLock } from './money';
 import { priceMult } from '../places/place';
@@ -61,6 +62,8 @@ export interface ActivityView {
   extraVigor: number;
   /** Phase 4: the power it practises, as a phrase ("Swordsmanship (drill)"), or null. */
   practice: string | null;
+  /** Phase 6: may fill more than one slot (another shift, more hours on the project). */
+  repeatable: boolean;
 }
 
 const PRACTICE_WORD: Record<string, string> = {
@@ -113,8 +116,32 @@ export interface LifeView {
   /** "In a cell until March, Year 12", or null. */
   jailed: string | null;
   slots: number;
+  /**
+   * Phase 6, a month scaled by Vigor: overtime slots this pool opens beyond `slots` (each costs
+   * `surcharge` more Vigor), and how many points past Hard a slot may be pushed, with what each
+   * level multiplies (`commitGains[n]` is the gain multiplier at n points; index 0 is plain Hard).
+   */
+  drive: {
+    overtime: number;
+    surcharge: number;
+    perSlot: number;
+    commitMax: number;
+    commitPer: number;
+    commitGains: number[];
+    commitPay: number;
+    commitRisk: number;
+  };
   efforts: { id: Effort; name: string; vigor: number }[];
-  routine: { activity: string; name: string; effort: Effort; lock: string | null; vigor: number }[];
+  routine: {
+    activity: string;
+    name: string;
+    effort: Effort;
+    lock: string | null;
+    vigor: number;
+    /** Points committed past Hard (as it will run: never more than the pool allows). */
+    commit: number;
+    overtime: boolean;
+  }[];
   categories: { id: ActivityCategory; label: string }[];
   activities: ActivityView[];
   job: null | { id: string; name: string; months: number; title: string | null; income: string };
@@ -181,21 +208,39 @@ export function lifeView(state: WorldState, data: GameData): LifeView | null {
     name: data.life.efforts[id].name,
     vigor: data.life.efforts[id].vigor,
   }));
-  const vigorOf = (activity: string, effort: Effort) => {
-    const act = data.activities[activity];
-    return !act || act.restful ? 0 : data.life.efforts[effort].vigor + act.extraVigor;
-  };
+  const pool = vigorPoolOf(data, p.entity, tick);
+  const overtime = slots > 0 ? overtimeSlots(data, pool, slots) : 0;
   const routine = life.routine.slice(0, Math.max(slots, life.routine.length)).map((slot, i) => {
     const act = data.activities[slot.activity];
+    const over = i >= slots;
     return {
       activity: slot.activity,
       name: act?.name ?? slot.activity,
       effort: slot.effort,
       lock:
-        i >= slots ? 'More than this age allows' : act ? lockReason(env, act) : 'No longer exists',
-      vigor: vigorOf(slot.activity, slot.effort),
+        i >= slots + overtime
+          ? slots === 0
+            ? 'More than this age allows'
+            : 'Not enough Vigor for this much overtime'
+          : act
+            ? lockReason(env, act)
+            : 'No longer exists',
+      vigor: act ? slotVigor(data, act, slot, over, pool) : 0,
+      commit: commitOf(data, slot, pool),
+      overtime: over,
     };
   });
+  const cMax = commitMax(data, pool);
+  const drive: LifeView['drive'] = {
+    overtime,
+    surcharge: data.life.drive.overtime.surcharge,
+    perSlot: data.life.drive.overtime.perSlot,
+    commitMax: cMax,
+    commitPer: data.life.drive.commit.per,
+    commitGains: Array.from({ length: cMax + 1 }, (_, n) => commitMults(data, n).gain),
+    commitPay: data.life.drive.commit.pay,
+    commitRisk: data.life.drive.commit.risk,
+  };
 
   const activities: ActivityView[] = Object.values(data.activities)
     .filter((a) => !a.automatic)
@@ -216,6 +261,7 @@ export function lifeView(state: WorldState, data: GameData): LifeView | null {
       usesMentor: a.usesMentor,
       extraVigor: a.extraVigor,
       practice: a.practice ? practiceLabel(data, a.practice, p.c) : null,
+      repeatable: a.worksJob || a.craft,
     }));
 
   const currentJob = life.job ? data.jobs[life.job.id] : undefined;
@@ -257,13 +303,16 @@ export function lifeView(state: WorldState, data: GameData): LifeView | null {
     generation: life.generation,
     health: { current: Math.round(life.health), max: maxHealthOf(data, p.entity, tick) },
     vigor: {
-      pool: vigorPoolOf(data, p.entity, tick),
-      planned: routine.slice(0, slots).reduce((sum, s) => sum + (s.lock ? 0 : s.vigor), 0),
+      pool,
+      planned: routine
+        .slice(0, slots + overtime)
+        .reduce((sum, s) => sum + (s.lock ? 0 : s.vigor), 0),
     },
     exhausted: life.exhausted,
     bedRest: isBedRest(data, life, tick),
     jailed: isJailed(life, tick) ? `In a cell until ${label(life.jailedUntil ?? tick)}` : null,
     slots,
+    drive,
     efforts,
     routine,
     categories: (Object.keys(CATEGORY_LABEL) as ActivityCategory[]).map((id) => ({

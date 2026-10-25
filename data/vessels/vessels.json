@@ -8,7 +8,7 @@
     "minCrew": 1,
     "maxCrew": 3,
     "cargo": 5,
-    "cost": 5000,
+    "cost": 3000,
     "soldAt": "docks"
   },
   {
@@ -20,7 +20,7 @@
     "minCrew": 2,
     "maxCrew": 6,
     "cargo": 20,
-    "cost": 40000,
+    "cost": 15000,
     "soldAt": "docks"
   },
   {
@@ -32,7 +32,7 @@
     "minCrew": 4,
     "maxCrew": 12,
     "cargo": 60,
-    "cost": 150000,
+    "cost": 50000,
     "soldAt": "shipyard"
   },
   {
@@ -44,7 +44,7 @@
     "minCrew": 8,
     "maxCrew": 30,
     "cargo": 40,
-    "cost": 500000,
+    "cost": 140000,
     "soldAt": "shipyard"
   },
   {

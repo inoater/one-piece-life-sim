@@ -95,7 +95,19 @@ export const FighterSchema = z.strictObject({
   cursed: z.boolean(),
   /** Fish-Men and Merfolk: at home in the water. */
   swimmer: z.boolean(),
-  weapon: z.strictObject({ name: z.string(), kind: z.string(), attack: z.number() }).nullable(),
+  weapon: z
+    .strictObject({
+      name: z.string(),
+      kind: z.string(),
+      attack: z.number(),
+      /** Save version 7: accuracy from skill, haki an untamed hungry blade drinks, the items. */
+      accuracy: z.number().optional(),
+      drain: z.number().optional(),
+      items: z.array(z.string()).optional(),
+    })
+    .nullable(),
+  /** Save version 7: armour worn (added to defence; none in the water). */
+  armour: z.number().optional(),
   seastone: z.boolean(),
   temperament: z.enum(['aggressive', 'cautious', 'balanced']),
   moves: z.array(FighterMoveSchema),

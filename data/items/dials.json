@@ -1,0 +1,127 @@
+[
+  {
+    "id": "item_flame_dial",
+    "name": "Flame dial",
+    "description": "A shell that stores fire: open it and a jet of flame comes out.",
+    "kind": "dial",
+    "price": 40000,
+    "places": ["loc_skypiea", "loc_weatheria"],
+    "charges": 3,
+    "recharge": 1,
+    "battle": { "effect": "flame", "value": 3 },
+    "tags": ["sky", "fire"]
+  },
+  {
+    "id": "item_impact_dial",
+    "name": "Impact dial",
+    "description": "It soaks up a blow and gives it back all at once. The recoil hurts the hand that holds it.",
+    "kind": "dial",
+    "price": 250000,
+    "places": ["loc_skypiea"],
+    "charges": 2,
+    "battle": { "effect": "impact", "value": 1.6 },
+    "tags": ["sky"]
+  },
+  {
+    "id": "item_reject_dial",
+    "name": "Reject dial",
+    "description": "An impact dial's ten-times-stronger cousin. Using it can break the user's arm.",
+    "kind": "dial",
+    "price": 2500000,
+    "places": ["loc_skypiea"],
+    "charges": 1,
+    "battle": { "effect": "reject", "value": 4 },
+    "tags": ["sky"]
+  },
+  {
+    "id": "item_breath_dial",
+    "name": "Breath dial",
+    "description": "A shell full of wind, for sails, for cooling, or for a sudden gust in a fight.",
+    "kind": "dial",
+    "price": 30000,
+    "places": ["loc_skypiea", "loc_weatheria"],
+    "charges": 3,
+    "recharge": 1,
+    "battle": { "effect": "gust", "value": 25 },
+    "tags": ["sky"]
+  },
+  {
+    "id": "item_jet_dial",
+    "name": "Jet dial",
+    "description": "A rare shell that blasts air far harder than a breath dial: enough to drive a board across the clouds.",
+    "kind": "dial",
+    "price": 400000,
+    "places": ["loc_skypiea"],
+    "charges": 2,
+    "recharge": 1,
+    "battle": { "effect": "gust", "value": 45 },
+    "tags": ["sky"]
+  },
+  {
+    "id": "item_lamp_dial",
+    "name": "Lamp dial",
+    "description": "It stores light. Opened in a dark room, or in an enemy's face, it blinds.",
+    "kind": "dial",
+    "price": 25000,
+    "places": ["loc_skypiea", "loc_weatheria"],
+    "charges": 3,
+    "recharge": 1,
+    "battle": { "effect": "flash", "value": 2 },
+    "tags": ["sky", "light"]
+  },
+  {
+    "id": "item_flash_dial",
+    "name": "Flash dial",
+    "description": "A lamp dial's brighter sister: one burst of light that leaves everyone near seeing spots.",
+    "kind": "dial",
+    "price": 90000,
+    "places": ["loc_skypiea"],
+    "charges": 2,
+    "recharge": 1,
+    "battle": { "effect": "flash", "value": 3 },
+    "tags": ["sky", "light"]
+  },
+  {
+    "id": "item_heat_dial",
+    "name": "Heat dial",
+    "description": "It stores heat: warm hands in winter, or a scald where it is needed.",
+    "kind": "dial",
+    "price": 35000,
+    "places": ["loc_skypiea", "loc_weatheria"],
+    "charges": 3,
+    "recharge": 1,
+    "battle": { "effect": "flame", "value": 2 },
+    "tags": ["sky", "fire"]
+  },
+  {
+    "id": "item_axe_dial",
+    "name": "Axe dial",
+    "description": "It stores a slashing wind that cuts like a blade.",
+    "kind": "dial",
+    "price": 300000,
+    "places": ["loc_skypiea"],
+    "charges": 2,
+    "battle": { "effect": "impact", "value": 1.3 },
+    "tags": ["sky", "slash"]
+  },
+  {
+    "id": "item_tone_dial",
+    "name": "Tone dial",
+    "description": "It stores a sound: a song, a voice, a last message.",
+    "kind": "dial",
+    "price": 15000,
+    "places": ["loc_skypiea", "loc_weatheria"],
+    "statMods": [{ "stat": "charisma", "value": 1, "kind": "flat" }],
+    "tags": ["sky"]
+  },
+  {
+    "id": "item_milky_dial",
+    "name": "Milky dial",
+    "description": "It makes a road of cloud out of thin air. A navigator's toy, and more than a toy.",
+    "kind": "dial",
+    "price": 120000,
+    "places": ["loc_weatheria", "loc_skypiea"],
+    "navigation": 1.03,
+    "tags": ["sky"]
+  }
+]

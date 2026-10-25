@@ -2,6 +2,7 @@ import type { GameData } from '../../engine/data/schemas';
 import type { TickStep } from '../../engine/pipeline';
 import { Rng } from '../../engine/rng';
 import { buildFruitLayer, seedGeneratedFruits } from '../powers/fruits';
+import { buildHandsLayer } from '../hands/swords';
 import type { WorldState } from '../../engine/state';
 import { runTickInPlace } from '../../engine/tick';
 import { spawnDueCast } from '../canon/cast';
@@ -62,5 +63,7 @@ export function ensureWorldLayer(state: WorldState, data: GameData): boolean {
   runHistory(state, data, from, start);
   populate(state, data, start, Rng.root(state.seed).fork('populate'));
   seedGeneratedFruits(state, data, start, Rng.root(state.seed).fork('generated-fruits'));
+  // Phase 6: the world's blades, canon and graded, and its treasure.
+  buildHandsLayer(state, data, start, Rng.root(state.seed).fork('hands-layer'));
   return true;
 }

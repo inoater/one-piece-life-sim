@@ -1,0 +1,268 @@
+[
+  {
+    "id": "item_tonic",
+    "name": "Healing tonic",
+    "description": "A doctor's tonic of herbs and something stronger: it puts strength back in a tired body.",
+    "kind": "medicine",
+    "price": 6000,
+    "soldAt": ["doctor"],
+    "effect": { "months": 1, "heal": 0.3 },
+    "tags": ["medicine"]
+  },
+  {
+    "id": "item_fever_cure",
+    "name": "Fever cure",
+    "description": "Powders that break a fever and most of what comes with one.",
+    "kind": "medicine",
+    "price": 9000,
+    "soldAt": ["doctor"],
+    "effect": { "months": 1, "cures": true },
+    "tags": ["medicine"]
+  },
+  {
+    "id": "item_bone_salve",
+    "name": "Bone salve",
+    "description": "A thick salve and a splint: bones knit a month sooner.",
+    "kind": "medicine",
+    "price": 15000,
+    "soldAt": ["doctor"],
+    "effect": { "months": 1, "speedsHealing": 1, "heal": 0.1 },
+    "tags": ["medicine"]
+  },
+  {
+    "id": "item_stimulant",
+    "name": "Battle stimulant",
+    "description": "A doctor's injection that keeps a fighter on their feet a little longer than they should be.",
+    "kind": "medicine",
+    "price": 25000,
+    "soldAt": ["doctor", "underworld"],
+    "charges": 1,
+    "battle": { "effect": "heal", "value": 0.35 },
+    "tags": ["medicine"]
+  },
+  {
+    "id": "item_vigor_draught",
+    "name": "Vigor draught",
+    "description": "A bitter draught a good doctor brews from rare herbs: for a few months, the body has more to give.",
+    "kind": "medicine",
+    "effect": { "months": 3, "statMods": [{ "stat": "endurance", "value": 8, "kind": "flat" }] },
+    "tags": ["medicine"]
+  },
+  {
+    "id": "item_peg_leg",
+    "name": "Peg leg",
+    "description": "A good wooden leg, fitted by someone who knew what they were doing.",
+    "kind": "prosthetic",
+    "price": 30000,
+    "soldAt": ["doctor"],
+    "restores": "legs",
+    "tags": ["prosthetic"]
+  },
+  {
+    "id": "item_iron_arm",
+    "name": "Iron arm",
+    "description": "A jointed arm of iron and leather, strapped to the shoulder.",
+    "kind": "prosthetic",
+    "price": 120000,
+    "soldAt": ["doctor", "smithy"],
+    "restores": "arms",
+    "tags": ["prosthetic"]
+  },
+  {
+    "id": "item_glass_eye",
+    "name": "Glass eye",
+    "description": "It does not see, but it looks like it might.",
+    "kind": "prosthetic",
+    "price": 8000,
+    "soldAt": ["doctor"],
+    "restores": "eyes",
+    "statMods": [{ "stat": "charisma", "value": 2, "kind": "flat" }],
+    "tags": ["prosthetic"]
+  },
+  {
+    "id": "item_cyborg_frame",
+    "name": "Cyborg frame",
+    "description": "Iron bones, cola-fired joints and a body rebuilt by your own hands. Only a shipwright with a death wish and a genius would try.",
+    "kind": "prosthetic",
+    "statMods": [
+      { "stat": "durability", "value": 25, "kind": "flat" },
+      { "stat": "strength", "value": 15, "kind": "flat" }
+    ],
+    "tags": ["science", "cyborg"]
+  },
+  {
+    "id": "item_leather_jerkin",
+    "name": "Leather jerkin",
+    "description": "Boiled leather over the chest and shoulders: it turns a glancing blade.",
+    "kind": "armour",
+    "price": 12000,
+    "soldAt": ["market", "smithy"],
+    "armour": 6,
+    "tags": ["armour"]
+  },
+  {
+    "id": "item_chain_shirt",
+    "name": "Chain shirt",
+    "description": "Rings of iron under a coat. Heavy, and a fine way to drown.",
+    "kind": "armour",
+    "price": 60000,
+    "soldAt": ["smithy"],
+    "armour": 12,
+    "statMods": [{ "stat": "speed", "value": -3, "kind": "flat" }],
+    "tags": ["armour"]
+  },
+  {
+    "id": "item_samurai_armour",
+    "name": "Samurai armour",
+    "description": "Lacquered plates laced with silk, made for war in Wano.",
+    "kind": "armour",
+    "price": 400000,
+    "soldAt": ["smithy"],
+    "regions": ["wano"],
+    "armour": 18,
+    "statMods": [{ "stat": "speed", "value": -4, "kind": "flat" }],
+    "tags": ["armour"]
+  },
+  {
+    "id": "item_marine_coat",
+    "name": "Officer's coat",
+    "description": "A white coat with Justice across the back, worn over the shoulders.",
+    "kind": "clothing",
+    "price": 30000,
+    "soldAt": ["marine_base"],
+    "statMods": [{ "stat": "charisma", "value": 2, "kind": "flat" }],
+    "tags": ["clothing", "marine"]
+  },
+  {
+    "id": "item_captain_coat",
+    "name": "Captain's coat",
+    "description": "A long coat with brass buttons, the kind a crew follows.",
+    "kind": "clothing",
+    "price": 45000,
+    "soldAt": ["market"],
+    "statMods": [{ "stat": "charisma", "value": 3, "kind": "flat" }],
+    "tags": ["clothing"]
+  },
+  {
+    "id": "item_fine_clothes",
+    "name": "Fine clothes",
+    "description": "A tailor's best: silk, a good cut, and doors that open.",
+    "kind": "clothing",
+    "price": 150000,
+    "soldAt": ["market"],
+    "statMods": [{ "stat": "charisma", "value": 4, "kind": "flat" }],
+    "tags": ["clothing", "noble"]
+  },
+  {
+    "id": "item_hearty_stew",
+    "name": "Hearty stew",
+    "description": "A pot of stew that would put meat on anyone's bones.",
+    "kind": "meal",
+    "price": 400,
+    "soldAt": ["market"],
+    "effect": {
+      "months": 1,
+      "statMods": [{ "stat": "endurance", "value": 2, "kind": "flat" }],
+      "heal": 0.05
+    },
+    "tags": ["meal"]
+  },
+  {
+    "id": "item_sea_king_steak",
+    "name": "Sea king steak",
+    "description": "A slab of sea king, seared hard: a fighter's meal.",
+    "kind": "meal",
+    "effect": {
+      "months": 2,
+      "statMods": [{ "stat": "strength", "value": 4, "kind": "flat" }],
+      "heal": 0.1
+    },
+    "tags": ["meal"]
+  },
+  {
+    "id": "item_sailors_feast",
+    "name": "A sailor's feast",
+    "description": "Fish, meat and fruit cooked by someone who cares: a crew eats it and feels it for months.",
+    "kind": "meal",
+    "effect": {
+      "months": 2,
+      "statMods": [
+        { "stat": "endurance", "value": 3, "kind": "flat" },
+        { "stat": "willpower", "value": 2, "kind": "flat" }
+      ],
+      "heal": 0.15
+    },
+    "tags": ["meal"]
+  },
+  {
+    "id": "item_healing_broth",
+    "name": "Healing broth",
+    "description": "A legendary cook's broth for the sick: it heals as surely as a doctor.",
+    "kind": "meal",
+    "effect": { "months": 1, "heal": 0.35, "speedsHealing": 1, "cures": true },
+    "tags": ["meal", "medicine"]
+  },
+  {
+    "id": "item_treasure_map",
+    "name": "Treasure map",
+    "description": "A map with an X on it. Some are real.",
+    "kind": "map",
+    "tags": ["treasure"]
+  },
+  {
+    "id": "item_blueprint_warship",
+    "name": "Marine warship plan",
+    "description": "The Marines' own plan for a battleship, stolen or sold out of a dockyard. With it, a big enough yard can build one.",
+    "kind": "blueprint",
+    "price": 6000000,
+    "soldAt": ["underworld"],
+    "design": {
+      "name": "Warship",
+      "hull": "warship",
+      "material": "iron_plated",
+      "rig": "square",
+      "weapons": { "cannon": 24 },
+      "rooms": ["galley", "brig", "armoury"],
+      "figurehead": "beast"
+    },
+    "tags": ["blueprint"]
+  },
+  {
+    "id": "item_blueprint_galley_caravel",
+    "name": "Galley-La caravel plan",
+    "description": "A Water 7 masterwork: a caravel drawn by the best shipwrights alive, quick, tough and long-lived.",
+    "kind": "blueprint",
+    "price": 900000,
+    "places": ["loc_water_seven"],
+    "design": {
+      "name": "Galley-La caravel",
+      "hull": "caravel",
+      "length": 1.15,
+      "material": "hardwood",
+      "rig": "extra_masts",
+      "rooms": ["galley", "sick_bay", "workshop", "library"],
+      "weapons": { "cannon": 8 },
+      "figurehead": "animal"
+    },
+    "tags": ["blueprint"]
+  },
+  {
+    "id": "item_blueprint_treasure_ship",
+    "name": "Treasure-tree galleon plan",
+    "description": "A master shipwright's dream: a galleon of Adam wood, with a burner, a burst system and rooms for a crew to live in.",
+    "kind": "blueprint",
+    "price": 4000000,
+    "places": ["loc_water_seven"],
+    "design": {
+      "name": "Dream ship",
+      "hull": "galleon",
+      "material": "treasure_tree",
+      "rig": "square",
+      "drives": ["burner", "burst_system"],
+      "rooms": ["galley", "sick_bay", "library", "aquarium", "workshop", "training_deck", "bath"],
+      "weapons": { "cannon": 10 },
+      "figurehead": "beast"
+    },
+    "tags": ["blueprint"]
+  }
+]

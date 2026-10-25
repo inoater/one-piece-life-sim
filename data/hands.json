@@ -1,0 +1,558 @@
+{
+  "families": {
+    "blade": {
+      "name": "Blades",
+      "stats": ["dexterity"],
+      "attack": 14,
+      "reach": 0,
+      "gear": "swords",
+      "durability": 60
+    },
+    "heavy": {
+      "name": "Heavy weapons",
+      "stats": ["strength"],
+      "attack": 18,
+      "reach": 0,
+      "durability": 90
+    },
+    "polearm": {
+      "name": "Polearms",
+      "stats": ["strength", "dexterity"],
+      "attack": 15,
+      "reach": 1,
+      "durability": 70
+    },
+    "firearm": {
+      "name": "Firearms",
+      "stats": ["dexterity", "perception"],
+      "attack": 10,
+      "reach": 2,
+      "gear": "gun",
+      "durability": 50
+    },
+    "bow": {
+      "name": "Bows and slings",
+      "stats": ["dexterity", "perception"],
+      "attack": 8,
+      "reach": 2,
+      "gear": "bow",
+      "durability": 40
+    },
+    "unusual": {
+      "name": "Unusual weapons",
+      "stats": ["dexterity", "intellect"],
+      "attack": 10,
+      "reach": 1,
+      "durability": 50
+    }
+  },
+  "grades": {
+    "supreme": {
+      "name": "Supreme Grade",
+      "count": 12,
+      "attackMult": 2.6,
+      "combat": 900,
+      "unbreakable": true,
+      "price": { "min": 600000000, "max": 1500000000 }
+    },
+    "great": {
+      "name": "Great Grade",
+      "count": 21,
+      "attackMult": 2.1,
+      "combat": 450,
+      "unbreakable": true,
+      "price": { "min": 80000000, "max": 300000000 }
+    },
+    "skillful": {
+      "name": "Skillful Grade",
+      "count": 50,
+      "attackMult": 1.7,
+      "combat": 200,
+      "unbreakable": false,
+      "price": { "min": 8000000, "max": 40000000 }
+    },
+    "graded": {
+      "name": "Graded",
+      "count": null,
+      "attackMult": 1.35,
+      "combat": 90,
+      "unbreakable": false,
+      "price": { "min": 600000, "max": 4000000 }
+    },
+    "ungraded": {
+      "name": "Ungraded",
+      "count": null,
+      "attackMult": 1,
+      "combat": 0,
+      "unbreakable": false,
+      "price": { "min": 0, "max": 0 }
+    }
+  },
+  "quality": { "at0": 0.7, "at100": 1.3 },
+  "edge": {
+    "perFight": { "min": 2, "max": 7 },
+    "dull": 40,
+    "dullMult": 0.8,
+    "sharpenCost": 1500,
+    "repairPerPoint": 150,
+    "wear": { "min": 0, "max": 3 }
+  },
+  "skill": {
+    "perFight": 1.2,
+    "perDrill": 1.6,
+    "attack": 0.15,
+    "accuracy": 0.25
+  },
+  "black": {
+    "armamentStage": 2,
+    "months": 180,
+    "perStage": 0.5,
+    "attack": 0.25
+  },
+  "temper": {
+    "months": 18,
+    "level": "master",
+    "places": ["loc_wano", "loc_elbaf"],
+    "chance": 0.45,
+    "cost": 2000000
+  },
+  "curses": {
+    "misfortune": {
+      "name": "Misfortune",
+      "description": "Every wielder this blade has had met a bad end, or so the story goes. Bad luck clings to whoever carries it.",
+      "flag": "curse.misfortune",
+      "attack": 0.1,
+      "tamedAttack": 0.15,
+      "monthly": 0.12,
+      "tame": {
+        "kind": "fate",
+        "luck": 92,
+        "text": "Toss it high and hold out your arm beneath it: if fate wants you, the blade will take the arm. If not, it is yours."
+      }
+    },
+    "haki_hunger": {
+      "name": "Haki hunger",
+      "description": "It drinks the haki of whoever holds it, more than they mean to give. Mastered, it cuts like nothing else.",
+      "flag": "curse.haki_hunger",
+      "attack": 0.35,
+      "tamedAttack": 0.45,
+      "drain": 6,
+      "monthly": 0.3,
+      "tame": {
+        "kind": "will",
+        "willpower": 90,
+        "armament": 4,
+        "text": "Only a will and an Armament strong enough to hold the blade back can master it. Train until it obeys."
+      }
+    },
+    "bloodthirst": {
+      "name": "Bloodthirst",
+      "description": "It wants to finish every fight. Hold back and it pulls; give in and you change.",
+      "flag": "curse.bloodthirst",
+      "attack": 0.2,
+      "tamedAttack": 0.2,
+      "monthly": 0.25,
+      "tame": {
+        "kind": "checks",
+        "checks": 6,
+        "difficulty": 60,
+        "text": "Refuse it, fight after fight, month after month. Six times its pull broken and it learns who holds whom."
+      }
+    },
+    "haunting": {
+      "name": "Haunting",
+      "description": "A voice in the steel, dreams that are not yours, and no sleep worth the name.",
+      "flag": "curse.haunting",
+      "attack": 0.1,
+      "tamedAttack": 0.1,
+      "monthly": 0.35,
+      "tame": {
+        "kind": "ritual",
+        "places": ["loc_wano", "loc_skypiea", "loc_alabasta", "loc_zou"],
+        "cost": 500000,
+        "text": "A priest who knows the old rites can quiet what lives in it."
+      }
+    }
+  },
+  "swords": {
+    "names": {
+      "first": [
+        "Kuro",
+        "Shiro",
+        "Aka",
+        "Ao",
+        "Gin",
+        "Kin",
+        "Raiu",
+        "Kaze",
+        "Yuki",
+        "Tsuki",
+        "Hoshi",
+        "Kiri",
+        "Ryu",
+        "Tora",
+        "Kumo",
+        "Arashi",
+        "Hagane",
+        "Sakura",
+        "Nami",
+        "Kage"
+      ],
+      "second": [
+        "giri",
+        "maru",
+        "kiri",
+        "uchi",
+        "kaze",
+        "sugi",
+        "zame",
+        "mon",
+        "masamune",
+        "tsuna",
+        "bachi",
+        "wazamono"
+      ],
+      "single": [
+        "Shiranui",
+        "Kogarasumaru",
+        "Hizakiri",
+        "Onimaru",
+        "Doujigiri",
+        "Kurogane Ichimonji",
+        "Mikazuki",
+        "Shishiou",
+        "Nenekiri",
+        "Hotarumaru",
+        "Midare Tachi",
+        "Kasumi Hōjō",
+        "Fuyu no Kiba",
+        "Shiomaneki",
+        "Tsurara",
+        "Benitsubaki"
+      ]
+    },
+    "places": {
+      "loc_wano": 6,
+      "loc_loguetown": 2,
+      "loc_water_seven": 2,
+      "loc_sabaody": 2,
+      "loc_dressrosa": 2,
+      "loc_alabasta": 1,
+      "loc_mary_geoise": 2,
+      "loc_elbaf": 1,
+      "loc_new_world_island": 2,
+      "loc_grand_line_island": 1,
+      "loc_south_blue_island": 1,
+      "loc_west_blue_port": 1,
+      "loc_little_garden": 1,
+      "loc_thriller_bark": 1,
+      "loc_god_valley": 1
+    },
+    "occupations": [
+      "occ_swordsman",
+      "occ_samurai",
+      "occ_warrior",
+      "occ_bounty_hunter",
+      "occ_pirate",
+      "occ_marine"
+    ],
+    "curseChance": 0.12,
+    "graded": 60
+  },
+  "vivre": {
+    "low": 0.35,
+    "opinion": 40,
+    "cost": 100000,
+    "places": ["loc_new_world_island", "loc_sabaody", "loc_whole_cake", "loc_dressrosa"]
+  },
+  "calls": { "opinion": 2, "everyMonths": 1 },
+  "market": {
+    "spread": 0.12,
+    "charisma": 0.0008,
+    "sellRatio": 0.45,
+    "drift": 0.18,
+    "impact": 0.012,
+    "elasticity": 0.75,
+    "blackMarkup": 1.6,
+    "cargoPerPoint": 1,
+    "onFoot": 4
+  },
+  "goods": [
+    {
+      "id": "fish",
+      "name": "Salt fish",
+      "base": 120,
+      "made": ["coast", "deep_sea", "east_blue"],
+      "wanted": ["mountains", "cold", "clouds", "red_line"]
+    },
+    {
+      "id": "grain",
+      "name": "Grain",
+      "base": 90,
+      "made": ["farmland"],
+      "wanted": ["cold", "mountains", "clouds", "calm_belt", "red_line"]
+    },
+    {
+      "id": "timber",
+      "name": "Timber",
+      "base": 260,
+      "made": ["forest", "jungle"],
+      "wanted": ["shipyard", "clouds", "deep_sea"]
+    },
+    {
+      "id": "iron",
+      "name": "Iron",
+      "base": 420,
+      "made": ["mountains", "north_blue"],
+      "wanted": ["smithy", "shipyard", "marine_base"]
+    },
+    {
+      "id": "cloth",
+      "name": "Cloth",
+      "base": 300,
+      "made": ["west_blue", "school"],
+      "wanted": ["cold", "deep_sea", "new_world"]
+    },
+    {
+      "id": "spices",
+      "name": "Spices",
+      "base": 650,
+      "made": ["jungle", "south_blue"],
+      "wanted": ["cold", "north_blue", "east_blue", "red_line"]
+    },
+    {
+      "id": "wine",
+      "name": "Wine",
+      "base": 520,
+      "made": ["paradise", "farmland"],
+      "wanted": ["underworld", "new_world", "marine_base"]
+    },
+    {
+      "id": "sugar",
+      "name": "Sugar",
+      "base": 380,
+      "made": ["jungle"],
+      "wanted": ["new_world", "cold", "clouds"]
+    },
+    {
+      "id": "herbs",
+      "name": "Medicinal herbs",
+      "base": 700,
+      "made": ["forest", "jungle"],
+      "wanted": ["doctor", "cold", "deep_sea"]
+    },
+    {
+      "id": "gunpowder",
+      "name": "Gunpowder",
+      "base": 900,
+      "made": ["smithy", "marine_base"],
+      "wanted": ["underworld", "new_world"]
+    },
+    {
+      "id": "shells",
+      "name": "Dial shells",
+      "base": 1800,
+      "made": ["clouds"],
+      "wanted": ["paradise", "new_world", "west_blue"]
+    },
+    {
+      "id": "sake",
+      "name": "Wano sake",
+      "base": 1400,
+      "made": ["wano"],
+      "wanted": ["new_world", "paradise", "underworld"]
+    },
+    {
+      "id": "contraband",
+      "name": "Contraband",
+      "base": 2400,
+      "made": ["underworld"],
+      "wanted": ["marine_base", "red_line", "new_world"],
+      "black": true
+    }
+  ],
+  "gambling": {
+    "games": [
+      {
+        "id": "dice",
+        "name": "Dice",
+        "description": "Two dice under a cup: odd or even, the oldest bet on the sea.",
+        "odds": 0.48,
+        "payout": 1
+      },
+      {
+        "id": "cards",
+        "name": "Cards",
+        "description": "A table of sailors, a deck that has seen a lot, and a pot that grows.",
+        "odds": 0.42,
+        "payout": 1.3
+      },
+      {
+        "id": "wheel",
+        "name": "The wheel",
+        "description": "A painted wheel and a ball; one number pays four times over.",
+        "odds": 0.18,
+        "payout": 4.4
+      }
+    ],
+    "rigged": [0.05, 0.1, 0.2, 0.35, 0.5, 0.6],
+    "riggedOdds": 0.55,
+    "spot": 160,
+    "perMonth": 3,
+    "maxStake": 5000000
+  },
+  "treasure": {
+    "caches": [
+      {
+        "regions": ["east_blue"],
+        "count": 6,
+        "value": { "min": 20000, "max": 160000 },
+        "containers": { "buried": 4, "sunken": 1, "ruins": 1 },
+        "item": 0.2
+      },
+      {
+        "regions": ["west_blue", "north_blue", "south_blue"],
+        "count": 9,
+        "value": { "min": 30000, "max": 260000 },
+        "containers": { "buried": 4, "sunken": 2, "ruins": 2 },
+        "item": 0.25
+      },
+      {
+        "regions": ["paradise", "calm_belt"],
+        "count": 9,
+        "value": { "min": 120000, "max": 1800000 },
+        "containers": { "buried": 3, "sunken": 3, "ruins": 3 },
+        "item": 0.35
+      },
+      {
+        "regions": ["new_world", "wano"],
+        "count": 9,
+        "value": { "min": 600000, "max": 9000000 },
+        "containers": { "buried": 3, "sunken": 3, "ruins": 3 },
+        "item": 0.45
+      },
+      {
+        "regions": ["sky", "fishman_island"],
+        "count": 3,
+        "value": { "min": 200000, "max": 2400000 },
+        "containers": { "ruins": 2, "sunken": 1 },
+        "item": 0.4
+      }
+    ],
+    "canon": [
+      {
+        "name": "the gold of Shandora",
+        "place": "loc_skypiea",
+        "value": 300000000,
+        "container": "ruins",
+        "text": "In the ruins of the city of gold, under centuries of cloud and vine, lay what was left of Shandora's gold."
+      },
+      {
+        "name": "Moria's plunder",
+        "place": "loc_thriller_bark",
+        "value": 60000000,
+        "container": "ruins",
+        "text": "Behind a false wall in the haunted ship's lower decks, the plunder of a hundred ships the zombies never spent."
+      },
+      {
+        "name": "a noble's treasure ship",
+        "place": "loc_sabaody",
+        "value": 90000000,
+        "container": "sunken",
+        "text": "Down among the mangrove roots, a World Noble's treasure ship that sank with her cargo of tribute still sealed."
+      }
+    ],
+    "maps": { "true": 0.35, "partial": 0.3, "fake": 0.35 },
+    "find": { "true": 0.85, "partial": 0.22, "none": 0.015 },
+    "divers": ["race_fishman", "race_merfolk"],
+    "othersPerYear": 0.04,
+    "mapPrice": 12000
+  },
+  "schools": [
+    { "place": "loc_wano", "crafts": ["smithing"], "name": "Wano's swordsmiths", "teacher": 1.5 },
+    { "place": "loc_elbaf", "crafts": ["smithing"], "name": "the forges of Elbaf", "teacher": 1.3 },
+    {
+      "place": "loc_water_seven",
+      "crafts": ["shipbuilding"],
+      "name": "the docks of Water 7",
+      "teacher": 1.5
+    },
+    {
+      "place": "loc_weatheria",
+      "crafts": ["invention"],
+      "name": "the weather scholars of Weatheria",
+      "teacher": 1.4
+    },
+    {
+      "place": "loc_skypiea",
+      "crafts": ["invention"],
+      "name": "the dial workshops of Skypiea",
+      "teacher": 1.3
+    },
+    { "place": "loc_drum", "crafts": ["medicine"], "name": "the doctors of Drum", "teacher": 1.5 },
+    {
+      "place": "loc_baratie",
+      "crafts": ["cooking"],
+      "name": "the Baratie's kitchen",
+      "teacher": 1.5
+    },
+    {
+      "place": "loc_egghead",
+      "crafts": ["invention", "medicine"],
+      "name": "the laboratories of Egghead",
+      "teacher": 1.6
+    },
+    {
+      "place": "loc_loguetown",
+      "crafts": ["gunsmithing"],
+      "name": "the gunsmiths of Loguetown",
+      "teacher": 1.2
+    }
+  ],
+  "craft": { "perMonth": 2.5, "min": 5, "max": 100 },
+  "npcWeapons": {
+    "occ_swordsman": "weapon_katana",
+    "occ_samurai": "weapon_katana",
+    "occ_pirate": "weapon_sword",
+    "occ_marine": "weapon_sword",
+    "occ_bounty_hunter": "weapon_sword",
+    "occ_mercenary": "weapon_axe",
+    "occ_bandit": "weapon_club",
+    "occ_guard": "weapon_spear",
+    "occ_warrior": "weapon_spear"
+  },
+  "lines": {
+    "bought": "You bought {item} for {amount} Berries.",
+    "sold": "You sold {item} for {amount} Berries.",
+    "wield": "You took up {item}.",
+    "sharpened": "A smith put a new edge on {item}.",
+    "repaired": "A smith mended {item}.",
+    "dulled": "{item} has lost its edge: it needs a smith.",
+    "broke": "{item} broke in your hands and was gone.",
+    "black": "Years of your Armament have soaked into {item}: the steel has turned black, and it will never chip again.",
+    "crafted": "You finished {item}. Quality {quality}.",
+    "craftStart": "You set to work on {item}.",
+    "craftWork": "A month at work on {item}.",
+    "tempered": "Under the master's hammer, {item} came out of the fire a blade of the {grade}.",
+    "temperFailed": "Months at the forge, and {item} came out the same blade it went in.",
+    "tamed": "{item} is yours now, curse and all: it no longer fights you.",
+    "fateFailed": "Fate said no. {item} came down on your arm, and the arm paid for it.",
+    "traded": "You traded {good}: {amount} Berries.",
+    "gambleWon": "You won {amount} Berries at the tables.",
+    "gambleLost": "You lost {amount} Berries at the tables.",
+    "gambleRigged": "You watched the dealer's hands and saw the trick: the game was rigged, and you walked away.",
+    "treasureFound": "You dug where the clues pointed, and struck {item}: {amount} Berries' worth.",
+    "treasureNothing": "A month of digging and searching turned up nothing but sand and old bones.",
+    "mapFound": "You came by a treasure map. Whether it is worth anything is another matter.",
+    "found": "You came by {item}.",
+    "called": "You rang {other} on the Den Den Mushi and talked for an hour.",
+    "vivreGot": "{other} tore you a scrap of their Vivre Card: wherever you go, it will point the way back to them.",
+    "meal": "You ate {item}, and feel the better for it.",
+    "launched": "The {ship} slid down the slipway and into the water. She is yours.",
+    "buildStart": "The keel of the {ship} was laid at {place}.",
+    "buildWork": "Work on the {ship} goes on.",
+    "refitted": "The yard finished work on the {ship}.",
+    "spiritSaved": "The {ship} should have gone down. She did not: something aboard held her together through the worst of it, and in the morning a small figure with a hammer was gone from the rail.",
+    "spiritWoke": "Late at night you hear hammering below decks, though nobody is there. The {ship} is loved, and she knows it."
+  }
+}

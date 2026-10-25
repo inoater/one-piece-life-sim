@@ -15,6 +15,7 @@ import {
   type Person,
 } from './body';
 import { formatBerries } from '../genesis/text';
+import { passItems } from '../hands/swords';
 import { relationTitle } from './people';
 import { reapplyTraits } from './traits';
 import { entityIds } from '../../engine/entities';
@@ -389,6 +390,9 @@ export function continueAs(
     const carried = passCarriedFruits(state, dead.entity, target, state.tick);
     if (carried > 0)
       notes.push(carried === 1 ? 'something they carried' : `${carried} things they carried`);
+    // Phase 6: weapons, gear and cargo pass too.
+    const things = passItems(state, data, dead.entity, target, state.tick);
+    if (things > 0) notes.push(things === 1 ? 'their gear' : `${things} pieces of their gear`);
     const fame = statValue(reputation(dead.entity, 'fame'), state.tick);
     const legacy = Math.round(fame * data.life.fame.legacyPct) / 100;
     if (legacy > 0) {

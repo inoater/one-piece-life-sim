@@ -89,6 +89,12 @@ export const MIGRATIONS: Readonly<Record<number, Migration>> = {
       state: { ...state, battle: null, counters: { ...counters, battleId: 0 } },
     };
   },
+  /**
+   * 6 -> 7 (Phase 6, hands): every new field is optional, so the state itself is unchanged. The
+   * first month the world runs, it gains its blades (canon and graded) and its treasure, and the
+   * player's gear bought in Phases 4 and 5 (counts) becomes items (systems/hands/swords.ts).
+   */
+  6: (envelope) => ({ ...envelope, saveVersion: 7, state: { ...stateOf(envelope) } }),
 };
 
 export interface MigrationResult {

@@ -673,6 +673,10 @@
                 "by": 1
               },
               {
+                "kind": "treasureMap",
+                "mapKind": "true"
+              },
+              {
                 "kind": "train",
                 "stats": {
                   "intellect": 1

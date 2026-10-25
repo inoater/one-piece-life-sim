@@ -14,6 +14,7 @@ import { humanAgeFor } from '../genesis/stages';
 import { reapplyTraits } from '../life/traits';
 import { withDevFixtures } from '../places/graph';
 import { releaseFruitOf } from '../powers/fruits';
+import { releaseItemsOf } from '../hands/swords';
 import { applyCanonEra } from '../powers/movesets';
 import { calibrateCast } from '../battle/ladder';
 import { Rng } from '../../engine/rng';
@@ -319,6 +320,8 @@ export function killCharacter(
     Rng.root(state.seed).fork('fruit-death', entity.id, ctx.tick),
     record.seq,
   );
+  // Phase 6: their weapons and gear are left where they fell.
+  releaseItemsOf(state, data, entity, ctx.tick);
   if (!cast || ctx.canon || entity.origin === 'canon-diverged') return;
 
   // An early death: the story has lost someone it was counting on.

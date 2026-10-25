@@ -17,6 +17,12 @@ import {
   WEAKNESS_KINDS,
   WhenSchema,
   ZOAN_KINDS,
+  CRAFTS,
+  CURSES,
+  ITEM_KINDS,
+  ShipDesignSchema,
+  SWORD_GRADES,
+  WEAPON_FAMILIES,
   tickOfWhen,
   type FruitContainer,
   type FruitDef,
@@ -372,20 +378,7 @@ export function traitKind(trait: Pick<Trait, 'kind' | 'category'>): TraitKind {
   return trait.kind ?? KIND_OF_CATEGORY[trait.category];
 }
 
-export const WeaponSchema = z.strictObject({
-  id: slug('weapon'),
-  name: z.string().min(1),
-  description: z.string().optional(),
-  statMods: z.array(StatModDefSchema).default([]),
-  /** Phase 4: simple gear a style may need (a sword, a gun, a bow), bought in a market. */
-  gear: z.enum(['swords', 'gun', 'bow']).optional(),
-  price: z.number().int().min(0).optional(),
-  /** Phase 5: what it adds to Combat Power, and to the attack of blows made with it. */
-  combat: z.number().int().min(0).default(0),
-  attack: z.number().min(0).default(0),
-  tags,
-});
-export type Weapon = z.infer<typeof WeaponSchema>;
+// Weapons are defined with the rest of Phase 6 (gear, ships, crafting), near the end of the file.
 
 // Locations (map nodes) are defined with the world map, in the Phase 3 section below.
 
@@ -545,6 +538,22 @@ const lifeEffectOptions = [
     kind: z.literal('wakeHaki'),
     haki: z.enum(['observation', 'armament', 'conqueror']),
   }),
+  /**
+   * Phase 6: something comes into their hands: a weapon or an item from data (made new), or an
+   * unheld graded sword lying near here ("graded").
+   */
+  z.strictObject({
+    kind: z.literal('findItem'),
+    item: z.union([slug('item'), slug('weapon')]).optional(),
+    graded: z.boolean().default(false),
+  }),
+  /** A treasure map: true, partial or fake by data/hands.json's odds (or as given). */
+  z.strictObject({
+    kind: z.literal('treasureMap'),
+    mapKind: z.enum(['true', 'partial', 'fake']).optional(),
+  }),
+  /** A share of the trade goods in the hold is lost (stolen, spoiled, thrown overboard). */
+  z.strictObject({ kind: z.literal('cargo'), share: z.number().min(0).max(1) }),
 ] as const;
 
 export const LifeEffectSchema = z.discriminatedUnion('kind', [
@@ -1621,6 +1630,13 @@ export const ActivitySchema = z
         foe: slug('foe').optional(),
       })
       .optional(),
+    /** Phase 6: a month of work on the project at the bench, the forge or the slipway. */
+    craft: z.boolean().default(false),
+    /**
+     * Phase 6: what else the month does with the hands: weapon drills (skill with the weapon in
+     * hand), a treasure hunt, caring for the ship, cooking (the cook's craft).
+     */
+    hand: z.enum(['drill', 'treasure', 'ship', 'cook']).optional(),
     outcomes: z.array(OutcomeSchema).min(1),
     tags,
   })
@@ -1705,6 +1721,33 @@ export const LifeRulesSchema = z
     /** A number flag that adds slots (set by traits or roles). */
     extraSlotFlag: flagName,
     efforts: z.strictObject({ light: effortSchema, normal: effortSchema, hard: effortSchema }),
+    /**
+     * Phase 6: a month scaled by Vigor. A deep pool opens overtime slots beyond the stage's own,
+     * and lets a Hard slot be pushed further: each point committed past Hard costs one more Vigor
+     * and multiplies what the slot gives (training, practice, pay, crafting), with diminishing
+     * returns and more risk.
+     */
+    drive: z.strictObject({
+      overtime: z.strictObject({
+        /** One overtime slot for every this much Vigor in the pool. */
+        perSlot: z.number().int().min(1),
+        max: z.number().int().min(0).max(4),
+        /** Vigor an overtime slot costs on top of its effort. */
+        surcharge: z.number().int().min(0),
+        /** Only from a stage with at least this many slots of its own (adolescents and up). */
+        fromSlots: z.number().int().min(1),
+      }),
+      commit: z.strictObject({
+        /** One point of commitment past Hard for every this much Vigor in the pool. */
+        per: z.number().int().min(1),
+        /** What each point adds to the slot's gains, in order (so its length is the most). */
+        gain: z.array(z.number().min(0)).min(1).max(8),
+        /** Pay added per point (a share: 0.12 is +12%). */
+        pay: z.number().min(0),
+        /** Risk added per point (a share). */
+        risk: z.number().min(0),
+      }),
+    }),
     exhaustion: z.strictObject({
       /** Percentage applied to every stat while exhausted. */
       statPct: z.number().max(0),
@@ -3776,6 +3819,655 @@ export const PersonalityRulesSchema = z.strictObject({
 export type PersonalityRules = z.infer<typeof PersonalityRulesSchema>;
 
 // ---------------------------------------------------------------------------------------------
+// Phase 6: weapons, gear, ships, crafting, treasure and the economy
+// ---------------------------------------------------------------------------------------------
+
+/** What a thing used in a fight does (data/battle.json `items`, and dials and seastone gear). */
+export const BATTLE_ITEM_EFFECTS = [
+  'heal',
+  'smoke',
+  'call',
+  /** Dials: a stored blow released (Impact), a far stronger one that hurts its user (Reject). */
+  'impact',
+  'reject',
+  /** A flame or heat dial: the target burns. */
+  'flame',
+  /** A lamp or flash dial: the target is blinded. */
+  'flash',
+  /** A breath or jet dial: a burst of speed (evasion, initiative). */
+  'gust',
+  /** A seastone net: pins, and a fruit user caught in it loses their power. */
+  'net',
+] as const;
+export type BattleItemEffect = (typeof BATTLE_ITEM_EFFECTS)[number];
+
+const designId = z.string().regex(/^[a-z_]+$/);
+
+export const WeaponSchema = z.strictObject({
+  id: slug('weapon'),
+  name: z.string().min(1),
+  description: z.string().optional(),
+  statMods: z.array(StatModDefSchema).default([]),
+  /** Phase 4: simple gear a style may need (a sword, a gun, a bow), bought in a market. */
+  gear: z.enum(['swords', 'gun', 'bow']).optional(),
+  price: z.number().int().min(0).optional(),
+  /** Phase 5: what it adds to Combat Power, and to the attack of blows made with it. */
+  combat: z.number().int().min(0).default(0),
+  attack: z.number().min(0).default(0),
+  /** Phase 6: the plan's family, and what it is ("katana", "flintlock"). */
+  family: z.enum(WEAPON_FAMILIES).default('blade'),
+  kind: nonEmptyText.optional(),
+  grade: z.enum(SWORD_GRADES).default('ungraded'),
+  material: nonEmptyText.default('steel'),
+  /** How well an ordinary one is made, 0 to 100. */
+  quality: z.number().int().min(0).max(100).default(50),
+  /** Sold where a place has one of these (a smithy, a market, the black market). */
+  soldAt: z.array(z.enum(PLACE_FEATURES)).default([]),
+  /** Sold only in these regions (empty: anywhere it is sold). */
+  regions: z.array(z.enum(REGIONS)).default([]),
+  /** Seastone (an edge, bullets): it touches a Logia and weakens a fruit user. */
+  seastone: z.boolean().default(false),
+  /** Black since it was made, or since long before the story (a canon black blade). */
+  black: z.boolean().default(false),
+  curse: z.enum(CURSES).optional(),
+  /** Canon: one tracked entity whose holders follow the story by date (approx where vague). */
+  canon: z
+    .strictObject({
+      holders: z
+        .array(
+          z.strictObject({
+            from: WhenSchema,
+            holder: slug('char').optional(),
+            /** A holder the world does not simulate ("Kuina", "a Loguetown sword dealer"). */
+            holderName: nonEmptyText.optional(),
+            place: slug('loc').optional(),
+            /** Lying in a shop, a grave, a collection, rather than carried. */
+            container: z.enum(['lying', 'market', 'collection', 'buried']).optional(),
+            price: z.number().int().min(0).optional(),
+            approx: z.boolean().default(false),
+          }),
+        )
+        .min(1),
+      /** Destroyed in the story (Yubashiri at Enies Lobby). */
+      destroyed: WhenSchema.optional(),
+      destroyedText: nonEmptyText.optional(),
+    })
+    .optional(),
+  /** A template that generated swords of its grade are made from (never sold or held itself). */
+  template: z.boolean().default(false),
+  tags,
+});
+export type Weapon = z.infer<typeof WeaponSchema>;
+
+const StatModsSchema = z.array(StatModDefSchema).default([]);
+
+/** An item that is not a weapon: dials, seastone gear, snails, cards, armour, meals, documents. */
+export const ItemDefSchema = z.strictObject({
+  id: slug('item'),
+  name: nonEmptyText,
+  description: nonEmptyText,
+  kind: z.enum(ITEM_KINDS),
+  /** Berries; null when it is never sold (made, found or given). */
+  price: z.number().int().min(0).nullable().default(null),
+  soldAt: z.array(z.enum(PLACE_FEATURES)).default([]),
+  /** Sold only at these places, or in these regions (empty: anywhere with the feature). */
+  places: z.array(slug('loc')).default([]),
+  regions: z.array(z.enum(REGIONS)).default([]),
+  /** Uses when new (a dial's charges, a kit's doses). */
+  charges: z.number().int().min(1).optional(),
+  /** Charges that come back by themselves each month (sunlight, wind). */
+  recharge: z.number().int().min(0).default(0),
+  /** In a fight: what using it does. */
+  battle: z
+    .strictObject({ effect: z.enum(BATTLE_ITEM_EFFECTS), value: z.number().min(0) })
+    .optional(),
+  /** Carried (or worn): modifiers while it is had. */
+  statMods: StatModsSchema,
+  /** Armour: added to defence in a fight; a swimmer cannot wear it in the water. */
+  armour: z.number().min(0).default(0),
+  /** Eaten or taken: modifiers for some months, Health back, a cure, faster healing. */
+  effect: z
+    .strictObject({
+      months: z.number().int().min(1).default(1),
+      statMods: StatModsSchema,
+      heal: z.number().min(0).max(1).default(0),
+      cures: z.boolean().default(false),
+      speedsHealing: z.number().int().min(0).max(6).default(0),
+    })
+    .optional(),
+  /** Navigation: the voyage's navigator bonus is multiplied by this. */
+  navigation: z.number().min(1).optional(),
+  /** A prosthetic: the lost part it replaces (its scar trait stops counting). */
+  restores: z.enum(SCAR_AREAS).optional(),
+  /** A blueprint: the design it carries (data/ships.json ids). */
+  design: ShipDesignSchema.optional(),
+  /** Seastone gear on a ship: hidden from Sea Kings (a hull coating). */
+  seaKingProof: z.boolean().default(false),
+  /** Never sold or crafted: only the story gives it (a Pacifista, a raid suit). */
+  storyLocked: z.boolean().default(false),
+  tags,
+});
+export type ItemDef = z.infer<typeof ItemDefSchema>;
+
+/** One crafting schema for smithing, gunsmithing, shipbuilding, medicine, cooking and invention. */
+export const RecipeSchema = z
+  .strictObject({
+    id: slug('recipe'),
+    name: nonEmptyText,
+    description: nonEmptyText,
+    craft: z.enum(CRAFTS),
+    makes: z.strictObject({
+      weapon: slug('weapon').optional(),
+      item: slug('item').optional(),
+      count: z.number().int().min(1).default(1),
+    }),
+    /** Berries for materials, and trade goods used up (data/hands.json `goods`). */
+    cost: z.number().int().min(0).default(0),
+    goods: z.record(z.string().regex(/^[a-z_]+$/), z.number().int().min(1)).default({}),
+    /** Tools: the place must have one of these features (a smithy for a blade). */
+    features: z.array(z.enum(PLACE_FEATURES)).default([]),
+    /** Or be one of these places (a sky island's dial workshop). */
+    places: z.array(slug('loc')).default([]),
+    /** Craft skill (0 to 100) needed to try it. */
+    skill: z.number().int().min(0).max(100).default(0),
+    /** Stats that help the quality: each point above 50 adds `quality.perStat`. */
+    stats: z.array(statId).min(1),
+    /** Months of work at Normal effort (Hard and commitment go faster). */
+    months: z.number().min(0.25),
+    quality: z.strictObject({
+      base: z.number(),
+      perSkill: z.number().min(0),
+      perStat: z.number().min(0),
+      spread: z.number().min(0),
+    }),
+    requires: RequiresSchema.default(noRequirements),
+    storyLocked: z.boolean().default(false),
+    tags,
+  })
+  .superRefine((r, ctx) => {
+    if ((r.makes.weapon === undefined) === (r.makes.item === undefined))
+      ctx.addIssue({
+        code: 'custom',
+        path: ['makes'],
+        message: 'a recipe makes exactly one thing: a weapon or an item',
+      });
+  });
+export type Recipe = z.infer<typeof RecipeSchema>;
+
+const handsLine = lifeTemplate;
+const priceRange = z.strictObject({ min: z.number().int().min(0), max: z.number().int().min(0) });
+
+/** data/hands.json: the rules of weapons, curses, gear, crafting, markets, gambling and treasure. */
+export const HandsRulesSchema = z.strictObject({
+  families: z.record(
+    z.enum(WEAPON_FAMILIES),
+    z.strictObject({
+      name: nonEmptyText,
+      /** The stats it fights with. */
+      stats: z.array(statId).min(1),
+      /** Attack a plain one adds to a blow (before grade, quality and edge). */
+      attack: z.number().min(0),
+      /** Reach: 0 a fist's length, 1 a polearm's, 2 a shot. */
+      reach: z.number().int().min(0).max(2),
+      /** The gear kind fighting styles ask for. */
+      gear: z.enum(['swords', 'gun', 'bow']).optional(),
+      /** Durability when new. */
+      durability: z.number().int().min(1),
+    }),
+  ),
+  grades: z.record(
+    z.enum(SWORD_GRADES),
+    z.strictObject({
+      name: nonEmptyText,
+      /** How many exist (canon's counts); null for countless. */
+      count: z.number().int().min(0).nullable(),
+      attackMult: z.number().min(0),
+      /** Combat Power it adds. */
+      combat: z.number().int().min(0),
+      /** It never breaks, and never chips once black. */
+      unbreakable: z.boolean(),
+      /** What a market asks for one. */
+      price: priceRange,
+    }),
+  ),
+  /** Attack multiplier at quality 0 and at 100 (straight between). */
+  quality: z.strictObject({ at0: z.number().min(0), at100: z.number().min(0) }),
+  edge: z.strictObject({
+    /** Sharpness lost in a fight (a blade only). */
+    perFight: range(0),
+    /** Below this the edge is dull: attack times `dullMult`. */
+    dull: z.number().min(0).max(100),
+    dullMult: z.number().min(0).max(1),
+    /** Berries to have a blade sharpened, and per point of durability mended. */
+    sharpenCost: z.number().int().min(0),
+    repairPerPoint: z.number().int().min(0),
+    /** Durability lost in a fight. */
+    wear: range(0),
+  }),
+  skill: z.strictObject({
+    /** Skill a fight with the weapon adds, and a month of drills at Normal effort. */
+    perFight: z.number().min(0),
+    perDrill: z.number().min(0),
+    /** Each point of skill adds this much attack, and this much accuracy. */
+    attack: z.number().min(0),
+    accuracy: z.number().min(0),
+  }),
+  black: z.strictObject({
+    /** The Armament stage (index on track_armament) that coats a weapon. */
+    armamentStage: z.number().int().min(0),
+    /** Months of coating needed at that stage; each stage above counts this much more. */
+    months: z.number().int().min(1),
+    perStage: z.number().min(0),
+    /** Attack added once black (a share). */
+    attack: z.number().min(0),
+  }),
+  temper: z.strictObject({
+    /** Cutting a grade up: months of work by a master, at a master smith's forge. */
+    months: z.number().int().min(1),
+    /** The wielder's sword track level needed. */
+    level: z.enum(POWER_LEVELS),
+    places: z.array(slug('loc')).min(1),
+    chance: z.number().min(0).max(1),
+    cost: z.number().int().min(0),
+  }),
+  curses: z.record(
+    z.enum(CURSES),
+    z.strictObject({
+      name: nonEmptyText,
+      description: nonEmptyText,
+      /** The player flag set while an untamed blade of this curse is carried (events read it). */
+      flag: flagName,
+      /** Attack added while untamed, and once tamed (shares). */
+      attack: z.number(),
+      tamedAttack: z.number(),
+      /** Haki stamina drained each exchange it is used untamed (haki hunger). */
+      drain: z.number().min(0).default(0),
+      /** A month carrying it untamed: the chance something goes wrong. */
+      monthly: z.number().min(0).max(1),
+      tame: z.strictObject({
+        kind: z.enum(['fate', 'will', 'checks', 'ritual']),
+        /** Fate: the Luck needed on a d100 against it (most lose). */
+        luck: z.number().min(0).default(0),
+        /** Will: Willpower and Armament stage needed. */
+        willpower: z.number().min(0).default(0),
+        armament: z.number().int().min(0).default(0),
+        /** Checks: Willpower checks to pass, each at this difficulty. */
+        checks: z.number().int().min(0).default(0),
+        difficulty: z.number().min(0).default(0),
+        /** Ritual: where a priest can do it, and what it costs. */
+        places: z.array(slug('loc')).default([]),
+        cost: z.number().int().min(0).default(0),
+        text: nonEmptyText,
+      }),
+    }),
+  ),
+  swords: z.strictObject({
+    /** Name parts for generated graded swords ("Shiranui", "Kurogane Ichimonji"). */
+    names: z.strictObject({
+      first: z.array(nonEmptyText).min(1),
+      second: z.array(nonEmptyText).min(1),
+      single: z.array(nonEmptyText).min(1),
+    }),
+    /** Where unheld graded swords lie, by weight: shops, collections, ruins. */
+    places: z.record(slug('loc'), z.number().min(0)),
+    /** Who among Tier 2 people may carry one. */
+    occupations: z.array(slug('occ')).default([]),
+    curseChance: z.number().min(0).max(1),
+    /** Lesser graded swords made with the world. */
+    graded: z.number().int().min(0),
+  }),
+  vivre: z.strictObject({
+    /** Below this share of Health (or this close to the end of a lifespan) the card burns low. */
+    low: z.number().min(0).max(1),
+    /** Opinion needed for someone to give you a scrap of their card. */
+    opinion: z.number(),
+    cost: z.number().int().min(0),
+    places: z.array(slug('loc')).min(1),
+  }),
+  calls: z.strictObject({ opinion: z.number(), everyMonths: z.number().int().min(1) }),
+  market: z.strictObject({
+    /** The gap between buying and selling (a share each way), and how Charisma narrows it. */
+    spread: z.number().min(0).max(0.5),
+    charisma: z.number().min(0),
+    /** A used item sells for this share of its price (times its quality and wear). */
+    sellRatio: z.number().min(0).max(1),
+    /** Each month a market's stock moves this share back toward its usual. */
+    drift: z.number().min(0).max(1),
+    /** Stock a unit bought or sold moves (a share of the usual, scaled by the place's size). */
+    impact: z.number().min(0),
+    /** Price change per unit of stock away from the usual (elasticity). */
+    elasticity: z.number().min(0),
+    /** The black market's markup on what it sells. */
+    blackMarkup: z.number().min(1),
+    /** A hold's cargo units per point of a ship's cargo. */
+    cargoPerPoint: z.number().min(0),
+    /** Carried without a ship. */
+    onFoot: z.number().int().min(0),
+  }),
+  goods: z
+    .array(
+      z.strictObject({
+        id: z.string().regex(/^[a-z_]+$/),
+        name: nonEmptyText,
+        /** Berries a unit, in an ordinary market. */
+        base: z.number().int().min(1),
+        /** Places with these features or in these regions make it (cheap there). */
+        made: z.array(z.string().min(1)).default([]),
+        /** Places with these features or in these regions want it (dear there). */
+        wanted: z.array(z.string().min(1)).default([]),
+        /** Sold only where it is made, or only through the black market. */
+        black: z.boolean().default(false),
+      }),
+    )
+    .min(1),
+  gambling: z.strictObject({
+    games: z
+      .array(
+        z.strictObject({
+          id: z.string().regex(/^[a-z_]+$/),
+          name: nonEmptyText,
+          description: nonEmptyText,
+          /** The chance to win a fair game, and what a win pays (times the stake, stake back). */
+          odds: z.number().min(0).max(1),
+          payout: z.number().min(0),
+        }),
+      )
+      .min(1),
+    /** The chance a den rigs its games, by the place's danger 0 to 5. */
+    rigged: z.array(z.number().min(0).max(1)).length(6),
+    /** A rigged game's odds are times this. */
+    riggedOdds: z.number().min(0).max(1),
+    /** Perception that sees through a rigged game (a d100 under Perception / this). */
+    spot: z.number().min(1),
+    /** Bets a month, and the most one can stake. */
+    perMonth: z.number().int().min(1),
+    maxStake: z.number().int().min(1),
+  }),
+  treasure: z.strictObject({
+    /** Caches made with the world, by region: how many, how rich, and how hidden. */
+    caches: z
+      .array(
+        z.strictObject({
+          regions: z.array(z.enum(REGIONS)).min(1),
+          count: z.number().int().min(0),
+          value: priceRange,
+          containers: z.partialRecord(z.enum(['buried', 'sunken', 'ruins']), z.number().min(0)),
+          /** The chance it holds a weapon or gear as well. */
+          item: z.number().min(0).max(1),
+        }),
+      )
+      .min(1),
+    /** Famous treasures, hand-placed (Shandora's gold). */
+    canon: z
+      .array(
+        z.strictObject({
+          name: nonEmptyText,
+          place: slug('loc'),
+          value: z.number().int().min(0),
+          container: z.enum(['buried', 'sunken', 'ruins']),
+          text: nonEmptyText,
+        }),
+      )
+      .default([]),
+    /** What a found map turns out to be. */
+    maps: z.strictObject({
+      true: z.number().min(0),
+      partial: z.number().min(0),
+      fake: z.number().min(0),
+    }),
+    /** The chance a month of searching finds it: with a true map, a partial one, or none. */
+    find: z.strictObject({
+      true: z.number().min(0).max(1),
+      partial: z.number().min(0).max(1),
+      none: z.number().min(0).max(1),
+    }),
+    /** A sunken cache needs a swimmer, a coated ship or diving gear. */
+    divers: z.array(slug('race')).default([]),
+    /** Each year, the chance someone else digs up a cache first. */
+    othersPerYear: z.number().min(0).max(1),
+    /** What a map sells for in a market, true or not. */
+    mapPrice: z.number().int().min(0),
+  }),
+  /** Where crafts are taught: working there goes faster and teaches more. */
+  schools: z
+    .array(
+      z.strictObject({
+        place: slug('loc'),
+        crafts: z.array(z.enum(CRAFTS)).min(1),
+        name: nonEmptyText,
+        teacher: z.number().min(1),
+      }),
+    )
+    .default([]),
+  craft: z.strictObject({
+    /** Skill a month of work adds (more when the work is hard for you). */
+    perMonth: z.number().min(0),
+    /** Quality cap and floor. */
+    min: z.number().min(0),
+    max: z.number().max(100),
+  }),
+  /** A Tier 2 or canon fighter without items fights with their occupation's plain weapon. */
+  npcWeapons: z.record(slug('occ'), slug('weapon')).default({}),
+  lines: z.record(z.string().regex(/^[a-zA-Z]+$/), handsLine),
+});
+export type HandsRules = z.infer<typeof HandsRulesSchema>;
+
+/** The words the hands write (data/hands.json `lines`); a loader check makes sure each exists. */
+export const HANDS_LINE_IDS = [
+  'bought',
+  'sold',
+  'wield',
+  'sharpened',
+  'repaired',
+  'dulled',
+  'broke',
+  'black',
+  'crafted',
+  'craftStart',
+  'craftWork',
+  'tempered',
+  'temperFailed',
+  'tamed',
+  'fateFailed',
+  'traded',
+  'gambleWon',
+  'gambleLost',
+  'gambleRigged',
+  'treasureFound',
+  'treasureNothing',
+  'mapFound',
+  'found',
+  'called',
+  'vivreGot',
+  'meal',
+  'launched',
+  'buildStart',
+  'buildWork',
+  'refitted',
+  'spiritSaved',
+  'spiritWoke',
+] as const;
+
+const ROOM_EFFECTS = [
+  'morale',
+  'heal',
+  'study',
+  'train',
+  'craft',
+  'fish',
+  'perception',
+  'boarding',
+  'prisoners',
+  'treasury',
+  'boats',
+  'comfort',
+  /** A seastone keel: Sea Kings cannot sense her. */
+  'seastone',
+] as const;
+export type RoomEffect = (typeof ROOM_EFFECTS)[number];
+
+/** data/ships.json: the parts of the ship creator, the yards, building, refits and spirits. */
+export const ShipRulesSchema = z.strictObject({
+  hulls: z
+    .array(
+      z.strictObject({
+        id: designId,
+        name: nonEmptyText,
+        description: nonEmptyText,
+        /** The vessel class it sails as (Phase 3's table). */
+        vessel: slug('vessel'),
+        /** 1 a dinghy, 6 a warship: the yard must be at least this big. */
+        size: z.number().int().min(1).max(6),
+        speed: z.number().int().min(1),
+        hull: z.number().int().min(1),
+        cargo: z.number().int().min(0),
+        berths: z.number().int().min(1),
+        minCrew: z.number().int().min(1),
+        cost: z.number().int().min(0),
+        months: z.number().min(0.5),
+        /** Cannon decks, and room slots. */
+        decks: z.number().int().min(0),
+        rooms: z.number().int().min(0),
+        /** The lengths a builder may stretch or shorten it to. */
+        length: z.strictObject({ min: z.number().min(0.5), max: z.number().max(2) }),
+        /** Shipwright skill (0 to 100) to build it as drawn. */
+        skill: z.number().int().min(0).max(100),
+        /** Only from a blueprint (a Marine warship plan). */
+        blueprint: z.boolean().default(false),
+      }),
+    )
+    .min(1),
+  materials: z
+    .array(
+      z.strictObject({
+        id: designId,
+        name: nonEmptyText,
+        description: nonEmptyText,
+        hull: z.number().min(0),
+        speed: z.number().min(0),
+        cost: z.number().min(0),
+        upkeep: z.number().min(0),
+        /** Years before rot sets in; null: never rots. */
+        rot: z.number().int().min(1).nullable(),
+        skill: z.number().int().min(0).max(100),
+        /** An item that must be had (a treasure tree's wood). */
+        needs: slug('item').optional(),
+      }),
+    )
+    .min(1),
+  rigs: z
+    .array(
+      z.strictObject({
+        id: designId,
+        name: nonEmptyText,
+        description: nonEmptyText,
+        speed: z.number().min(0),
+        hands: z.number().min(0),
+        cost: z.number().min(0),
+      }),
+    )
+    .min(1),
+  drives: z
+    .array(
+      z.strictObject({
+        id: designId,
+        name: nonEmptyText,
+        description: nonEmptyText,
+        cost: z.number().int().min(0),
+        /** Speed kept in a dead calm (a share), and help running from a fight. */
+        calm: z.number().min(0).max(1),
+        escape: z.number().min(0),
+        /** It can cross a Calm Belt. */
+        calmBelt: z.boolean().default(false),
+        needs: slug('item').optional(),
+        storyLocked: z.boolean().default(false),
+      }),
+    )
+    .default([]),
+  rooms: z
+    .array(
+      z.strictObject({
+        id: designId,
+        name: nonEmptyText,
+        description: nonEmptyText,
+        cost: z.number().int().min(0),
+        /** Berths it takes from the crew's. */
+        berths: z.number().int().min(0),
+        comfort: z.number(),
+        effect: z.enum(ROOM_EFFECTS),
+        value: z.number(),
+      }),
+    )
+    .default([]),
+  weapons: z
+    .array(
+      z.strictObject({
+        id: designId,
+        name: nonEmptyText,
+        description: nonEmptyText,
+        cost: z.number().int().min(0),
+        /** Cannon it counts as in a sea fight, ram damage, boarding strength. */
+        cannons: z.number().min(0),
+        ram: z.number().min(0).default(0),
+        boarding: z.number().min(0).default(0),
+        /** The most a ship carries, per cannon deck (0: one per ship). */
+        perDeck: z.number().int().min(0),
+        storyLocked: z.boolean().default(false),
+      }),
+    )
+    .default([]),
+  figureheads: z
+    .array(
+      z.strictObject({
+        id: designId,
+        name: nonEmptyText,
+        description: nonEmptyText,
+        cost: z.number().int().min(0),
+        morale: z.number(),
+        /** How well it is known at sea (stealth lost). */
+        fame: z.number().min(0),
+      }),
+    )
+    .min(1),
+  colours: z.array(nonEmptyText).min(1),
+  /** How big a ship a place can build and how skilled its shipwrights are. */
+  yards: z.strictObject({
+    docks: z.strictObject({ size: z.number().int().min(0), skill: z.number().int().min(0) }),
+    shipyard: z.strictObject({ size: z.number().int().min(0), skill: z.number().int().min(0) }),
+    places: z.record(
+      slug('loc'),
+      z.strictObject({ size: z.number().int(), skill: z.number().int(), name: nonEmptyText }),
+    ),
+  }),
+  build: z.strictObject({
+    /** Building it yourself saves this share of a yard's price (materials only). */
+    selfDiscount: z.number().min(0).max(1),
+    /** Each month a yard is paid to save costs this share of the price. */
+    hasten: z.number().min(0),
+    /** Shipwright skill short of a design: months and quality suffer. */
+    shortfall: z.number().min(0),
+    /** Refits: a share of the part's cost as labour, and months in the yard. */
+    refitLabour: z.number().min(0),
+    refitMonths: z.number().int().min(0),
+    /** A ship sells for this share of what it cost, times her hull. */
+    resale: z.number().min(0).max(1),
+  }),
+  /** Upkeep a month, as a share of what she cost. */
+  upkeep: z.number().min(0),
+  spirit: z.strictObject({
+    /** Months of care before a spirit may wake, and the chance each month after. */
+    care: z.number().int().min(1),
+    chance: z.number().min(0).max(1),
+    /** Hull below this share for a month counts as neglect. */
+    neglect: z.number().min(0).max(1),
+  }),
+  /** The Marines' standard designs by rank (Phase 9 issues them). */
+  standard: z.record(z.string().regex(/^[a-z_]+$/), ShipDesignSchema).default({}),
+  lines: z.record(z.string().regex(/^[a-zA-Z]+$/), handsLine).default({}),
+});
+export type ShipRules = z.infer<typeof ShipRulesSchema>;
+
+// ---------------------------------------------------------------------------------------------
 // Registry
 // ---------------------------------------------------------------------------------------------
 
@@ -3804,6 +4496,9 @@ export const COLLECTIONS = {
   tracks: { schema: TrackSchema, prefix: 'track', label: 'power track' },
   techniques: { schema: TechniqueSchema, prefix: 'tech', label: 'technique' },
   movesets: { schema: MovesetSchema, prefix: 'moveset', label: 'canon moveset' },
+  // Phase 6
+  items: { schema: ItemDefSchema, prefix: 'item', label: 'item' },
+  recipes: { schema: RecipeSchema, prefix: 'recipe', label: 'recipe' },
 } as const;
 export type CollectionKind = keyof typeof COLLECTIONS;
 export const COLLECTION_KINDS = Object.keys(COLLECTIONS) as CollectionKind[];
@@ -3985,7 +4680,7 @@ export const BattleRulesSchema = z.strictObject({
         name: nonEmptyText,
         description: nonEmptyText,
         price: z.number().int().min(0),
-        effect: z.enum(['heal', 'smoke', 'call']),
+        effect: z.enum(BATTLE_ITEM_EFFECTS),
         value: z.number().min(0),
       }),
     )
@@ -4232,6 +4927,13 @@ export const BATTLE_LINE_IDS = [
   'item_heal',
   'item_smoke',
   'item_call',
+  // Phase 6: dials and seastone gear.
+  'item_impact',
+  'item_reject',
+  'item_flame',
+  'item_flash',
+  'item_gust',
+  'item_net',
   'call_arrives',
   'taunt',
   'surrender_yes',
@@ -4291,6 +4993,8 @@ export const SINGLETONS = {
   'data/personality.json': { key: 'personality', schema: PersonalityRulesSchema },
   'data/fruitMatchups.json': { key: 'matchups', schema: MatchupRulesSchema },
   'data/battle.json': { key: 'battle', schema: BattleRulesSchema },
+  'data/hands.json': { key: 'hands', schema: HandsRulesSchema },
+  'data/ships.json': { key: 'ships', schema: ShipRulesSchema },
 } as const;
 export type SingletonPath = keyof typeof SINGLETONS;
 
@@ -4311,6 +5015,8 @@ export interface GameData {
   personality: PersonalityRules;
   matchups: MatchupRules;
   battle: BattleRules;
+  hands: HandsRules;
+  ships: ShipRules;
   traits: Readonly<Record<string, Trait>>;
   weapons: Readonly<Record<string, Weapon>>;
   locations: Readonly<Record<string, Location>>;
@@ -4333,4 +5039,6 @@ export interface GameData {
   tracks: Readonly<Record<string, Track>>;
   techniques: Readonly<Record<string, Technique>>;
   movesets: Readonly<Record<string, Moveset>>;
+  items: Readonly<Record<string, ItemDef>>;
+  recipes: Readonly<Record<string, Recipe>>;
 }

@@ -13,6 +13,7 @@ import { deliverWaitingNews } from '../news';
 import { fareFor, sailLock, shipHere, shipsOf } from './plan';
 import { fruitUserOverboard } from '../powers/fruits';
 import { immuneTo } from '../life/traits';
+import { spiritSaves } from '../hands/ships';
 import {
   changeVessel,
   monthsToCover,
@@ -258,6 +259,9 @@ function turnBack(env: LifeEnv, voyage: Voyage): void {
 /** The ship goes down. Everyone aboard washes up at the nearer end of the voyage. */
 export function wreck(env: LifeEnv, voyage: Voyage): void {
   const { state, data, p, rng } = env;
+  // Phase 6: a well-loved ship's spirit, once, keeps her afloat.
+  const own = ownShipOf(state, voyage);
+  if (own && spiritSaves(env, own)) return;
   const vessel = vesselNow(state, voyage);
   line(
     env,
@@ -558,7 +562,7 @@ export function shipEffect(
   if (!ship?.ship) return 0;
   const before = ship.ship[field];
   const vessel = data.vessels[ship.ship.vessel];
-  const maxHull = vessel?.hull ?? before;
+  const maxHull = ship.stats['hull']?.base ?? vessel?.hull ?? before;
   let after = before + by;
   if (field === 'hull') after = Math.max(0, Math.min(maxHull, after));
   if (field === 'morale') after = Math.max(0, Math.min(100, after));

@@ -1,0 +1,535 @@
+{
+  "hulls": [
+    {
+      "id": "dinghy",
+      "name": "Dinghy",
+      "description": "One mast, a pair of oars and room for a friend.",
+      "vessel": "vessel_dinghy",
+      "size": 1,
+      "speed": 90,
+      "hull": 20,
+      "cargo": 5,
+      "berths": 3,
+      "minCrew": 1,
+      "cost": 3000,
+      "months": 0.5,
+      "decks": 0,
+      "rooms": 0,
+      "length": { "min": 0.8, "max": 1.3 },
+      "skill": 5
+    },
+    {
+      "id": "fishing_boat",
+      "name": "Fishing boat",
+      "description": "A working boat with a deep hold, slow and honest.",
+      "vessel": "vessel_fishing_boat",
+      "size": 2,
+      "speed": 110,
+      "hull": 40,
+      "cargo": 20,
+      "berths": 6,
+      "minCrew": 2,
+      "cost": 15000,
+      "months": 1,
+      "decks": 0,
+      "rooms": 1,
+      "length": { "min": 0.85, "max": 1.25 },
+      "skill": 15
+    },
+    {
+      "id": "sloop",
+      "name": "Merchant sloop",
+      "description": "A fast single-master with room below for cargo and a few passengers.",
+      "vessel": "vessel_merchant_sloop",
+      "size": 3,
+      "speed": 140,
+      "hull": 60,
+      "cargo": 60,
+      "berths": 12,
+      "minCrew": 4,
+      "cost": 50000,
+      "months": 2,
+      "decks": 1,
+      "rooms": 2,
+      "length": { "min": 0.85, "max": 1.25 },
+      "skill": 30
+    },
+    {
+      "id": "caravel",
+      "name": "Caravel",
+      "description": "Three masts and a figurehead: the classic pirate ship.",
+      "vessel": "vessel_caravel",
+      "size": 4,
+      "speed": 170,
+      "hull": 90,
+      "cargo": 40,
+      "berths": 30,
+      "minCrew": 8,
+      "cost": 140000,
+      "months": 4,
+      "decks": 1,
+      "rooms": 4,
+      "length": { "min": 0.85, "max": 1.3 },
+      "skill": 45
+    },
+    {
+      "id": "galleon",
+      "name": "Galleon",
+      "description": "A great ship of the high seas, with cannon decks and a crew of dozens.",
+      "vessel": "vessel_galleon",
+      "size": 5,
+      "speed": 200,
+      "hull": 150,
+      "cargo": 100,
+      "berths": 100,
+      "minCrew": 20,
+      "cost": 2000000,
+      "months": 8,
+      "decks": 2,
+      "rooms": 7,
+      "length": { "min": 0.9, "max": 1.25 },
+      "skill": 65
+    },
+    {
+      "id": "warship",
+      "name": "Marine warship",
+      "description": "A battleship of the Marines' own plan, built to carry a hundred guns and survive them.",
+      "vessel": "vessel_warship",
+      "size": 6,
+      "speed": 220,
+      "hull": 220,
+      "cargo": 60,
+      "berths": 200,
+      "minCrew": 40,
+      "cost": 3500000,
+      "months": 12,
+      "decks": 3,
+      "rooms": 8,
+      "length": { "min": 0.9, "max": 1.2 },
+      "skill": 80,
+      "blueprint": true
+    }
+  ],
+  "materials": [
+    {
+      "id": "common_wood",
+      "name": "Common wood",
+      "description": "Pine and fir from any island's forest: cheap, easy to work, and it rots in twenty years.",
+      "hull": 1,
+      "speed": 1,
+      "cost": 1,
+      "upkeep": 1,
+      "rot": 20,
+      "skill": 0
+    },
+    {
+      "id": "hardwood",
+      "name": "Hardwood",
+      "description": "Oak and ironbark: heavier, slower to shape, and good for a lifetime.",
+      "hull": 1.3,
+      "speed": 0.96,
+      "cost": 1.5,
+      "upkeep": 1.15,
+      "rot": 40,
+      "skill": 25
+    },
+    {
+      "id": "iron_plated",
+      "name": "Iron plating",
+      "description": "A wooden ship sheathed in iron: shot glances off, but she sits low and sails slow.",
+      "hull": 1.7,
+      "speed": 0.86,
+      "cost": 2.2,
+      "upkeep": 1.6,
+      "rot": 30,
+      "skill": 50
+    },
+    {
+      "id": "treasure_tree",
+      "name": "Treasure tree wood",
+      "description": "Wood of the treasure tree Adam, sold in pieces on the black market: the strongest timber in the world, and it never rots.",
+      "hull": 1.9,
+      "speed": 1.06,
+      "cost": 3.5,
+      "upkeep": 0.8,
+      "rot": null,
+      "skill": 70,
+      "needs": "item_adam_wood"
+    }
+  ],
+  "rigs": [
+    {
+      "id": "square",
+      "name": "Square sails",
+      "description": "Broad sails across the masts: fast before the wind, and a lot of rope to haul.",
+      "speed": 1,
+      "hands": 1,
+      "cost": 1
+    },
+    {
+      "id": "fore_and_aft",
+      "name": "Fore-and-aft",
+      "description": "Sails along the ship's length: closer to the wind, and fewer hands to work them.",
+      "speed": 0.96,
+      "hands": 0.75,
+      "cost": 0.95
+    },
+    {
+      "id": "extra_masts",
+      "name": "Extra masts",
+      "description": "More canvas than she was drawn for: faster, and hungry for crew.",
+      "speed": 1.12,
+      "hands": 1.4,
+      "cost": 1.2
+    }
+  ],
+  "drives": [
+    {
+      "id": "oars",
+      "name": "Oars",
+      "description": "Benches and sweeps for when the wind dies.",
+      "cost": 2000,
+      "calm": 0.25,
+      "escape": 0.1
+    },
+    {
+      "id": "paddle_wheels",
+      "name": "Paddle wheels",
+      "description": "Wheels at her sides, turned by hand or engine: she moves in a dead calm.",
+      "cost": 40000,
+      "calm": 0.6,
+      "escape": 0.1,
+      "calmBelt": true
+    },
+    {
+      "id": "burner",
+      "name": "Burner",
+      "description": "A furnace below and a screw astern: steady speed with no wind at all.",
+      "cost": 90000,
+      "calm": 0.7,
+      "escape": 0.2,
+      "calmBelt": true
+    },
+    {
+      "id": "burst_system",
+      "name": "Burst system",
+      "description": "A great charge of air stored in the hull and let go at once: the ship leaps a mile through the sky.",
+      "cost": 250000,
+      "calm": 0,
+      "escape": 0.6
+    },
+    {
+      "id": "sea_beast",
+      "name": "A tamed sea beast",
+      "description": "Harnessed to the bow, a beast of the deep that swims where no sail can.",
+      "cost": 0,
+      "calm": 0.9,
+      "escape": 0.3,
+      "calmBelt": true,
+      "storyLocked": true
+    }
+  ],
+  "rooms": [
+    {
+      "id": "galley",
+      "name": "Galley",
+      "description": "A real kitchen: hot food at sea keeps a crew together.",
+      "cost": 8000,
+      "berths": 1,
+      "comfort": 2,
+      "effect": "morale",
+      "value": 1
+    },
+    {
+      "id": "sick_bay",
+      "name": "Sick bay",
+      "description": "Cots, clean linen and a cabinet of medicine.",
+      "cost": 15000,
+      "berths": 2,
+      "comfort": 1,
+      "effect": "heal",
+      "value": 0.08
+    },
+    {
+      "id": "library",
+      "name": "Library",
+      "description": "Shelves that do not spill in a storm, and a lamp to read by.",
+      "cost": 12000,
+      "berths": 1,
+      "comfort": 1,
+      "effect": "study",
+      "value": 0.2
+    },
+    {
+      "id": "aquarium",
+      "name": "Aquarium",
+      "description": "A tank of seawater below decks, with fish to watch and fish to eat.",
+      "cost": 30000,
+      "berths": 1,
+      "comfort": 2,
+      "effect": "fish",
+      "value": 0.3
+    },
+    {
+      "id": "workshop",
+      "name": "Workshop",
+      "description": "Benches, tools and a vice: crafting at sea.",
+      "cost": 18000,
+      "berths": 1,
+      "comfort": 0,
+      "effect": "craft",
+      "value": 1
+    },
+    {
+      "id": "armoury",
+      "name": "Armoury",
+      "description": "Racks of blades and guns: boarding parties go over armed.",
+      "cost": 20000,
+      "berths": 1,
+      "comfort": 0,
+      "effect": "boarding",
+      "value": 10
+    },
+    {
+      "id": "brig",
+      "name": "Brig",
+      "description": "A barred cell below the waterline, for those you mean to hand over.",
+      "cost": 10000,
+      "berths": 1,
+      "comfort": -1,
+      "effect": "prisoners",
+      "value": 1
+    },
+    {
+      "id": "training_deck",
+      "name": "Training deck",
+      "description": "Weights, a sparring ring, room to move.",
+      "cost": 14000,
+      "berths": 1,
+      "comfort": 1,
+      "effect": "train",
+      "value": 0.2
+    },
+    {
+      "id": "lookout_gym",
+      "name": "Lookout gym",
+      "description": "A crow's nest big enough to train in.",
+      "cost": 16000,
+      "berths": 0,
+      "comfort": 1,
+      "effect": "perception",
+      "value": 0.15
+    },
+    {
+      "id": "bath",
+      "name": "Bath",
+      "description": "Hot water at sea: a luxury worth more than it costs.",
+      "cost": 12000,
+      "berths": 1,
+      "comfort": 3,
+      "effect": "comfort",
+      "value": 1
+    },
+    {
+      "id": "bar",
+      "name": "Bar",
+      "description": "A counter, some stools and something to pour.",
+      "cost": 9000,
+      "berths": 1,
+      "comfort": 2,
+      "effect": "morale",
+      "value": 1
+    },
+    {
+      "id": "treasury",
+      "name": "Treasury",
+      "description": "An iron-bound strongroom: robbers at sea take less.",
+      "cost": 25000,
+      "berths": 1,
+      "comfort": 0,
+      "effect": "treasury",
+      "value": 0.5
+    },
+    {
+      "id": "seastone_keel",
+      "name": "Seastone keel",
+      "description": "Seastone laid along the bottom of the hull: Sea Kings cannot sense her, and pass her by.",
+      "cost": 600000,
+      "berths": 0,
+      "comfort": 0,
+      "effect": "seastone",
+      "value": 1
+    },
+    {
+      "id": "boat_dock",
+      "name": "Boat dock",
+      "description": "A launch for small boats inside the hull.",
+      "cost": 35000,
+      "berths": 2,
+      "comfort": 0,
+      "effect": "boats",
+      "value": 0.15
+    }
+  ],
+  "weapons": [
+    {
+      "id": "cannon",
+      "name": "Cannon",
+      "description": "A gun on each port: the backbone of a sea fight.",
+      "cost": 8000,
+      "cannons": 1,
+      "perDeck": 12
+    },
+    {
+      "id": "bow_cannon",
+      "name": "Bow cannon",
+      "description": "One great gun in the bow for the shot that matters.",
+      "cost": 60000,
+      "cannons": 4,
+      "perDeck": 0
+    },
+    {
+      "id": "harpoons",
+      "name": "Harpoon guns",
+      "description": "Lines and barbs to hold a ship close for boarding.",
+      "cost": 12000,
+      "cannons": 0.5,
+      "boarding": 6,
+      "perDeck": 4
+    },
+    {
+      "id": "ram",
+      "name": "Ram",
+      "description": "An iron beak at the waterline.",
+      "cost": 30000,
+      "cannons": 0,
+      "ram": 25,
+      "perDeck": 0
+    },
+    {
+      "id": "great_cannon",
+      "name": "Great cannon",
+      "description": "A weapon of legend, built into the ship itself, that can level a fortress.",
+      "cost": 0,
+      "cannons": 40,
+      "perDeck": 0,
+      "storyLocked": true
+    }
+  ],
+  "figureheads": [
+    {
+      "id": "none",
+      "name": "None",
+      "description": "A plain bow.",
+      "cost": 0,
+      "morale": 0,
+      "fame": 0
+    },
+    {
+      "id": "animal",
+      "name": "An animal",
+      "description": "A carved goat, a ram, a gull: something the crew can pat for luck.",
+      "cost": 4000,
+      "morale": 2,
+      "fame": 0.1
+    },
+    {
+      "id": "beast",
+      "name": "A fierce beast",
+      "description": "A lion, a dragon, a sea king's head: a bow that says who is coming.",
+      "cost": 9000,
+      "morale": 3,
+      "fame": 0.25
+    },
+    {
+      "id": "symbol",
+      "name": "A symbol",
+      "description": "The crew's own mark carved large.",
+      "cost": 6000,
+      "morale": 3,
+      "fame": 0.3
+    },
+    {
+      "id": "person",
+      "name": "A person",
+      "description": "A figure of someone loved or feared, looking out to sea.",
+      "cost": 8000,
+      "morale": 2,
+      "fame": 0.2
+    }
+  ],
+  "colours": [
+    "black",
+    "white",
+    "red",
+    "blue",
+    "green",
+    "gold",
+    "brown",
+    "grey",
+    "orange",
+    "purple",
+    "yellow",
+    "teal"
+  ],
+  "yards": {
+    "docks": { "size": 2, "skill": 30 },
+    "shipyard": { "size": 5, "skill": 60 },
+    "places": {
+      "loc_water_seven": { "size": 6, "skill": 100, "name": "the Galley-La docks" },
+      "loc_marineford": { "size": 6, "skill": 80, "name": "the Marine dockyard" },
+      "loc_marine_base_town": { "size": 6, "skill": 70, "name": "the Marine dockyard" },
+      "loc_sabaody": { "size": 5, "skill": 75, "name": "the coating yards of Sabaody" },
+      "loc_kano": { "size": 5, "skill": 65, "name": "the yards of Kano" }
+    }
+  },
+  "build": {
+    "selfDiscount": 0.45,
+    "hasten": 0.12,
+    "shortfall": 0.02,
+    "refitLabour": 0.3,
+    "refitMonths": 1,
+    "resale": 0.5
+  },
+  "upkeep": 0.004,
+  "spirit": { "care": 60, "chance": 0.03, "neglect": 0.3 },
+  "standard": {
+    "officer": {
+      "name": "Marine sloop",
+      "hull": "sloop",
+      "material": "hardwood",
+      "rig": "fore_and_aft",
+      "weapons": { "cannon": 6 },
+      "rooms": ["galley", "brig"],
+      "figurehead": "symbol",
+      "hullColour": "white",
+      "sailColour": "white",
+      "jollyRoger": "the Marines' gull"
+    },
+    "captain": {
+      "name": "Marine caravel",
+      "hull": "caravel",
+      "material": "hardwood",
+      "rig": "square",
+      "weapons": { "cannon": 12 },
+      "rooms": ["galley", "brig", "sick_bay", "armoury"],
+      "figurehead": "symbol",
+      "hullColour": "white",
+      "sailColour": "white",
+      "jollyRoger": "the Marines' gull"
+    },
+    "vice_admiral": {
+      "name": "Marine warship",
+      "hull": "warship",
+      "material": "iron_plated",
+      "rig": "extra_masts",
+      "weapons": { "cannon": 30, "bow_cannon": 1 },
+      "rooms": ["galley", "brig", "sick_bay", "armoury", "training_deck", "library"],
+      "figurehead": "symbol",
+      "hullColour": "white",
+      "sailColour": "white",
+      "jollyRoger": "the Marines' gull"
+    }
+  },
+  "lines": {}
+}

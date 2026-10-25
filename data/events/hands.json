@@ -1,0 +1,283 @@
+[
+  {
+    "id": "evt_curse_misfortune_fall",
+    "type": "personal",
+    "title": "Bad luck",
+    "text": "A loose plank, a falling block, a step that was not there: the kind of luck the blade at your side is known for.",
+    "trigger": "random",
+    "weight": 3,
+    "cooldown": 4,
+    "conditions": [{ "kind": "flag", "flag": "curse.misfortune", "equals": true }],
+    "choices": [
+      {
+        "id": "dodge",
+        "label": "Throw yourself clear",
+        "check": {
+          "stat": "speed",
+          "difficulty": 55,
+          "success": {
+            "text": "You rolled clear with a hand's breadth to spare.",
+            "effects": [{ "kind": "train", "stats": { "speed": 0.5 } }]
+          },
+          "failure": {
+            "text": "It caught you, and it hurt.",
+            "effects": [
+              { "kind": "injury", "severity": "roll", "area": "roll", "cause": "accident" }
+            ]
+          }
+        }
+      },
+      {
+        "id": "shrug",
+        "label": "Laugh it off",
+        "effects": [
+          { "kind": "health", "fraction": -0.08 },
+          { "kind": "drift", "tags": ["brave"] }
+        ]
+      }
+    ],
+    "tags": ["personal", "curse"]
+  },
+  {
+    "id": "evt_curse_misfortune_coin",
+    "type": "personal",
+    "title": "The blade's luck",
+    "text": "A purse slips from your belt, a deal goes sour, a debt you forgot comes due: the curse takes its toll in coin this month.",
+    "trigger": "random",
+    "weight": 2,
+    "cooldown": 6,
+    "conditions": [{ "kind": "flag", "flag": "curse.misfortune", "equals": true }],
+    "effects": [{ "kind": "berries", "min": -6000, "max": -1000 }],
+    "tags": ["personal", "curse"]
+  },
+  {
+    "id": "evt_curse_hunger_drain",
+    "type": "personal",
+    "title": "The hungry blade",
+    "text": "You drew the sword to practise and it drank from you: your arm went grey to the elbow before you could put it down.",
+    "trigger": "random",
+    "weight": 3,
+    "cooldown": 3,
+    "conditions": [{ "kind": "flag", "flag": "curse.haki_hunger", "equals": true }],
+    "choices": [
+      {
+        "id": "hold",
+        "label": "Hold on and fight it",
+        "check": {
+          "stat": "willpower",
+          "difficulty": 75,
+          "success": {
+            "text": "You held, and for a moment the blade was yours. Your will is the stronger for it.",
+            "effects": [
+              { "kind": "train", "stats": { "willpower": 1.5 } },
+              { "kind": "powerPoints", "practice": "drill", "track": "track_armament", "points": 3 }
+            ]
+          },
+          "failure": {
+            "text": "It took more than you had. You woke on the floor, the arm numb for days.",
+            "effects": [
+              { "kind": "health", "fraction": -0.2 },
+              { "kind": "injury", "severity": "minor", "area": "arms", "cause": "exhaustion" }
+            ]
+          }
+        }
+      },
+      {
+        "id": "sheathe",
+        "label": "Put it away",
+        "effects": [{ "kind": "health", "fraction": -0.05 }]
+      }
+    ],
+    "tags": ["personal", "curse"]
+  },
+  {
+    "id": "evt_curse_bloodthirst_pull",
+    "type": "personal",
+    "title": "The blade wants more",
+    "text": "A man insulted you in a tavern, and your hand was on the hilt before you knew it. The blade wants this.",
+    "trigger": "random",
+    "weight": 3,
+    "cooldown": 3,
+    "conditions": [{ "kind": "flag", "flag": "curse.bloodthirst", "equals": true }],
+    "choices": [
+      {
+        "id": "refuse",
+        "label": "Take your hand off the hilt",
+        "check": {
+          "stat": "willpower",
+          "difficulty": 60,
+          "success": {
+            "text": "You let go and walked away. The blade's pull eased, a little.",
+            "effects": [
+              { "kind": "count", "flag": "curse.bloodthirst.checks", "by": 1 },
+              { "kind": "train", "stats": { "willpower": 1 } },
+              { "kind": "drift", "tags": ["kind"] }
+            ]
+          },
+          "failure": {
+            "text": "You drew. He lived, barely, and the town will not forget your face.",
+            "effects": [
+              { "kind": "infamy", "value": 2 },
+              { "kind": "drift", "tags": ["cruel"] }
+            ]
+          }
+        }
+      },
+      {
+        "id": "give_in",
+        "label": "Give it what it wants",
+        "effects": [
+          { "kind": "infamy", "value": 3 },
+          { "kind": "drift", "tags": ["cruel", "cruel"] },
+          { "kind": "train", "stats": { "strength": 0.5 } }
+        ]
+      }
+    ],
+    "tags": ["personal", "curse"]
+  },
+  {
+    "id": "evt_curse_haunting_voice",
+    "type": "personal",
+    "title": "A voice in the steel",
+    "text": "Another night of dreams that are not yours, and a voice from the blade that speaks a name you do not know.",
+    "trigger": "random",
+    "weight": 3,
+    "cooldown": 2,
+    "conditions": [{ "kind": "flag", "flag": "curse.haunting", "equals": true }],
+    "choices": [
+      {
+        "id": "listen",
+        "label": "Listen to it",
+        "check": {
+          "stat": "willpower",
+          "difficulty": 55,
+          "success": {
+            "text": "You listened, and learned a little of the swordsman it remembers. Your hands know a cut they did not before.",
+            "effects": [
+              { "kind": "train", "stats": { "dexterity": 1 } },
+              {
+                "kind": "powerPoints",
+                "practice": "drill",
+                "track": "track_swordsmanship",
+                "points": 2
+              }
+            ]
+          },
+          "failure": {
+            "text": "You listened too long. A week without sleep left you a wreck.",
+            "effects": [{ "kind": "health", "fraction": -0.15 }]
+          }
+        }
+      },
+      {
+        "id": "ignore",
+        "label": "Wrap it in cloth and try to sleep",
+        "effects": [{ "kind": "health", "fraction": -0.06 }]
+      }
+    ],
+    "tags": ["personal", "curse"]
+  },
+  {
+    "id": "evt_local_dying_sailor",
+    "type": "local",
+    "title": "A dying sailor",
+    "text": "An old sailor coughing his last in a harbour tavern pressed a folded paper into your hand. \"Better you than them,\" he said.",
+    "trigger": "random",
+    "weight": 0.6,
+    "cooldown": 36,
+    "conditions": [
+      { "kind": "age", "min": 14 },
+      { "kind": "feature", "features": ["docks"] }
+    ],
+    "choices": [
+      {
+        "id": "keep",
+        "label": "Keep it",
+        "effects": [{ "kind": "treasureMap" }]
+      },
+      {
+        "id": "doctor",
+        "label": "Fetch a doctor first",
+        "effects": [
+          { "kind": "treasureMap" },
+          { "kind": "berries", "min": -800, "max": -300 },
+          { "kind": "drift", "tags": ["kind"] }
+        ]
+      }
+    ],
+    "tags": ["local", "treasure"]
+  },
+  {
+    "id": "evt_voyage_cargo_pirates",
+    "type": "voyage",
+    "title": "Pirates want your hold",
+    "text": "A pirate sloop came alongside under a black flag. Their captain wanted the cargo, not the ship, and said so.",
+    "trigger": "voyage",
+    "weight": 0.8,
+    "cooldown": 6,
+    "conditions": [
+      { "kind": "ownShip" },
+      { "kind": "flag", "flag": "hands.cargo", "equals": true }
+    ],
+    "choices": [
+      {
+        "id": "pay",
+        "label": "Hand over half the hold",
+        "effects": [{ "kind": "cargo", "share": 0.5 }]
+      },
+      {
+        "id": "run",
+        "label": "Crowd on sail and run",
+        "check": {
+          "stat": "speed",
+          "difficulty": 50,
+          "success": {
+            "text": "You ran, and the sloop fell behind by nightfall.",
+            "effects": [{ "kind": "morale", "value": 4 }]
+          },
+          "failure": {
+            "text": "They caught you, and took more for the trouble.",
+            "effects": [
+              { "kind": "cargo", "share": 0.75 },
+              { "kind": "hull", "value": -10 }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["voyage", "encounter", "money"]
+  },
+  {
+    "id": "evt_voyage_wreck_salvage",
+    "type": "voyage",
+    "title": "A wreck below",
+    "text": "The water was clear enough to see a wreck on the bottom, her hull split and her hold open.",
+    "trigger": "voyage",
+    "weight": 0.5,
+    "cooldown": 18,
+    "choices": [
+      {
+        "id": "dive",
+        "label": "Dive for what you can reach",
+        "check": {
+          "stat": "endurance",
+          "difficulty": 55,
+          "success": {
+            "text": "Three dives and a sack of tarnished coins and a weapon nobody had missed.",
+            "effects": [{ "kind": "berries", "min": 2000, "max": 15000 }, { "kind": "findItem" }]
+          },
+          "failure": {
+            "text": "The cold drove you up empty-handed and blue.",
+            "effects": [{ "kind": "health", "fraction": -0.1 }]
+          }
+        }
+      },
+      {
+        "id": "mark",
+        "label": "Mark it on the chart and sail on",
+        "effects": [{ "kind": "treasureMap", "mapKind": "true" }]
+      }
+    ],
+    "tags": ["voyage", "discovery", "treasure"]
+  }
+]

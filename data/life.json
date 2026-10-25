@@ -33,6 +33,20 @@
       "risk": 1.6
     }
   },
+  "drive": {
+    "overtime": {
+      "perSlot": 5,
+      "max": 3,
+      "surcharge": 1,
+      "fromSlots": 2
+    },
+    "commit": {
+      "per": 3,
+      "gain": [0.3, 0.25, 0.2, 0.15],
+      "pay": 0.12,
+      "risk": 0.3
+    }
+  },
   "exhaustion": {
     "statPct": -20,
     "injuryChance": 0.15,

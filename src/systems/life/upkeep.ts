@@ -20,6 +20,7 @@ import { catchIllnesses, die, healMonth, mortalityCause, mortalityChance } from 
 import { monthOfMoney } from './money';
 import { makePerson, relate, relationWords } from './people';
 import { releaseFruitOf } from '../powers/fruits';
+import { handsMonth } from '../hands/month';
 import { powersMonth } from '../powers/month';
 
 /**
@@ -220,6 +221,9 @@ export function liveMonth(env: LifeEnv): void {
   relativesAge(withCause(env, 'sys:mortality'), rng.fork('relatives'));
   // Phase 4: haki stamina, rust and fading, a fruit being understood, personality and behaviour.
   powersMonth(withCause(env, 'sys:powers', undefined, rng.fork('powers')));
+  if (!p.c.alive) return;
+  // Phase 6: dials refill, a yard works on, a ship's upkeep and spirit, curses, black blades.
+  handsMonth(withCause(env, 'sys:hands', undefined, rng.fork('hands')));
   if (!p.c.alive) return;
   recordPeaks(env);
   const max = maxHealthOf(data, p.entity, tick + 1);

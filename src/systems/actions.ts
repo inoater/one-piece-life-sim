@@ -39,6 +39,8 @@ import {
   setFocus,
 } from './powers/commands';
 import { addDebugModifier, spawnTestEntity } from './devtools';
+import { applyHandsCommand } from './hands/commands';
+import { ShipDesignSchema } from '../engine/data/defs';
 import { resolveDecision, scheduleEvent } from './events';
 import { livePlayerRoutine } from './life';
 import {
@@ -54,6 +56,7 @@ import {
 import { CONTINUE_MODES } from './life/death';
 import { ensureWorldLayer } from './places/history';
 import { ensureFruitLayer } from './powers/month';
+import { ensureHandsLayer } from './hands/swords';
 import {
   buyPose,
   buyShip,
@@ -109,8 +112,15 @@ export const ActionSchema = z.discriminatedUnion('type', [
   z.strictObject({
     type: z.literal('life/routine'),
     routine: z
-      .array(z.strictObject({ activity: z.string().min(1), effort: z.enum(EFFORTS) }))
-      .max(6),
+      .array(
+        z.strictObject({
+          activity: z.string().min(1),
+          effort: z.enum(EFFORTS),
+          // Phase 6: Vigor committed past Hard.
+          commit: z.number().int().min(0).max(8).optional(),
+        }),
+      )
+      .max(10),
   }),
   z.strictObject({ type: z.literal('life/job'), jobId: z.string().min(1).nullable() }),
   z.strictObject({ type: z.literal('life/borrow'), amount: z.number().int().min(1) }),
@@ -232,6 +242,48 @@ export const ActionSchema = z.discriminatedUnion('type', [
   }),
   z.strictObject({ type: z.literal('battle/front'), index: z.number().int().min(0) }),
   z.strictObject({ type: z.literal('battle/buyKit'), item: z.string().min(1) }),
+  // ---- Hands (Phase 6): weapons, gear, crafting, trade, ships
+  z.strictObject({ type: z.literal('hands/buy'), key: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/sell'), item: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/wield'), item: z.string().min(1), on: z.boolean() }),
+  z.strictObject({ type: z.literal('hands/wear'), item: z.string().min(1).nullable() }),
+  z.strictObject({ type: z.literal('hands/discard'), item: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/sharpen'), item: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/mend'), item: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/use'), item: z.string().min(1) }),
+  z.strictObject({
+    type: z.literal('hands/trade'),
+    good: z.string().min(1),
+    qty: z.number().int().min(-500).max(500),
+  }),
+  z.strictObject({ type: z.literal('hands/craft'), recipe: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/temper'), item: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/abandon') }),
+  z.strictObject({ type: z.literal('hands/fate'), item: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/cleanse'), item: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/call'), target: z.string().min(1) }),
+  z.strictObject({ type: z.literal('hands/vivre'), target: z.string().min(1) }),
+  z.strictObject({
+    type: z.literal('hands/gamble'),
+    game: z.string().min(1),
+    stake: z.number().int().min(1),
+  }),
+  z.strictObject({
+    type: z.literal('ship/build'),
+    design: ShipDesignSchema,
+    by: z.enum(['yard', 'self']),
+  }),
+  z.strictObject({ type: z.literal('ship/hasten'), months: z.number().int().min(1).max(24) }),
+  z.strictObject({ type: z.literal('ship/refit'), design: ShipDesignSchema }),
+  z.strictObject({ type: z.literal('ship/saveDesign'), design: ShipDesignSchema }),
+  z.strictObject({ type: z.literal('ship/deleteDesign'), index: z.number().int().min(0) }),
+  z.strictObject({ type: z.literal('ship/importDesign'), text: z.string().min(1).max(20000) }),
+  z.strictObject({ type: z.literal('debug/giveItem'), item: z.string().min(1) }),
+  z.strictObject({
+    type: z.literal('debug/handSkill'),
+    skill: z.string().min(1),
+    value: z.number().min(0).max(100),
+  }),
   z.strictObject({
     type: z.literal('debug/fight'),
     foe: z.string().min(1),
@@ -399,6 +451,41 @@ export function applyAction(
       }
       // Each exchange, like each decision, survives closing the tab.
       effects.push({ kind: 'autosave' });
+      break;
+
+    case 'hands/buy':
+    case 'hands/sell':
+    case 'hands/wield':
+    case 'hands/wear':
+    case 'hands/discard':
+    case 'hands/sharpen':
+    case 'hands/mend':
+    case 'hands/use':
+    case 'hands/trade':
+    case 'hands/craft':
+    case 'hands/temper':
+    case 'hands/abandon':
+    case 'hands/fate':
+    case 'hands/cleanse':
+    case 'hands/call':
+    case 'hands/vivre':
+    case 'hands/gamble':
+    case 'ship/build':
+    case 'ship/hasten':
+    case 'ship/refit':
+    case 'ship/saveDesign':
+    case 'ship/deleteDesign':
+    case 'ship/importDesign':
+    case 'debug/giveItem':
+    case 'debug/handSkill':
+      try {
+        applyHandsCommand(state, data, action);
+      } catch (error) {
+        if (error instanceof ActionError) throw error;
+        throw new ActionError(error instanceof Error ? error.message : String(error));
+      }
+      // Buying a blade, laying a keel: decisions that survive closing the tab.
+      if (!action.type.startsWith('debug/')) effects.push({ kind: 'autosave' });
       break;
 
     case 'debug/setOpenEnded':
@@ -618,6 +705,7 @@ function prepareWorld(state: WorldState, ctx: TickContext): void {
   if (state.playerId !== null) {
     ensureWorldLayer(state, ctx.data);
     ensureFruitLayer(state, ctx.data);
+    ensureHandsLayer(state, ctx.data);
   }
 }
 

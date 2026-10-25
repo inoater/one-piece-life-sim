@@ -70,6 +70,10 @@ A version 5 world has no fight under way and its battle counter starts at 0; the
 on their rungs of the ladder the first month it is played: `world_v5.opsim` is loaded and lived in
 the same test.
 
+A version 6 world is unchanged by its migration (every Phase 6 field is optional). The first month
+it is played it gains its blades and treasure, and the player's gear bought as counts in Phases 4
+and 5 becomes items: `world_v6.opsim` is loaded and lived in the same test.
+
 ## Changing the saved shape
 
 1. Change `src/engine/state.ts` (or the envelope).

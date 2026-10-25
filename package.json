@@ -1,8 +1,8 @@
 {
   "name": "one-piece-life-sim",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
-  "description": "One Piece Life Sim: a static-site life simulation. Phase 3: the world, travel, events and canon, on the life loop, character genesis and the Phase 0 engine.",
+  "description": "One Piece Life Sim: a static-site life simulation. Phase 6: weapons, cursed blades, gear, ships, crafting, treasure and the economy, on battles, powers, the world, the life loop and character genesis.",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -21,6 +21,7 @@
     "world": "tsx tools/world.ts",
     "powers": "tsx tools/powers.ts",
     "battle": "tsx tools/battle.ts",
+    "economy": "tsx tools/economy.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "golden:update": "tsx tools/update-golden.ts",

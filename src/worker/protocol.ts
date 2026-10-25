@@ -23,8 +23,11 @@ import type {
 import type { TravelView } from '../systems/voyage/view';
 import type { FruitsView, PowersView } from '../systems/powers/view';
 import type { BattleView, FightSelfView } from '../systems/battle/view';
+import type { DesignPreview, HandsView } from '../systems/hands/view';
 
 export type {
+  DesignPreview,
+  HandsView,
   BattleView,
   FightSelfView,
   FruitsView,
@@ -138,6 +141,8 @@ export interface Snapshot {
   battle: BattleView | null;
   /** Phase 5: the player's rung on the ladder, record, fight settings and kit. */
   fight: FightSelfView | null;
+  /** Phase 6: what the player carries, the market and workshop here, their ship and the creator. */
+  hands: HandsView | null;
   /** At the present, before open-ended play: the epilogue to show. */
   epilogue: null | { title: string; text: string };
   /** The player's character sheet. Hidden facts are included only in omniscient views. */
@@ -415,6 +420,9 @@ export interface Protocol {
   'world/factions': { req: { generated?: boolean }; res: FactionView[] };
   // ---- Powers (Phase 4)
   'powers/fruits': { req: { view: ViewOptions }; res: FruitsView | null };
+  // ---- Hands (Phase 6)
+  /** The ship creator's live numbers for a design as it changes. */
+  'hands/design': { req: { design: unknown }; res: DesignPreview | null };
 }
 
 /** A handful of headless lives of one race, for the debug panel's lifespan chart. */

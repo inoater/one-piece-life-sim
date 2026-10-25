@@ -7,8 +7,8 @@
  * SAVE_VERSION covers the persisted shape (envelope + world state). Bumping it requires a
  * migration in `saves/migrations.ts`; a test fails if one is missing.
  */
-export const ENGINE_VERSION = '0.6.0';
-export const SAVE_VERSION = 6;
+export const ENGINE_VERSION = '0.7.0';
+export const SAVE_VERSION = 7;
 
 /** Version of the `.opsim` file wrapper (magic bytes, version byte, gzip payload). */
 export const CONTAINER_VERSION = 1;

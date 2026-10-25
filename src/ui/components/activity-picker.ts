@@ -39,9 +39,11 @@ export interface PickerOptions {
 
 export function openActivityPicker(options: PickerOptions): ModalHandle {
   const { life, slot } = options;
-  const planned = new Set(life.routine.slice(0, life.slots).map((s) => s.activity));
+  // Phase 6: overtime slots count too.
+  const slots = life.slots + (life.slots > 0 ? life.drive.overtime : 0);
+  const planned = new Set(life.routine.slice(0, slots).map((s) => s.activity));
   const chosen = slot !== null ? (life.routine[slot]?.activity ?? null) : null;
-  const free = slot !== null || life.routine.length < life.slots;
+  const free = slot !== null || life.routine.length < slots;
   let category = 'all';
   let query = '';
   let showLocked = false;
@@ -70,7 +72,7 @@ export function openActivityPicker(options: PickerOptions): ModalHandle {
   };
 
   const card = (a: ActivityView): HTMLElement => {
-    const taken = planned.has(a.id) && a.id !== chosen;
+    const taken = planned.has(a.id) && a.id !== chosen && !a.repeatable;
     const reason = a.lock ?? (taken ? 'Already in your routine' : null);
     const isChosen = a.id === chosen;
     return h(

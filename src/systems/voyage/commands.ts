@@ -9,6 +9,7 @@ import { ensureLife } from '../life/body';
 import { lifeLog, pay, renderLife, reportLine, type LifeEnv } from '../life/env';
 import { priceMult } from '../places/place';
 import { shipHere, shipsOf } from './plan';
+import { resaleValue, shipNumbers } from '../hands/ships';
 import { ensureTravel, setSail, TravelError } from './sea';
 
 /**
@@ -125,9 +126,8 @@ export function sellShip(state: WorldState, data: GameData): void {
   const vessel = data.vessels[ship.ship?.vessel ?? ''];
   const s = ship.ship;
   if (!vessel || !s) throw new TravelError('That ship cannot be sold');
-  const worth = Math.round(
-    ((vessel.cost ?? 0) / 2) * (s.hull / vessel.hull) * priceMult(state, data, here),
-  );
+  // Phase 6: what she cost (a stock price or her design) and how much of her hull is left.
+  const worth = resaleValue(state, data, ship, here);
   pay(env, worth);
   s.ownerId = null;
   s.crew = 0;
@@ -145,8 +145,9 @@ export function hireHands(state: WorldState, data: GameData, count: number): voi
   const s = ship.ship;
   const vessel = data.vessels[s?.vessel ?? ''];
   if (!s || !vessel) throw new TravelError('You have no ship here');
-  if (s.crew + count + 1 > vessel.maxCrew) {
-    throw new TravelError(`The ${shipWords(ship.name)} holds at most ${vessel.maxCrew} with you`);
+  const maxCrew = shipNumbers(data, ship).maxCrew;
+  if (s.crew + count + 1 > maxCrew) {
+    throw new TravelError(`The ${shipWords(ship.name)} holds at most ${maxCrew} with you`);
   }
   charge(env, data.travel.hireCost * count, `Signing on ${count} hands`);
   s.crew += count;
@@ -203,7 +204,7 @@ export function repairShip(state: WorldState, data: GameData): void {
   const yard = env.p.place.features.includes('shipyard');
   if (!yard && !env.p.place.features.includes('docks'))
     throw new TravelError('There is nobody here to repair a ship');
-  const damage = vessel.hull - s.hull;
+  const damage = shipNumbers(data, ship).maxHull - s.hull;
   if (damage <= 0) throw new TravelError('She needs no repairs');
   const fixed = yard ? damage : Math.ceil(damage / 2);
   const rate = data.travel.repair.perHull * (yard ? 1 : data.travel.repair.docksMult);

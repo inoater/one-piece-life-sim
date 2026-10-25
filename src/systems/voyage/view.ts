@@ -3,6 +3,7 @@ import type { WorldState } from '../../engine/state';
 import { ensureLife } from '../life/body';
 import { laneZone } from '../places/graph';
 import { priceMult } from '../places/place';
+import { shipNumbers } from '../hands/ships';
 import { supplyCapacity } from './commands';
 import { fareFor, poseWait, routeOptions, shipHere, shipsOf } from './plan';
 import { monthsLeft, mouthsAboard, vesselNow } from './progress';
@@ -246,7 +247,8 @@ export function travelView(state: WorldState, data: GameData): TravelView | null
   const vessel = ship?.ship ? data.vessels[ship.ship.vessel] : undefined;
   const yard = here.features.includes('shipyard');
   const docks = here.features.includes('docks');
-  const damage = ship?.ship && vessel ? vessel.hull - ship.ship.hull : 0;
+  const own = ship?.ship ? shipNumbers(data, ship) : null;
+  const damage = ship?.ship && own ? own.maxHull - ship.ship.hull : 0;
   const harbour: HarbourView = {
     ship:
       ship?.ship && vessel
@@ -255,15 +257,15 @@ export function travelView(state: WorldState, data: GameData): TravelView | null
             name: ship.name,
             className: vessel.name,
             hull: Math.round(ship.ship.hull),
-            maxHull: vessel.hull,
+            maxHull: own?.maxHull ?? vessel.hull,
             crew: ship.ship.crew,
-            minCrew: vessel.minCrew,
-            maxCrew: vessel.maxCrew,
+            minCrew: own?.minCrew ?? vessel.minCrew,
+            maxCrew: own?.maxCrew ?? vessel.maxCrew,
             morale: Math.round(ship.ship.morale),
             supplies: ship.ship.supplies,
             capacity: supplyCapacity(data, ship),
             coated: ship.ship.coated,
-            speed: vessel.speed,
+            speed: own?.speed ?? vessel.speed,
             where: data.locations[ship.ship.place ?? '']?.name ?? 'at sea',
             here: ship.ship.place === here.id,
           }

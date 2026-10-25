@@ -16,18 +16,23 @@ import { travelSections } from './travel';
  */
 
 type Effort = LifeView['efforts'][number]['id'];
+type Slot = { activity: string; effort: Effort; commit?: number };
 
-function sendRoutine(
-  app: App,
-  life: LifeView,
-  routine: { activity: string; effort: Effort }[],
-  note: string,
-) {
-  void app.dispatch({ type: 'life/routine', routine: routine.slice(0, life.slots) }, note);
+/** Slots this month can hold: the stage's own, and the overtime a deep Vigor pool opens (Phase 6). */
+function slotCount(life: LifeView): number {
+  return life.slots + (life.slots > 0 ? life.drive.overtime : 0);
 }
 
-function current(life: LifeView): { activity: string; effort: Effort }[] {
-  return life.routine.slice(0, life.slots).map((s) => ({ activity: s.activity, effort: s.effort }));
+function sendRoutine(app: App, life: LifeView, routine: Slot[], note: string) {
+  void app.dispatch({ type: 'life/routine', routine: routine.slice(0, slotCount(life)) }, note);
+}
+
+function current(life: LifeView): Slot[] {
+  return life.routine.slice(0, slotCount(life)).map((s) => ({
+    activity: s.activity,
+    effort: s.effort,
+    ...(s.commit > 0 && s.effort === 'hard' ? { commit: s.commit } : {}),
+  }));
 }
 
 function choose(life: LifeView, index: number | null, app: App, activity: string): void {
@@ -129,12 +134,69 @@ function effortPicker(life: LifeView, index: number, app: App, busy: boolean): H
             const at = routine[index];
             if (!at) return;
             at.effort = e.id;
+            if (e.id !== 'hard') delete at.commit;
             sendRoutine(app, life, routine, `${e.name} effort.`);
           },
         },
         e.name,
         restful ? null : h('span', { class: 'effort__cost' }, ` ${e.vigor + extra}`),
       ),
+    ),
+  );
+}
+
+/**
+ * Pushing a Hard slot further (Phase 6): each point past Hard costs one more Vigor and multiplies
+ * what the slot gives (training, practice, pay, a project's pace), at more risk. How far depends
+ * on the Vigor pool.
+ */
+function pushPicker(life: LifeView, index: number, app: App, busy: boolean): HTMLElement | null {
+  const slot = life.routine[index];
+  const act = life.activities.find((a) => a.id === slot?.activity);
+  if (!slot || !act || act.restful || slot.effort !== 'hard' || life.drive.commitMax === 0)
+    return null;
+  const set = (n: number) => {
+    const routine = current(life);
+    const at = routine[index];
+    if (!at) return;
+    if (n > 0) at.commit = n;
+    else delete at.commit;
+    sendRoutine(app, life, routine, n > 0 ? `Pushed ${n} past Hard.` : 'Back to plain Hard.');
+  };
+  const gain = life.drive.commitGains[slot.commit] ?? 1;
+  return h(
+    'div',
+    { class: 'push', role: 'group', 'aria-label': `Push activity ${index + 1} past Hard` },
+    h('span', { class: 'push__label' }, 'Push past Hard'),
+    h(
+      'button',
+      {
+        class: 'button button--tiny',
+        type: 'button',
+        disabled: busy || slot.commit <= 0,
+        'aria-label': 'Less',
+        onclick: () => set(slot.commit - 1),
+      },
+      '−',
+    ),
+    h('span', { class: 'push__value' }, slot.commit > 0 ? `+${slot.commit}` : '0'),
+    h(
+      'button',
+      {
+        class: 'button button--tiny',
+        type: 'button',
+        disabled: busy || slot.commit >= life.drive.commitMax,
+        'aria-label': 'More',
+        onclick: () => set(slot.commit + 1),
+      },
+      '+',
+    ),
+    h(
+      'span',
+      { class: 'push__facts muted' },
+      slot.commit > 0
+        ? ` ${slot.vigor} Vigor, gains ×${(gain * 1.5).toFixed(2)} (Hard alone ×1.50), pay +${Math.round(life.drive.commitPay * slot.commit * 100)}%, risk +${Math.round(life.drive.commitRisk * slot.commit * 100)}%. Up to +${life.drive.commitMax} with your Vigor.`
+        : ` Up to +${life.drive.commitMax} with your Vigor (each +1 Vigor).`,
     ),
   );
 }
@@ -151,18 +213,31 @@ function meter(value: number, max: number, label: string, tone: string): HTMLEle
 function routineSection(life: LifeView, app: App, busy: boolean): HTMLElement {
   const over = life.vigor.planned > life.vigor.pool;
   const slots: HTMLElement[] = [];
-  for (let i = 0; i < life.slots; i++) {
+  const total = slotCount(life);
+  for (let i = 0; i < total; i++) {
     const slot = life.routine[i];
+    const overtime = i >= life.slots;
     slots.push(
       h(
         'li',
-        { class: 'routine__slot', dataset: { locked: String(Boolean(slot?.lock)) } },
+        {
+          class: overtime ? 'routine__slot routine__slot--overtime' : 'routine__slot',
+          dataset: { locked: String(Boolean(slot?.lock)), overtime: String(overtime) },
+        },
         h('span', { class: 'routine__number', 'aria-hidden': 'true' }, String(i + 1)),
         h(
           'div',
           { class: 'routine__body' },
+          overtime
+            ? h(
+                'p',
+                { class: 'routine__overtime' },
+                `Overtime: +${life.drive.surcharge} Vigor on top of its effort.`,
+              )
+            : null,
           slotCard(life, i, app, busy),
           slot ? effortPicker(life, i, app, busy) : null,
+          slot ? pushPicker(life, i, app, busy) : null,
           slot?.lock ? h('p', { class: 'routine__lock' }, `Will be skipped: ${slot.lock}.`) : null,
         ),
       ),
@@ -183,6 +258,11 @@ function routineSection(life: LifeView, app: App, busy: boolean): HTMLElement {
             'p',
             { class: 'planner__lead' },
             `${life.stage}: ${plural(life.slots, 'activity', 'activities')} a month. The routine repeats until you change it.`,
+            life.drive.overtime > 0
+              ? ` Your Vigor (${life.vigor.pool}) opens ${plural(life.drive.overtime, 'overtime slot')}: one for every ${life.drive.perSlot} Vigor.`
+              : life.slots >= 2
+                ? ` With ${life.drive.perSlot} Vigor you would have an overtime slot.`
+                : '',
           ),
           h(
             'div',

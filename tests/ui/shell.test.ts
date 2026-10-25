@@ -51,7 +51,7 @@ describe('the masthead', () => {
 });
 
 describe('navigation', () => {
-  it('has the five sections, the map and the Powers page as real links, and Back-friendly hash URLs', () => {
+  it('has the five sections, the map, the Powers, Gear and Ship pages as real links, and Back-friendly hash URLs', () => {
     expect(qa('.tabs a').map((a) => [text(a), a.getAttribute('href')])).toEqual([
       ['Feed', '#/feed'],
       ['Character', '#/character'],
@@ -60,6 +60,8 @@ describe('navigation', () => {
       ['News', '#/news'],
       ['Map', '#/map'],
       ['Powers', '#/powers'],
+      ['Gear', '#/gear'],
+      ['Ship', '#/ship'],
     ]);
   });
 

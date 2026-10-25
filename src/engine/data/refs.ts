@@ -35,7 +35,13 @@ import type {
   Trait,
   TravelRules,
   WorldRules,
+  HandsRules,
+  ItemDef,
+  Recipe,
+  ShipRules,
+  Weapon,
 } from './schemas';
+import type { ShipDesign } from './defs';
 
 /**
  * Cross-references between content files.
@@ -74,7 +80,16 @@ export type RefTarget =
   | 'immunities'
   // Phase 5
   | 'foes'
-  | 'contests';
+  | 'contests'
+  // Phase 6
+  | 'goods'
+  | 'shipHulls'
+  | 'shipMaterials'
+  | 'shipRigs'
+  | 'shipDrives'
+  | 'shipRooms'
+  | 'shipWeapons'
+  | 'shipFigureheads';
 
 export interface Ref {
   /** Where the reference was written: the field path inside the file. */
@@ -125,6 +140,16 @@ export const TARGET_LABEL: Record<RefTarget, string> = {
   immunities: 'immunity ("seasickness" or an illness)',
   foes: 'foe',
   contests: 'contest',
+  items: 'item',
+  recipes: 'recipe',
+  goods: 'trade good',
+  shipHulls: 'hull',
+  shipMaterials: 'hull material',
+  shipRigs: 'rig',
+  shipDrives: 'drive',
+  shipRooms: 'room',
+  shipWeapons: 'ship weapon',
+  shipFigureheads: 'figurehead',
 };
 
 /** Where an author fixes a missing id of this kind. */
@@ -169,6 +194,16 @@ export const TARGET_HOME: Record<RefTarget, string> = {
   immunities: 'data/life.json (illnesses), or "seasickness"',
   foes: 'data/battle.json (foes)',
   contests: 'data/battle.json (contests)',
+  items: 'data/items/',
+  recipes: 'data/recipes/',
+  goods: 'data/hands.json (goods)',
+  shipHulls: 'data/ships.json (hulls)',
+  shipMaterials: 'data/ships.json (materials)',
+  shipRigs: 'data/ships.json (rigs)',
+  shipDrives: 'data/ships.json (drives)',
+  shipRooms: 'data/ships.json (rooms)',
+  shipWeapons: 'data/ships.json (weapons)',
+  shipFigureheads: 'data/ships.json (figureheads)',
 };
 
 const each = (target: RefTarget, ids: readonly string[], field: string): Ref[] =>
@@ -187,6 +222,11 @@ function effectRefs(effects: readonly (Effect | LifeEffect)[], base: string): Re
     switch (effect.kind) {
       case 'schedule':
         refs.push({ field: `${at}.eventId`, target: 'events', id: effect.eventId });
+        break;
+      case 'findItem':
+        if (effect.item?.startsWith('weapon_'))
+          refs.push({ field: `${at}.item`, target: 'weapons', id: effect.item });
+        else refs.push(...one('items', effect.item, `${at}.item`));
         break;
       case 'trait':
         refs.push({ field: `${at}.trait`, target: 'traits', id: effect.trait });
@@ -685,7 +725,83 @@ function backstoryRefs(event: BackstoryEvent): Ref[] {
 }
 
 /** Collections whose items can refer to other content. Weapons and vessels are leaves. */
+function weaponRefs(w: Weapon): Ref[] {
+  const refs: Ref[] = [];
+  w.canon?.holders.forEach((h, i) => {
+    refs.push(...one('cast', h.holder, `canon.holders[${i}].holder`));
+    refs.push(...one('locations', h.place, `canon.holders[${i}].place`));
+  });
+  return refs;
+}
+
+function itemRefs(item: ItemDef): Ref[] {
+  return [...each('locations', item.places, 'places'), ...designRefs(item.design, 'design')];
+}
+
+/** A ship design's parts must exist in data/ships.json. */
+function designRefs(design: ShipDesign | undefined, base: string): Ref[] {
+  if (!design) return [];
+  return [
+    { field: `${base}.hull`, target: 'shipHulls', id: design.hull },
+    { field: `${base}.material`, target: 'shipMaterials', id: design.material },
+    { field: `${base}.rig`, target: 'shipRigs', id: design.rig },
+    ...each('shipDrives', design.drives, `${base}.drives`),
+    ...each('shipRooms', design.rooms, `${base}.rooms`),
+    ...keys('shipWeapons', design.weapons, `${base}.weapons`),
+    { field: `${base}.figurehead`, target: 'shipFigureheads', id: design.figurehead },
+  ];
+}
+
+function recipeRefs(r: Recipe): Ref[] {
+  return [
+    ...one('weapons', r.makes.weapon, 'makes.weapon'),
+    ...one('items', r.makes.item, 'makes.item'),
+    ...each('locations', r.places, 'places'),
+    ...keys('goods', r.goods, 'goods'),
+    ...requiresRefs(r.requires, 'requires'),
+  ];
+}
+
+export function handsRulesRefs(hands: HandsRules): Ref[] {
+  const refs: Ref[] = [
+    ...each('locations', hands.temper.places, 'temper.places'),
+    ...keys('locations', hands.swords.places, 'swords.places'),
+    ...each('occupations', hands.swords.occupations, 'swords.occupations'),
+    ...each('locations', hands.vivre.places, 'vivre.places'),
+    ...each('races', hands.treasure.divers, 'treasure.divers'),
+  ];
+  for (const [id, curse] of Object.entries(hands.curses))
+    refs.push(...each('locations', curse.tame.places, `curses.${id}.tame.places`));
+  hands.treasure.canon.forEach((t, i) =>
+    refs.push({ field: `treasure.canon[${i}].place`, target: 'locations', id: t.place }),
+  );
+  hands.schools.forEach((s, i) =>
+    refs.push({ field: `schools[${i}].place`, target: 'locations', id: s.place }),
+  );
+  for (const [occ, weapon] of Object.entries(hands.npcWeapons)) {
+    refs.push({ field: `npcWeapons.${occ}`, target: 'occupations', id: occ });
+    refs.push({ field: `npcWeapons.${occ}`, target: 'weapons', id: weapon });
+  }
+  return refs;
+}
+
+export function shipRulesRefs(ships: ShipRules): Ref[] {
+  const refs: Ref[] = [];
+  ships.hulls.forEach((h, i) =>
+    refs.push({ field: `hulls[${i}].vessel`, target: 'vessels', id: h.vessel }),
+  );
+  ships.materials.forEach((m, i) => refs.push(...one('items', m.needs, `materials[${i}].needs`)));
+  ships.drives.forEach((d, i) => refs.push(...one('items', d.needs, `drives[${i}].needs`)));
+  refs.push(...keys('locations', ships.yards.places, 'yards.places'));
+  for (const [rank, design] of Object.entries(ships.standard))
+    refs.push(...designRefs(design, `standard.${rank}`));
+  return refs;
+}
+
 export const REF_EXTRACTORS: Partial<Record<CollectionKind, (item: never) => Ref[]>> = {
+  weapons: weaponRefs as (item: never) => Ref[],
+  items: itemRefs as (item: never) => Ref[],
+  recipes: recipeRefs as (item: never) => Ref[],
   locations: locationRefs as (item: never) => Ref[],
   lanes: laneRefs as (item: never) => Ref[],
   factions: factionRefs as (item: never) => Ref[],
@@ -756,6 +872,8 @@ export function singletonTargets(singletons: {
   personality?: PersonalityRules;
   powers?: PowerRules;
   battle?: BattleRules;
+  hands?: HandsRules;
+  ships?: ShipRules;
 }): Partial<Record<RefTarget, Set<string>>> {
   const out: Partial<Record<RefTarget, Set<string>>> = {};
   if (singletons.npcGoalIds) out.npcGoals = new Set(singletons.npcGoalIds);
@@ -775,6 +893,17 @@ export function singletonTargets(singletons: {
   if (singletons.battle) {
     out.foes = new Set(singletons.battle.foes.map((f) => f.id));
     out.contests = new Set(singletons.battle.contests.map((c) => c.id));
+  }
+  if (singletons.hands) out.goods = new Set(singletons.hands.goods.map((g) => g.id));
+  const ships = singletons.ships;
+  if (ships) {
+    out.shipHulls = new Set(ships.hulls.map((x) => x.id));
+    out.shipMaterials = new Set(ships.materials.map((x) => x.id));
+    out.shipRigs = new Set(ships.rigs.map((x) => x.id));
+    out.shipDrives = new Set(ships.drives.map((x) => x.id));
+    out.shipRooms = new Set(ships.rooms.map((x) => x.id));
+    out.shipWeapons = new Set(ships.weapons.map((x) => x.id));
+    out.shipFigureheads = new Set(ships.figureheads.map((x) => x.id));
   }
   if (singletons.seasonIds) out.seasons = new Set(singletons.seasonIds);
   if (creation) {

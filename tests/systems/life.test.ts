@@ -343,6 +343,10 @@ describe('age stages and action slots', () => {
           { activity: 'act_read', effort: 'normal' },
           { activity: 'act_run_laps', effort: 'normal' },
           { activity: 'act_meditate', effort: 'normal' },
+          // Phase 6: a deep Vigor pool opens up to three overtime slots, never more.
+          { activity: 'act_read', effort: 'light' },
+          { activity: 'act_run_laps', effort: 'light' },
+          { activity: 'act_meditate', effort: 'light' },
         ],
       }),
     ).toThrow(/2 activity slots/);

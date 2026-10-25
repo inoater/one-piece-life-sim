@@ -3,20 +3,14 @@ import { createEntity } from '../../engine/entities';
 import { Rng } from '../../engine/rng';
 import type { WorldState } from '../../engine/state';
 import { formatBerries } from '../genesis/text';
+import { buyItem } from '../hands/market';
 import { ensureLife } from '../life/body';
 import { pay, type LifeEnv } from '../life/env';
 import { buyFruit, eatFruit, findFruit, identifyFruit, searchForFruit } from './fruits';
 import { wake } from './haki';
 import { ensurePowers, type HakiColour } from './state';
 import { combine, draftTechnique, moveName } from './techniques';
-import {
-  addProgress,
-  breakthroughTrack,
-  learnFromTeacher,
-  openTrack,
-  powerCtxOf,
-  refreshPowerMods,
-} from './tracks';
+import { addProgress, breakthroughTrack, learnFromTeacher, openTrack, powerCtxOf } from './tracks';
 
 /**
  * What the player can do with their powers between months (Phase 4): be taken on in a style,
@@ -98,23 +92,15 @@ export function searchCommand(
   guard(() => searchForFruit(env, lead));
 }
 
-/** A sword, a pistol or a bow from a market or a smithy (Phase 6 makes these real items). */
+/**
+ * A sword, a pistol or a bow (Phase 4). Since Phase 6 a weapon is an item, bought where it is sold
+ * (the Gear page's market), and what a style asks for is counted from what is carried.
+ */
 export function buyGear(state: WorldState, data: GameData, weaponId: string): void {
   const env = commandEnv(state, data, 'powers/buyGear');
   const weapon = data.weapons[weaponId];
   if (!weapon?.gear || weapon.price === undefined) throw new PowersError('That is not for sale');
-  const { p } = env;
-  if (p.place.atSea || !p.place.features.some((f) => f === 'market' || f === 'smithy')) {
-    throw new PowersError('No market or smithy here');
-  }
-  if (p.c.berries < weapon.price)
-    throw new PowersError(`It costs ${formatBerries(weapon.price)} Berries`);
-  pay(env, -weapon.price);
-  const gear = ensurePowers(p.c).gear;
-  gear[weapon.gear] = (gear[weapon.gear] ?? 0) + 1;
-  // Phase 5: which weapon it is, so its own Combat Power and attack count.
-  gear[weapon.id] = (gear[weapon.id] ?? 0) + 1;
-  refreshPowerMods(data, p.entity, state.tick, state);
+  guard(() => buyItem(env, weaponId));
 }
 
 export function buyEncyclopedia(state: WorldState, data: GameData): void {

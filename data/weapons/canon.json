@@ -1,0 +1,507 @@
+[
+  {
+    "id": "weapon_yoru",
+    "name": "Yoru",
+    "description": "A great black blade with a cross for a hilt, the sword of the world's greatest swordsman. One of the twelve Supreme Grade swords.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "greatsword",
+    "grade": "supreme",
+    "quality": 98,
+    "black": true,
+    "combat": 400,
+    "attack": 26,
+    "canon": {
+      "holders": [
+        { "from": { "year": 10, "month": 1 }, "holder": "char_dracule_mihawk", "approx": true }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_murakumogiri",
+    "name": "Murakumogiri",
+    "description": "A Supreme Grade naginata, the weapon of the strongest man in the world.",
+    "family": "polearm",
+    "kind": "naginata",
+    "grade": "supreme",
+    "quality": 96,
+    "combat": 400,
+    "attack": 28,
+    "canon": {
+      "holders": [
+        { "from": { "year": -10, "month": 1 }, "holder": "char_edward_newgate", "approx": true },
+        {
+          "from": { "year": 36, "month": 10 },
+          "holderName": "Whitebeard's grave",
+          "place": "loc_new_world_island",
+          "container": "lying",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["slash"]
+  },
+  {
+    "id": "weapon_enma",
+    "name": "Enma",
+    "description": "A Supreme Grade katana that drinks the haki of whoever wields it. Kozuki Oden was one of the few who ever mastered it.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "supreme",
+    "quality": 97,
+    "curse": "haki_hunger",
+    "combat": 380,
+    "attack": 25,
+    "canon": {
+      "holders": [
+        { "from": { "year": -6, "month": 1 }, "holder": "char_kozuki_oden", "approx": true },
+        {
+          "from": { "year": 18, "month": 1 },
+          "holderName": "Kozuki Hiyori",
+          "place": "loc_wano",
+          "approx": true
+        },
+        {
+          "from": { "year": 37, "month": 9 },
+          "holderName": "Roronoa Zoro",
+          "place": "loc_wano",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_ame_no_habakiri",
+    "name": "Ame no Habakiri",
+    "description": "A Supreme Grade katana, the twin of Enma in Oden's two-sword style.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "supreme",
+    "quality": 96,
+    "combat": 380,
+    "attack": 25,
+    "canon": {
+      "holders": [
+        { "from": { "year": -6, "month": 1 }, "holder": "char_kozuki_oden", "approx": true },
+        {
+          "from": { "year": 18, "month": 1 },
+          "holderName": "the Kozuki family's retainers",
+          "place": "loc_wano",
+          "container": "collection",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_shodai_kitetsu",
+    "name": "Shodai Kitetsu",
+    "description": "The first and greatest of the Kitetsu line: a Supreme Grade blade, and every wielder it has had came to a bad end.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "supreme",
+    "quality": 95,
+    "curse": "misfortune",
+    "combat": 360,
+    "attack": 24,
+    "canon": {
+      "holders": [
+        {
+          "from": { "year": -40, "month": 1 },
+          "holderName": "a collector in Wano",
+          "place": "loc_wano",
+          "container": "collection",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_wado_ichimonji",
+    "name": "Wado Ichimonji",
+    "description": "A white-hilted Great Grade katana from a village dojo in the East Blue, passed from a girl who meant to be the best to the boy who promised her.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "great",
+    "quality": 90,
+    "combat": 220,
+    "attack": 20,
+    "canon": {
+      "holders": [
+        {
+          "from": { "year": -10, "month": 1 },
+          "holderName": "the Shimotsuki dojo",
+          "place": "loc_east_blue_village",
+          "container": "collection",
+          "approx": true
+        },
+        {
+          "from": { "year": 25, "month": 1 },
+          "holderName": "Kuina",
+          "place": "loc_east_blue_village",
+          "approx": true
+        },
+        {
+          "from": { "year": 27, "month": 1 },
+          "holderName": "Roronoa Zoro",
+          "place": "loc_east_blue_village",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_shusui",
+    "name": "Shusui",
+    "description": "A black Great Grade blade, the sword of the legendary samurai Ryuma, a national treasure of Wano.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "great",
+    "quality": 92,
+    "black": true,
+    "combat": 230,
+    "attack": 21,
+    "canon": {
+      "holders": [
+        {
+          "from": { "year": -40, "month": 1 },
+          "holderName": "Ryuma's grave",
+          "place": "loc_wano",
+          "container": "buried",
+          "approx": true
+        },
+        {
+          "from": { "year": 20, "month": 1 },
+          "holderName": "the zombie of Ryuma",
+          "place": "loc_thriller_bark",
+          "approx": true
+        },
+        {
+          "from": { "year": 36, "month": 7 },
+          "holderName": "Roronoa Zoro",
+          "place": "loc_thriller_bark",
+          "approx": true
+        },
+        {
+          "from": { "year": 37, "month": 9 },
+          "holderName": "Ryuma's grave",
+          "place": "loc_wano",
+          "container": "buried",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_nidai_kitetsu",
+    "name": "Nidai Kitetsu",
+    "description": "The second of the Kitetsu line, a Great Grade blade that carries the family curse.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "great",
+    "quality": 88,
+    "curse": "misfortune",
+    "combat": 210,
+    "attack": 19,
+    "canon": {
+      "holders": [
+        {
+          "from": { "year": -40, "month": 1 },
+          "holderName": "a sword collector",
+          "place": "loc_wano",
+          "container": "collection",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_kikoku",
+    "name": "Kikoku",
+    "description": "A long nodachi with a cross-guard of fur, the sword of the Surgeon of Death.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "nodachi",
+    "grade": "great",
+    "quality": 88,
+    "combat": 210,
+    "attack": 19,
+    "canon": {
+      "holders": [
+        { "from": { "year": 28, "month": 1 }, "holder": "char_trafalgar_law", "approx": true }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_gryphon",
+    "name": "Gryphon",
+    "description": "The sabre of the red-haired Emperor, its grade never spoken of.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "sabre",
+    "grade": "great",
+    "quality": 92,
+    "combat": 230,
+    "attack": 20,
+    "canon": {
+      "holders": [{ "from": { "year": 16, "month": 1 }, "holder": "char_shanks", "approx": true }]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_ace_sword",
+    "name": "Ace",
+    "description": "The sword of Gol D. Roger, the Pirate King. Where it went after his execution, nobody says.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "sabre",
+    "grade": "great",
+    "quality": 94,
+    "combat": 240,
+    "attack": 21,
+    "canon": {
+      "holders": [
+        { "from": { "year": -20, "month": 1 }, "holder": "char_gol_d_roger", "approx": true },
+        {
+          "from": { "year": 14, "month": 6 },
+          "holderName": "the Marines' vault",
+          "place": "loc_marineford",
+          "container": "collection",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_sandai_kitetsu",
+    "name": "Sandai Kitetsu",
+    "description": "The third and least of the Kitetsu line, a Skillful Grade blade, sold cheap by dealers who know its curse.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "skillful",
+    "quality": 80,
+    "curse": "misfortune",
+    "combat": 120,
+    "attack": 16,
+    "canon": {
+      "holders": [
+        {
+          "from": { "year": 20, "month": 1 },
+          "holderName": "a Loguetown sword dealer",
+          "place": "loc_loguetown",
+          "container": "market",
+          "price": 50000,
+          "approx": true
+        },
+        {
+          "from": { "year": 36, "month": 3 },
+          "holderName": "Roronoa Zoro",
+          "place": "loc_loguetown",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_yubashiri",
+    "name": "Yubashiri",
+    "description": "A light, keen Skillful Grade katana from a Loguetown sword shop.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "skillful",
+    "quality": 78,
+    "combat": 110,
+    "attack": 15,
+    "canon": {
+      "holders": [
+        {
+          "from": { "year": 20, "month": 1 },
+          "holderName": "a Loguetown sword dealer",
+          "place": "loc_loguetown",
+          "container": "market",
+          "price": 10000000,
+          "approx": true
+        },
+        {
+          "from": { "year": 36, "month": 3 },
+          "holderName": "Roronoa Zoro",
+          "place": "loc_loguetown",
+          "approx": true
+        }
+      ],
+      "destroyed": { "year": 36, "month": 6 },
+      "destroyedText": "Yubashiri was melted by the steel-eating powers of an enemy at Enies Lobby."
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_shigure",
+    "name": "Shigure",
+    "description": "A Skillful Grade katana carried by a Marine swordswoman who collects famous blades to keep them from pirates.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "grade": "skillful",
+    "quality": 78,
+    "combat": 110,
+    "attack": 15,
+    "canon": {
+      "holders": [
+        {
+          "from": { "year": 33, "month": 1 },
+          "holderName": "Tashigi",
+          "place": "loc_loguetown",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_hassaikai",
+    "name": "Hassaikai",
+    "description": "A great spiked iron club, the weapon of Kaido of the Beasts.",
+    "family": "heavy",
+    "kind": "kanabo",
+    "quality": 95,
+    "combat": 450,
+    "attack": 30,
+    "canon": {
+      "holders": [{ "from": { "year": 4, "month": 1 }, "holder": "char_kaido", "approx": true }]
+    },
+    "tags": ["blunt"]
+  },
+  {
+    "id": "weapon_kiribachi",
+    "name": "Kiribachi",
+    "description": "A huge saw-toothed sword, the weapon of the fish-man Arlong.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "saw-sword",
+    "quality": 70,
+    "combat": 100,
+    "attack": 18,
+    "canon": {
+      "holders": [
+        { "from": { "year": 20, "month": 1 }, "holder": "char_arlong", "approx": true },
+        {
+          "from": { "year": 36, "month": 3 },
+          "holderName": "a Marine evidence store",
+          "place": "loc_shells_town",
+          "container": "collection",
+          "approx": true
+        }
+      ]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_clima_tact",
+    "name": "Clima-Tact",
+    "description": "A weather staff built for a navigator: heat, cold and thunder in three pieces of a pole.",
+    "family": "unusual",
+    "kind": "weather staff",
+    "quality": 75,
+    "combat": 120,
+    "attack": 15,
+    "canon": {
+      "holders": [{ "from": { "year": 36, "month": 4 }, "holder": "char_nami", "approx": true }]
+    },
+    "tags": ["blunt", "lightning"]
+  },
+  {
+    "id": "weapon_golden_hook",
+    "name": "Golden hook",
+    "description": "A golden hook in place of a hand, with poison hidden underneath.",
+    "family": "unusual",
+    "kind": "hook",
+    "quality": 80,
+    "combat": 140,
+    "attack": 14,
+    "canon": {
+      "holders": [
+        { "from": { "year": 10, "month": 1 }, "holder": "char_crocodile", "approx": true }
+      ]
+    },
+    "tags": ["pierce", "poison"]
+  },
+  {
+    "id": "weapon_gaban_axes",
+    "name": "Gaban's axes",
+    "description": "A pair of great axes, the weapons of the Roger Pirates' Scopper Gaban.",
+    "family": "heavy",
+    "kind": "axe",
+    "quality": 85,
+    "combat": 200,
+    "attack": 20,
+    "canon": {
+      "holders": [
+        { "from": { "year": -15, "month": 1 }, "holder": "char_scopper_gaban", "approx": true }
+      ]
+    },
+    "tags": ["slash"]
+  },
+  {
+    "id": "weapon_battle_smasher",
+    "name": "Battle Smasher",
+    "description": "A massive mechanical arm of seastone, built for a Marine admiral who lost his own.",
+    "family": "unusual",
+    "kind": "prosthetic arm",
+    "quality": 85,
+    "seastone": true,
+    "combat": 260,
+    "attack": 22,
+    "canon": {
+      "holders": [{ "from": { "year": 26, "month": 1 }, "holder": "char_zephyr", "approx": true }]
+    },
+    "tags": ["blunt"]
+  },
+  {
+    "id": "weapon_oto",
+    "name": "Oto",
+    "description": "One of two swords the Golden Lion once fought with, and later carried where his legs had been.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "quality": 85,
+    "combat": 180,
+    "attack": 18,
+    "canon": {
+      "holders": [{ "from": { "year": -20, "month": 1 }, "holder": "char_shiki", "approx": true }]
+    },
+    "tags": ["sword"]
+  },
+  {
+    "id": "weapon_kogarashi",
+    "name": "Kogarashi",
+    "description": "The second of the Golden Lion's swords, a match for the first.",
+    "gear": "swords",
+    "family": "blade",
+    "kind": "katana",
+    "quality": 85,
+    "combat": 180,
+    "attack": 18,
+    "canon": {
+      "holders": [{ "from": { "year": -20, "month": 1 }, "holder": "char_shiki", "approx": true }]
+    },
+    "tags": ["sword"]
+  }
+]

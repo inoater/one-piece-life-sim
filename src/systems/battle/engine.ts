@@ -120,7 +120,9 @@ function empty(f: Fighter): boolean {
 
 export function accuracyOf(ctx: BattleCtx, a: Fighter, move: FighterMove | null): number {
   const rules = ctx.data.battle;
-  const skill = a.weapon && usesWeapon(a, move) ? a.weapon.attack / 2 : 0;
+  // Phase 6: skill with the weapon's family sharpens the aim too.
+  const skill =
+    a.weapon && usesWeapon(a, move) ? a.weapon.attack / 2 + (a.weapon.accuracy ?? 0) : 0;
   let acc = (rawStat(a, 'dexterity') + skill) * powerOf(a);
   acc *= 1 + (a.observation * rules.hit.observationPerStage) / 100;
   acc *= (move?.accuracy ?? 75) / 75;
@@ -182,7 +184,9 @@ function attackOf(ctx: BattleCtx, a: Fighter, move: FighterMove | null): number 
 
 function defenceOf(ctx: BattleCtx, b: Fighter): number {
   const rules = ctx.data.battle;
-  let def = rawStat(b, 'durability') * powerOf(b) * roleMod(ctx.data, b, 'defence');
+  // Phase 6: defence = Durability + Armament + armour (armour does nothing in the water).
+  const armour = b.zone === 'water' ? 0 : (b.armour ?? 0);
+  let def = (rawStat(b, 'durability') + armour) * powerOf(b) * roleMod(ctx.data, b, 'defence');
   if (b.status.coated > 0) def *= 1 + b.armament * rules.damage.coatDefencePerStage;
   return Math.max(1, def);
 }
@@ -364,6 +368,15 @@ function strikeWith(
     return { damage: 0, hit: true, blocked: 'logia' };
   }
   const atk = attackOf(ctx, a, move);
+  // Phase 6: an untamed hungry blade drinks its wielder's haki with every cut, then their strength.
+  if (a.weapon?.drain && usesWeapon(a, move)) {
+    const drink = a.weapon.drain;
+    if (a.haki >= drink) a.haki -= drink;
+    else {
+      a.stamina = Math.max(0, a.stamina - (drink - a.haki));
+      a.haki = 0;
+    }
+  }
   const def0 = defenceOf(ctx, b);
   const def = move?.effects.includes('internal') ? def0 * (1 - rules.damage.internalIgnores) : def0;
   let damage =
@@ -698,13 +711,77 @@ const GRAB: FighterMove = {
   finisher: false,
 };
 
-function useItem(ctx: BattleCtx, f: Fighter, plan: Plan): void {
-  const item = ctx.data.battle.items.find((i) => i.id === plan.item);
+/** A thing to use in a fight: battle kit (data/battle.json) or gear with a battle effect (Phase 6). */
+function kitItem(
+  ctx: BattleCtx,
+  id: string | undefined,
+): { id: string; name: string; effect: string; value: number } | null {
+  if (!id) return null;
+  const kit = ctx.data.battle.items.find((i) => i.id === id);
+  if (kit) return kit;
+  const gear = ctx.data.items[id];
+  return gear?.battle
+    ? { id, name: gear.name, effect: gear.battle.effect, value: gear.battle.value }
+    : null;
+}
+
+function useItem(ctx: BattleCtx, f: Fighter, plan: Plan, rng: Rng): void {
+  const item = kitItem(ctx, plan.item);
   if (!item || (f.kit[item.id] ?? 0) <= 0) {
     f.status.guarding = true;
     return;
   }
   f.kit[item.id] = (f.kit[item.id] ?? 0) - 1;
+  const target =
+    fighter(ctx.battle, plan.target) && fighter(ctx.battle, plan.target)?.side !== f.side
+      ? (fighter(ctx.battle, plan.target) as Fighter)
+      : enemiesOf(ctx.battle, f)[0];
+  switch (item.effect) {
+    case 'impact':
+    case 'reject': {
+      if (!target || !active(target)) break;
+      const blow = strikeWith(ctx, f, target, null, 100 * item.value, rng.fork('dial'), true);
+      say(
+        ctx,
+        item.effect === 'impact' ? 'item_impact' : 'item_reject',
+        { a: f.name, b: target.name, damage: String(blow.damage) },
+        toneFor(f, true),
+      );
+      if (item.effect === 'reject') f.hp = Math.max(1, f.hp - Math.round(f.maxHp * 0.12));
+      break;
+    }
+    case 'flame':
+      if (target && active(target)) {
+        target.status.burning = Math.max(target.status.burning, Math.round(item.value));
+        say(ctx, 'item_flame', { a: f.name, b: target.name }, toneFor(f, true));
+      }
+      break;
+    case 'flash':
+      if (target && active(target)) {
+        target.status.blinded = Math.max(target.status.blinded, Math.round(item.value));
+        say(ctx, 'item_flash', { a: f.name, b: target.name }, toneFor(f, true));
+      }
+      break;
+    case 'gust':
+      f.status.evading = true;
+      f.status.read = Math.max(f.status.read, 1);
+      say(ctx, 'item_gust', { a: f.name }, 'plain');
+      break;
+    case 'net':
+      if (target && active(target)) {
+        target.status.pinned = Math.max(target.status.pinned, Math.round(item.value));
+        target.status.pinnedBy = f.id;
+        const weak = target.fruit !== null && !target.cursed;
+        if (weak) target.cursed = true;
+        say(
+          ctx,
+          'item_net',
+          { a: f.name, b: target.name, weak: weak ? ', the strength gone out of their fruit' : '' },
+          toneFor(f, true),
+        );
+      }
+      break;
+  }
   switch (item.effect) {
     case 'heal': {
       const target = fighter(ctx.battle, plan.target);
@@ -881,7 +958,7 @@ export function act(ctx: BattleCtx, f: Fighter, plan: Plan, rng: Rng): void {
       useHaki(ctx, f, plan, rng);
       return;
     case 'item':
-      useItem(ctx, f, plan);
+      useItem(ctx, f, plan, rng);
       return;
     case 'talk':
       talk(ctx, f, plan, rng);

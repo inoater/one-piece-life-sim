@@ -17,6 +17,8 @@ import { ctxOf, newBattle, openingLine, setBonds } from './battle';
 import { fighter as fighterById, type Plan } from './engine';
 import { fighterOf, foeFighter, foePower } from './fighters';
 import { tierSpan } from './ladder';
+import { ownShipInBattle } from '../hands/fight';
+import { bloodthirstIntent } from '../hands/curses';
 import { autoBoard, placeAtFronts, runBattle, stepBattle, type NavalPlan } from './scales';
 
 /**
@@ -65,12 +67,22 @@ function hands(state: WorldState, player: Entity): number {
 function playerShip(state: WorldState, data: GameData, player: Entity): ShipInBattle {
   const voyage = player.character?.travel?.voyage;
   const v = voyage?.vessel;
-  const own = voyage?.shipId ? state.entities[voyage.shipId] : undefined;
+  // Phase 6: in port, her own ship (moored where they stand) is the one that fights.
+  const own = voyage?.shipId
+    ? state.entities[voyage.shipId]
+    : !voyage
+      ? Object.values(state.entities).find(
+          (e) =>
+            e.ship?.ownerId === player.id &&
+            !e.ship.sunk &&
+            e.ship.place === player.character?.place,
+        )
+      : undefined;
   const vesselId = v?.vessel ?? own?.ship?.vessel ?? 'vessel_caravel';
   const vessel = data.vessels[vesselId] ?? Object.values(data.vessels)[0];
   const hull = v?.hull ?? own?.ship?.hull ?? vessel?.hull ?? 60;
   const maxHull = v?.maxHull ?? vessel?.hull ?? 60;
-  return {
+  const ship: ShipInBattle = {
     name: v?.name ?? own?.name ?? `the ${vessel?.name ?? 'ship'}`,
     vessel: vesselId,
     hull,
@@ -81,6 +93,13 @@ function playerShip(state: WorldState, data: GameData, player: Entity): ShipInBa
     struck: false,
     sunk: false,
   };
+  // Phase 6: her own hull, guns and speed, from her design.
+  if (own?.ship && !v) {
+    Object.assign(ship, ownShipInBattle(data, own));
+    if (!own.ship.design)
+      ship.cannons = Math.round(ship.maxHull * data.battle.naval.cannonsPerHull);
+  }
+  return ship;
 }
 
 /** The player as a fighter. */
@@ -96,7 +115,8 @@ export function playerFighter(
   return fighterOf(state, data, p.entity, tick, {
     id: PLAYER_FIGHTER,
     side: 0,
-    intent,
+    // Phase 6: a bloodthirsty blade in hand may push its wielder to fight to the death.
+    intent: bloodthirstIntent(state, data, p.entity, intent, Rng.root(state.seed), tick),
     player: true,
     leader: true,
     ...rules,

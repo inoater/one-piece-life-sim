@@ -314,6 +314,41 @@ export function createLifeTab(app: App): DebugTab {
           'Debug: Armament Haki woke.',
         ),
       ),
+      h('h3', null, 'Hands (Phase 6)'),
+      h(
+        'div',
+        { class: 'debug__inline' },
+        tool(
+          'Give a cutlass',
+          { type: 'debug/giveItem', item: 'weapon_sword' },
+          'Debug: a cutlass.',
+        ),
+        tool(
+          'Give a Skillful blade',
+          { type: 'debug/giveItem', item: 'weapon_template_skillful' },
+          'Debug: a Skillful Grade blade.',
+        ),
+        tool(
+          'Give a flame dial',
+          { type: 'debug/giveItem', item: 'item_flame_dial' },
+          'Debug: a dial.',
+        ),
+        tool(
+          'Give a Den Den Mushi',
+          { type: 'debug/giveItem', item: 'item_den_den_mushi' },
+          'Debug: a snail.',
+        ),
+        tool(
+          'Shipbuilding 60',
+          { type: 'debug/handSkill', skill: 'shipbuilding', value: 60 },
+          'Debug: shipbuilding 60.',
+        ),
+        tool(
+          'Smithing 60',
+          { type: 'debug/handSkill', skill: 'smithing', value: 60 },
+          'Debug: smithing 60.',
+        ),
+      ),
       h('h3', null, 'Fights (Phase 5)'),
       h(
         'p',
