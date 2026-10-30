@@ -58,7 +58,13 @@ every initiative's requirements covers it.
 `npm run check` passes: typecheck, data validation, canon lint, the source rules, 1,053 tests and
 formatting. `npm run battle` gives exactly Phase 5's table (gamma 5.4, largest gap 2.9 points).
 `npm run economy -- --lives 100` gives exactly Phase 6's table (a caravel in a median of 2.0 to 4.1
-years of hard work, no galleon on wages). `npm run build` and `npm run build:preview` succeed.
+years of hard work, no galleon on wages). `npm run lives -- --lives 50 --race all` (the autopilot
+now talking to people, and people reaching out) keeps seven races' mean age at death inside the
+Phase 2 bar: human 79.3, fish-man 93.4, merfolk 90.2, mink 86.5, skypiean 79.1, dwarf 67.9,
+Lunarian 563.5 (400 lives in 31 minutes on 11 workers). Giants came out at 244 over those 50, just
+under the bar (247.5); 200 giant lives give 254.7, inside it and the same as Phase 6's 254.2, and no
+giant died in a fight, so the miss was a small sample. `npm run build` and `npm run build:preview`
+succeed.
 
 ## What was built, against the plan
 
@@ -156,9 +162,8 @@ when it ended, forever.
 ## What was not verified
 
 - `npm run e2e` was not run (Chromium for Playwright is not installed here), as before.
-- The lifespan sweep (`npm run lives -- --lives 50 --race all`) was still running when this was
-  committed; its result is not recorded here. Six human lives measured for speed died at the same
-  mean age (84.0) with and without the heart's talk.
+- The full lifespan sweep (`--lives 300 --race all`, about 50 minutes now) was not run; 50 lives
+  per race and 200 giant lives were (see "Earlier phases still hold").
 - I did not play a romance from confession to a wedding, a companion eating a fruit, an adoption or
   a will by hand in the browser; they are covered by unit tests, not seen on screen.
 - Balance is first values: how often people reach out, how fast bonds fade, how easily people lie,
