@@ -1,0 +1,161 @@
+[
+  {
+    "id": "ini_lover_jealous",
+    "name": "A jealous lover",
+    "title": "{name} is jealous",
+    "text": "{name} wants to know where you have been, and with whom. {say.angry}",
+    "who": {
+      "bonds": ["romance"],
+      "minBars": {
+        "jealousy": 35
+      }
+    },
+    "cooldown": 6,
+    "tags": ["romance"],
+    "weight": 1.3,
+    "choices": [
+      {
+        "id": "reassure",
+        "label": "Reassure them",
+        "lines": ["{name} softens. {say.sorry}"],
+        "effects": {
+          "bars": {
+            "jealousy": -30,
+            "commitment": 5
+          },
+          "axes": {
+            "affection": 3
+          }
+        }
+      },
+      {
+        "id": "dismiss",
+        "label": "Tell them it is nothing",
+        "lines": ["{name} does not believe you. {say.doubt}"],
+        "effects": {
+          "bars": {
+            "jealousy": 10
+          },
+          "axes": {
+            "affection": -8,
+            "trust": -4
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_love_letter",
+    "name": "A letter from your love",
+    "title": "A letter from {name}",
+    "text": "A letter from {name}, written small to fit it all. {say.warm}",
+    "who": {
+      "bonds": ["romance"],
+      "romance": ["together", "engaged", "married"]
+    },
+    "where": "apart",
+    "cooldown": 4,
+    "tags": ["romance"],
+    "weight": 1.2,
+    "effects": {
+      "mine": {
+        "affection": 3
+      },
+      "bars": {
+        "jealousy": -5,
+        "passion": 3
+      },
+      "myMorale": 6
+    }
+  },
+  {
+    "id": "ini_confession",
+    "name": "Someone confesses",
+    "title": "{name} has something to tell you",
+    "text": "{name} cannot quite look at you. {Their} feelings for you are more than friendship.",
+    "who": {
+      "romantic": true,
+      "min": {
+        "affection": 45,
+        "attraction": 45
+      },
+      "notKinds": [
+        "sweetheart",
+        "former",
+        "parent",
+        "child",
+        "sibling",
+        "guardian",
+        "ward",
+        "companion",
+        "owner"
+      ]
+    },
+    "cooldown": 36,
+    "tags": ["romance"],
+    "weight": 0.8,
+    "choices": [
+      {
+        "id": "accept",
+        "label": "Say you feel the same",
+        "lines": ["{name} breaks into a smile. {say.moved}"],
+        "effects": {
+          "special": "confess",
+          "mood": "elated",
+          "myMood": "elated"
+        }
+      },
+      {
+        "id": "decline",
+        "label": "Let them down gently",
+        "lines": ["{name} says nothing more. {say.sad}"],
+        "effects": {
+          "axes": {
+            "affection": -5,
+            "attraction": -20
+          },
+          "mood": "grieving"
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_proposal",
+    "name": "A proposal",
+    "title": "{name} asks you to marry",
+    "text": "{name} has been carrying a ring for weeks. {say.moved}",
+    "who": {
+      "bonds": ["romance"],
+      "romance": ["together"],
+      "minBars": {
+        "commitment": 55
+      }
+    },
+    "cooldown": 18,
+    "tags": ["romance"],
+    "weight": 1,
+    "choices": [
+      {
+        "id": "accept",
+        "label": "Say yes",
+        "lines": ["{name} whoops loud enough to wake the street. {say.pleased}"],
+        "effects": {
+          "special": "propose",
+          "mood": "elated",
+          "myMood": "elated"
+        }
+      },
+      {
+        "id": "not_yet",
+        "label": "Not yet",
+        "lines": ["{name} nods slowly. {say.sad}"],
+        "effects": {
+          "bars": {
+            "commitment": -10,
+            "passion": -5
+          }
+        }
+      }
+    ]
+  }
+]

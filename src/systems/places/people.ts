@@ -16,6 +16,7 @@ import { priceMult } from './place';
 import { armFighter } from '../powers/month';
 import { huntReason, npcFight, npcRaid, npcSeaTrouble, quarrelReason } from '../battle/world';
 import { entityIds } from '../../engine/entities';
+import { marriageNews } from '../heart/world';
 
 /**
  * Tier 2 (Phase 3): about two thousand named people, made once when the world is populated, who
@@ -138,7 +139,7 @@ export function populate(state: WorldState, data: GameData, tick: number, rng: R
 /** Living Tier 2 people at each place this tick (built once per tick). */
 const indexes = new WeakMap<WorldState, { tick: number; byPlace: Map<string, string[]> }>();
 
-function peopleAt(state: WorldState, tick: number): Map<string, string[]> {
+export function peopleAt(state: WorldState, tick: number): Map<string, string[]> {
   const cached = indexes.get(state);
   if (cached?.tick === tick) return cached.byPlace;
   const byPlace = new Map<string, string[]>();
@@ -343,6 +344,14 @@ function settle(site: NpcSite, entity: Entity, rng: Rng): void {
   relate(entity, spouse, 'sweetheart', 40 + rng.int(0, 30), tick, rng.fork('relate'));
   entity.flags['married'] = true;
   spouse.flags['married'] = true;
+  for (const [a, b] of [
+    [entity, spouse],
+    [spouse, entity],
+  ] as const) {
+    const rel = a.character?.relationships.find((r) => r.id === b.id);
+    if (rel) rel.romance = 'married';
+  }
+  marriageNews(state, data, entity, spouse, rng.fork('news'), site.newsDrafts);
 }
 
 function act(site: NpcSite, entity: Entity, action: NpcAction, rng: Rng): void {

@@ -7,6 +7,7 @@ import { epidemicsMonth, residentsYear } from './places/residents';
 import { worldBuilt } from './places/setup';
 import { fruitsMonth } from './powers/fruits';
 import { handsWorldMonth } from './hands/month';
+import { heartWorldQuarter } from './heart/world';
 
 /**
  * Step 4: update world state (factions, territory, economy).
@@ -51,6 +52,8 @@ export const worldMonth: WorldSystem = (state, ctx) => {
   fruitsMonth(state, data, tick, ctx.rng.fork('fruits'), ctx.newsDrafts);
   // Phase 6: canon weapons follow the story; markets settle; others dig treasure.
   handsWorldMonth(state, data, tick, ctx.rng.fork('hands'), ctx.newsDrafts);
+  // Phase 7: Tier 2 people befriend, fall out, duel and betray each other.
+  heartWorldQuarter(state, data, tick, ctx.rng.fork('heart'), ctx.newsDrafts);
 };
 
 export const WORLD_SYSTEMS: readonly WorldSystem[] = [entropyProbe, worldMonth];

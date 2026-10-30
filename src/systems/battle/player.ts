@@ -6,7 +6,9 @@ import type { NewsDraft } from '../../engine/pipeline';
 import { Rng } from '../../engine/rng';
 import type { Entity, PendingDecision, WorldState } from '../../engine/state';
 import { appendLog } from '../../engine/log';
-import { statValue } from '../../engine/stats';
+import { moveAxis } from '../heart/bonds';
+import { speciesOf } from '../heart/companions';
+import { feudFor } from '../heart/family';
 import { ensureLife, livingRelations, playerPerson } from '../life/body';
 import { ensurePowers } from '../powers/state';
 import { decide } from './ai';
@@ -213,6 +215,11 @@ export function buildFight(
     const friends = [
       ...livingRelations(state, p.c, 'friend'),
       ...livingRelations(state, p.c, 'sweetheart'),
+      // Phase 7: crewmates, and an animal that fights at the player's side.
+      ...livingRelations(state, p.c, 'crewmate'),
+      ...livingRelations(state, p.c, 'companion').filter(
+        (e) => speciesOf(data, e)?.kind === 'fighter',
+      ),
     ]
       .filter((e) => e.character?.place === here && e.id !== p.entity.id)
       .slice(0, 3);
@@ -548,7 +555,7 @@ function applyFate(state: WorldState, data: GameData, battle: BattleState, fate:
       for (const f of beaten) {
         const e = f.entityId ? state.entities[f.entityId] : undefined;
         const rel = e?.character?.relationships.find((r) => r.id === p.entity.id);
-        if (rel) rel.opinion.base = Math.min(100, statValue(rel.opinion, state.tick) + 5);
+        if (rel) moveAxis(data, rel, 'affection', 5, 'Let go after a fight', undefined, state.tick);
       }
       break;
     case 'hand_over': {
@@ -570,18 +577,20 @@ function applyFate(state: WorldState, data: GameData, battle: BattleState, fate:
       for (const f of joined) {
         const e = state.entities[f.entityId as string];
         if (e?.character && !p.c.relationships.some((r) => r.id === e.id)) {
+          // Phase 7: a place beside the player is a place in their crew.
           p.c.relationships.push({
             id: e.id,
-            kind: 'friend',
+            kind: 'crewmate',
             opinion: { base: 20, mods: [] },
             sinceTick: state.tick,
           });
           e.character.relationships.push({
             id: p.entity.id,
-            kind: 'friend',
+            kind: 'crewmate',
             opinion: { base: 25, mods: [] },
             sinceTick: state.tick,
           });
+          e.flags['crew.of'] = p.entity.id;
         }
       }
       text =
@@ -617,7 +626,7 @@ function applyFate(state: WorldState, data: GameData, battle: BattleState, fate:
       break;
     }
   }
-  appendLog(state, state.tick, {
+  const fateRecord = appendLog(state, state.tick, {
     kind: 'decision',
     summary: text,
     tags: ['decision', 'personal', 'combat'],
@@ -627,6 +636,10 @@ function applyFate(state: WorldState, data: GameData, battle: BattleState, fate:
     cause: `battle:${battle.source.id}`,
     knownBy: [p.entity.id],
   });
+  // Phase 7: a family feud. Whoever the dead leave behind will not forget who did it.
+  if (fate === 'kill')
+    for (const f of beaten)
+      if (f.entityId) feudFor(state, data, f.entityId, p.entity, fateRecord.seq, battle.place);
 }
 
 // ---- Commands ----------------------------------------------------------------------------------

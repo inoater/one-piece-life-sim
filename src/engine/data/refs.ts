@@ -40,6 +40,11 @@ import type {
   Recipe,
   ShipRules,
   Weapon,
+  HeartEffect,
+  HeartRules,
+  Initiative,
+  TalkIntent,
+  RelRequires,
 } from './schemas';
 import type { ShipDesign } from './defs';
 
@@ -89,7 +94,11 @@ export type RefTarget =
   | 'shipDrives'
   | 'shipRooms'
   | 'shipWeapons'
-  | 'shipFigureheads';
+  | 'shipFigureheads'
+  // Phase 7
+  | 'heartValues'
+  | 'memoryKinds'
+  | 'bondBars';
 
 export interface Ref {
   /** Where the reference was written: the field path inside the file. */
@@ -150,6 +159,11 @@ export const TARGET_LABEL: Record<RefTarget, string> = {
   shipRooms: 'room',
   shipWeapons: 'ship weapon',
   shipFigureheads: 'figurehead',
+  intents: 'conversation intent',
+  initiatives: 'initiative',
+  heartValues: 'value',
+  memoryKinds: 'memory kind',
+  bondBars: 'bond bar',
 };
 
 /** Where an author fixes a missing id of this kind. */
@@ -204,6 +218,11 @@ export const TARGET_HOME: Record<RefTarget, string> = {
   shipRooms: 'data/ships.json (rooms)',
   shipWeapons: 'data/ships.json (weapons)',
   shipFigureheads: 'data/ships.json (figureheads)',
+  intents: 'data/intents/',
+  initiatives: 'data/initiatives/',
+  heartValues: 'data/heart.json (values)',
+  memoryKinds: 'data/heart.json (memories)',
+  bondBars: 'data/heart.json (bonds.*.bars)',
 };
 
 const each = (target: RefTarget, ids: readonly string[], field: string): Ref[] =>
@@ -798,7 +817,80 @@ export function shipRulesRefs(ships: ShipRules): Ref[] {
   return refs;
 }
 
+// ---- Phase 7: the heart ------------------------------------------------------------------------
+
+function heartEffectRefs(effect: HeartEffect, at: string): Ref[] {
+  return [
+    ...(effect.memory
+      ? [{ field: `${at}.memory.kind`, target: 'memoryKinds' as const, id: effect.memory.kind }]
+      : []),
+    ...keys('bondBars', effect.bars, `${at}.bars`),
+    ...each('driftTags', effect.deed, `${at}.deed`),
+  ];
+}
+
+function heartRequiresRefs(r: RelRequires, at: string): Ref[] {
+  return [
+    ...keys('bondBars', r.minBars, `${at}.minBars`),
+    ...keys('bondBars', r.maxBars, `${at}.maxBars`),
+  ];
+}
+
+export function intentRefs(intent: TalkIntent): Ref[] {
+  const refs: Ref[] = [
+    ...keys('heartValues', intent.values, 'values'),
+    ...each('driftTags', intent.deed, 'deed'),
+    ...heartRequiresRefs(intent.requires, 'requires'),
+  ];
+  for (const band of ['criticalSuccess', 'success', 'failure', 'criticalFailure'] as const)
+    refs.push(...heartEffectRefs(intent[band].effects, `${band}.effects`));
+  return refs;
+}
+
+export function initiativeRefs(ini: Initiative): Ref[] {
+  const refs: Ref[] = [
+    ...heartRequiresRefs(ini.who, 'who'),
+    ...heartEffectRefs(ini.effects, 'effects'),
+    ...one('memoryKinds', ini.memory, 'memory'),
+  ];
+  ini.choices.forEach((c, i) => refs.push(...heartEffectRefs(c.effects, `choices[${i}].effects`)));
+  return refs;
+}
+
+export function heartRulesRefs(heart: HeartRules): Ref[] {
+  const refs: Ref[] = [
+    ...keys('traits', heart.traitLeanings, 'traitLeanings'),
+    ...keys('birthplaces', heart.cultureLeanings, 'cultureLeanings'),
+    ...keys('cast', heart.canon, 'canon'),
+    ...each('traits', heart.heredity.traits, 'heredity.traits'),
+    ...keys('counters', {}, 'driftAxes'),
+  ];
+  heart.values.forEach((v, i) =>
+    refs.push(...each('occupations', v.occupations, `values[${i}].occupations`)),
+  );
+  heart.dreams.forEach((d, i) => {
+    refs.push(...each('occupations', d.occupations, `dreams[${i}].occupations`));
+    refs.push(...each('heartValues', d.values, `dreams[${i}].values`));
+  });
+  for (const [id, c] of Object.entries(heart.canon))
+    refs.push(...each('heartValues', c.values, `canon.${id}.values`));
+  for (const [id, d] of Object.entries(heart.conscience.deeds)) {
+    refs.push(...each('heartValues', d.against, `conscience.deeds.${id}.against`));
+    refs.push(...each('heartValues', d.by, `conscience.deeds.${id}.by`));
+  }
+  heart.companions.forEach((c, i) =>
+    refs.push(...each('locations', c.places, `companions[${i}].places`)),
+  );
+  for (const [kind, bond] of Object.entries(heart.bonds))
+    bond?.milestones.forEach((m, i) =>
+      refs.push(...heartEffectRefs(m.effects, `bonds.${kind}.milestones[${i}].effects`)),
+    );
+  return refs;
+}
+
 export const REF_EXTRACTORS: Partial<Record<CollectionKind, (item: never) => Ref[]>> = {
+  intents: intentRefs as (item: never) => Ref[],
+  initiatives: initiativeRefs as (item: never) => Ref[],
   weapons: weaponRefs as (item: never) => Ref[],
   items: itemRefs as (item: never) => Ref[],
   recipes: recipeRefs as (item: never) => Ref[],
@@ -874,6 +966,7 @@ export function singletonTargets(singletons: {
   battle?: BattleRules;
   hands?: HandsRules;
   ships?: ShipRules;
+  heart?: HeartRules;
 }): Partial<Record<RefTarget, Set<string>>> {
   const out: Partial<Record<RefTarget, Set<string>>> = {};
   if (singletons.npcGoalIds) out.npcGoals = new Set(singletons.npcGoalIds);
@@ -895,6 +988,14 @@ export function singletonTargets(singletons: {
     out.contests = new Set(singletons.battle.contests.map((c) => c.id));
   }
   if (singletons.hands) out.goods = new Set(singletons.hands.goods.map((g) => g.id));
+  const heart = singletons.heart;
+  if (heart) {
+    out.heartValues = new Set(heart.values.map((v) => v.id));
+    out.memoryKinds = new Set(Object.keys(heart.memories));
+    const bars = new Set<string>();
+    for (const bond of Object.values(heart.bonds)) for (const b of bond?.bars ?? []) bars.add(b.id);
+    out.bondBars = bars;
+  }
   const ships = singletons.ships;
   if (ships) {
     out.shipHulls = new Set(ships.hulls.map((x) => x.id));

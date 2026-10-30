@@ -301,6 +301,46 @@ How the files fit together, and the rules the loader enforces beyond each schema
 - **New effects**: `findItem`, `treasureMap`, `cargo`. Text may use `{item}`, `{quality}`,
   `{grade}` and `{good}`. Vessel prices were lowered by the economy pass (see PHASE6.md).
 
+## The heart (Phase 7)
+
+- **data/heart.json**: the seven personality axes (each end's word and the player's tendencies),
+  the ten values (the personality and occupations that lean to each), the dream pool, likes and
+  dislikes, six speech registers (formal, rough, cheerful, archaic, plain, cold) each with every
+  speech act (`greet`, `agree`, `refuse`... twenty: the loader refuses a gap), verbal tics and
+  laughs, fears and soft spots, the six moods (openers, how long, what they do to a check), trait,
+  culture and drift-counter leanings, canon voice packs (register, laugh, values, dream, axes, a
+  few short words of their own), the relationship axes (range and drift), bond kinds by relation,
+  each bond's bars (an axis, or its own: rest, drift together and apart, what time fills) and
+  milestones (bars at least / at most, months known, an earlier milestone, a line, effects,
+  repeats), the labels (first match wins), memory kinds (fade a year, the lines that bring them up,
+  what retelling does to a name), morale, conscience (the deeds that betray or live by each value),
+  reputation (four dims, which deed tags move them, spread and fade), gossip, talk (talks a month,
+  the Den Den Mushi's cost, chances in words, when people lie, loans), initiatives (chance, most a
+  month), heredity, romance (age, who is open to it, attraction, a rival's jealousy), companion
+  species, companion names, and every line the heart writes.
+- **data/intents/** (prefix `int`): what the player can say. Each has a group (friendly,
+  information, requests, pressure, conflict, bonds), the stat it tests and a difficulty moved by
+  the other's personality (per 100 on an axis), their feelings (per point), their values, their
+  mood; requirements (relation kinds, bonds, axes and bars at least or at most, romance and its
+  stage, sworn, personality ranges, moods, age); whether it works over a Den Den Mushi; a topic to
+  pick (a person, a place, an amount); a cost; deed tags; or a `fight` (duel, spar) instead of a
+  check. All four result bands are required, each with lines in the other's voice and effects.
+- **data/initiatives/** (prefix `ini`): what people do to the player: who (the same requirements),
+  where (apart, together), fame, debt either way, a memory they hold, weight, cooldown, and either
+  effects that just happen or choices (a label, lines, effects, Berries it costs). `self` makes it
+  the player's own (guilt); the tag `stranger` makes it someone new (an admirer).
+- **The heart's effects** (in all three): `axes` (how they come to feel), `mine` (how the player
+  does), `bars`, `mood`, `myMood`, `memory` (a kind and a weight), `deed` (personality tags, which
+  also weigh on the conscience and travel as reputation), `morale`, `myMorale`, `berries`, `train`
+  and one `special` (fact, number, loan, repayLoan, teach, takeStudent, passage, shelter, recruit,
+  swear, confess, together, propose, marry, breakup, trainTogether, betray, goodbye, callDebt,
+  leave, lesson, blessing, secret, collect, reconcile, graduate, mutiny, recommend, estrange, duel).
+- **Templates** in the heart use `{name}`, `{they}`, `{them}`, `{their}`, `{They}`, `{Their}`,
+  `{you}`, `{food}`, `{like}`, `{dislike}`, `{dream}`, `{fear}`, `{value}`, `{fact}`, `{memory}`,
+  `{amount}`, `{title}`, `{mood}` and `{say.<act>}` (what they say, in their own voice). Write
+  `{name} says` rather than `{they} say`: present-tense verbs after a pronoun do not agree.
+- **personality.json** gained the tags `loyal` and `treacherous`.
+
 ## Dev fixtures
 
 Phase 3 adds a test crew, three test characters and a test duel beat (`dev: true`), and a dev place

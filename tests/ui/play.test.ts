@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { summarizeAdvance } from '../../src/ui/components/log-card';
 import { navigate } from '../../src/ui/router';
 import type { Snapshot } from '../../src/worker/protocol';
-import { button, mountUi, settle, text, type Mounted } from '../helpers/ui';
+import { button, mountUi, settle, text, until, type Mounted } from '../helpers/ui';
 
 let ui: Mounted;
 beforeEach(async () => {
@@ -223,6 +223,7 @@ describe('the Map page', () => {
     expect(text(panel.querySelector('.facts__row dd'))).toBe('The Marines');
     expect(text(panel)).toContain('(a safe place to live)');
     button(panel, /^Book passage/).click();
+    await until(() => ui.app.store.get().snapshot?.player?.location.startsWith('At sea') === true);
     await settle(10);
     expect(ui.app.store.get().snapshot?.player?.location).toBe('At sea, bound for Shells Town');
     expect(q('.atlas-pin[data-kind="ship"]')).not.toBeNull();

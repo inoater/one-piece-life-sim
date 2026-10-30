@@ -1,0 +1,489 @@
+[
+  {
+    "id": "int_chat",
+    "group": "friendly",
+    "name": "Chat",
+    "description": "Pass the time, talk about nothing much.",
+    "stat": "charisma",
+    "difficulty": 25,
+    "personality": {
+      "serious": 10
+    },
+    "feelings": {
+      "affection": -0.3
+    },
+    "moods": {
+      "angry": 10
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": [
+        "You and {name} talk for hours about {like}. {say.warm}",
+        "{name} gets going about {like} and you cannot get a word in. {say.laugh}"
+      ],
+      "effects": {
+        "axes": {
+          "affection": 6,
+          "trust": 2
+        },
+        "mine": {
+          "affection": 2
+        }
+      }
+    },
+    "success": {
+      "lines": [
+        "You pass an easy hour with {name}. {say.pleased}",
+        "A good talk with {name}, about {like} mostly. {say.greet}"
+      ],
+      "effects": {
+        "axes": {
+          "affection": 3,
+          "trust": 1
+        }
+      }
+    },
+    "failure": {
+      "lines": [
+        "{name} answers in single words. {say.evasive}",
+        "The talk with {name} never quite catches."
+      ]
+    },
+    "criticalFailure": {
+      "lines": ["You wander onto {dislike}, and {name} goes cold. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "affection": -4
+        }
+      }
+    }
+  },
+  {
+    "id": "int_joke",
+    "group": "friendly",
+    "name": "Joke",
+    "description": "Try to make them laugh.",
+    "stat": "charisma",
+    "difficulty": 40,
+    "personality": {
+      "serious": 25
+    },
+    "feelings": {
+      "affection": -0.2
+    },
+    "moods": {
+      "grieving": 15,
+      "drunk": -10,
+      "elated": -5
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} laughs until {their} eyes stream. {say.laugh}"],
+      "effects": {
+        "axes": {
+          "affection": 7
+        },
+        "morale": 6,
+        "mood": "elated"
+      }
+    },
+    "success": {
+      "lines": [
+        "{name} snorts in spite of {them}self. {say.tease}",
+        "It gets a laugh. {say.laugh}"
+      ],
+      "effects": {
+        "axes": {
+          "affection": 4
+        },
+        "morale": 3
+      }
+    },
+    "failure": {
+      "lines": ["The joke lands flat. {name} just looks at you. {say.doubt}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} does not find it funny at all. {say.angry}"],
+      "effects": {
+        "axes": {
+          "affection": -5
+        },
+        "mood": "angry"
+      }
+    }
+  },
+  {
+    "id": "int_meal",
+    "group": "friendly",
+    "name": "Share a meal",
+    "description": "Eat together, your treat.",
+    "stat": "charisma",
+    "difficulty": 20,
+    "feelings": {
+      "affection": -0.2
+    },
+    "cost": 300,
+    "deed": ["generous"],
+    "criticalSuccess": {
+      "lines": ["You find {food} for {name}, and {their} face lights up. {say.moved}"],
+      "effects": {
+        "axes": {
+          "affection": 8,
+          "trust": 3
+        },
+        "mine": {
+          "affection": 2
+        },
+        "memory": {
+          "kind": "kindness",
+          "weight": 8
+        }
+      }
+    },
+    "success": {
+      "lines": ["A long, slow meal with {name}. {say.pleased}"],
+      "effects": {
+        "axes": {
+          "affection": 4,
+          "trust": 1
+        }
+      }
+    },
+    "failure": {
+      "lines": ["A quiet meal. {name} eats and says little."],
+      "effects": {
+        "axes": {
+          "affection": 1
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} pushes the plate away. {dislike}, of all things. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "affection": -2
+        }
+      }
+    }
+  },
+  {
+    "id": "int_drink",
+    "group": "friendly",
+    "name": "Drink together",
+    "description": "A round or three, and whatever comes out with it.",
+    "stat": "charisma",
+    "difficulty": 25,
+    "feelings": {
+      "affection": -0.2
+    },
+    "moods": {
+      "drunk": -10,
+      "grieving": -5
+    },
+    "requires": {
+      "minAge": 16
+    },
+    "cost": 200,
+    "criticalSuccess": {
+      "lines": [
+        "By the fourth round {name} has told you things nobody else ever hears. {say.laugh}"
+      ],
+      "effects": {
+        "axes": {
+          "affection": 7,
+          "trust": 4
+        },
+        "mood": "drunk",
+        "special": "secret"
+      }
+    },
+    "success": {
+      "lines": ["You and {name} drink and talk until they stack the chairs. {say.warm}"],
+      "effects": {
+        "axes": {
+          "affection": 4,
+          "trust": 2
+        },
+        "mood": "drunk"
+      }
+    },
+    "failure": {
+      "lines": ["{name} nurses one cup and leaves early. {say.farewell}"]
+    },
+    "criticalFailure": {
+      "lines": [
+        "Words are said, a stool goes through a window, and {name} storms out. {say.angry}"
+      ],
+      "effects": {
+        "axes": {
+          "affection": -4
+        },
+        "mood": "angry",
+        "deed": ["rash"]
+      }
+    }
+  },
+  {
+    "id": "int_gift",
+    "group": "friendly",
+    "name": "Give a gift",
+    "description": "Something for them, as much as you choose to spend.",
+    "stat": "charisma",
+    "difficulty": 25,
+    "values": {
+      "wealth": -10
+    },
+    "feelings": {
+      "affection": -0.15
+    },
+    "topic": "amount",
+    "deed": ["generous"],
+    "remote": false,
+    "criticalSuccess": {
+      "lines": ["{name} turns it over in {their} hands. {say.moved}"],
+      "effects": {
+        "axes": {
+          "affection": 10,
+          "trust": 3
+        },
+        "memory": {
+          "kind": "gift",
+          "weight": 15
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} smiles and puts it somewhere safe. {say.grateful}"],
+      "effects": {
+        "axes": {
+          "affection": 5,
+          "trust": 1
+        },
+        "memory": {
+          "kind": "gift",
+          "weight": 8
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} thanks you politely, and that is all."],
+      "effects": {
+        "axes": {
+          "affection": 1
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} looks at it, then at you. {say.doubt} It lands as an insult."],
+      "effects": {
+        "axes": {
+          "affection": -3
+        }
+      }
+    }
+  },
+  {
+    "id": "int_compliment",
+    "group": "friendly",
+    "name": "Compliment",
+    "description": "Say something nice, and mean it (or not).",
+    "stat": "charisma",
+    "difficulty": 35,
+    "personality": {
+      "proud": -15,
+      "serious": 5
+    },
+    "feelings": {
+      "affection": -0.2
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} goes pink to the ears. {say.pleased}"],
+      "effects": {
+        "axes": {
+          "affection": 6
+        },
+        "mood": "elated"
+      }
+    },
+    "success": {
+      "lines": ["{name} stands a little straighter. {say.proud}"],
+      "effects": {
+        "axes": {
+          "affection": 3
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} sees straight through it. {say.doubt}"],
+      "effects": {
+        "axes": {
+          "trust": -1
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} takes it as mockery. {say.angry}"],
+      "effects": {
+        "axes": {
+          "affection": -4
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_dream",
+    "group": "friendly",
+    "name": "Ask about their dream",
+    "description": "What do they want from life?",
+    "stat": "charisma",
+    "difficulty": 40,
+    "feelings": {
+      "affection": -0.35,
+      "trust": -0.3
+    },
+    "personality": {
+      "serious": 5
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": [
+        "{name} looks out to sea for a long moment. {Their} dream is to {dream}. {say.moved}"
+      ],
+      "effects": {
+        "axes": {
+          "affection": 6,
+          "trust": 5
+        },
+        "mine": {
+          "affection": 3
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} admits it: to {dream}. {say.proud}"],
+      "effects": {
+        "axes": {
+          "affection": 3,
+          "trust": 2
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} shrugs it off. {say.evasive}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} bristles. {say.annoyed} Some things are not yours to ask."],
+      "effects": {
+        "axes": {
+          "trust": -2
+        }
+      }
+    }
+  },
+  {
+    "id": "int_train_together",
+    "group": "friendly",
+    "name": "Train together",
+    "description": "A hard session side by side.",
+    "stat": "endurance",
+    "difficulty": 35,
+    "feelings": {
+      "respect": -0.2
+    },
+    "personality": {
+      "bold": -5
+    },
+    "criticalSuccess": {
+      "lines": ["You push each other further than either would go alone. {say.proud}"],
+      "effects": {
+        "axes": {
+          "affection": 5,
+          "respect": 6
+        },
+        "train": {
+          "endurance": 0.5,
+          "strength": 0.4
+        },
+        "special": "trainTogether"
+      }
+    },
+    "success": {
+      "lines": ["A good, sweaty morning with {name}. {say.pleased}"],
+      "effects": {
+        "axes": {
+          "affection": 3,
+          "respect": 3
+        },
+        "train": {
+          "endurance": 0.3,
+          "strength": 0.2
+        },
+        "special": "trainTogether"
+      }
+    },
+    "failure": {
+      "lines": ["You and {name} cannot find a rhythm, and quit early. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "respect": -1
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["You both overdo it, and spend the evening groaning. {say.sad}"],
+      "effects": {
+        "axes": {
+          "affection": -1
+        },
+        "myMorale": -4
+      }
+    }
+  },
+  {
+    "id": "int_spar",
+    "group": "friendly",
+    "name": "Spar",
+    "description": "A friendly fight, to learn from each other.",
+    "stat": "combatPower",
+    "difficulty": 0,
+    "fight": "spar",
+    "criticalSuccess": {
+      "lines": ["You put {name} on the ground three times running. {say.laugh}"],
+      "effects": {
+        "axes": {
+          "respect": 8,
+          "rivalry": 4,
+          "affection": 2
+        }
+      }
+    },
+    "success": {
+      "lines": ["You win the spar, just. {say.tease}"],
+      "effects": {
+        "axes": {
+          "respect": 4,
+          "rivalry": 2
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} gets the better of you this time. {say.proud}"],
+      "effects": {
+        "axes": {
+          "respect": 1,
+          "rivalry": 3
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} takes you apart. {say.tease}"],
+      "effects": {
+        "axes": {
+          "respect": -2,
+          "rivalry": 1
+        }
+      }
+    }
+  }
+]

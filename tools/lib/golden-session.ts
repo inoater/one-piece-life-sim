@@ -53,6 +53,15 @@ export function playGoldenSession(data: GameData): WorldState {
       { activity: 'act_read', effort: 'light' },
     ],
   });
+  // Phase 7: a word with whoever of theirs is at home (the first who can be talked to).
+  for (const rel of state.entities[state.playerId as string]?.character?.relationships ?? []) {
+    try {
+      act({ type: 'heart/talk', target: rel.id, intent: 'int_chat' });
+      break;
+    } catch {
+      // Not here, or not alive: the next one.
+    }
+  }
   run(12);
   act({ type: 'travel/sail', lane: 'lane_east_blue_village_shells_town', mode: 'passenger' });
   run(3);

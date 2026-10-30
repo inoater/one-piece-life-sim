@@ -136,6 +136,12 @@ export const RECIPROCAL: Record<RelationKind, RelationKind> = {
   rival: 'rival',
   sweetheart: 'sweetheart',
   benefactor: 'ward',
+  crewmate: 'crewmate',
+  superior: 'subordinate',
+  subordinate: 'superior',
+  former: 'former',
+  companion: 'owner',
+  owner: 'companion',
 };
 
 /** Link the player and another character both ways. `opinion` is the player's view of them. */

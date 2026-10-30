@@ -1,0 +1,180 @@
+[
+  {
+    "id": "ini_crew_leave",
+    "name": "A crewmate wants to leave",
+    "title": "{name} wants out",
+    "text": "{name} has packed a bag. {say.sad} {Their} heart is not in it any more.",
+    "who": {
+      "kinds": ["crewmate"],
+      "maxBars": {
+        "loyalty": 30
+      }
+    },
+    "cooldown": 12,
+    "tags": ["crew"],
+    "weight": 1.5,
+    "choices": [
+      {
+        "id": "talk",
+        "label": "Talk them round",
+        "lines": ["{name} unpacks, for now. {say.agree}"],
+        "effects": {
+          "bars": {
+            "loyalty": 15,
+            "belonging": 5
+          }
+        }
+      },
+      {
+        "id": "let_go",
+        "label": "Let them go",
+        "lines": ["{name} shakes your hand at the gangplank. {say.farewell}"],
+        "effects": {
+          "special": "leave"
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_crew_plot",
+    "name": "A crewmate plots against you",
+    "title": "Whispers below decks",
+    "text": "You catch {name} whispering with the others, and the talk stops when you come near.",
+    "who": {
+      "kinds": ["crewmate"],
+      "maxBars": {
+        "loyalty": 20
+      },
+      "personality": {
+        "honest": {
+          "max": 0
+        }
+      }
+    },
+    "cooldown": 12,
+    "tags": ["crew"],
+    "weight": 0.8,
+    "choices": [
+      {
+        "id": "confront",
+        "label": "Have it out with them",
+        "lines": ["{name} says nothing more. {say.challenge}"],
+        "effects": {
+          "special": "duel"
+        }
+      },
+      {
+        "id": "reward",
+        "label": "Win them back with a share (500 Berries)",
+        "lines": ["{name} counts it. {say.grateful}"],
+        "effects": {
+          "bars": {
+            "loyalty": 20
+          },
+          "deed": ["generous"]
+        },
+        "berries": 500
+      },
+      {
+        "id": "ignore",
+        "label": "Let it go",
+        "lines": ["The whispers go on."],
+        "effects": {
+          "bars": {
+            "loyalty": -5
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_crew_morale",
+    "name": "A crewmate in good spirits",
+    "title": "{name} is glad to be aboard",
+    "text": "{name} tells you, out of nowhere, that this is the best crew {they} ever sailed with. {say.proud}",
+    "who": {
+      "kinds": ["crewmate"],
+      "minBars": {
+        "loyalty": 50
+      }
+    },
+    "cooldown": 12,
+    "tags": ["crew"],
+    "weight": 1,
+    "effects": {
+      "bars": {
+        "belonging": 5,
+        "morale": 5
+      },
+      "myMorale": 6
+    }
+  },
+  {
+    "id": "ini_crew_share",
+    "name": "A crewmate wants a fair share",
+    "title": "{name} wants a word about shares",
+    "text": "{name} has been doing the sums. {say.doubt} A fair share, {they} say, is more than this.",
+    "who": {
+      "kinds": ["crewmate"]
+    },
+    "cooldown": 12,
+    "tags": ["crew"],
+    "weight": 1.2,
+    "choices": [
+      {
+        "id": "pay",
+        "label": "Pay them 300 Berries more",
+        "lines": ["{name} nods, satisfied. {say.agree}"],
+        "effects": {
+          "bars": {
+            "loyalty": 10,
+            "morale": 5
+          },
+          "deed": ["generous"]
+        },
+        "berries": 300
+      },
+      {
+        "id": "refuse",
+        "label": "Shares are shares",
+        "lines": ["{name} takes it badly. {say.annoyed}"],
+        "effects": {
+          "bars": {
+            "loyalty": -10,
+            "morale": -5
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_admirer",
+    "name": "An admirer wants to join you",
+    "title": "An admirer",
+    "text": "{name} has heard all about you, and wants to sail at your side. {say.proud}",
+    "minFame": 20,
+    "tags": ["crew", "stranger"],
+    "cooldown": 12,
+    "weight": 1.2,
+    "choices": [
+      {
+        "id": "accept",
+        "label": "Take them on",
+        "lines": ["{name} can hardly believe it. {say.moved}"],
+        "effects": {
+          "special": "recruit"
+        }
+      },
+      {
+        "id": "decline",
+        "label": "Send them home",
+        "lines": ["{name} goes, crestfallen. {say.sad}"],
+        "effects": {
+          "axes": {
+            "affection": -5
+          }
+        }
+      }
+    ]
+  }
+]

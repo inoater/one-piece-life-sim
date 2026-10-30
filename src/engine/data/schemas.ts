@@ -1,5 +1,13 @@
 import { z } from 'zod';
-import { EFFORTS, FlagValueSchema, PRONOUNS, SCAR_AREAS } from '../state';
+import {
+  EFFORTS,
+  FlagValueSchema,
+  MOODS,
+  PRONOUNS,
+  RELATION_KINDS,
+  ROMANCE_STAGES,
+  SCAR_AREAS,
+} from '../state';
 import { STAT_IDS } from '../stats';
 import {
   FRUIT_TYPES,
@@ -44,7 +52,9 @@ import {
   BACKSTORY_VARS,
   CANON_VARS,
   checkTemplate,
+  HEART_VARS,
   LIFE_VARS,
+  SPEECH_ACTS,
   roleOfVar,
   templateVarsUsed,
 } from '../template';
@@ -4472,6 +4482,629 @@ export type ShipRules = z.infer<typeof ShipRulesSchema>;
 // ---------------------------------------------------------------------------------------------
 
 /** Directories under /data that hold one or more items per file. */
+// ---------------------------------------------------------------------------------------------
+// Phase 7: the heart. Personality, relationships and their bars, memory, conversation
+// (data/intents), people who reach out (data/initiatives), reputation, family and companions
+// (data/heart.json).
+// ---------------------------------------------------------------------------------------------
+
+/** The seven personality axes, each from −100 (the first word) to +100 (the second). */
+export const HEART_AXES = ['bold', 'kind', 'honest', 'free', 'proud', 'calm', 'serious'] as const;
+export type HeartAxis = (typeof HEART_AXES)[number];
+/** The axes under every relationship. Affection is the relationship's `opinion` stat. */
+export const REL_AXES = [
+  'affection',
+  'trust',
+  'respect',
+  'fear',
+  'rivalry',
+  'attraction',
+  'debt',
+] as const;
+export type RelAxis = (typeof REL_AXES)[number];
+export const BOND_KINDS = [
+  'friendship',
+  'romance',
+  'crewmate',
+  'student',
+  'mentor',
+  'rival',
+  'family',
+  'superior',
+  'subordinate',
+  'companion',
+] as const;
+export type BondKind = (typeof BOND_KINDS)[number];
+export const INTENT_GROUPS = [
+  'friendly',
+  'information',
+  'requests',
+  'pressure',
+  'conflict',
+  'bonds',
+] as const;
+export type IntentGroup = (typeof INTENT_GROUPS)[number];
+export const REGISTERS = ['formal', 'rough', 'cheerful', 'archaic', 'plain', 'cold'] as const;
+export type Register = (typeof REGISTERS)[number];
+export const REP_DIMS = ['honour', 'kindness', 'courage', 'generosity'] as const;
+export type RepDim = (typeof REP_DIMS)[number];
+export const LIKE_KINDS = ['food', 'topic', 'people', 'place'] as const;
+export const FACT_KINDS = ['person', 'place', 'rumour', 'fruit', 'treasure', 'directions'] as const;
+export type FactKind = (typeof FACT_KINDS)[number];
+
+/** What a talk, a scene or someone reaching out does, beyond the axes and bars it moves. */
+export const HEART_SPECIALS = [
+  'fact',
+  'number',
+  'loan',
+  'repayLoan',
+  'teach',
+  'takeStudent',
+  'passage',
+  'shelter',
+  'recruit',
+  'swear',
+  'confess',
+  'propose',
+  'marry',
+  'breakup',
+  'trainTogether',
+  'betray',
+  'goodbye',
+  'callDebt',
+  'leave',
+  'lesson',
+  'blessing',
+  'secret',
+  'collect',
+  'together',
+  'reconcile',
+  'graduate',
+  'mutiny',
+  'recommend',
+  'estrange',
+  'duel',
+] as const;
+export type HeartSpecial = (typeof HEART_SPECIALS)[number];
+
+const heartTemplate = templateOf(HEART_VARS);
+const relAxisNumbers = z.partialRecord(z.enum(REL_AXES), z.number()).default({});
+const heartAxisNumbers = z.partialRecord(z.enum(HEART_AXES), z.number()).default({});
+
+export const HeartEffectSchema = z.strictObject({
+  /** How they come to feel about the player. */
+  axes: relAxisNumbers,
+  /** How the player comes to feel about them. */
+  mine: relAxisNumbers,
+  /** Their bond's own bars (Passion, Loyalty, Devotion...). */
+  bars: z.record(z.string().regex(/^[a-z]+$/), z.number()).default({}),
+  /** Their mood for a month or so. */
+  mood: z.enum(MOODS).optional(),
+  /** The player's mood. */
+  myMood: z.enum(MOODS).optional(),
+  /** What they will remember of it. */
+  memory: z.strictObject({ kind: z.string().regex(/^[a-z]+$/), weight: z.number() }).optional(),
+  /** Tags for the player's deed: personality drift, conscience and reputation ("kind", "sly"). */
+  deed: z.array(z.string().regex(/^[a-z_]+$/)).default([]),
+  morale: z.number().default(0),
+  myMorale: z.number().default(0),
+  /** Berries to the player (negative: from them). */
+  berries: z.number().int().default(0),
+  /** Training the player gets from it. */
+  train: statNumbers,
+  special: z.enum(HEART_SPECIALS).optional(),
+});
+export type HeartEffect = z.infer<typeof HeartEffectSchema>;
+const noEffect = (): HeartEffect => HeartEffectSchema.parse({});
+
+export const HeartBandSchema = z.strictObject({
+  /** What happens, in their voice: one is picked. */
+  lines: z.array(heartTemplate).min(1),
+  effects: HeartEffectSchema.default(noEffect),
+});
+export type HeartBand = z.infer<typeof HeartBandSchema>;
+
+/** Who a relationship requirement allows. */
+export const RelRequiresSchema = z.strictObject({
+  /** Only with people the player relates to as one of these (empty: anyone met). */
+  kinds: z.array(z.enum(RELATION_KINDS)).default([]),
+  notKinds: z.array(z.enum(RELATION_KINDS)).default([]),
+  bonds: z.array(z.enum(BOND_KINDS)).default([]),
+  /** Their feelings toward the player, at least / at most. */
+  min: relAxisNumbers,
+  max: relAxisNumbers,
+  /** Their bond's bars, at least / at most. */
+  minBars: z.record(z.string(), z.number()).default({}),
+  maxBars: z.record(z.string(), z.number()).default({}),
+  romance: z.array(z.enum(ROMANCE_STAGES)).optional(),
+  /** Both adults, both open to romance, and romance switched on. */
+  romantic: z.boolean().default(false),
+  sworn: z.boolean().optional(),
+  /** Their personality, within these ranges. */
+  personality: z
+    .partialRecord(
+      z.enum(HEART_AXES),
+      z.strictObject({ min: z.number().optional(), max: z.number().optional() }),
+    )
+    .default({}),
+  moods: z.array(z.enum(MOODS)).default([]),
+  /** Both the player and they are at least this old (human years). */
+  minAge: z.number().int().min(0).default(0),
+});
+export type RelRequires = z.infer<typeof RelRequiresSchema>;
+const anyone = (): RelRequires => RelRequiresSchema.parse({});
+
+export const IntentSchema = z.strictObject({
+  id: slug('int'),
+  group: z.enum(INTENT_GROUPS),
+  name: nonEmptyText,
+  description: nonEmptyText,
+  /** What the player tests: a stat, or Combat Power. */
+  stat: z.enum(CHECK_STATS),
+  /** The value that gives an even chance. */
+  difficulty: z.number(),
+  /** Their personality: difficulty added per 100 points on an axis (negative makes it easier). */
+  personality: heartAxisNumbers,
+  /** Their feelings: difficulty added per point of an axis toward the player. */
+  feelings: relAxisNumbers,
+  /** Their values: difficulty added when a value is among their three. */
+  values: z.record(z.string().regex(/^[a-z]+$/), z.number()).default({}),
+  moods: z.partialRecord(z.enum(MOODS), z.number()).default({}),
+  requires: RelRequiresSchema.default(anyone),
+  /** Works over a Den Den Mushi, slower and colder. */
+  remote: z.boolean().default(false),
+  /** Asks the player to pick something: a person, a place, an amount of Berries. */
+  topic: z.enum(['none', 'person', 'place', 'fruit', 'amount']).default('none'),
+  /** Berries it costs at ordinary prices (a meal, a round, a gift). */
+  cost: z.number().int().min(0).default(0),
+  /** Deed tags whatever the result (an insult is "rash" however it lands). */
+  deed: z.array(z.string().regex(/^[a-z_]+$/)).default([]),
+  /** A Phase 5 fight with them instead of a check: a duel, or a spar. */
+  fight: z.enum(['duel', 'spar']).optional(),
+  criticalSuccess: HeartBandSchema,
+  success: HeartBandSchema,
+  failure: HeartBandSchema,
+  criticalFailure: HeartBandSchema,
+});
+export type TalkIntent = z.infer<typeof IntentSchema>;
+
+export const InitiativeChoiceSchema = z.strictObject({
+  id: z.string().regex(/^[a-z0-9_]+$/),
+  label: heartTemplate,
+  /** What happens, in their voice. */
+  lines: z.array(heartTemplate).min(1),
+  effects: HeartEffectSchema.default(noEffect),
+  /** Needs the Berries (a loan given, a debt paid): its cost. */
+  berries: z.number().int().min(0).default(0),
+});
+export type InitiativeChoice = z.infer<typeof InitiativeChoiceSchema>;
+
+/**
+ * Someone reaching out to the player (Phase 7, "People act on you"): who would, how likely, and
+ * either a line that just happens or a decision with choices.
+ */
+export const InitiativeSchema = z.strictObject({
+  id: slug('ini'),
+  name: nonEmptyText,
+  title: heartTemplate,
+  text: heartTemplate,
+  /** Who reaches out (ignored for `self`). */
+  who: RelRequiresSchema.default(anyone),
+  /** The player's own conscience, not another person (a guilt event). */
+  self: z.boolean().default(false),
+  /** Only when apart (a letter) or only when together. */
+  where: z.enum(['any', 'apart', 'together']).default('any'),
+  /** The player's fame at least (an admirer). */
+  minFame: z.number().default(0),
+  /** The player owes them (debt axis below zero) / is owed by them. */
+  owed: z.enum(['any', 'player', 'them']).default('any'),
+  /** They hold a memory of this kind about the player. */
+  memory: z.string().optional(),
+  weight: z.number().min(0),
+  /** Months before the same person may do it again. */
+  cooldown: z.number().int().min(1).default(12),
+  /** No choices: it just happens, with these effects. */
+  effects: HeartEffectSchema.default(noEffect),
+  choices: z.array(InitiativeChoiceSchema).default([]),
+  tags,
+});
+export type Initiative = z.infer<typeof InitiativeSchema>;
+
+export const HEART_LINE_IDS = [
+  'met',
+  'milestone',
+  'banquet',
+  'banquetSecret',
+  'gossip',
+  'guiltLine',
+  'lieFound',
+  'truthFound',
+  'grief',
+  'widowed',
+  'divorced',
+  'adopted',
+  'companion',
+  'companionFruit',
+  'willMade',
+  'npcMarried',
+  'npcFeud',
+  'npcDuel',
+  'npcBetrayal',
+  'npcFriends',
+  'remoteTalk',
+  'meetingRule',
+  'meetingAsk',
+] as const;
+export type HeartLineId = (typeof HEART_LINE_IDS)[number];
+
+const numberMap = z.record(z.string(), z.number()).default({});
+
+export const HeartRulesSchema = z
+  .strictObject({
+    axes: z
+      .array(
+        z.strictObject({
+          id: z.enum(HEART_AXES),
+          /** The two ends: "Cautious" and "Bold". */
+          low: nonEmptyText,
+          high: nonEmptyText,
+          /** The player's sheet: "You are honest to a fault". */
+          tendency: z.strictObject({
+            strongHigh: nonEmptyText,
+            high: nonEmptyText,
+            low: nonEmptyText,
+            strongLow: nonEmptyText,
+          }),
+        }),
+      )
+      .length(HEART_AXES.length),
+    values: z
+      .array(
+        z.strictObject({
+          id: z.string().regex(/^[a-z]+$/),
+          name: nonEmptyText,
+          /** Personality that leans toward it (axis -> weight per 100). */
+          axes: heartAxisNumbers,
+          /** Occupations that lean toward it. */
+          occupations: z.array(slug('occ')).default([]),
+        }),
+      )
+      .min(3),
+    dreams: z
+      .array(
+        z.strictObject({
+          id: z.string().regex(/^[a-z_]+$/),
+          text: nonEmptyText,
+          weight: z.number().min(0).default(1),
+          values: z.array(z.string()).default([]),
+          occupations: z.array(slug('occ')).default([]),
+        }),
+      )
+      .min(4),
+    likes: z.strictObject({
+      food: z.array(nonEmptyText).min(4),
+      topic: z.array(nonEmptyText).min(4),
+      people: z.array(nonEmptyText).min(4),
+      place: z.array(nonEmptyText).min(4),
+    }),
+    registers: z.partialRecord(
+      z.enum(REGISTERS),
+      z.strictObject({
+        name: nonEmptyText,
+        weight: z.number().min(0),
+        /** Personality that leans toward it. */
+        axes: heartAxisNumbers,
+        speech: z.partialRecord(z.enum(SPEECH_ACTS), z.array(nonEmptyText).min(1)),
+      }),
+    ),
+    tics: z.array(nonEmptyText).min(4),
+    laughs: z.array(nonEmptyText).min(4),
+    /** Share of people with a tic, and with a laugh of their own. */
+    ticShare: z.number().min(0).max(1),
+    laughShare: z.number().min(0).max(1),
+    fears: z.array(nonEmptyText).min(4),
+    softSpots: z.array(nonEmptyText).min(4),
+    moods: z.partialRecord(
+      z.enum(MOODS),
+      z.strictObject({
+        name: nonEmptyText,
+        /** How their words come out in this mood ("{They} slurs:"). */
+        openers: z.array(heartTemplate).default([]),
+        months: z.number().int().min(1).default(1),
+        /** Added to every check against them. */
+        difficulty: z.number().default(0),
+      }),
+    ),
+    /** Traits that lean personality: trait -> axis points. */
+    traitLeanings: z.record(slug('trait'), heartAxisNumbers),
+    /** Phase 4's hidden drift counters as the seven axes: counter -> axis and points per unit. */
+    driftAxes: z.record(
+      z.string().regex(/^[a-z]+$/),
+      z.strictObject({ axis: z.enum(HEART_AXES), scale: z.number() }),
+    ),
+    /** Birthplace cultures that lean personality. */
+    cultureLeanings: z.record(slug('bp'), heartAxisNumbers).default({}),
+    /** How much a rolled axis spreads (a normal's deviation). */
+    spread: z.number().min(0),
+    /** Canon people's voice packs and leanings (Phase 11 writes the rest of them). */
+    canon: z.record(
+      slug('char'),
+      z.strictObject({
+        register: z.enum(REGISTERS),
+        laugh: z.string().nullable().default(null),
+        tic: z.string().nullable().default(null),
+        values: z.array(z.string()).max(3).default([]),
+        dream: z.string().optional(),
+        axes: heartAxisNumbers,
+        /** A few short words of their own (never long quotes). */
+        catchphrases: z.array(nonEmptyText).default([]),
+      }),
+    ),
+    relationship: z.strictObject({
+      axes: z.partialRecord(
+        z.enum(REL_AXES),
+        z.strictObject({
+          name: nonEmptyText,
+          min: z.number(),
+          max: z.number(),
+          /** Share of each modifier worn away a year apart, before the bond's own multiplier. */
+          drift: z.number().min(0).max(1),
+        }),
+      ),
+      /** Bond kind by relation kind. */
+      bonds: z.partialRecord(z.enum(RELATION_KINDS), z.enum(BOND_KINDS)),
+      /** At the same place this many months or fewer ago: together. */
+      togetherMonths: z.number().int().min(0),
+      /** Relationship modifiers smaller than this are dropped (worn away). */
+      prune: z.number().min(0),
+      /** Meeting someone: what is said of the player where they meet colours each axis. */
+      firstImpression: z.partialRecord(
+        z.enum(REL_AXES),
+        z.partialRecord(z.enum(REP_DIMS), z.number()),
+      ),
+      /** Bond kind -> how fast it fades apart, as a multiplier on each axis's drift. */
+      driftByBond: z.partialRecord(z.enum(BOND_KINDS), z.number().min(0)),
+    }),
+    bonds: z.partialRecord(
+      z.enum(BOND_KINDS),
+      z.strictObject({
+        name: nonEmptyText,
+        bars: z
+          .array(
+            z.strictObject({
+              id: z.string().regex(/^[a-z]+$/),
+              name: nonEmptyText,
+              /** Shown from a relationship axis instead of a bar of its own. */
+              axis: z.enum(REL_AXES).optional(),
+              /** Where a bar of its own starts and rests. */
+              rest: z.number().default(0),
+              /** Share of its modifiers lost a year together, and apart. */
+              drift: z.number().min(0).max(1).default(0.1),
+              driftApart: z.number().min(0).max(1).default(0.2),
+              /** Fills by itself each month together ("Shared history"). */
+              together: z.number().default(0),
+              /** Fills (or drains) by itself each month apart ("Jealousy" on a long voyage). */
+              apart: z.number().default(0),
+              max: z.number().default(100),
+            }),
+          )
+          .min(1),
+        /** What the bars add up to: each fired once at its threshold. */
+        milestones: z
+          .array(
+            z.strictObject({
+              id: z.string().regex(/^[a-z_]+$/),
+              label: nonEmptyText,
+              /** Bars (or axes) at least / at most. */
+              min: numberMap,
+              max: numberMap,
+              /** Months known at least. */
+              months: z.number().int().min(0).default(0),
+              /** Another milestone reached first. */
+              after: z.string().optional(),
+              line: heartTemplate,
+              effects: HeartEffectSchema.default(noEffect),
+              /** A bad milestone (a quarrel) may come again after this many months (0: once). */
+              repeat: z.number().int().min(0).default(0),
+            }),
+          )
+          .default([]),
+      }),
+    ),
+    /** The words for a relationship, first match wins. */
+    labels: z
+      .array(
+        z.strictObject({
+          id: z.string().regex(/^[a-z_]+$/),
+          name: nonEmptyText,
+          kinds: z.array(z.enum(RELATION_KINDS)).default([]),
+          min: numberMap,
+          max: numberMap,
+          milestone: z.string().optional(),
+          romance: z.array(z.enum(ROMANCE_STAGES)).optional(),
+          sworn: z.boolean().optional(),
+          /** Months known at most (a stranger, an acquaintance). */
+          months: z.number().int().optional(),
+        }),
+      )
+      .min(1),
+    memories: z.record(
+      z.string().regex(/^[a-z]+$/),
+      z.strictObject({
+        name: nonEmptyText,
+        /** Weight lost a year (grudges fade slower than favours). */
+        fadePerYear: z.number().min(0),
+        /** How they bring it up ("You still owe me for {memory}"). */
+        lines: z.array(heartTemplate).min(1),
+        gossip: z.boolean().default(true),
+        /** What retelling it does to the player's name where it is told (per 20 of weight). */
+        rep: z.partialRecord(z.enum(REP_DIMS), z.number()).default({}),
+      }),
+    ),
+    /** Most memories a person keeps; the faintest go first. */
+    memoryCap: z.number().int().min(1),
+    morale: z.strictObject({
+      rest: z.number(),
+      /** Share of the gap to rest closed a month. */
+      drift: z.number().min(0).max(1),
+      byMood: z.partialRecord(z.enum(MOODS), z.number()),
+    }),
+    conscience: z.strictObject({
+      rest: z.number(),
+      /** A guilt event when it falls below this. */
+      guiltBelow: z.number(),
+      /** Deed tag -> values it betrays, values it lives by, and the axis it goes against. */
+      deeds: z.record(
+        z.string().regex(/^[a-z_]+$/),
+        z.strictObject({
+          against: z.array(z.string()).default([]),
+          by: z.array(z.string()).default([]),
+          axis: z.enum(HEART_AXES).optional(),
+          /** +1: the deed goes against the axis's high end (cruelty against the kind). */
+          sign: z.number().default(1),
+        }),
+      ),
+      drop: z.number().min(0),
+      rise: z.number().min(0),
+      /** Share of each modifier lost a year (the past weighs less). */
+      fade: z.number().min(0).max(1),
+      /** Guilt: Willpower lost, for months. */
+      willpower: z.number(),
+      months: z.number().int().min(1),
+    }),
+    reputation: z.strictObject({
+      dims: z.partialRecord(
+        z.enum(REP_DIMS),
+        z.strictObject({ name: nonEmptyText, high: nonEmptyText, low: nonEmptyText }),
+      ),
+      /** Deed tag -> what it says of you. */
+      tags: z.record(z.string().regex(/^[a-z_]+$/), z.partialRecord(z.enum(REP_DIMS), z.number())),
+      /** Share of a place's word carried to each neighbour a quarter. */
+      spread: z.number().min(0).max(1),
+      /** Share forgotten a year. */
+      fade: z.number().min(0).max(1),
+      max: z.number().min(1),
+    }),
+    gossip: z.strictObject({
+      /** Memories at least this heavy are told. */
+      minWeight: z.number().min(0),
+      /** Share of the weight that reaches the listener. */
+      share: z.number().min(0).max(1),
+      /** Most retellings a quarter, for the player's whole circle. */
+      perQuarter: z.number().int().min(0),
+    }),
+    talk: z.strictObject({
+      /** Talks with one person a month. */
+      perMonth: z.number().int().min(1),
+      /** Over a Den Den Mushi: harder by this, and the effects are this share. */
+      remoteDifficulty: z.number(),
+      remoteEffect: z.number().min(0).max(1),
+      /** Chance in words: the first whose min is reached. */
+      chances: z.array(z.strictObject({ min: z.number(), text: nonEmptyText })).min(2),
+      /** A deceitful person (honesty below this) lies this often. */
+      lieBelow: z.number(),
+      lieChance: z.number().min(0).max(1),
+      /** A loan: the most a person lends, as a share of their Berries. */
+      loanShare: z.number().min(0).max(1),
+    }),
+    initiatives: z.strictObject({
+      /** Chance a month (Tier 1) or a quarter (Tier 2) that each person close reaches out. */
+      chance: z.number().min(0).max(1),
+      /** Most a month. */
+      perMonth: z.number().int().min(0),
+    }),
+    heredity: z.strictObject({
+      /** Chance each heritable trait of a parent passes. */
+      traitChance: z.number().min(0).max(1),
+      traits: z.array(slug('trait')),
+      /** How far a child's potential is pulled toward the parents'. */
+      potentialPull: z.number().min(0).max(1),
+      /** Chance an appearance field is new, not a parent's. */
+      appearanceMutation: z.number().min(0).max(1),
+      personalityNoise: z.number().min(0),
+    }),
+    romance: z.strictObject({
+      minAge: z.number().int().min(0),
+      /** Share of people open to romance at all. */
+      openShare: z.number().min(0).max(1),
+      /** Attraction grows a month together between people who like each other this much... */
+      attractionAffection: z.number(),
+      /** ...by up to this much (each pair has its own chemistry, 0 to 1 of it). */
+      attractionPerMonth: z.number().min(0),
+      /** A lover's jealousy when the player courts someone else. */
+      rivalJealousy: z.number().min(0),
+    }),
+    companions: z
+      .array(
+        z.strictObject({
+          id: z.string().regex(/^[a-z_]+$/),
+          name: nonEmptyText,
+          kind: z.enum(['pet', 'mount', 'fighter']),
+          price: z.number().int().min(0),
+          /** Where one can be found: any of these features or places. */
+          features: z.array(z.enum(PLACE_FEATURES)).default([]),
+          places: z.array(slug('loc')).default([]),
+          /** Its stats (a fighting partner's matter). */
+          stats: statNumbers,
+          /** Years it lives. */
+          lifespan: z.number().int().min(1),
+          canEatFruit: z.boolean().default(false),
+          description: nonEmptyText,
+        }),
+      )
+      .min(1),
+    /** Names people give their animals. */
+    companionNames: z.array(nonEmptyText).min(8),
+    lines: z.strictObject(
+      Object.fromEntries(HEART_LINE_IDS.map((id) => [id, heartTemplate])) as Record<
+        HeartLineId,
+        typeof heartTemplate
+      >,
+    ),
+  })
+  .superRefine((rules, ctx) => {
+    for (const register of REGISTERS) {
+      const r = rules.registers[register];
+      if (!r) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['registers', register],
+          message: 'Missing register',
+        });
+        continue;
+      }
+      for (const act of SPEECH_ACTS) {
+        if (!r.speech[act])
+          ctx.addIssue({
+            code: 'custom',
+            path: ['registers', register, 'speech', act],
+            message: `The ${register} register has no "${act}" line (every register says every act)`,
+          });
+      }
+    }
+    for (const mood of MOODS) {
+      if (!rules.moods[mood])
+        ctx.addIssue({ code: 'custom', path: ['moods', mood], message: 'Missing mood' });
+    }
+    for (const kind of BOND_KINDS) {
+      if (!rules.bonds[kind])
+        ctx.addIssue({ code: 'custom', path: ['bonds', kind], message: 'Missing bond kind' });
+    }
+    for (const axis of REL_AXES) {
+      if (!rules.relationship.axes[axis])
+        ctx.addIssue({
+          code: 'custom',
+          path: ['relationship', 'axes', axis],
+          message: 'Missing axis',
+        });
+    }
+    for (const dim of REP_DIMS) {
+      if (!rules.reputation.dims[dim])
+        ctx.addIssue({ code: 'custom', path: ['reputation', 'dims', dim], message: 'Missing' });
+    }
+  });
+export type HeartRules = z.infer<typeof HeartRulesSchema>;
+
 export const COLLECTIONS = {
   traits: { schema: TraitSchema, prefix: 'trait', label: 'trait' },
   weapons: { schema: WeaponSchema, prefix: 'weapon', label: 'weapon' },
@@ -4499,6 +5132,9 @@ export const COLLECTIONS = {
   // Phase 6
   items: { schema: ItemDefSchema, prefix: 'item', label: 'item' },
   recipes: { schema: RecipeSchema, prefix: 'recipe', label: 'recipe' },
+  // Phase 7
+  intents: { schema: IntentSchema, prefix: 'int', label: 'conversation intent' },
+  initiatives: { schema: InitiativeSchema, prefix: 'ini', label: 'initiative' },
 } as const;
 export type CollectionKind = keyof typeof COLLECTIONS;
 export const COLLECTION_KINDS = Object.keys(COLLECTIONS) as CollectionKind[];
@@ -4995,6 +5631,7 @@ export const SINGLETONS = {
   'data/battle.json': { key: 'battle', schema: BattleRulesSchema },
   'data/hands.json': { key: 'hands', schema: HandsRulesSchema },
   'data/ships.json': { key: 'ships', schema: ShipRulesSchema },
+  'data/heart.json': { key: 'heart', schema: HeartRulesSchema },
 } as const;
 export type SingletonPath = keyof typeof SINGLETONS;
 
@@ -5017,6 +5654,7 @@ export interface GameData {
   battle: BattleRules;
   hands: HandsRules;
   ships: ShipRules;
+  heart: HeartRules;
   traits: Readonly<Record<string, Trait>>;
   weapons: Readonly<Record<string, Weapon>>;
   locations: Readonly<Record<string, Location>>;
@@ -5041,4 +5679,6 @@ export interface GameData {
   movesets: Readonly<Record<string, Moveset>>;
   items: Readonly<Record<string, ItemDef>>;
   recipes: Readonly<Record<string, Recipe>>;
+  intents: Readonly<Record<string, TalkIntent>>;
+  initiatives: Readonly<Record<string, Initiative>>;
 }

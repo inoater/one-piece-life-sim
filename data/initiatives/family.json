@@ -1,0 +1,273 @@
+[
+  {
+    "id": "ini_parent_letter",
+    "name": "A letter from home",
+    "title": "A letter from home",
+    "text": "A letter from {name}, full of news from home and questions you cannot answer. {say.warm}",
+    "who": {
+      "kinds": ["parent", "guardian"]
+    },
+    "where": "apart",
+    "cooldown": 6,
+    "tags": ["family"],
+    "weight": 1.5,
+    "effects": {
+      "bars": {
+        "resentment": -5
+      },
+      "mine": {
+        "affection": 2
+      },
+      "myMorale": 4
+    }
+  },
+  {
+    "id": "ini_come_home",
+    "name": "Come home",
+    "title": "{name} asks you to come home",
+    "text": "{name} writes that the house is too quiet. {say.sad} Will you come home?",
+    "who": {
+      "kinds": ["parent", "guardian"],
+      "minBars": {
+        "resentment": 10
+      }
+    },
+    "where": "apart",
+    "cooldown": 24,
+    "tags": ["family"],
+    "weight": 1,
+    "choices": [
+      {
+        "id": "promise",
+        "label": "Promise to visit",
+        "lines": ["You promise. {name} will hold you to it."],
+        "effects": {
+          "bars": {
+            "resentment": -15
+          },
+          "memory": {
+            "kind": "promise",
+            "weight": 15
+          }
+        }
+      },
+      {
+        "id": "refuse",
+        "label": "Write that you cannot",
+        "lines": ["{name} says nothing more. {say.sad}"],
+        "effects": {
+          "bars": {
+            "resentment": 10,
+            "pride": -5
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_sibling_quarrel",
+    "name": "A quarrel with a sibling",
+    "title": "Words with {name}",
+    "text": "{name} brings up an old sore, and it turns into a shouting match. {say.angry}",
+    "who": {
+      "kinds": ["sibling"]
+    },
+    "cooldown": 24,
+    "tags": ["family"],
+    "weight": 0.9,
+    "effects": {
+      "axes": {
+        "affection": -5
+      },
+      "bars": {
+        "resentment": 8
+      },
+      "mine": {
+        "affection": -3
+      }
+    }
+  },
+  {
+    "id": "ini_child_asks",
+    "name": "Your child wants to learn",
+    "title": "{name} wants to learn from you",
+    "text": "{name} has been watching you. {say.proud} Will you teach {them}?",
+    "who": {
+      "kinds": ["child"]
+    },
+    "cooldown": 12,
+    "tags": ["family"],
+    "weight": 1.2,
+    "choices": [
+      {
+        "id": "teach",
+        "label": "Teach them",
+        "lines": ["You spend the month teaching {name}, and {their} face shines."],
+        "effects": {
+          "bars": {
+            "pride": 8,
+            "resentment": -5
+          },
+          "axes": {
+            "affection": 5
+          },
+          "myMorale": 4
+        }
+      },
+      {
+        "id": "not_now",
+        "label": "Not now",
+        "lines": ["{name} goes quiet. {say.sad}"],
+        "effects": {
+          "bars": {
+            "resentment": 8
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_student_lesson",
+    "name": "Your student wants a lesson",
+    "title": "{name} asks for a lesson",
+    "text": "{name} is waiting at the door before dawn. {say.greet}",
+    "who": {
+      "kinds": ["protege"]
+    },
+    "cooldown": 4,
+    "tags": ["student"],
+    "weight": 1.4,
+    "choices": [
+      {
+        "id": "teach",
+        "label": "Teach them",
+        "lines": ["A long day of lessons. {name} is better for it. {say.grateful}"],
+        "effects": {
+          "special": "lesson",
+          "bars": {
+            "devotion": 5,
+            "confidence": 4
+          }
+        }
+      },
+      {
+        "id": "not_now",
+        "label": "Not today",
+        "lines": ["{name} trudges off. {say.sad}"],
+        "effects": {
+          "bars": {
+            "devotion": -5
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_wants_teacher",
+    "name": "Someone wants to learn from you",
+    "title": "{name} wants to learn from you",
+    "text": "{name} has watched you for a while. {say.proud} Would you teach {them}?",
+    "who": {
+      "min": {
+        "respect": 5,
+        "affection": 20
+      },
+      "notKinds": [
+        "parent",
+        "child",
+        "guardian",
+        "ward",
+        "mentor",
+        "protege",
+        "companion",
+        "owner",
+        "rival"
+      ]
+    },
+    "cooldown": 24,
+    "tags": ["student"],
+    "weight": 0.8,
+    "choices": [
+      {
+        "id": "accept",
+        "label": "Take them on",
+        "lines": ["{name} bows low. {say.grateful}"],
+        "effects": {
+          "special": "takeStudent",
+          "bars": {
+            "devotion": 10
+          }
+        }
+      },
+      {
+        "id": "decline",
+        "label": "You are no teacher",
+        "lines": ["{name} nods slowly. {say.sad}"],
+        "effects": {
+          "axes": {
+            "respect": -3
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_mentor_summons",
+    "name": "Your teacher sends for you",
+    "title": "{name} sends for you",
+    "text": "{name} wants to see what you have learned. {say.challenge}",
+    "who": {
+      "kinds": ["mentor"]
+    },
+    "cooldown": 12,
+    "tags": ["mentor"],
+    "weight": 0.8,
+    "choices": [
+      {
+        "id": "go",
+        "label": "Go to them",
+        "lines": ["{name} puts you through it, and nods at the end. {say.proud}"],
+        "effects": {
+          "bars": {
+            "approval": 10,
+            "patience": 5
+          },
+          "train": {
+            "willpower": 0.4
+          }
+        }
+      },
+      {
+        "id": "decline",
+        "label": "Make your excuses",
+        "lines": ["{name} says nothing more. {say.annoyed}"],
+        "effects": {
+          "bars": {
+            "approval": -10,
+            "patience": -10
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_companion_gift",
+    "name": "Your companion brings you something",
+    "title": "{name} brings you a present",
+    "text": "{name} drops something at your feet and looks very proud of it.",
+    "who": {
+      "kinds": ["companion"]
+    },
+    "where": "together",
+    "cooldown": 6,
+    "tags": ["companion"],
+    "weight": 1,
+    "effects": {
+      "berries": 50,
+      "myMorale": 4,
+      "bars": {
+        "bond": 3
+      }
+    }
+  }
+]

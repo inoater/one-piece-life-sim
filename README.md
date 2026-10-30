@@ -26,8 +26,14 @@ as items with a grade, an edge, wear and a history; the 12 Supreme, 21 Great and
 once each, the canon ones following the story; black blades and four kinds of cursed blade; dials,
 seastone, Den Den Mushi and Vivre Cards; a ship creator with live numbers, yards, refits and a ship's
 spirit; six crafts on one schema; markets, trade goods, treasure and gambling; and a month that
-scales with Vigor (overtime slots, and pushing a Hard slot further). Status reports:
-`docs/PHASE0.md` to `docs/PHASE6.md`.
+scales with Vigor (overtime slots, and pushing a Hard slot further). **Phase 7** (heart) makes
+people feel like people: everyone has a personality (seven axes, values, a dream, likes, a voice, a
+fear), every relationship has seven axes and the bars of its bond, each traced to the events behind
+it, people remember and gossip, the player talks to anyone (42 intents, here or over a Den Den
+Mushi) and they answer in their own words, deceitful people lie, people reach out (28 kinds), there
+are banquets and crew meetings, a reputation place by place, conscience and guilt, children who take
+after their parents, adoption and wills, and animal companions. Status reports: `docs/PHASE0.md` to
+`docs/PHASE7.md`.
 
 ## Quick start
 
@@ -42,23 +48,24 @@ Node 20 or newer (`.nvmrc` pins 22).
 
 ## Scripts
 
-| Command                 | What it does                                                                                                                                        |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`           | Dev server. Validates `/data` at start and on every change; problems show in the browser overlay.                                                   |
-| `npm run build`         | Typecheck, then a production build in `dist/`. **Fails if any data file is invalid.** No debug panel.                                               |
-| `npm run build:preview` | One self-contained HTML file with the debug panel: `dist-preview/opsim-preview.html`.                                                               |
-| `npm run validate`      | Every JSON file against its schema, plus references between files; then canon lint. Exit 1 on any problem.                                          |
-| `npm run lint:sim`      | Determinism and layering rules (see below).                                                                                                         |
-| `npm run sim -- ...`    | Headless simulation: `--seed s --ticks 468 --worlds 1000 --verify --probe --json`.                                                                  |
-| `npm run genesis`       | Phase 1 checks: 1,000 potential rolls per race against the cap table, New Life timing. `-- --sample` prints a character.                            |
-| `npm run lives`         | Phase 2 balance: whole headless lives per race on every core: `-- --lives 1000 --race all`. Lifespans, causes, outcomes.                            |
-| `npm run world`         | Phase 3: Year 0 to the present with nobody in it; prints the world's timeline. `-- --rates 100`: how often each beat fires per canon mode.          |
-| `npm run powers`        | Phase 4 evidence: the catalogue, 1,000 generated fruits, `-- --kings 10000` (Conqueror's Haki only with King's Qualities), `--drift 20`, `--world`. |
-| `npm run battle`        | Phase 5 evidence: 1,000 pairings, tactical against abstract, and the gamma that fits; `-- --spars 1000`, `--world` (NPC fights), `--ladder`.        |
-| `npm run economy`       | Phase 6 evidence: hard-working lives per job (`-- --lives 100`): years to afford a caravel, and who affords a galleon.                              |
-| `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                                                               |
-| `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                                                                |
-| `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                                                              |
+| Command                 | What it does                                                                                                                                         |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`           | Dev server. Validates `/data` at start and on every change; problems show in the browser overlay.                                                    |
+| `npm run build`         | Typecheck, then a production build in `dist/`. **Fails if any data file is invalid.** No debug panel.                                                |
+| `npm run build:preview` | One self-contained HTML file with the debug panel: `dist-preview/opsim-preview.html`.                                                                |
+| `npm run validate`      | Every JSON file against its schema, plus references between files; then canon lint. Exit 1 on any problem.                                           |
+| `npm run lint:sim`      | Determinism and layering rules (see below).                                                                                                          |
+| `npm run sim -- ...`    | Headless simulation: `--seed s --ticks 468 --worlds 1000 --verify --probe --json`.                                                                   |
+| `npm run genesis`       | Phase 1 checks: 1,000 potential rolls per race against the cap table, New Life timing. `-- --sample` prints a character.                             |
+| `npm run lives`         | Phase 2 balance: whole headless lives per race on every core: `-- --lives 1000 --race all`. Lifespans, causes, outcomes.                             |
+| `npm run world`         | Phase 3: Year 0 to the present with nobody in it; prints the world's timeline. `-- --rates 100`: how often each beat fires per canon mode.           |
+| `npm run powers`        | Phase 4 evidence: the catalogue, 1,000 generated fruits, `-- --kings 10000` (Conqueror's Haki only with King's Qualities), `--drift 20`, `--world`.  |
+| `npm run battle`        | Phase 5 evidence: 1,000 pairings, tactical against abstract, and the gamma that fits; `-- --spars 1000`, `--world` (NPC fights), `--ladder`.         |
+| `npm run economy`       | Phase 6 evidence: hard-working lives per job (`-- --lives 100`): years to afford a caravel, and who affords a galleon.                               |
+| `npm run heart`         | Phase 7 evidence: ten-year lives (`-- --lives 30`): how many kinds of initiative people start, which, milestones and talks. `--sensible` to be kind. |
+| `npm test`              | Vitest: engine, systems, data, saves, worker, UI (happy-dom), tools, golden fixtures.                                                                |
+| `npm run e2e`           | Real-browser tests (Playwright). First time: `npx playwright-core install chromium`.                                                                 |
+| `npm run golden:update` | Re-record the golden session after a deliberate behaviour change. See `docs/SAVES.md`.                                                               |
 
 ## Where things live
 
@@ -70,6 +77,7 @@ src/systems/genesis/  character genesis: New Life options, family, backfill, app
 src/systems/life/     the life loop: routine, training, health, jobs, money, family, death, traits, personality
 src/systems/powers/   power tracks, haki, Devil Fruits (catalogue, world, generator), techniques, movesets, views
 src/systems/battle/   the battle engine: fighters, exchanges, AI, scales, aftermath, sparring, NPC fights, the ladder
+src/systems/heart/    personality, relationships and bars, memory, talk, facts, initiatives, scenes, family, companions
 src/core.ts    wires engine + systems: tick(state, data, rng) -> state
 src/worker/    runs the simulation off the main thread; the typed message protocol
 src/ui/        hash router, shell, screens (New Life at #/new), menu, debug panel (vanilla DOM)
@@ -78,7 +86,7 @@ data/          calendar, settings, character (growth, talent, stages), creation 
                life (slots, effort, health, money, death); races/ birthplaces/ legacies/ occupations/ names/ foci/
                backstory/ activities/ jobs/ traits/ events/ weapons/ locations/ lanes/ vessels/ factions/ cast/ canon/
                powers.json personality.json fruitMatchups.json; fruits/ tracks/ techniques/ movesets/ (Phase 4)
-               battle.json (Phase 5); hands.json ships.json; items/ recipes/ (Phase 6)
+               battle.json (Phase 5); hands.json ships.json; items/ recipes/ (Phase 6); heart.json intents/ initiatives/ (Phase 7)
                (news/ reserved)
 tools/         validate-data, headless-sim, canon-lint, lint-sim, update-golden, build helpers
 tests/         engine/ worker/ ui/ tools/ e2e/ fixtures/golden/

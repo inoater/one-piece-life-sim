@@ -49,6 +49,7 @@ import { capitalize } from './text';
 import { blockingWarning, entryWarnings, type EntryWarning } from './warnings';
 import { bornPowers } from '../powers/month';
 import { powerCtxFor, setStage } from '../powers/tracks';
+import { ensureHeart } from '../heart/profile';
 
 /**
  * Character genesis: New Life turned into a world with a person in it.
@@ -600,6 +601,8 @@ export function createLife(
       opening.seq,
     );
   }
+  // Phase 7: who they are, from their traits and the counters their past has set.
+  ensureHeart(state, data, player);
 
   return { state, playerId: player.id, options, resolved, warnings, notes: ctx.notes };
 }

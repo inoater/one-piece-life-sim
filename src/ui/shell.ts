@@ -23,6 +23,7 @@ import { createCanonPage } from './screens/canon';
 import { createFruitsPage } from './screens/fruits';
 import { createPowersPage } from './screens/powers';
 import { createGearPage } from './screens/gear';
+import { createPeoplePage, createPersonPage } from './screens/people';
 import { createShipPage } from './screens/ship';
 import { createMapPage } from './screens/map';
 import { renderEnd } from './screens/end';
@@ -71,6 +72,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   const age = vital('Age');
   const location = vital('Location');
   const berries = vital('Berries');
+  // Phase 7: the player's morale (their mood over months).
+  const morale = vital('Morale');
   // Health and Vigor: a number and a thin bar each (Phase 2).
   const bar = (label: string) => {
     const fill = h('span', { class: 'vital-bar__fill' });
@@ -100,7 +103,16 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       dial.el,
       h('div', { class: 'masthead__date' }, title, season),
     ),
-    h('dl', { class: 'vitals' }, age.row, health.row, vigor.row, location.row, berries.row),
+    h(
+      'dl',
+      { class: 'vitals' },
+      age.row,
+      health.row,
+      vigor.row,
+      location.row,
+      berries.row,
+      morale.row,
+    ),
   );
 
   // ---- Navigation
@@ -116,12 +128,15 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   // Phase 6: what the character carries, and their ship.
   const gearLink = h('a', { class: 'tab tab--gear', href: '#/gear' }, ROUTE_LABELS.gear);
   const shipLink = h('a', { class: 'tab tab--ship', href: '#/ship' }, ROUTE_LABELS.ship);
+  // Phase 7: the people in the character's life.
+  const peopleLink = h('a', { class: 'tab tab--people', href: '#/people' }, ROUTE_LABELS.people);
   const nav = h('nav', { class: 'tabs', 'aria-label': 'Sections' }, [
     ...links.values(),
     mapLink,
     powersLink,
     gearLink,
     shipLink,
+    peopleLink,
   ]);
 
   // ---- Panels
@@ -176,6 +191,20 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     { class: 'canon-page-slot ship-page-slot', hidden: true },
     shipPage.el,
   );
+  // Phase 7: People (contacts, the web, scenes) and a person's page (asked for, by id).
+  const peoplePage = createPeoplePage(app);
+  const peoplePageEl = h(
+    'div',
+    { class: 'canon-page-slot people-page-slot', hidden: true },
+    peoplePage.el,
+  );
+  const personPage = createPersonPage(app);
+  const personPageEl = h(
+    'div',
+    { class: 'canon-page-slot person-page-slot', hidden: true },
+    personPage.el,
+  );
+  let personHash = '';
 
   // ---- Controls
   const nextButton = h('button', { class: 'button button--primary', type: 'button' }, 'Next month');
@@ -273,6 +302,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     powersPageEl,
     fruitsPageEl,
     gearPageEl,
+    peoplePageEl,
+    personPageEl,
     shipPageEl,
     controls,
     toasts,
@@ -318,6 +349,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       keys: '1 to 9, 0',
       does: 'Feed, Character, Actions, World, News, Map, Powers, Devil Fruits, Gear, Ship',
     },
+    { keys: 'P', does: 'People' },
     { keys: 'L', does: 'Start a new life' },
     { keys: 'M', does: 'Menu: saves and appearance' },
     { keys: '?', does: 'This list' },
@@ -373,6 +405,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       'ship',
     ];
     if (key === 'n') press(nextButton);
+    else if (key === 'p') navigate('people');
     else if (key === 's') press(skipButton);
     else if (key === 'e') press(eventButton);
     else if (key === 'm') menuButton.click();
@@ -416,7 +449,9 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       state.route === 'powers' ||
       state.route === 'fruits' ||
       state.route === 'gear' ||
-      state.route === 'ship'
+      state.route === 'ship' ||
+      state.route === 'people' ||
+      state.route === 'person'
         ? null
         : isWide() && !isSideRoute(state.route)
           ? state.sideTab
@@ -471,6 +506,12 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       location.value.textContent = '\u2014';
     }
     berries.value.classList.toggle('is-debt', (player?.berries ?? 0) < 0);
+    const heart = s.heart;
+    morale.value.classList.toggle('is-empty', !heart);
+    morale.value.textContent = heart ? String(heart.morale) : '\u2014';
+    morale.value.title = heart
+      ? `${heart.mood}. Conscience: ${heart.conscienceWords.toLowerCase()}.`
+      : 'Appears once a life has started';
 
     const life = s.life;
     const bars: [typeof health, number, number, string][] = life
@@ -628,6 +669,29 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       if (on) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     }
+    // Phase 7: People, and a person's page (redrawn when the person in the address changes).
+    for (const [route, pageEl, page] of [
+      ['people', peoplePageEl, peoplePage],
+      ['person', personPageEl, personPage],
+    ] as const) {
+      const on = state.route === route;
+      if (on !== !pageEl.hidden) pageEl.hidden = !on;
+      const hashMoved = route === 'person' && window.location.hash !== personHash;
+      if (
+        on &&
+        (previous?.route !== route ||
+          hashMoved ||
+          state.snapshot !== previous.snapshot ||
+          state.busy !== previous.busy ||
+          state.omniscient !== previous.omniscient)
+      ) {
+        if (route === 'person') personHash = window.location.hash;
+        void page.show(state);
+      }
+    }
+    if (state.route === 'people' || state.route === 'person')
+      peopleLink.setAttribute('aria-current', 'page');
+    else peopleLink.removeAttribute('aria-current');
     const ending = state.route === 'end';
     if (ending !== !endPageEl.hidden) endPageEl.hidden = !ending;
     if (

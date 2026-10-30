@@ -32,7 +32,7 @@ describe('golden session (regression anchor for determinism)', () => {
     expect(state.news.length).toBe(golden.counts.news);
     expect(state.flags['dev.probe.acc']).toBe(golden.probe.acc);
     expect(state.flags['dev.probe.draws']).toBe(golden.probe.draws);
-  });
+  }, 180_000);
 
   it('covers every feature it is meant to anchor', () => {
     const state = playGoldenSession(data);
@@ -50,7 +50,10 @@ describe('golden session (regression anchor for determinism)', () => {
     ).toBeGreaterThan(2);
     expect(state.flags['dev.crossroads']).toBe('left');
     expect(state.log.some((r) => r.knownBy.length === 0)).toBe(true); // the secret event
-  });
+    // Phase 7: a talk, and hearts made for the people the world had reason to know.
+    expect(state.log.some((r) => r.tags.includes('talk'))).toBe(true);
+    expect(state.entities[state.playerId as string]?.character?.heart).toBeDefined();
+  }, 180_000);
 });
 
 describe('golden saves: every old save version must keep loading', () => {

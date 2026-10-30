@@ -1,0 +1,241 @@
+[
+  {
+    "id": "ini_friend_help",
+    "name": "A friend asks for help",
+    "title": "{name} needs a hand",
+    "text": "{name} comes to you, unhappy. {say.sad} Trouble with money, and nowhere else to turn.",
+    "who": {
+      "bonds": ["friendship"],
+      "min": {
+        "affection": 25
+      }
+    },
+    "cooldown": 12,
+    "tags": ["friend"],
+    "weight": 0.9,
+    "choices": [
+      {
+        "id": "help",
+        "label": "Help with 300 Berries",
+        "lines": ["{name} hugs you hard. {say.grateful}"],
+        "effects": {
+          "axes": {
+            "affection": 8,
+            "debt": 10,
+            "trust": 3
+          },
+          "memory": {
+            "kind": "favour",
+            "weight": 14
+          },
+          "deed": ["generous"]
+        },
+        "berries": 300
+      },
+      {
+        "id": "refuse",
+        "label": "You cannot spare it",
+        "lines": ["{name} nods and does not look at you. {say.sad}"],
+        "effects": {
+          "axes": {
+            "affection": -5
+          },
+          "deed": ["greedy"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_friend_visit",
+    "name": "A friend drops by",
+    "title": "{name} drops by",
+    "text": "{name} turns up with {food} and no reason at all. {say.warm}",
+    "who": {
+      "bonds": ["friendship"],
+      "min": {
+        "affection": 20
+      }
+    },
+    "where": "together",
+    "cooldown": 6,
+    "tags": ["friend"],
+    "weight": 0.9,
+    "effects": {
+      "axes": {
+        "affection": 3
+      },
+      "mine": {
+        "affection": 2
+      },
+      "myMorale": 5,
+      "bars": {
+        "shared": 2
+      }
+    }
+  },
+  {
+    "id": "ini_old_friend",
+    "name": "An old friend, found again",
+    "title": "{name}, after all this time",
+    "text": "You run into {name} after a long time apart. {say.greet} It is as if no time has passed.",
+    "who": {
+      "bonds": ["friendship"],
+      "min": {
+        "affection": 35
+      },
+      "minBars": {
+        "shared": 8
+      }
+    },
+    "where": "together",
+    "cooldown": 36,
+    "tags": ["friend"],
+    "weight": 1,
+    "effects": {
+      "axes": {
+        "affection": 6
+      },
+      "mine": {
+        "affection": 4
+      },
+      "myMorale": 8,
+      "mood": "elated"
+    }
+  },
+  {
+    "id": "ini_gift_received",
+    "name": "A gift arrives",
+    "title": "A gift from {name}",
+    "text": "A parcel comes for you, from {name}, with a note. {say.warm}",
+    "who": {
+      "min": {
+        "affection": 50
+      }
+    },
+    "cooldown": 18,
+    "tags": ["friend"],
+    "weight": 0.6,
+    "effects": {
+      "berries": 200,
+      "myMorale": 5,
+      "mine": {
+        "affection": 3
+      }
+    }
+  },
+  {
+    "id": "ini_loan_request",
+    "name": "Someone asks you for a loan",
+    "title": "{name} asks to borrow money",
+    "text": "{name} hates to ask. {say.sorry} A thousand Berries, to be paid back.",
+    "who": {
+      "min": {
+        "affection": 20
+      },
+      "notKinds": ["companion", "owner"]
+    },
+    "cooldown": 24,
+    "tags": ["money"],
+    "weight": 0.6,
+    "choices": [
+      {
+        "id": "lend",
+        "label": "Lend 1,000 Berries",
+        "lines": ["{name} promises to pay you back. {say.grateful}"],
+        "effects": {
+          "axes": {
+            "debt": 25,
+            "affection": 5,
+            "trust": 3
+          },
+          "memory": {
+            "kind": "favour",
+            "weight": 12
+          }
+        },
+        "berries": 1000
+      },
+      {
+        "id": "refuse",
+        "label": "Refuse",
+        "lines": ["{name} says nothing more. {say.sad}"],
+        "effects": {
+          "axes": {
+            "affection": -4
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_creditor",
+    "name": "A creditor wants paying",
+    "title": "{name} wants the money back",
+    "text": "{name} has waited long enough for what you owe. {say.annoyed}",
+    "owed": "player",
+    "cooldown": 3,
+    "tags": ["money"],
+    "weight": 1.4,
+    "choices": [
+      {
+        "id": "pay",
+        "label": "Pay what you owe",
+        "lines": ["{name} counts it twice. {say.pleased}"],
+        "effects": {
+          "special": "repayLoan",
+          "axes": {
+            "trust": 5
+          },
+          "deed": ["honest"]
+        }
+      },
+      {
+        "id": "stall",
+        "label": "Ask for more time",
+        "lines": ["{name} gives you a month, and a look. {say.doubt}"],
+        "effects": {
+          "axes": {
+            "trust": -6,
+            "affection": -3
+          }
+        }
+      },
+      {
+        "id": "refuse",
+        "label": "Refuse to pay",
+        "lines": ["{name} sends men round to collect. {say.threat}"],
+        "effects": {
+          "special": "collect",
+          "axes": {
+            "trust": -20,
+            "affection": -15
+          },
+          "memory": {
+            "kind": "debt",
+            "weight": -20
+          },
+          "deed": ["sly"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_debtor_repays",
+    "name": "A debt repaid",
+    "title": "{name} pays you back",
+    "text": "{name} comes to settle up, every Berry of it. {say.proud}",
+    "owed": "them",
+    "cooldown": 6,
+    "tags": ["money"],
+    "weight": 0.8,
+    "effects": {
+      "special": "callDebt",
+      "axes": {
+        "respect": 2
+      },
+      "mine": {
+        "trust": 5
+      }
+    }
+  }
+]

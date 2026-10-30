@@ -1,0 +1,2477 @@
+{
+  "axes": [
+    {
+      "id": "bold",
+      "low": "Cautious",
+      "high": "Bold",
+      "tendency": {
+        "strongHigh": "You are fearless to the point of folly",
+        "high": "You lean toward the bold choice",
+        "low": "You look before you leap",
+        "strongLow": "You are careful to a fault"
+      }
+    },
+    {
+      "id": "kind",
+      "low": "Cruel",
+      "high": "Kind",
+      "tendency": {
+        "strongHigh": "You cannot walk past someone in trouble",
+        "high": "You are kinder than you let on",
+        "low": "You have a hard edge to you",
+        "strongLow": "You are cruel when it suits you"
+      }
+    },
+    {
+      "id": "honest",
+      "low": "Deceitful",
+      "high": "Honest",
+      "tendency": {
+        "strongHigh": "You are honest to a fault",
+        "high": "You mostly say what you mean",
+        "low": "You bend the truth when it helps",
+        "strongLow": "You lie as easily as you breathe"
+      }
+    },
+    {
+      "id": "free",
+      "low": "Dutiful",
+      "high": "Free",
+      "tendency": {
+        "strongHigh": "No flag, rule or order holds you for long",
+        "high": "You chafe at being told what to do",
+        "low": "You keep to your duties",
+        "strongLow": "Duty comes before everything with you"
+      }
+    },
+    {
+      "id": "proud",
+      "low": "Humble",
+      "high": "Proud",
+      "tendency": {
+        "strongHigh": "Your pride will be the death of you",
+        "high": "You carry yourself like someone who matters",
+        "low": "You do not need the credit",
+        "strongLow": "You are humble almost to invisibility"
+      }
+    },
+    {
+      "id": "calm",
+      "low": "Volatile",
+      "high": "Calm",
+      "tendency": {
+        "strongHigh": "Nothing ruffles you",
+        "high": "You keep your head",
+        "low": "Your temper runs close to the surface",
+        "strongLow": "You explode at the smallest spark"
+      }
+    },
+    {
+      "id": "serious",
+      "low": "Playful",
+      "high": "Serious",
+      "tendency": {
+        "strongHigh": "You almost never laugh",
+        "high": "You take things seriously",
+        "low": "You find the joke in most things",
+        "strongLow": "You cannot stay serious for a minute"
+      }
+    }
+  ],
+  "values": [
+    {
+      "id": "freedom",
+      "name": "Freedom",
+      "axes": {
+        "free": 1.5,
+        "bold": 0.5
+      },
+      "occupations": ["occ_pirate", "occ_smuggler", "occ_sailor", "occ_street_kid"]
+    },
+    {
+      "id": "justice",
+      "name": "Justice",
+      "axes": {
+        "honest": 1,
+        "free": -0.8,
+        "kind": 0.5
+      },
+      "occupations": ["occ_marine", "occ_retired_marine", "occ_guard", "occ_bounty_hunter"]
+    },
+    {
+      "id": "family",
+      "name": "Family",
+      "axes": {
+        "kind": 1,
+        "free": -0.4
+      },
+      "occupations": ["occ_farmer", "occ_fisher", "occ_orphanage_keeper", "occ_herder"]
+    },
+    {
+      "id": "wealth",
+      "name": "Wealth",
+      "axes": {
+        "kind": -0.6,
+        "honest": -0.4
+      },
+      "occupations": ["occ_merchant", "occ_shopkeeper", "occ_noble", "occ_smuggler", "occ_bandit"]
+    },
+    {
+      "id": "strength",
+      "name": "Strength",
+      "axes": {
+        "bold": 1,
+        "proud": 0.6
+      },
+      "occupations": ["occ_warrior", "occ_mercenary", "occ_karate_master", "occ_swordsman"]
+    },
+    {
+      "id": "knowledge",
+      "name": "Knowledge",
+      "axes": {
+        "serious": 0.8,
+        "calm": 0.6
+      },
+      "occupations": ["occ_scholar", "occ_teacher", "occ_doctor", "occ_dial_crafter"]
+    },
+    {
+      "id": "honour",
+      "name": "Honour",
+      "axes": {
+        "honest": 1,
+        "proud": 0.6,
+        "free": -0.4
+      },
+      "occupations": ["occ_samurai", "occ_swordsman", "occ_mink_guard", "occ_noble_heir"]
+    },
+    {
+      "id": "faith",
+      "name": "Faith",
+      "axes": {
+        "calm": 0.8,
+        "free": -0.6
+      },
+      "occupations": ["occ_cloud_farmer", "occ_forager"]
+    },
+    {
+      "id": "fame",
+      "name": "Fame",
+      "axes": {
+        "proud": 1.4,
+        "serious": -0.4
+      },
+      "occupations": ["occ_pirate", "occ_bounty_hunter", "occ_noble_heir"]
+    },
+    {
+      "id": "peace",
+      "name": "Peace",
+      "axes": {
+        "kind": 0.8,
+        "bold": -0.8,
+        "calm": 0.6
+      },
+      "occupations": ["occ_innkeeper", "occ_cook", "occ_farmer", "occ_craftsman", "occ_net_mender"]
+    }
+  ],
+  "dreams": [
+    {
+      "id": "all_blue",
+      "text": "find the sea where every fish in the world swims together",
+      "values": ["knowledge", "freedom"],
+      "occupations": ["occ_cook", "occ_fisher"]
+    },
+    {
+      "id": "admiral",
+      "text": "make Admiral before forty",
+      "values": ["justice", "strength"],
+      "occupations": ["occ_marine"]
+    },
+    {
+      "id": "map_world",
+      "text": "draw a map of the whole world",
+      "values": ["knowledge", "freedom"]
+    },
+    {
+      "id": "inn",
+      "text": "open an inn of their own by the harbour",
+      "values": ["peace", "family"],
+      "occupations": ["occ_innkeeper", "occ_cook"]
+    },
+    {
+      "id": "best_blade",
+      "text": "be the finest blade their island ever raised",
+      "values": ["strength", "honour"],
+      "occupations": ["occ_swordsman", "occ_samurai"]
+    },
+    {
+      "id": "one_piece",
+      "text": "find the treasure at the end of the Grand Line",
+      "values": ["freedom", "fame", "wealth"],
+      "occupations": ["occ_pirate"]
+    },
+    {
+      "id": "farm_back",
+      "text": "buy back the family farm",
+      "values": ["family"],
+      "occupations": ["occ_farmer", "occ_herder"]
+    },
+    {
+      "id": "free_island",
+      "text": "see their island free of whoever rules it",
+      "values": ["freedom", "justice"]
+    },
+    {
+      "id": "ship",
+      "text": "build a ship that can sail anywhere",
+      "values": ["knowledge", "freedom"],
+      "occupations": ["occ_carpenter", "occ_craftsman"]
+    },
+    {
+      "id": "grandchildren",
+      "text": "live long enough to hold their grandchildren",
+      "values": ["family", "peace"]
+    },
+    {
+      "id": "famous_chef",
+      "text": "cook a dish the whole sea talks about",
+      "values": ["fame"],
+      "occupations": ["occ_cook", "occ_innkeeper"]
+    },
+    {
+      "id": "cure",
+      "text": "find a cure for the sickness that took their mother",
+      "values": ["family", "knowledge"],
+      "occupations": ["occ_doctor"]
+    },
+    {
+      "id": "richest",
+      "text": "be the richest merchant in the four Blues",
+      "values": ["wealth"],
+      "occupations": ["occ_merchant", "occ_shopkeeper"]
+    },
+    {
+      "id": "stones",
+      "text": "read the stones nobody is allowed to read",
+      "values": ["knowledge"],
+      "occupations": ["occ_scholar", "occ_teacher"]
+    },
+    {
+      "id": "sky",
+      "text": "stand on an island in the sky",
+      "values": ["freedom", "knowledge"]
+    },
+    {
+      "id": "revenge",
+      "text": "find the one who wronged them and settle it",
+      "values": ["honour", "strength"]
+    },
+    {
+      "id": "own_crew",
+      "text": "captain a crew of their own",
+      "values": ["freedom", "fame"],
+      "occupations": ["occ_sailor", "occ_pirate"]
+    },
+    {
+      "id": "hero",
+      "text": "be someone children tell stories about",
+      "values": ["fame", "honour"]
+    },
+    {
+      "id": "quiet_shore",
+      "text": "grow old somewhere quiet by the sea",
+      "values": ["peace"]
+    },
+    {
+      "id": "far_love",
+      "text": "find the one who sailed away and never wrote",
+      "values": ["family"]
+    },
+    {
+      "id": "deep_island",
+      "text": "see the island at the bottom of the sea",
+      "values": ["knowledge", "freedom"]
+    },
+    {
+      "id": "proud_family",
+      "text": "make their family proud of them at last",
+      "values": ["family", "honour"]
+    },
+    {
+      "id": "strongest",
+      "text": "be the strongest there is",
+      "values": ["strength", "fame"],
+      "occupations": ["occ_warrior", "occ_mercenary", "occ_karate_master"]
+    },
+    {
+      "id": "no_more_war",
+      "text": "see the day nobody has to fight",
+      "values": ["peace", "justice"]
+    }
+  ],
+  "likes": {
+    "food": [
+      "sea king steak",
+      "fresh grilled fish",
+      "tangerines",
+      "sweets",
+      "rice balls",
+      "a hot spiced stew",
+      "cherry pie",
+      "sake",
+      "strong tea",
+      "roast meat on the bone",
+      "warm bread",
+      "seaweed soup"
+    ],
+    "topic": [
+      "the sea",
+      "old legends",
+      "swords",
+      "money",
+      "good food",
+      "adventure",
+      "books",
+      "the weather",
+      "music",
+      "ships",
+      "family",
+      "faraway islands",
+      "the Marines",
+      "gossip"
+    ],
+    "people": [
+      "honest folk",
+      "brave fools",
+      "children",
+      "old sailors",
+      "quiet people",
+      "people who laugh easily",
+      "strong fighters",
+      "clever people",
+      "people who keep their word"
+    ],
+    "place": [
+      "harbours",
+      "taverns",
+      "deep forests",
+      "libraries",
+      "mountains",
+      "busy markets",
+      "the open sea",
+      "a quiet shore"
+    ]
+  },
+  "registers": {
+    "formal": {
+      "name": "Formal",
+      "weight": 1,
+      "axes": {
+        "serious": 0.6,
+        "calm": 0.4,
+        "free": -0.4
+      },
+      "speech": {
+        "greet": ["Good day to you.", "Ah. A pleasure, as always."],
+        "agree": ["Very well. You have my agreement.", "I see no reason to refuse."],
+        "refuse": ["I am afraid I must decline.", "That will not be possible, I regret to say."],
+        "pleased": ["That is most agreeable.", "I am genuinely pleased."],
+        "annoyed": ["I would ask you not to do that again.", "That was hardly called for."],
+        "angry": ["You forget yourself.", "I will not be spoken to in that manner."],
+        "laugh": ["How very droll.", "You have a gift for amusement, I grant you."],
+        "grateful": ["You have my sincere thanks.", "I am in your debt."],
+        "scared": ["Let us not be hasty, I beg you.", "There is no need for that, surely."],
+        "moved": ["I hardly know what to say.", "That means more to me than I can express."],
+        "evasive": ["I would rather not discuss it.", "Perhaps another time."],
+        "threat": [
+          "I would advise you most strongly against it.",
+          "You will find me a poor enemy to make."
+        ],
+        "sad": ["Forgive me. It has been a difficult season.", "Some things do not mend."],
+        "warm": ["It is good to see you. Truly.", "You are always welcome at my table."],
+        "proud": ["I believe I have earned that.", "I did only what was proper."],
+        "sorry": ["I owe you an apology.", "That was badly done of me."],
+        "challenge": ["Then let us settle it properly.", "Name the place. I shall be there."],
+        "farewell": ["Until we meet again.", "Fair winds to you."],
+        "tease": ["You are incorrigible.", "Is that the best you can manage?"],
+        "doubt": ["I find that difficult to credit.", "Forgive me if I remain unconvinced."]
+      }
+    },
+    "rough": {
+      "name": "Rough",
+      "weight": 1.2,
+      "axes": {
+        "calm": -0.5,
+        "serious": 0.2,
+        "proud": 0.3
+      },
+      "speech": {
+        "greet": ["Oi. You again.", "What d'you want?"],
+        "agree": ["Fine. Let's do it.", "Yeah, alright."],
+        "refuse": ["Not a chance.", "Get lost. No."],
+        "pleased": ["Heh. Not bad.", "Now that's more like it."],
+        "annoyed": ["Knock it off.", "Don't push it."],
+        "angry": ["Say that again and I'll break your face.", "You've got some nerve."],
+        "laugh": ["Ha! Good one.", "Hah. You're a real piece of work."],
+        "grateful": ["...Thanks. Don't make it weird.", "I owe you one."],
+        "scared": ["H-hey, easy now.", "Alright, alright! No need for that."],
+        "moved": ["Tch. Something in my eye.", "...Damn. Didn't expect that."],
+        "evasive": ["None of your business.", "Drop it."],
+        "threat": ["Try it and see what happens.", "You want a fight? You'll get one."],
+        "sad": ["Yeah. It's been rough.", "Don't want to talk about it."],
+        "warm": ["Good to see your ugly face.", "Sit down, I'll get you a drink."],
+        "proud": ["Course I did. Who d'you think you're talking to?", "Told you I could."],
+        "sorry": ["...My fault. Sorry.", "I messed up. I know."],
+        "challenge": ["Outside. Now.", "You and me. Let's go."],
+        "farewell": ["Don't die out there.", "See you around."],
+        "tease": ["Ha! Look at you.", "Losing your touch?"],
+        "doubt": ["Yeah, right.", "Pull the other one."]
+      }
+    },
+    "cheerful": {
+      "name": "Cheerful",
+      "weight": 1.1,
+      "axes": {
+        "serious": -0.8,
+        "kind": 0.4,
+        "calm": 0.2
+      },
+      "speech": {
+        "greet": ["Hey hey! There you are!", "Oh, it's you! Perfect timing!"],
+        "agree": ["Sure thing! Let's go!", "Yes! I'm in!"],
+        "refuse": ["Aww, sorry, I can't do that one!", "Nope! Not this time!"],
+        "pleased": ["That's wonderful!", "Oh, I love that!"],
+        "annoyed": ["Heeey, that's not nice!", "Come on, cut it out!"],
+        "angry": ["Okay, now I'm actually mad!", "That's it! That's too far!"],
+        "laugh": ["Ahaha, stop, my sides!", "That's the funniest thing all week!"],
+        "grateful": ["Thank you thank you thank you!", "You're the best, you know that?"],
+        "scared": ["Eek! Okay, okay, calm down!", "Th-that's scary, stop it!"],
+        "moved": ["Waaah, you're going to make me cry!", "That's so sweet I can't stand it!"],
+        "evasive": ["Ooh, look over there!", "Let's talk about something fun instead!"],
+        "threat": ["I'm smiling, but I mean it. Don't.", "You really don't want to see me angry."],
+        "sad": ["Sorry, I'm not much fun today.", "It's okay. I'll be okay. Probably."],
+        "warm": ["I missed you! Come here!", "It's always better when you're around!"],
+        "proud": ["Did you see that? Did you see?", "I did it! I really did it!"],
+        "sorry": ["Ahh, I'm so sorry!", "My bad, my bad! Forgive me?"],
+        "challenge": ["Ooh, a contest? You're on!", "Let's see who wins!"],
+        "farewell": ["Bye! Come back soon!", "Take care, okay?"],
+        "tease": ["Somebody's grumpy!", "Is that a blush? It's a blush!"],
+        "doubt": ["Hmmm, are you sure about that?", "Really? Really really?"]
+      }
+    },
+    "archaic": {
+      "name": "Archaic",
+      "weight": 0.5,
+      "axes": {
+        "serious": 0.5,
+        "free": -0.6,
+        "proud": 0.4
+      },
+      "speech": {
+        "greet": ["Well met, traveller.", "Hail. What brings thee here?"],
+        "agree": ["So be it.", "Aye. It shall be done."],
+        "refuse": ["Nay. That I will not do.", "Thou askest too much."],
+        "pleased": ["This pleaseth me well.", "A fine thing indeed."],
+        "annoyed": ["Mind thy tongue.", "Thou triest my patience."],
+        "angry": ["Thou shalt answer for that insult.", "By my blade, thou goest too far."],
+        "laugh": ["Ha! A fine jest.", "Thou hast a merry tongue."],
+        "grateful": ["I am beholden to thee.", "My thanks, from the heart."],
+        "scared": ["Stay thy hand, I pray thee.", "Peace! Peace, I say."],
+        "moved": ["Mine heart is full.", "Thou honourest me beyond my worth."],
+        "evasive": ["That is not for thine ears.", "Ask me not of it."],
+        "threat": ["Cross me and rue the day.", "Thou wouldst not survive mine anger."],
+        "sad": ["A shadow lies upon me.", "There is grief in this house."],
+        "warm": ["Thou art ever welcome by my fire.", "Sit with me, friend."],
+        "proud": ["As was only fitting.", "None other could have done it."],
+        "sorry": ["I have wronged thee. Forgive me.", "The fault is mine."],
+        "challenge": ["Draw, then, and let steel decide.", "Meet me at dawn."],
+        "farewell": ["Go with the sea's blessing.", "Fare thee well."],
+        "tease": ["Art thou always so slow?", "Is that the best thou hast?"],
+        "doubt": ["I misdoubt it.", "Thy tale hath holes in it."]
+      }
+    },
+    "plain": {
+      "name": "Plain",
+      "weight": 1.6,
+      "axes": {},
+      "speech": {
+        "greet": ["Hello there.", "Oh, hi."],
+        "agree": ["Alright. Yes.", "Okay, I can do that."],
+        "refuse": ["No, I don't think so.", "Sorry, but no."],
+        "pleased": ["That's good to hear.", "I'm glad."],
+        "annoyed": ["Please don't.", "That's not great."],
+        "angry": ["That's not fair and you know it.", "I'm really angry with you."],
+        "laugh": ["Ha, that's funny.", "Okay, that got me."],
+        "grateful": ["Thank you. Really.", "I appreciate it."],
+        "scared": ["Please, let's not.", "I don't want any trouble."],
+        "moved": ["I don't know what to say.", "That means a lot."],
+        "evasive": ["I'd rather not say.", "It's complicated."],
+        "threat": ["Don't make me do something about it.", "You'll regret that."],
+        "sad": ["It's been a hard time.", "I'm not doing so well."],
+        "warm": ["It's really good to see you.", "Come in, sit down."],
+        "proud": ["I worked hard for that.", "Not bad, right?"],
+        "sorry": ["I'm sorry.", "I shouldn't have done that."],
+        "challenge": ["Fine. Let's settle it.", "You want to try me?"],
+        "farewell": ["Goodbye. Take care.", "See you."],
+        "tease": ["Oh, come on.", "Really? That's it?"],
+        "doubt": ["I'm not sure I believe that.", "Hm. If you say so."]
+      }
+    },
+    "cold": {
+      "name": "Cold",
+      "weight": 0.7,
+      "axes": {
+        "kind": -0.5,
+        "calm": 0.6,
+        "serious": 0.6
+      },
+      "speech": {
+        "greet": ["You.", "What is it."],
+        "agree": ["Acceptable.", "Fine."],
+        "refuse": ["No.", "Pointless. No."],
+        "pleased": ["Adequate.", "Hm. Good."],
+        "annoyed": ["Tiresome.", "Stop that."],
+        "angry": ["You will regret that.", "Enough."],
+        "laugh": ["Hn.", "Amusing. Briefly."],
+        "grateful": ["Noted. Thank you.", "I will remember it."],
+        "scared": ["...Let us not do anything rash.", "Wait."],
+        "moved": ["...I see.", "That was unexpected."],
+        "evasive": ["Irrelevant.", "Not your concern."],
+        "threat": ["Do it, and you die.", "I would not."],
+        "sad": ["It does not matter.", "Leave it."],
+        "warm": ["You may sit.", "...It is not unpleasant to see you."],
+        "proud": ["Naturally.", "As expected."],
+        "sorry": ["I was wrong. It will not happen again.", "That was a mistake. Mine."],
+        "challenge": ["Then come.", "Draw."],
+        "farewell": ["Go.", "We are done here."],
+        "tease": ["Slow.", "Is that all."],
+        "doubt": ["Unlikely.", "Prove it."]
+      }
+    }
+  },
+  "tics": [
+    "you hear?",
+    "mind you",
+    "and that's that",
+    "if you take my meaning",
+    "no lie",
+    "so to speak",
+    "right?",
+    "believe me",
+    "by the sea",
+    "or I'm a sea cow",
+    "make no mistake",
+    "heh"
+  ],
+  "laughs": [
+    "Hahaha!",
+    "Hehehe.",
+    "Kekeke.",
+    "Wahaha!",
+    "Bwahaha!",
+    "Kukuku.",
+    "Hohoho.",
+    "Gyahaha!",
+    "Shahaha!",
+    "Mwehehe.",
+    "Dehehe.",
+    "Nyahaha!"
+  ],
+  "ticShare": 0.35,
+  "laughShare": 0.25,
+  "fears": [
+    "the deep water",
+    "being forgotten",
+    "fire",
+    "Sea Kings",
+    "being alone",
+    "the Marines finding out",
+    "failing their family",
+    "storms",
+    "seastone",
+    "growing old",
+    "the dark",
+    "debt"
+  ],
+  "softSpots": [
+    "children in trouble",
+    "a good meal",
+    "stray animals",
+    "anyone who reminds them of home",
+    "a sad song",
+    "flattery about their cooking",
+    "old sailors' stories",
+    "a fair fight"
+  ],
+  "moods": {
+    "content": {
+      "name": "Content",
+      "openers": [],
+      "months": 1,
+      "difficulty": 0
+    },
+    "angry": {
+      "name": "Angry",
+      "openers": [
+        "{name} is still angry, and it shows.",
+        "{Their} jaw is tight before you say a word."
+      ],
+      "months": 1,
+      "difficulty": 8
+    },
+    "grieving": {
+      "name": "Grieving",
+      "openers": [
+        "{name} looks hollowed out by grief.",
+        "There is a heaviness about {name} these days."
+      ],
+      "months": 3,
+      "difficulty": 4
+    },
+    "drunk": {
+      "name": "Drunk",
+      "openers": ["{name} is three cups in and swaying.", "{name} waves a mug at you, sloshing."],
+      "months": 1,
+      "difficulty": -6
+    },
+    "scared": {
+      "name": "Scared",
+      "openers": ["{name} keeps glancing at the door.", "{name} flinches when you come close."],
+      "months": 1,
+      "difficulty": 2
+    },
+    "elated": {
+      "name": "Elated",
+      "openers": [
+        "{name} is grinning about something.",
+        "{name} can barely sit still for good news."
+      ],
+      "months": 1,
+      "difficulty": -6
+    }
+  },
+  "traitLeanings": {
+    "trait_brave": {
+      "bold": 40
+    },
+    "trait_cowardly": {
+      "bold": -40
+    },
+    "trait_honest": {
+      "honest": 40
+    },
+    "trait_sly": {
+      "honest": -40
+    },
+    "trait_kind": {
+      "kind": 40
+    },
+    "trait_cruel": {
+      "kind": -40
+    },
+    "trait_generous": {
+      "kind": 15
+    },
+    "trait_greedy": {
+      "kind": -15,
+      "honest": -5
+    },
+    "trait_proud": {
+      "proud": 40
+    },
+    "trait_humble": {
+      "proud": -40
+    },
+    "trait_hot_headed": {
+      "calm": -40
+    },
+    "trait_patient": {
+      "calm": 40
+    },
+    "trait_reckless": {
+      "bold": 25,
+      "calm": -15
+    },
+    "trait_cautious": {
+      "bold": -25,
+      "calm": 10
+    },
+    "trait_charming": {
+      "serious": -15
+    },
+    "trait_surly": {
+      "kind": -10,
+      "serious": 20
+    },
+    "trait_curious": {
+      "free": 20
+    },
+    "trait_dreamer": {
+      "free": 30,
+      "serious": -15
+    },
+    "trait_gambler": {
+      "free": 15,
+      "bold": 10
+    },
+    "trait_show_off": {
+      "proud": 25,
+      "serious": -20
+    },
+    "trait_loudmouth": {
+      "calm": -15,
+      "serious": -20
+    },
+    "trait_storyteller": {
+      "serious": -30
+    },
+    "trait_bookish": {
+      "serious": 25
+    },
+    "trait_restless": {
+      "free": 35
+    },
+    "trait_drilled": {
+      "free": -35,
+      "serious": 20
+    },
+    "trait_sense_of_justice": {
+      "honest": 15,
+      "free": -15
+    },
+    "trait_pirates_blood": {
+      "free": 30,
+      "bold": 10
+    },
+    "trait_well_bred": {
+      "proud": 15,
+      "free": -10
+    },
+    "trait_entitled": {
+      "proud": 30,
+      "kind": -10
+    },
+    "trait_self_reliant": {
+      "free": 20
+    },
+    "trait_guarded": {
+      "honest": -10,
+      "calm": 10
+    },
+    "trait_noble_manners": {
+      "free": -20,
+      "serious": 15
+    },
+    "trait_marine_upbringing": {
+      "free": -30
+    },
+    "trait_orphans_grit": {
+      "bold": 15
+    },
+    "trait_dojo_raised": {
+      "serious": 20,
+      "calm": 10
+    },
+    "trait_feared": {
+      "kind": -10
+    },
+    "trait_folk_hero": {
+      "kind": 10,
+      "bold": 10
+    }
+  },
+  "driftAxes": {
+    "courage": {
+      "axis": "bold",
+      "scale": 3
+    },
+    "caution": {
+      "axis": "bold",
+      "scale": -2
+    },
+    "temper": {
+      "axis": "calm",
+      "scale": -3
+    },
+    "honesty": {
+      "axis": "honest",
+      "scale": 3
+    },
+    "mercy": {
+      "axis": "kind",
+      "scale": 3
+    },
+    "generosity": {
+      "axis": "kind",
+      "scale": 1.5
+    },
+    "pride": {
+      "axis": "proud",
+      "scale": 3
+    }
+  },
+  "cultureLeanings": {
+    "bp_wano": {
+      "serious": 20,
+      "free": -20,
+      "proud": 10
+    },
+    "bp_marine_base_town": {
+      "free": -25,
+      "serious": 10
+    },
+    "bp_sky_island": {
+      "calm": 15,
+      "free": -10
+    },
+    "bp_elbaf_highlands": {
+      "bold": 20,
+      "proud": 15
+    },
+    "bp_zou": {
+      "kind": 10,
+      "free": 10
+    },
+    "bp_fishman_island": {
+      "proud": 10
+    },
+    "bp_green_bit": {
+      "calm": -10,
+      "free": 10
+    },
+    "bp_new_world_island": {
+      "bold": 15,
+      "free": 15
+    },
+    "bp_east_blue_village": {
+      "kind": 10,
+      "calm": 5
+    }
+  },
+  "spread": 30,
+  "canon": {
+    "char_monkey_d_luffy": {
+      "register": "cheerful",
+      "laugh": "Shishishi!",
+      "values": ["freedom", "family"],
+      "dream": "become King of the Pirates",
+      "axes": {
+        "bold": 95,
+        "kind": 60,
+        "honest": 90,
+        "free": 100,
+        "proud": 30,
+        "calm": -40,
+        "serious": -85
+      },
+      "catchphrases": ["I'm starving!", "That sounds fun!"]
+    },
+    "char_edward_newgate": {
+      "register": "rough",
+      "laugh": "Gurararara!",
+      "values": ["family", "freedom"],
+      "dream": "have a family",
+      "axes": {
+        "bold": 80,
+        "kind": 50,
+        "honest": 70,
+        "free": 70,
+        "proud": 60,
+        "calm": 30,
+        "serious": 20
+      }
+    },
+    "char_gol_d_roger": {
+      "register": "rough",
+      "laugh": "Wahahaha!",
+      "values": ["freedom", "fame"],
+      "axes": {
+        "bold": 100,
+        "kind": 40,
+        "honest": 80,
+        "free": 100,
+        "proud": 50,
+        "calm": -10,
+        "serious": -40
+      }
+    },
+    "char_marshall_d_teach": {
+      "register": "rough",
+      "laugh": "Zehahahaha!",
+      "values": ["wealth", "strength", "fame"],
+      "axes": {
+        "bold": 50,
+        "kind": -60,
+        "honest": -90,
+        "free": 90,
+        "proud": 40,
+        "calm": -20,
+        "serious": -30
+      }
+    },
+    "char_donquixote_doflamingo": {
+      "register": "cold",
+      "laugh": "Fufufufu.",
+      "values": ["strength", "fame"],
+      "axes": {
+        "bold": 60,
+        "kind": -90,
+        "honest": -70,
+        "free": 60,
+        "proud": 95,
+        "calm": 30,
+        "serious": -10
+      }
+    },
+    "char_charlotte_linlin": {
+      "register": "rough",
+      "laugh": "Mamamama!",
+      "values": ["family", "wealth"],
+      "axes": {
+        "bold": 70,
+        "kind": -50,
+        "honest": -20,
+        "free": 40,
+        "proud": 80,
+        "calm": -80,
+        "serious": 0
+      }
+    },
+    "char_kaido": {
+      "register": "rough",
+      "laugh": "Wororo!",
+      "values": ["strength"],
+      "axes": {
+        "bold": 90,
+        "kind": -60,
+        "honest": 10,
+        "free": 60,
+        "proud": 70,
+        "calm": -60,
+        "serious": 30
+      }
+    },
+    "char_monkey_d_garp": {
+      "register": "rough",
+      "laugh": "Bwahahaha!",
+      "values": ["family", "justice"],
+      "axes": {
+        "bold": 90,
+        "kind": 50,
+        "honest": 60,
+        "free": 40,
+        "proud": 20,
+        "calm": -30,
+        "serious": -50
+      }
+    },
+    "char_shanks": {
+      "register": "cheerful",
+      "laugh": "Dahahaha!",
+      "values": ["freedom", "peace"],
+      "axes": {
+        "bold": 70,
+        "kind": 60,
+        "honest": 60,
+        "free": 80,
+        "proud": 10,
+        "calm": 60,
+        "serious": -40
+      }
+    },
+    "char_crocodile": {
+      "register": "cold",
+      "laugh": "Kuhahaha.",
+      "values": ["strength", "wealth"],
+      "axes": {
+        "bold": 50,
+        "kind": -70,
+        "honest": -60,
+        "free": 50,
+        "proud": 80,
+        "calm": 60,
+        "serious": 60
+      }
+    },
+    "char_dracule_mihawk": {
+      "register": "cold",
+      "values": ["strength", "honour"],
+      "dream": "find a swordsman worth his time",
+      "axes": {
+        "bold": 60,
+        "kind": 0,
+        "honest": 60,
+        "free": 80,
+        "proud": 70,
+        "calm": 90,
+        "serious": 80
+      }
+    },
+    "char_sengoku": {
+      "register": "formal",
+      "values": ["justice", "honour"],
+      "axes": {
+        "bold": 40,
+        "kind": 20,
+        "honest": 40,
+        "free": -80,
+        "proud": 30,
+        "calm": 50,
+        "serious": 80
+      }
+    },
+    "char_sakazuki": {
+      "register": "cold",
+      "values": ["justice"],
+      "axes": {
+        "bold": 70,
+        "kind": -80,
+        "honest": 30,
+        "free": -90,
+        "proud": 70,
+        "calm": -20,
+        "serious": 100
+      }
+    },
+    "char_boa_hancock": {
+      "register": "formal",
+      "values": ["freedom", "fame"],
+      "axes": {
+        "bold": 50,
+        "kind": -30,
+        "honest": 20,
+        "free": 60,
+        "proud": 100,
+        "calm": -20,
+        "serious": 30
+      }
+    },
+    "char_jinbe": {
+      "register": "archaic",
+      "values": ["honour", "peace"],
+      "axes": {
+        "bold": 50,
+        "kind": 70,
+        "honest": 80,
+        "free": 10,
+        "proud": 10,
+        "calm": 80,
+        "serious": 60
+      }
+    },
+    "char_buggy": {
+      "register": "rough",
+      "laugh": "Dahahaha!",
+      "values": ["wealth", "fame"],
+      "axes": {
+        "bold": -40,
+        "kind": -20,
+        "honest": -40,
+        "free": 50,
+        "proud": 80,
+        "calm": -70,
+        "serious": -40
+      }
+    },
+    "char_nico_robin": {
+      "register": "formal",
+      "laugh": "Fufu.",
+      "values": ["knowledge", "freedom"],
+      "dream": "read the true history",
+      "axes": {
+        "bold": 20,
+        "kind": 40,
+        "honest": 10,
+        "free": 40,
+        "proud": 0,
+        "calm": 80,
+        "serious": 40
+      }
+    },
+    "char_nami": {
+      "register": "plain",
+      "values": ["wealth", "family"],
+      "dream": "draw a map of the whole world",
+      "axes": {
+        "bold": -20,
+        "kind": 50,
+        "honest": -20,
+        "free": 40,
+        "proud": 20,
+        "calm": -40,
+        "serious": 0
+      }
+    },
+    "char_trafalgar_law": {
+      "register": "cold",
+      "values": ["honour", "knowledge"],
+      "axes": {
+        "bold": 50,
+        "kind": 20,
+        "honest": 30,
+        "free": 60,
+        "proud": 50,
+        "calm": 70,
+        "serious": 80
+      }
+    },
+    "char_silvers_rayleigh": {
+      "register": "plain",
+      "laugh": "Hahaha.",
+      "values": ["freedom", "peace"],
+      "axes": {
+        "bold": 60,
+        "kind": 40,
+        "honest": 50,
+        "free": 90,
+        "proud": 10,
+        "calm": 80,
+        "serious": -30
+      }
+    }
+  },
+  "relationship": {
+    "axes": {
+      "affection": {
+        "name": "Affection",
+        "min": -100,
+        "max": 100,
+        "drift": 0.12
+      },
+      "trust": {
+        "name": "Trust",
+        "min": -100,
+        "max": 100,
+        "drift": 0.08
+      },
+      "respect": {
+        "name": "Respect",
+        "min": -100,
+        "max": 100,
+        "drift": 0.06
+      },
+      "fear": {
+        "name": "Fear",
+        "min": 0,
+        "max": 100,
+        "drift": 0.3
+      },
+      "rivalry": {
+        "name": "Rivalry",
+        "min": 0,
+        "max": 100,
+        "drift": 0.03
+      },
+      "attraction": {
+        "name": "Attraction",
+        "min": 0,
+        "max": 100,
+        "drift": 0.2
+      },
+      "debt": {
+        "name": "Debt",
+        "min": -100,
+        "max": 100,
+        "drift": 0.03
+      }
+    },
+    "bonds": {
+      "parent": "family",
+      "child": "family",
+      "sibling": "family",
+      "guardian": "family",
+      "ward": "family",
+      "mentor": "mentor",
+      "protege": "student",
+      "friend": "friendship",
+      "rival": "rival",
+      "sweetheart": "romance",
+      "former": "romance",
+      "benefactor": "friendship",
+      "crewmate": "crewmate",
+      "superior": "superior",
+      "subordinate": "subordinate",
+      "companion": "companion",
+      "owner": "companion"
+    },
+    "togetherMonths": 1,
+    "prune": 0.5,
+    "firstImpression": {
+      "affection": {
+        "kindness": 0.3,
+        "generosity": 0.15
+      },
+      "trust": {
+        "honour": 0.4
+      },
+      "respect": {
+        "courage": 0.3,
+        "honour": 0.1
+      },
+      "fear": {
+        "kindness": -0.25
+      }
+    },
+    "driftByBond": {
+      "friendship": 0.6,
+      "romance": 1.6,
+      "crewmate": 0.8,
+      "student": 0.7,
+      "mentor": 0.5,
+      "rival": 0.15,
+      "family": 0.4,
+      "superior": 1,
+      "subordinate": 1,
+      "companion": 0.8
+    }
+  },
+  "bonds": {
+    "friendship": {
+      "name": "Friendship",
+      "bars": [
+        {
+          "id": "affection",
+          "name": "Affection",
+          "axis": "affection"
+        },
+        {
+          "id": "trust",
+          "name": "Trust",
+          "axis": "trust"
+        },
+        {
+          "id": "shared",
+          "name": "Shared history",
+          "rest": 0,
+          "drift": 0.01,
+          "driftApart": 0.04,
+          "together": 1.5
+        }
+      ],
+      "milestones": [
+        {
+          "id": "friend",
+          "label": "Friend",
+          "min": {
+            "affection": 25
+          },
+          "line": "{name} counts you a friend now."
+        },
+        {
+          "id": "close_friend",
+          "label": "Close friend",
+          "after": "friend",
+          "min": {
+            "affection": 60,
+            "trust": 45,
+            "shared": 15
+          },
+          "line": "Somewhere along the way, {name} became one of your closest friends.",
+          "effects": {
+            "memory": {
+              "kind": "kindness",
+              "weight": 20
+            }
+          }
+        },
+        {
+          "id": "falling_out",
+          "label": "Falling out",
+          "max": {
+            "affection": -10
+          },
+          "after": "friend",
+          "repeat": 24,
+          "line": "You and {name} have drifted into a cold silence.",
+          "effects": {
+            "mood": "angry"
+          }
+        }
+      ]
+    },
+    "romance": {
+      "name": "Romance",
+      "bars": [
+        {
+          "id": "affection",
+          "name": "Affection",
+          "axis": "affection"
+        },
+        {
+          "id": "passion",
+          "name": "Passion",
+          "rest": 30,
+          "drift": 0.08,
+          "driftApart": 0.35,
+          "together": 0.8
+        },
+        {
+          "id": "commitment",
+          "name": "Commitment",
+          "rest": 20,
+          "drift": 0.02,
+          "driftApart": 0.12,
+          "together": 0.5
+        },
+        {
+          "id": "jealousy",
+          "name": "Jealousy",
+          "rest": 0,
+          "drift": 0.4,
+          "driftApart": 0.1,
+          "apart": 1.2
+        }
+      ],
+      "milestones": [
+        {
+          "id": "together",
+          "label": "Together",
+          "min": {
+            "affection": 50,
+            "passion": 45
+          },
+          "line": "There is no pretending any more: you and {name} are together.",
+          "effects": {
+            "mood": "elated",
+            "myMood": "elated",
+            "memory": {
+              "kind": "kindness",
+              "weight": 25
+            },
+            "special": "together"
+          }
+        },
+        {
+          "id": "quarrel",
+          "label": "A quarrel",
+          "min": {
+            "jealousy": 55
+          },
+          "repeat": 6,
+          "line": "{name} has had enough of waiting for word from you, and says so.",
+          "effects": {
+            "axes": {
+              "affection": -8
+            },
+            "bars": {
+              "jealousy": -25
+            },
+            "mood": "angry"
+          }
+        },
+        {
+          "id": "breakup",
+          "label": "A break-up",
+          "max": {
+            "affection": 0,
+            "commitment": 15
+          },
+          "repeat": 0,
+          "line": "It is over between you and {name}.",
+          "effects": {
+            "special": "breakup",
+            "mood": "grieving"
+          }
+        }
+      ]
+    },
+    "crewmate": {
+      "name": "Crewmate",
+      "bars": [
+        {
+          "id": "loyalty",
+          "name": "Loyalty",
+          "rest": 40,
+          "drift": 0.05,
+          "driftApart": 0.15
+        },
+        {
+          "id": "morale",
+          "name": "Morale",
+          "rest": 50,
+          "drift": 0.25,
+          "driftApart": 0.25
+        },
+        {
+          "id": "respect",
+          "name": "Respect for the captain",
+          "axis": "respect"
+        },
+        {
+          "id": "belonging",
+          "name": "Belonging",
+          "rest": 20,
+          "drift": 0.04,
+          "driftApart": 0.15,
+          "together": 1
+        }
+      ],
+      "milestones": [
+        {
+          "id": "nakama",
+          "label": "Nakama",
+          "min": {
+            "loyalty": 85,
+            "belonging": 70
+          },
+          "months": 12,
+          "line": "{name} is nakama now: whatever comes, {they} will stand with you.",
+          "effects": {
+            "memory": {
+              "kind": "kindness",
+              "weight": 40
+            },
+            "morale": 15
+          }
+        },
+        {
+          "id": "desertion",
+          "label": "Desertion",
+          "max": {
+            "loyalty": 8
+          },
+          "line": "{name} has had enough of you and your ship.",
+          "effects": {
+            "special": "leave"
+          }
+        }
+      ]
+    },
+    "student": {
+      "name": "Your student",
+      "bars": [
+        {
+          "id": "devotion",
+          "name": "Devotion",
+          "rest": 40,
+          "drift": 0.05,
+          "driftApart": 0.2
+        },
+        {
+          "id": "progress",
+          "name": "Progress",
+          "rest": 0,
+          "drift": 0,
+          "driftApart": 0,
+          "together": 1
+        },
+        {
+          "id": "confidence",
+          "name": "Confidence",
+          "rest": 30,
+          "drift": 0.1,
+          "driftApart": 0.1
+        }
+      ],
+      "milestones": [
+        {
+          "id": "devoted",
+          "label": "Devoted",
+          "min": {
+            "devotion": 80
+          },
+          "line": "{name} would follow your teaching anywhere.",
+          "effects": {
+            "memory": {
+              "kind": "kindness",
+              "weight": 20
+            }
+          }
+        },
+        {
+          "id": "graduation",
+          "label": "Graduation",
+          "min": {
+            "progress": 100,
+            "confidence": 50
+          },
+          "line": "{name} has learned all you can teach. From today, {name} stands alone.",
+          "effects": {
+            "special": "graduate",
+            "mood": "elated",
+            "myMorale": 10
+          }
+        }
+      ]
+    },
+    "mentor": {
+      "name": "Your mentor",
+      "bars": [
+        {
+          "id": "approval",
+          "name": "Approval",
+          "rest": 30,
+          "drift": 0.06,
+          "driftApart": 0.15
+        },
+        {
+          "id": "patience",
+          "name": "Patience",
+          "rest": 60,
+          "drift": 0.2,
+          "driftApart": 0.1
+        },
+        {
+          "id": "pride",
+          "name": "Pride",
+          "rest": 10,
+          "drift": 0.03,
+          "driftApart": 0.08
+        }
+      ],
+      "milestones": [
+        {
+          "id": "secret",
+          "label": "A secret taught",
+          "min": {
+            "approval": 70,
+            "patience": 40
+          },
+          "months": 12,
+          "line": "{name} takes you aside and shows you something nobody else has been shown.",
+          "effects": {
+            "special": "secret",
+            "memory": {
+              "kind": "kindness",
+              "weight": 25
+            }
+          }
+        },
+        {
+          "id": "blessing",
+          "label": "A blessing",
+          "after": "secret",
+          "min": {
+            "approval": 85,
+            "pride": 60
+          },
+          "line": "{name} gives you {their} blessing, and with it something {they} carried for years.",
+          "effects": {
+            "special": "blessing",
+            "myMorale": 15
+          }
+        },
+        {
+          "id": "lost_patience",
+          "label": "Patience lost",
+          "max": {
+            "patience": 10
+          },
+          "repeat": 12,
+          "line": "{name} throws up {their} hands: you are wasting {their} time.",
+          "effects": {
+            "axes": {
+              "respect": -10
+            },
+            "bars": {
+              "patience": 25
+            }
+          }
+        }
+      ]
+    },
+    "rival": {
+      "name": "Rival",
+      "bars": [
+        {
+          "id": "rivalry",
+          "name": "Rivalry",
+          "axis": "rivalry"
+        },
+        {
+          "id": "respect",
+          "name": "Respect",
+          "axis": "respect"
+        },
+        {
+          "id": "grudge",
+          "name": "Grudge",
+          "rest": 0,
+          "drift": 0.12,
+          "driftApart": 0.08
+        }
+      ],
+      "milestones": [
+        {
+          "id": "nemesis",
+          "label": "Nemesis",
+          "min": {
+            "grudge": 70,
+            "rivalry": 50
+          },
+          "line": "{name} is no longer your rival. Your nemesis, now.",
+          "effects": {
+            "memory": {
+              "kind": "grudge",
+              "weight": -40
+            },
+            "mood": "angry"
+          }
+        },
+        {
+          "id": "friendly_rival",
+          "label": "Rival and friend",
+          "min": {
+            "respect": 55,
+            "affection": 30
+          },
+          "line": "Somewhere between the bruises, {name} became a friend as well as a rival.",
+          "effects": {
+            "memory": {
+              "kind": "kindness",
+              "weight": 20
+            }
+          }
+        }
+      ]
+    },
+    "family": {
+      "name": "Family",
+      "bars": [
+        {
+          "id": "affection",
+          "name": "Affection",
+          "axis": "affection"
+        },
+        {
+          "id": "duty",
+          "name": "Duty",
+          "rest": 50,
+          "drift": 0.02,
+          "driftApart": 0.05
+        },
+        {
+          "id": "pride",
+          "name": "Pride",
+          "rest": 40,
+          "drift": 0.04,
+          "driftApart": 0.06
+        },
+        {
+          "id": "resentment",
+          "name": "Resentment",
+          "rest": 0,
+          "drift": 0.15,
+          "driftApart": 0.05,
+          "apart": 0.4
+        }
+      ],
+      "milestones": [
+        {
+          "id": "family_blessing",
+          "label": "A blessing",
+          "min": {
+            "pride": 80,
+            "affection": 60
+          },
+          "line": "{name} tells you {they} could not be prouder of you.",
+          "effects": {
+            "myMorale": 15,
+            "memory": {
+              "kind": "kindness",
+              "weight": 25
+            }
+          }
+        },
+        {
+          "id": "estrangement",
+          "label": "Estrangement",
+          "min": {
+            "resentment": 70
+          },
+          "max": {
+            "affection": 0
+          },
+          "repeat": 0,
+          "line": "{name} no longer speaks your name at home.",
+          "effects": {
+            "special": "estrange",
+            "mood": "grieving"
+          }
+        }
+      ]
+    },
+    "superior": {
+      "name": "Your superior",
+      "bars": [
+        {
+          "id": "trust",
+          "name": "Trust",
+          "axis": "trust"
+        },
+        {
+          "id": "respect",
+          "name": "Respect",
+          "axis": "respect"
+        },
+        {
+          "id": "fear",
+          "name": "Fear",
+          "axis": "fear"
+        },
+        {
+          "id": "obedience",
+          "name": "Obedience",
+          "rest": 50,
+          "drift": 0.05,
+          "driftApart": 0.1
+        }
+      ],
+      "milestones": [
+        {
+          "id": "recommendation",
+          "label": "A recommendation",
+          "min": {
+            "trust": 60,
+            "respect": 60
+          },
+          "line": "{name} puts your name forward, with a word that carries weight.",
+          "effects": {
+            "special": "recommend"
+          }
+        }
+      ]
+    },
+    "subordinate": {
+      "name": "Under your command",
+      "bars": [
+        {
+          "id": "trust",
+          "name": "Trust",
+          "axis": "trust"
+        },
+        {
+          "id": "respect",
+          "name": "Respect",
+          "axis": "respect"
+        },
+        {
+          "id": "fear",
+          "name": "Fear",
+          "axis": "fear"
+        },
+        {
+          "id": "obedience",
+          "name": "Obedience",
+          "rest": 50,
+          "drift": 0.05,
+          "driftApart": 0.1
+        }
+      ],
+      "milestones": [
+        {
+          "id": "protege_made",
+          "label": "A protégé",
+          "min": {
+            "trust": 60,
+            "obedience": 70
+          },
+          "months": 12,
+          "line": "{name} has become your protégé in all but name.",
+          "effects": {
+            "memory": {
+              "kind": "kindness",
+              "weight": 20
+            }
+          }
+        },
+        {
+          "id": "mutiny",
+          "label": "Mutiny",
+          "max": {
+            "obedience": 10,
+            "fear": 20
+          },
+          "line": "{name} will not take another order from you.",
+          "effects": {
+            "special": "mutiny",
+            "mood": "angry"
+          }
+        }
+      ]
+    },
+    "companion": {
+      "name": "Companion",
+      "bars": [
+        {
+          "id": "affection",
+          "name": "Affection",
+          "axis": "affection"
+        },
+        {
+          "id": "trust",
+          "name": "Trust",
+          "axis": "trust"
+        },
+        {
+          "id": "bond",
+          "name": "Bond",
+          "rest": 20,
+          "drift": 0.02,
+          "driftApart": 0.2,
+          "together": 1.2
+        }
+      ],
+      "milestones": [
+        {
+          "id": "loyal_beast",
+          "label": "Loyal to the end",
+          "min": {
+            "bond": 70
+          },
+          "line": "{name} would face anything for you now.",
+          "effects": {
+            "memory": {
+              "kind": "kindness",
+              "weight": 30
+            }
+          }
+        }
+      ]
+    }
+  },
+  "labels": [
+    {
+      "id": "sworn",
+      "name": "Sworn sibling",
+      "sworn": true
+    },
+    {
+      "id": "spouse",
+      "name": "Spouse",
+      "romance": ["married"]
+    },
+    {
+      "id": "engaged",
+      "name": "Betrothed",
+      "romance": ["engaged"]
+    },
+    {
+      "id": "lover",
+      "name": "Lover",
+      "romance": ["together"]
+    },
+    {
+      "id": "former",
+      "name": "Former lover",
+      "kinds": ["former"]
+    },
+    {
+      "id": "courting",
+      "name": "Sweetheart",
+      "kinds": ["sweetheart"]
+    },
+    {
+      "id": "estranged",
+      "name": "Estranged",
+      "kinds": ["parent", "child", "sibling", "guardian", "ward"],
+      "milestone": "estrangement"
+    },
+    {
+      "id": "parent",
+      "name": "Family",
+      "kinds": ["parent", "child", "sibling", "guardian", "ward"]
+    },
+    {
+      "id": "nakama",
+      "name": "Nakama",
+      "kinds": ["crewmate"],
+      "milestone": "nakama"
+    },
+    {
+      "id": "mentor",
+      "name": "Mentor",
+      "kinds": ["mentor"]
+    },
+    {
+      "id": "student",
+      "name": "Student",
+      "kinds": ["protege"]
+    },
+    {
+      "id": "nemesis",
+      "name": "Nemesis",
+      "kinds": ["rival"],
+      "milestone": "nemesis"
+    },
+    {
+      "id": "rival",
+      "name": "Rival",
+      "kinds": ["rival"]
+    },
+    {
+      "id": "master",
+      "name": "Master",
+      "kinds": ["superior"],
+      "max": {
+        "respect": -10
+      }
+    },
+    {
+      "id": "servant",
+      "name": "Servant",
+      "kinds": ["subordinate"],
+      "min": {
+        "fear": 60
+      }
+    },
+    {
+      "id": "superior",
+      "name": "Superior",
+      "kinds": ["superior"]
+    },
+    {
+      "id": "subordinate",
+      "name": "Subordinate",
+      "kinds": ["subordinate"]
+    },
+    {
+      "id": "crewmate",
+      "name": "Crewmate",
+      "kinds": ["crewmate"]
+    },
+    {
+      "id": "companion",
+      "name": "Companion",
+      "kinds": ["owner", "companion"]
+    },
+    {
+      "id": "enemy",
+      "name": "Enemy",
+      "max": {
+        "affection": -50
+      }
+    },
+    {
+      "id": "close_friend",
+      "name": "Close friend",
+      "milestone": "close_friend"
+    },
+    {
+      "id": "friend",
+      "name": "Friend",
+      "min": {
+        "affection": 25
+      }
+    },
+    {
+      "id": "friend_kind",
+      "name": "Friend",
+      "kinds": ["friend"]
+    },
+    {
+      "id": "stranger",
+      "name": "Stranger",
+      "max": {
+        "affection": 10
+      },
+      "months": 0
+    },
+    {
+      "id": "acquaintance",
+      "name": "Acquaintance"
+    }
+  ],
+  "memories": {
+    "favour": {
+      "name": "favour",
+      "fadePerYear": 8,
+      "lines": ["You still owe me for {memory}.", "I haven't forgotten {memory}, you know."],
+      "rep": {
+        "generosity": 2
+      }
+    },
+    "lifesaved": {
+      "name": "rescue",
+      "fadePerYear": 1.5,
+      "lines": [
+        "I'd be dead if not for {memory}.",
+        "I owe you my life. {memory}. I won't forget it."
+      ],
+      "rep": {
+        "courage": 3,
+        "kindness": 2
+      }
+    },
+    "grudge": {
+      "name": "grudge",
+      "fadePerYear": 2.5,
+      "lines": ["I still remember {memory}.", "Don't think I've forgotten {memory}."],
+      "rep": {
+        "kindness": -1
+      }
+    },
+    "insult": {
+      "name": "insult",
+      "fadePerYear": 6,
+      "lines": [
+        "You've got a nerve, after {memory}.",
+        "I still hear what you said, that time. {memory}."
+      ],
+      "rep": {
+        "kindness": -2
+      }
+    },
+    "gift": {
+      "name": "gift",
+      "fadePerYear": 10,
+      "lines": ["I still have the thing you gave me. {memory}.", "That was kind of you, {memory}."],
+      "rep": {
+        "generosity": 2
+      }
+    },
+    "promise": {
+      "name": "promise",
+      "fadePerYear": 4,
+      "lines": ["You made me a promise. {memory}.", "Remember what you swore? {memory}."],
+      "rep": {
+        "honour": 1
+      }
+    },
+    "betrayal": {
+      "name": "betrayal",
+      "fadePerYear": 1.2,
+      "lines": ["After {memory}? You want me to trust you?", "I trusted you once. {memory}."],
+      "rep": {
+        "honour": -4
+      }
+    },
+    "debt": {
+      "name": "debt",
+      "fadePerYear": 2,
+      "lines": ["You still owe me for {memory}. With interest.", "About {memory}. I want it back."],
+      "rep": {
+        "honour": -1
+      }
+    },
+    "fight": {
+      "name": "fight",
+      "fadePerYear": 5,
+      "lines": [
+        "I still feel {memory} when it rains.",
+        "{memory}. We should do that again sometime."
+      ],
+      "rep": {
+        "courage": 1
+      }
+    },
+    "banquet": {
+      "name": "feast",
+      "fadePerYear": 8,
+      "lines": ["What a night that was. {memory}.", "Remember {memory}? Best night of my life."],
+      "rep": {
+        "generosity": 1
+      }
+    },
+    "kindness": {
+      "name": "kindness",
+      "fadePerYear": 6,
+      "lines": ["You were good to me, {memory}.", "I think about {memory} sometimes."],
+      "rep": {
+        "kindness": 2
+      }
+    },
+    "cruelty": {
+      "name": "cruelty",
+      "fadePerYear": 2.5,
+      "lines": ["I saw what you did. {memory}.", "People like you... {memory}. I remember."],
+      "rep": {
+        "kindness": -3
+      }
+    },
+    "lie": {
+      "name": "lie",
+      "fadePerYear": 4,
+      "lines": [
+        "You lied to me. {memory}.",
+        "How do I know you're not lying again, after {memory}?"
+      ],
+      "rep": {
+        "honour": -2
+      }
+    },
+    "loss": {
+      "name": "loss",
+      "fadePerYear": 3,
+      "lines": ["I still think about {memory}.", "Some days I can't stop thinking about {memory}."],
+      "gossip": false
+    },
+    "secret": {
+      "name": "secret",
+      "fadePerYear": 5,
+      "lines": ["You kept my secret. {memory}.", "Thank you for keeping quiet about {memory}."],
+      "rep": {
+        "honour": 1
+      }
+    }
+  },
+  "memoryCap": 12,
+  "morale": {
+    "rest": 55,
+    "drift": 0.12,
+    "byMood": {
+      "angry": -8,
+      "grieving": -15,
+      "drunk": 3,
+      "scared": -8,
+      "elated": 12
+    }
+  },
+  "conscience": {
+    "rest": 70,
+    "guiltBelow": 40,
+    "deeds": {
+      "cruel": {
+        "against": ["peace", "justice", "family"],
+        "axis": "kind",
+        "sign": 1
+      },
+      "sly": {
+        "against": ["honour", "justice"],
+        "axis": "honest",
+        "sign": 1
+      },
+      "treacherous": {
+        "against": ["honour", "family", "justice"],
+        "axis": "honest",
+        "sign": 1
+      },
+      "greedy": {
+        "against": ["family", "peace"],
+        "axis": "kind",
+        "sign": 0.5
+      },
+      "cowardly": {
+        "against": ["honour", "strength"],
+        "axis": "bold",
+        "sign": 1
+      },
+      "kind": {
+        "by": ["peace", "family", "justice"]
+      },
+      "honest": {
+        "by": ["honour", "justice"]
+      },
+      "brave": {
+        "by": ["honour", "strength", "fame"]
+      },
+      "generous": {
+        "by": ["family", "peace"]
+      },
+      "loyal": {
+        "by": ["honour", "family"]
+      }
+    },
+    "drop": 12,
+    "rise": 4,
+    "fade": 0.35,
+    "willpower": -4,
+    "months": 6
+  },
+  "reputation": {
+    "dims": {
+      "honour": {
+        "name": "Honour",
+        "high": "honourable",
+        "low": "treacherous"
+      },
+      "kindness": {
+        "name": "Kindness",
+        "high": "kind",
+        "low": "cruel"
+      },
+      "courage": {
+        "name": "Courage",
+        "high": "brave",
+        "low": "cowardly"
+      },
+      "generosity": {
+        "name": "Generosity",
+        "high": "generous",
+        "low": "greedy"
+      }
+    },
+    "tags": {
+      "honest": {
+        "honour": 2
+      },
+      "sly": {
+        "honour": -3
+      },
+      "treacherous": {
+        "honour": -8
+      },
+      "loyal": {
+        "honour": 3
+      },
+      "kind": {
+        "kindness": 3
+      },
+      "cruel": {
+        "kindness": -5
+      },
+      "brave": {
+        "courage": 3
+      },
+      "cowardly": {
+        "courage": -4
+      },
+      "reckless": {
+        "courage": 1
+      },
+      "generous": {
+        "generosity": 3
+      },
+      "greedy": {
+        "generosity": -3
+      }
+    },
+    "spread": 0.3,
+    "fade": 0.1,
+    "max": 100
+  },
+  "gossip": {
+    "minWeight": 15,
+    "share": 0.5,
+    "perQuarter": 6
+  },
+  "talk": {
+    "perMonth": 3,
+    "remoteDifficulty": 8,
+    "remoteEffect": 0.5,
+    "chances": [
+      {
+        "min": 0.85,
+        "text": "almost certain"
+      },
+      {
+        "min": 0.65,
+        "text": "likely"
+      },
+      {
+        "min": 0.45,
+        "text": "even odds"
+      },
+      {
+        "min": 0.25,
+        "text": "unlikely"
+      },
+      {
+        "min": 0.1,
+        "text": "a long shot"
+      },
+      {
+        "min": 0,
+        "text": "hopeless"
+      }
+    ],
+    "lieBelow": -25,
+    "lieChance": 0.7,
+    "loanShare": 0.3
+  },
+  "initiatives": {
+    "chance": 0.2,
+    "perMonth": 3
+  },
+  "heredity": {
+    "traitChance": 0.35,
+    "traits": [
+      "trait_sturdy",
+      "trait_frail",
+      "trait_keen_eyed",
+      "trait_nimble",
+      "trait_sharp_mind",
+      "trait_strong_willed",
+      "trait_iron_lungs",
+      "trait_thick_skinned",
+      "trait_bottomless",
+      "trait_iron_stomach",
+      "trait_heavy_handed",
+      "trait_big_eater",
+      "trait_night_owl",
+      "trait_sweet_tooth",
+      "trait_haki_sensitive"
+    ],
+    "potentialPull": 0.5,
+    "appearanceMutation": 0.2,
+    "personalityNoise": 25
+  },
+  "romance": {
+    "minAge": 16,
+    "openShare": 0.88,
+    "attractionAffection": 35,
+    "attractionPerMonth": 2.5,
+    "rivalJealousy": 30
+  },
+  "companions": [
+    {
+      "id": "dog",
+      "name": "dog",
+      "kind": "pet",
+      "price": 3000,
+      "features": ["farmland", "market", "docks"],
+      "stats": {
+        "strength": 20,
+        "speed": 45,
+        "perception": 60
+      },
+      "lifespan": 13,
+      "description": "A loyal mutt with a good nose."
+    },
+    {
+      "id": "cat",
+      "name": "ship's cat",
+      "kind": "pet",
+      "price": 1500,
+      "features": ["docks", "market"],
+      "stats": {
+        "speed": 50,
+        "perception": 65
+      },
+      "lifespan": 15,
+      "description": "Keeps the hold free of rats and the captain humble."
+    },
+    {
+      "id": "parrot",
+      "name": "parrot",
+      "kind": "pet",
+      "price": 5000,
+      "features": ["jungle", "market"],
+      "stats": {
+        "intellect": 30,
+        "perception": 55
+      },
+      "lifespan": 40,
+      "description": "Repeats everything, especially what it should not."
+    },
+    {
+      "id": "horse",
+      "name": "horse",
+      "kind": "mount",
+      "price": 20000,
+      "features": ["farmland"],
+      "stats": {
+        "strength": 55,
+        "speed": 60,
+        "endurance": 60
+      },
+      "lifespan": 28,
+      "description": "Steady, strong and faster than walking."
+    },
+    {
+      "id": "giant_duck",
+      "name": "giant spot-billed duck",
+      "kind": "mount",
+      "price": 30000,
+      "places": ["loc_alabasta"],
+      "stats": {
+        "speed": 75,
+        "endurance": 55
+      },
+      "lifespan": 20,
+      "canEatFruit": true,
+      "description": "A desert runner big enough to ride, fast enough to outrun trouble."
+    },
+    {
+      "id": "kungfu_dugong",
+      "name": "kung-fu dugong",
+      "kind": "fighter",
+      "price": 0,
+      "places": ["loc_alabasta"],
+      "stats": {
+        "strength": 45,
+        "dexterity": 50,
+        "durability": 45
+      },
+      "lifespan": 30,
+      "canEatFruit": true,
+      "description": "Small, earnest and fighting fit; it follows whoever beat it."
+    },
+    {
+      "id": "sea_cow",
+      "name": "sea cow",
+      "kind": "fighter",
+      "price": 15000,
+      "features": ["coast"],
+      "stats": {
+        "strength": 65,
+        "durability": 60,
+        "speed": 35
+      },
+      "lifespan": 35,
+      "canEatFruit": true,
+      "description": "A huge, greedy, surprisingly loyal beast that can tow a boat."
+    },
+    {
+      "id": "wolf",
+      "name": "snow wolf",
+      "kind": "fighter",
+      "price": 12000,
+      "features": ["cold", "mountains"],
+      "stats": {
+        "strength": 50,
+        "speed": 60,
+        "perception": 65
+      },
+      "lifespan": 14,
+      "canEatFruit": true,
+      "description": "A pale wolf of the cold islands, fierce to strangers."
+    },
+    {
+      "id": "monkey",
+      "name": "monkey",
+      "kind": "pet",
+      "price": 4000,
+      "features": ["jungle", "forest"],
+      "stats": {
+        "dexterity": 55,
+        "speed": 50
+      },
+      "lifespan": 25,
+      "canEatFruit": true,
+      "description": "Clever hands, quick feet and no respect for property."
+    }
+  ],
+  "companionNames": [
+    "Biscuit",
+    "Captain",
+    "Pepper",
+    "Anchor",
+    "Mochi",
+    "Sprat",
+    "Bosun",
+    "Tangerine",
+    "Cannonball",
+    "Noodle",
+    "Patches",
+    "Gale",
+    "Pudding",
+    "Barnacle",
+    "Smudge",
+    "Rook"
+  ],
+  "lines": {
+    "met": "You met {name}.",
+    "milestone": "{name}: {title}.",
+    "banquet": "A feast in {place}: the drink flowed, the stories got taller, and everyone at the table is closer for it.",
+    "banquetSecret": "Somewhere past the third barrel, {name} let slip something {they} never meant to tell: {fact}.",
+    "gossip": "Word of you has reached {place}: people there call you {title}.",
+    "guiltLine": "What you did sits badly with you. Your nights are long, your will is weaker.",
+    "lieFound": "{name} lied to you: {fact}. It was not true.",
+    "truthFound": "{name} told you the truth: {fact}.",
+    "grief": "You grieve for {name}.",
+    "widowed": "With {name} gone, the house is too quiet. You are widowed.",
+    "divorced": "You and {name} are married no longer.",
+    "adopted": "You took in {name}, and gave {them} your name.",
+    "companion": "{name} is yours now. Look after {them}.",
+    "companionFruit": "{name} ate a strange fruit, and is not an ordinary animal any more.",
+    "willMade": "You named {name} your heir.",
+    "npcMarried": "{name} has married. The whole harbour turned out for it.",
+    "npcFeud": "{name} and an old friend have fallen out, bitterly and in public.",
+    "npcDuel": "{name} fought a duel over an old insult.",
+    "npcBetrayal": "{name} was betrayed by someone {they} trusted.",
+    "npcFriends": "{name} and a stranger became fast friends.",
+    "remoteTalk": "The Den Den Mushi purred, and {name}'s voice came through, small and far away.",
+    "meetingRule": "You did not put it to a vote. Some of them noticed.",
+    "meetingAsk": "You put it to everyone, and listened. It took all evening, and it was worth it."
+  }
+}

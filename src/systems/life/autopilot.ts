@@ -7,6 +7,9 @@ import type { LifeEnv } from './env';
 import { jobLock, takeJob } from './jobs';
 import { repay } from './money';
 import { sortedValues } from '../genesis/options';
+import { circle, together } from '../heart/bonds';
+import { talk, talkLock } from '../heart/talk';
+import { companionPrice, speciesHere, takeCompanion } from '../heart/companions';
 
 /**
  * A stand-in player for headless runs (balancing, the lifespan check, the 40-outcomes check). It
@@ -31,6 +34,8 @@ const CATEGORY_WEIGHT: Record<ActivityCategory, number> = {
 export interface AutopilotOptions {
   /** Pick uniformly among everything available, to see as much of the content as possible. */
   variety?: boolean;
+  /** Phase 7: say nothing to anyone (the balancing tools that predate the heart). */
+  quietHeart?: boolean;
 }
 
 export function autopilot(
@@ -102,4 +107,69 @@ export function autopilot(
     effort: a.restful ? 'normal' : effort,
   }));
   life.routine = routine;
+  if (!options.quietHeart) talkAround(env, rng.fork('talk'), options.variety === true);
+}
+
+/** What a sensible person says to the people around them (Phase 7); `variety` tries anything. */
+const SENSIBLE = [
+  'int_chat',
+  'int_joke',
+  'int_meal',
+  'int_compliment',
+  'int_ask_dream',
+  'int_train_together',
+  'int_ask_rumour',
+  'int_ask_number',
+  'int_swear',
+  'int_confess',
+  'int_propose',
+  'int_marry',
+  'int_recruit',
+  'int_ask_teacher',
+  'int_apologise',
+  'int_forgive',
+  'int_ask_help',
+  'int_ask_loan',
+] as const;
+
+/**
+ * A word or two with someone here, most months: the heart of a headless life. Never throws: a
+ * talk that is not possible is simply not had.
+ */
+function talkAround(env: LifeEnv, rng: Rng, variety: boolean): void {
+  const { state, data, tick, p } = env;
+  if (humanAgeOf(data, p, tick) < 8 || state.battle || !rng.fork('talk?').chance(0.7)) return;
+  // Now and then, an animal to keep them company, when they can well afford one.
+  const pets = p.c.relationships.filter((r) => r.kind === 'companion').length;
+  const kinds = speciesHere(data, p).filter((s) => p.c.berries >= companionPrice(env, s) * 5);
+  if (pets === 0 && kinds.length > 0 && rng.fork('pet?').chance(0.03)) {
+    try {
+      takeCompanion(env, rng.fork('pet').pick(kinds).id);
+    } catch {
+      // Not to be had after all.
+    }
+  }
+  const here = circle(state, p.entity).filter(({ other }) => together(data, p.entity, other));
+  if (here.length === 0) return;
+  const ids = variety ? Object.keys(data.intents).sort() : [...SENSIBLE];
+  for (let i = 0; i < 2; i++) {
+    const r = rng.fork('who', i);
+    const { other } = r.pick(here);
+    const open = ids.filter((id) => {
+      const intent = data.intents[id];
+      if (!intent || intent.fight || intent.topic === 'person' || intent.topic === 'place')
+        return false;
+      // Borrow only when short of money.
+      if (id === 'int_ask_loan' && p.c.berries >= 800 && !r.fork('loan?').chance(0.05))
+        return false;
+      return talkLock(state, data, p, other, intent, { amount: 300 }) === null;
+    });
+    const id = r.fork('intent').pick(open.length > 0 ? open : ['']);
+    if (!id) continue;
+    try {
+      talk({ ...env, cause: 'sys:autopilot' }, other.id, id, { amount: 300 });
+    } catch {
+      // Not possible after all (Berries spent on the first talk, say): nothing said.
+    }
+  }
 }

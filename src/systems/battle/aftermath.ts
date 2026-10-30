@@ -384,9 +384,17 @@ export function applyAftermath(
       out.news = true;
     }
   }
+  // Phase 7: a battle won with people of the player's about ends in a banquet.
+  if (
+    !battle.spar &&
+    result?.winner === 0 &&
+    (battle.scale === 'crew' || battle.scale === 'naval' || battle.scale === 'war')
+  )
+    feastHook.fire?.(state, data);
   return out;
 }
 
 /** The player's fighter id in a battle (always "you"). */
 export const PLAYER_FIGHTER = 'you';
 export { lifeLog };
+import { feastHook } from '../heart/hooks';

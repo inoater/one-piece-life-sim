@@ -53,6 +53,11 @@ import { ID_FORMAT_HINT, isEntityId } from './ids';
  *    per graded sword), `character.hands` (what a person carries and wields, weapon and craft
  *    skills, the project at the bench, a ship being built, cargo, saved designs), a ship's design,
  *    history and spirit, each place's market supply, and a routine slot's commitment past Hard.
+ *  - Save version 8 (Phase 7, the heart): `character.heart` (personality profile, mood, morale,
+ *    conscience, memories; the player's facts learned by talk, reputation and will), a
+ *    relationship's other axes, bond bars, milestones, romance and meeting record, a modifier's
+ *    `seq` (the logged event behind it), new relation kinds, decisions marked `heart`, and the
+ *    world's romance setting.
  */
 
 export const ENTITY_TYPES = [
@@ -87,6 +92,11 @@ export const ModifierSchema = z.strictObject({
   kind: z.enum(['flat', 'pct']),
   /** First tick at which the modifier no longer applies. Omit for permanent. */
   expiresTick: z.number().int().optional(),
+  /**
+   * Save version 8 (Phase 7): the log record behind it (the last one that added to it), so a
+   * relationship's "Trust 62 = 20 base + 30 you saved my life" can be traced to what happened.
+   */
+  seq: z.number().int().min(0).optional(),
 });
 export type Modifier = z.infer<typeof ModifierSchema>;
 
@@ -112,16 +122,46 @@ export const RELATION_KINDS = [
   'benefactor',
   'protege',
   'ward',
+  // Phase 7: a crewmate, the chain of command, a lover who is no longer one, an animal companion.
+  'crewmate',
+  'superior',
+  'subordinate',
+  'former',
+  'companion',
+  'owner',
 ] as const;
 export type RelationKind = (typeof RELATION_KINDS)[number];
+
+/** Phase 7: how far a romance has gone (opt-in; adults only). */
+export const ROMANCE_STAGES = ['courting', 'together', 'engaged', 'married'] as const;
 
 export const RelationshipSchema = z.strictObject({
   /** The other character's entity id. */
   id: EntityIdSchema,
   kind: z.enum(RELATION_KINDS),
-  /** How this character feels about the other: a Stat, so later systems can explain it (rule 3). */
+  /**
+   * How this character feels about the other: a Stat, so later systems can explain it (rule 3).
+   * Phase 7: this is the Affection axis.
+   */
   opinion: StatSchema,
   sinceTick: z.number().int(),
+  /**
+   * Save version 8 (Phase 7): the other axes (trust, respect, fear, rivalry, attraction, debt),
+   * each a Stat whose modifiers name the event behind them; and the bars a bond shows of its own
+   * (Passion, Loyalty, Devotion, Grudge...). Absent axes and bars stand at their rest value.
+   */
+  axes: z.record(z.string(), StatSchema).optional(),
+  bars: z.record(z.string(), StatSchema).optional(),
+  /** The log record of their meeting (what the base values trace to). */
+  metSeq: z.number().int().min(0).optional(),
+  /** The last month the two were in the same place, or spoke. */
+  lastSeen: z.number().int().optional(),
+  /** Milestones of the bond already reached ("close friend", "nakama"), in order. */
+  milestones: z.array(z.string()).optional(),
+  /** A romance's stage, when there is one. */
+  romance: z.enum(ROMANCE_STAGES).optional(),
+  /** Sworn siblings (a shared sake cup). */
+  sworn: z.boolean().optional(),
 });
 export type Relationship = z.infer<typeof RelationshipSchema>;
 
@@ -473,6 +513,106 @@ export const HandsSchema = z.strictObject({
 });
 export type HandsData = z.infer<typeof HandsSchema>;
 
+export const MOODS = ['content', 'angry', 'grieving', 'drunk', 'scared', 'elated'] as const;
+export type Mood = (typeof MOODS)[number];
+
+/**
+ * Who someone is (Phase 7): seven axes from −100 to +100, three values ranked, a dream, likes and
+ * dislikes, a voice, a fear and a soft spot. Canon people's come from data; everyone else's are
+ * rolled from where they come from, their family and their traits, and drift with their lives.
+ */
+export const ProfileSchema = z.strictObject({
+  /** bold, kind, honest, free, proud, calm, serious: −100 (cautious, cruel...) to +100. */
+  axes: z.record(z.string(), z.number().min(-100).max(100)),
+  /** Value ids (data/heart.json), most important first. */
+  values: z.array(z.string()).max(3),
+  /** A dream id from the pool, or the dream's own words. */
+  dream: z.string().min(1),
+  likes: z.array(z.string()),
+  dislikes: z.array(z.string()),
+  voice: z.strictObject({
+    register: z.string().min(1),
+    tic: z.string().nullable(),
+    laugh: z.string().nullable(),
+  }),
+  fear: z.string().min(1),
+  /** Someone they will always protect (an entity id), or a thing they cannot resist. */
+  softSpot: z.string().nullable(),
+  /** Some people never fall in love (or not with anyone they meet). */
+  romance: z.boolean(),
+});
+export type Profile = z.infer<typeof ProfileSchema>;
+
+/** Something someone remembers about another person (Phase 7). */
+export const MemorySchema = z.strictObject({
+  /** Who it is about. */
+  about: z.string().min(1),
+  /** A memory kind (data/heart.json `memories`): favour, grudge, lifeSaved, promise... */
+  kind: z.string().min(1),
+  /** "Loguetown", "the storm off Kumate": what they will bring up. */
+  where: z.string(),
+  tick: z.number().int(),
+  /** How much it matters now (fades by the kind's rate). Positive or negative. */
+  weight: z.number(),
+  /** The log record behind it. */
+  seq: z.number().int().min(0).optional(),
+  /** Heard as gossip from this person, not lived. */
+  heardFrom: z.string().optional(),
+});
+export type Memory = z.infer<typeof MemorySchema>;
+
+/**
+ * Something learned by talking (Phase 7, rule 4): the claim as it was told, whether it is true
+ * (never shown to the player unless omniscient), and who said it.
+ */
+export const FactSchema = z.strictObject({
+  id: z.number().int().min(1),
+  tick: z.number().int(),
+  /** person, place, rumour, fruit, treasure, directions. */
+  kind: z.string().min(1),
+  /** The entity or location it is about. */
+  about: z.string().nullable(),
+  /** The claim: "Ana Reyes is in Loguetown". */
+  text: z.string().min(1),
+  /** Where the claim says it is (a location id), when it says one. */
+  place: z.string().nullable(),
+  truth: z.boolean(),
+  from: z.string().min(1),
+  /** Found out for a lie (or confirmed) since. */
+  checked: z.enum(['confirmed', 'false']).optional(),
+});
+export type Fact = z.infer<typeof FactSchema>;
+
+/**
+ * The heart (Phase 7, save version 8): personality, mood, morale, conscience and memories, on
+ * anyone the world has had reason to know; and on the player, what they have learned by talking,
+ * what people say of them place by place, and the cooldowns of talk.
+ */
+export const HeartSchema = z.strictObject({
+  profile: ProfileSchema,
+  mood: z.strictObject({ id: z.enum(MOODS), until: z.number().int() }),
+  /** 0 to 100: their mood over months. */
+  morale: z.number().min(0).max(100),
+  /** 0 to 100: how their recent deeds sit with their own values (base plus modifiers). */
+  conscience: StatSchema,
+  memories: z.array(MemorySchema),
+  /** Player: facts learned by talking. */
+  facts: z.array(FactSchema).optional(),
+  /** Player: what people say of them, by place, faction or family: honour, kindness, courage... */
+  rep: z.record(z.string(), z.record(z.string(), z.number())).optional(),
+  /** Talk this month, by "<person>" (count) and "<person>:<intent>" (the month). */
+  talk: z.record(z.string(), z.number().int()).optional(),
+  /** Player: the heir named in their will. */
+  heir: z.string().optional(),
+  /** The last month this person reached out to the player, by initiative id. */
+  reached: z.record(z.string(), z.number().int()).optional(),
+  /** Berries the player owes this person (negative: they owe the player). */
+  owed: z.number().optional(),
+  /** An animal companion's species (data/heart.json `companions`). */
+  species: z.string().optional(),
+});
+export type HeartData = z.infer<typeof HeartSchema>;
+
 /**
  * What makes an entity a person. Present on every `character` entity created from Phase 1 on.
  *
@@ -543,6 +683,8 @@ export const CharacterSchema = z.strictObject({
   fights: FightRecordSchema.optional(),
   /** Weapons, gear, skills, projects and cargo (save version 7). */
   hands: HandsSchema.optional(),
+  /** Personality, mood, morale, conscience, memories (save version 8). */
+  heart: HeartSchema.optional(),
 });
 export type CharacterData = z.infer<typeof CharacterSchema>;
 
@@ -750,6 +892,11 @@ export const WorldConfigSchema = z.strictObject({
    * canon cast and the places' numbers (headless balancing runs, and tests of other systems).
    */
   population: z.enum(['full', 'none']),
+  /**
+   * Phase 7: romance is opt-in (a setting the player controls; on by default, for adults only).
+   * Absent in saves before version 8: on.
+   */
+  romance: z.boolean().optional(),
 });
 export type WorldConfig = z.infer<typeof WorldConfigSchema>;
 
@@ -827,6 +974,11 @@ export const PendingDecisionSchema = z.strictObject({
   beat: z.boolean().optional(),
   /** The player's fight in progress (save version 6): its one choice plays the rest out. */
   battle: z.boolean().optional(),
+  /**
+   * Phase 7: someone reaching out to the player (an initiative from data/initiatives); `roles`
+   * holds who (`other`). Resolved by the heart, not the event engine.
+   */
+  heart: z.boolean().optional(),
 });
 export type PendingDecision = z.infer<typeof PendingDecisionSchema>;
 

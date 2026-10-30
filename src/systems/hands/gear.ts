@@ -9,6 +9,7 @@ import { locationIdOf } from '../places/place';
 import { ageYears } from '../life/body';
 import { carried, ensureHands, giveItem, HandsError, itemDefOf, itemOf, makeItem } from './items';
 import { useUp } from './market';
+import { moveAxis } from '../heart/bonds';
 
 /**
  * Gear and inventions (Phase 6): things to use in a fight (dials, seastone nets, a stimulant),
@@ -157,10 +158,6 @@ export function call(env: LifeEnv, targetId: string): void {
   if (last !== undefined && tick - last < data.hands.calls.everyMonths)
     throw new HandsError(`You already called ${other.name} this month`);
   hands.last[key] = tick;
-  const theirs = other.character?.relationships.find((r) => r.id === p.entity.id);
-  if (theirs) theirs.opinion.base += data.hands.calls.opinion;
-  const mine = p.c.relationships.find((r) => r.id === other.id);
-  if (mine) mine.opinion.base += data.hands.calls.opinion / 2;
   const there = other.character ? locationIdOf(data, other.character) : null;
   if (there) {
     for (const item of state.news) {
@@ -169,8 +166,16 @@ export function call(env: LifeEnv, targetId: string): void {
     }
   }
   const text = renderLife(env, data.hands.lines['called'] ?? '', { other: other.name });
-  lifeLog(env, text, { tags: ['personal', 'relationship'], others: [other.id] });
+  const record = lifeLog(env, text, { tags: ['personal', 'relationship'], others: [other.id] });
   reportLine(env, text, 'plain');
+  // Phase 7: a call is a talk at a distance: warmth on both sides, traced to the call.
+  const theirs = other.character?.relationships.find((r) => r.id === p.entity.id);
+  if (theirs)
+    moveAxis(data, theirs, 'affection', data.hands.calls.opinion, 'Calls', record.seq, tick);
+  const mine = p.c.relationships.find((r) => r.id === other.id);
+  if (mine)
+    moveAxis(data, mine, 'affection', data.hands.calls.opinion / 2, 'Calls', record.seq, tick);
+  if (theirs) theirs.lastSeen = tick;
 }
 
 // ---- Vivre Cards --------------------------------------------------------------------------------

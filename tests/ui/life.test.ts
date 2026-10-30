@@ -61,7 +61,7 @@ describe('the masthead', () => {
   it('shows Health and Vigor as numbers and bars once a life starts', async () => {
     await startLife();
     const vitals = qa('.vital').map((v) => text(v.querySelector('.vital__label')));
-    expect(vitals).toEqual(['Age', 'Health', 'Vigor', 'Location', 'Berries']);
+    expect(vitals).toEqual(['Age', 'Health', 'Vigor', 'Location', 'Berries', 'Morale']);
     const health = qa('.vital--bar')[0]!;
     expect(text(health.querySelector('.vital__value'))).toMatch(/^(\d+)\/\1$/);
     expect(health.querySelector('.vital-bar')?.hasAttribute('hidden')).toBe(false);

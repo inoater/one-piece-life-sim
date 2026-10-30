@@ -1,0 +1,40 @@
+[
+  {
+    "id": "ini_guilt",
+    "name": "Guilt",
+    "title": "It will not leave you alone",
+    "text": "What you did keeps you up at night. You cannot stop seeing it.",
+    "self": true,
+    "cooldown": 6,
+    "tags": ["conscience"],
+    "weight": 1,
+    "choices": [
+      {
+        "id": "confess",
+        "label": "Confess to someone",
+        "lines": ["You tell the truth. It costs you, and it helps."],
+        "effects": {
+          "deed": ["honest"],
+          "myMorale": -4
+        }
+      },
+      {
+        "id": "amends",
+        "label": "Make amends (500 Berries)",
+        "lines": ["You quietly set something right."],
+        "effects": {
+          "deed": ["generous", "kind"]
+        },
+        "berries": 500
+      },
+      {
+        "id": "bury",
+        "label": "Bury it",
+        "lines": ["You push it down where it cannot reach you. Mostly."],
+        "effects": {
+          "deed": ["cruel"]
+        }
+      }
+    ]
+  }
+]

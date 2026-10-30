@@ -1,0 +1,175 @@
+[
+  {
+    "id": "ini_rival_challenge",
+    "name": "A rival challenges you",
+    "title": "{name} wants a fight",
+    "text": "{name} finds you in the street. {say.challenge}",
+    "who": {
+      "kinds": ["rival"]
+    },
+    "cooldown": 12,
+    "tags": ["rival"],
+    "weight": 1.3,
+    "choices": [
+      {
+        "id": "accept",
+        "label": "Accept the challenge",
+        "lines": ["{name} says nothing more. {say.challenge}"],
+        "effects": {
+          "special": "duel",
+          "deed": ["brave"]
+        }
+      },
+      {
+        "id": "refuse",
+        "label": "Walk away",
+        "lines": ["{name} laughs at your back. {say.tease}"],
+        "effects": {
+          "axes": {
+            "respect": -8,
+            "rivalry": 3
+          },
+          "myMorale": -3,
+          "deed": ["cowardly"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_rival_letter",
+    "name": "A letter from your rival",
+    "title": "Word from {name}",
+    "text": "A letter from {name}, who has been training, and says you had better be ready. {say.tease}",
+    "who": {
+      "kinds": ["rival"]
+    },
+    "where": "apart",
+    "cooldown": 12,
+    "tags": ["rival"],
+    "weight": 1.3,
+    "effects": {
+      "axes": {
+        "rivalry": 3
+      },
+      "mine": {
+        "rivalry": 5
+      },
+      "train": {
+        "willpower": 0.3
+      }
+    }
+  },
+  {
+    "id": "ini_enemy_threat",
+    "name": "An enemy makes a threat",
+    "title": "{name} comes for you",
+    "text": "{name} is waiting for you, and not to talk. {say.threat}",
+    "who": {
+      "max": {
+        "affection": -40
+      }
+    },
+    "cooldown": 12,
+    "tags": ["enemy"],
+    "weight": 1.5,
+    "choices": [
+      {
+        "id": "fight",
+        "label": "Stand and fight",
+        "lines": ["{name} says nothing more. {say.challenge}"],
+        "effects": {
+          "special": "duel",
+          "deed": ["brave"]
+        }
+      },
+      {
+        "id": "avoid",
+        "label": "Slip away",
+        "lines": ["You lose {name} in the crowd, this time."],
+        "effects": {
+          "deed": ["cowardly"],
+          "myMood": "scared"
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_apology",
+    "name": "An apology",
+    "title": "{name} comes to apologise",
+    "text": "{name} looks at the floor. {say.sorry}",
+    "who": {
+      "max": {
+        "affection": 5
+      },
+      "personality": {
+        "kind": {
+          "min": 0
+        }
+      },
+      "notKinds": ["companion", "owner"]
+    },
+    "memory": "insult",
+    "cooldown": 24,
+    "tags": ["enemy"],
+    "weight": 1.3,
+    "choices": [
+      {
+        "id": "accept",
+        "label": "Accept it",
+        "lines": ["{name} lets out a long breath. {say.grateful}"],
+        "effects": {
+          "special": "reconcile",
+          "axes": {
+            "affection": 10
+          },
+          "mine": {
+            "affection": 6
+          }
+        }
+      },
+      {
+        "id": "reject",
+        "label": "Turn it down",
+        "lines": ["{name} says nothing more. {say.sad}"],
+        "effects": {
+          "axes": {
+            "affection": -5
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ini_betrayed_by",
+    "name": "Cheated by someone you trusted",
+    "title": "{name} cheats you",
+    "text": "You find out too late: {name} sold you out for a handful of Berries.",
+    "who": {
+      "personality": {
+        "honest": {
+          "max": -30
+        }
+      },
+      "max": {
+        "trust": 25,
+        "affection": 30
+      },
+      "notKinds": ["companion", "owner", "child"]
+    },
+    "cooldown": 36,
+    "tags": ["enemy"],
+    "weight": 0.6,
+    "effects": {
+      "berries": -500,
+      "axes": {
+        "trust": -20
+      },
+      "mine": {
+        "trust": -30,
+        "affection": -20
+      },
+      "myMood": "angry"
+    }
+  }
+]

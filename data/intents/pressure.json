@@ -1,0 +1,385 @@
+[
+  {
+    "id": "int_persuade",
+    "group": "pressure",
+    "name": "Persuade",
+    "description": "Talk them round to your way of seeing things.",
+    "stat": "charisma",
+    "difficulty": 45,
+    "personality": {
+      "proud": 10,
+      "calm": -5
+    },
+    "feelings": {
+      "trust": -0.3,
+      "respect": -0.2
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["By the end, {name} is arguing your side better than you did. {say.agree}"],
+      "effects": {
+        "axes": {
+          "respect": 5,
+          "trust": 3
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} comes round, slowly. {say.agree}"],
+      "effects": {
+        "axes": {
+          "respect": 3
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} will not be moved. {say.refuse}"],
+      "effects": {
+        "axes": {
+          "respect": -1
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} digs in harder than ever. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "trust": -3
+        },
+        "mood": "angry"
+      }
+    }
+  },
+  {
+    "id": "int_bargain",
+    "group": "pressure",
+    "name": "Bargain",
+    "description": "Haggle for a better price on what they sell.",
+    "stat": "charisma",
+    "difficulty": 40,
+    "values": {
+      "wealth": 10
+    },
+    "personality": {
+      "kind": -5
+    },
+    "feelings": {
+      "affection": -0.1
+    },
+    "criticalSuccess": {
+      "lines": ["{name} throws up {their} hands and gives you the deal of the year. {say.laugh}"],
+      "effects": {
+        "berries": 500,
+        "axes": {
+          "respect": 3
+        }
+      }
+    },
+    "success": {
+      "lines": ["You shave a good bit off the price. {say.annoyed}"],
+      "effects": {
+        "berries": 200,
+        "axes": {
+          "respect": 1
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} will not budge on price. {say.refuse}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} raises the price on you out of spite. {say.tease}"],
+      "effects": {
+        "berries": -150,
+        "axes": {
+          "affection": -2
+        }
+      }
+    }
+  },
+  {
+    "id": "int_bribe",
+    "group": "pressure",
+    "name": "Bribe",
+    "description": "Money for a favour, a blind eye or a secret.",
+    "stat": "charisma",
+    "difficulty": 30,
+    "topic": "amount",
+    "values": {
+      "honour": 20,
+      "justice": 15,
+      "wealth": -15
+    },
+    "personality": {
+      "honest": 20
+    },
+    "deed": ["sly"],
+    "criticalSuccess": {
+      "lines": ["{name} pockets it smoothly and tells you what you wanted. {say.agree}"],
+      "effects": {
+        "special": "secret",
+        "axes": {
+          "debt": 5
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} takes it, and keeps up {their} end. {say.agree}"],
+      "effects": {
+        "special": "secret"
+      }
+    },
+    "failure": {
+      "lines": ["{name} pushes it back across the table. {say.refuse}"],
+      "effects": {
+        "axes": {
+          "trust": -5
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} is disgusted, and tells people. {say.angry}"],
+      "effects": {
+        "axes": {
+          "trust": -10,
+          "respect": -6
+        },
+        "memory": {
+          "kind": "cruelty",
+          "weight": -15
+        }
+      }
+    }
+  },
+  {
+    "id": "int_intimidate",
+    "group": "pressure",
+    "name": "Intimidate",
+    "description": "Make them afraid of what you might do.",
+    "stat": "willpower",
+    "difficulty": 45,
+    "personality": {
+      "bold": 25
+    },
+    "feelings": {
+      "fear": -0.5
+    },
+    "deed": ["cruel"],
+    "criticalSuccess": {
+      "lines": ["{name} goes white and does exactly as told. {say.scared}"],
+      "effects": {
+        "axes": {
+          "fear": 15,
+          "respect": 3,
+          "affection": -5
+        },
+        "mood": "scared"
+      }
+    },
+    "success": {
+      "lines": ["{name} backs down. {say.scared}"],
+      "effects": {
+        "axes": {
+          "fear": 10,
+          "affection": -5
+        },
+        "mood": "scared"
+      }
+    },
+    "failure": {
+      "lines": ["{name} is not impressed. {say.tease}"],
+      "effects": {
+        "axes": {
+          "fear": 2,
+          "affection": -4,
+          "respect": -3
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} squares up to you instead. {say.threat}"],
+      "effects": {
+        "axes": {
+          "affection": -8,
+          "respect": -8,
+          "rivalry": 8
+        },
+        "mood": "angry"
+      }
+    }
+  },
+  {
+    "id": "int_deceive",
+    "group": "pressure",
+    "name": "Deceive",
+    "description": "Tell them a story that serves you.",
+    "stat": "charisma",
+    "difficulty": 45,
+    "feelings": {
+      "trust": -0.5
+    },
+    "personality": {
+      "serious": 5
+    },
+    "deed": ["sly"],
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} swallows it whole, and thanks you for it. {say.grateful}"],
+      "effects": {
+        "berries": 300
+      }
+    },
+    "success": {
+      "lines": ["{name} believes you. {say.agree}"],
+      "effects": {
+        "berries": 120
+      }
+    },
+    "failure": {
+      "lines": ["{name} is not buying it. {say.doubt}"],
+      "effects": {
+        "axes": {
+          "trust": -6
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} sees straight through you, and will not forget it. {say.angry}"],
+      "effects": {
+        "axes": {
+          "trust": -15,
+          "affection": -6
+        },
+        "memory": {
+          "kind": "lie",
+          "weight": -20
+        },
+        "mood": "angry"
+      }
+    }
+  },
+  {
+    "id": "int_blackmail",
+    "group": "pressure",
+    "name": "Blackmail",
+    "description": "Use what you know against them.",
+    "stat": "intellect",
+    "difficulty": 50,
+    "personality": {
+      "bold": 20,
+      "proud": 10
+    },
+    "feelings": {
+      "fear": -0.4
+    },
+    "deed": ["cruel", "sly"],
+    "criticalSuccess": {
+      "lines": ["{name} pays, and hates you for every Berry. {say.scared}"],
+      "effects": {
+        "berries": 1500,
+        "axes": {
+          "fear": 20,
+          "affection": -20
+        },
+        "memory": {
+          "kind": "grudge",
+          "weight": -30
+        },
+        "mood": "scared"
+      }
+    },
+    "success": {
+      "lines": ["{name} pays to keep you quiet. {say.angry}"],
+      "effects": {
+        "berries": 800,
+        "axes": {
+          "fear": 12,
+          "affection": -15
+        },
+        "memory": {
+          "kind": "grudge",
+          "weight": -25
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} calls your bluff. {say.threat}"],
+      "effects": {
+        "axes": {
+          "affection": -10
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} comes for you instead. {say.threat}"],
+      "effects": {
+        "axes": {
+          "affection": -25,
+          "rivalry": 15
+        },
+        "memory": {
+          "kind": "grudge",
+          "weight": -40
+        },
+        "mood": "angry",
+        "special": "duel"
+      }
+    }
+  },
+  {
+    "id": "int_interrogate",
+    "group": "pressure",
+    "name": "Interrogate",
+    "description": "Press them hard until they talk.",
+    "stat": "willpower",
+    "difficulty": 50,
+    "topic": "person",
+    "personality": {
+      "bold": 20
+    },
+    "feelings": {
+      "fear": -0.4
+    },
+    "deed": ["cruel"],
+    "criticalSuccess": {
+      "lines": ["{name} breaks, and tells you all of it. {fact}. {say.scared}"],
+      "effects": {
+        "special": "fact",
+        "axes": {
+          "fear": 10,
+          "affection": -8
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} gives up something. {fact}."],
+      "effects": {
+        "special": "fact",
+        "axes": {
+          "fear": 8,
+          "affection": -8
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} will not say a word. {say.threat}"],
+      "effects": {
+        "axes": {
+          "affection": -6
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} spits at your feet. {say.angry}"],
+      "effects": {
+        "axes": {
+          "affection": -15
+        },
+        "memory": {
+          "kind": "grudge",
+          "weight": -20
+        }
+      }
+    }
+  }
+]

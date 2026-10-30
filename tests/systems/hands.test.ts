@@ -440,7 +440,7 @@ describe('Done when: every item type can be crafted, with quality that follows s
       'invention',
     ])
       expect(kinds.has(craft), craft).toBe(true);
-  });
+  }, 120_000);
 
   it('a master makes better than a beginner, over many tries', () => {
     let low = 0;

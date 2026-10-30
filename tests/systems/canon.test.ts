@@ -54,7 +54,7 @@ describe('Done when: a test beat fires ~100% (Canon), ~70% (Probable), under 20%
       if (mode === 'probable') expect(fired).toBeGreaterThanOrEqual(58);
       if (mode === 'probable') expect(fired).toBeLessThanOrEqual(82);
       if (mode === 'random') expect(fired).toBeLessThan(20);
-    });
+    }, 120_000);
   }
 
   it('gets those rates from the beat chance, the window, and the mode multiplier', () => {

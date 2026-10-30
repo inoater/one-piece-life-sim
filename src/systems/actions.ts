@@ -40,6 +40,7 @@ import {
 } from './powers/commands';
 import { addDebugModifier, spawnTestEntity } from './devtools';
 import { applyHandsCommand } from './hands/commands';
+import { applyHeartCommand } from './heart/commands';
 import { ShipDesignSchema } from '../engine/data/defs';
 import { resolveDecision, scheduleEvent } from './events';
 import { livePlayerRoutine } from './life';
@@ -284,6 +285,36 @@ export const ActionSchema = z.discriminatedUnion('type', [
     skill: z.string().min(1),
     value: z.number().min(0).max(100),
   }),
+  // ---- The heart (Phase 7): talk, scenes, family, companions
+  z.strictObject({
+    type: z.literal('heart/talk'),
+    target: z.string().min(1),
+    intent: z.string().min(1),
+    topic: z.string().min(1).optional(),
+    amount: z.number().int().min(1).max(100_000_000).optional(),
+    remote: z.boolean().optional(),
+  }),
+  z.strictObject({ type: z.literal('heart/romance'), on: z.boolean() }),
+  z.strictObject({ type: z.literal('heart/adopt') }),
+  z.strictObject({ type: z.literal('heart/will'), heir: z.string().min(1) }),
+  z.strictObject({
+    type: z.literal('heart/companion'),
+    species: z.string().min(1),
+    name: z.string().max(30).optional(),
+  }),
+  z.strictObject({
+    type: z.literal('heart/feedFruit'),
+    companion: z.string().min(1),
+    fruit: z.string().min(1),
+  }),
+  z.strictObject({ type: z.literal('heart/banquet') }),
+  z.strictObject({ type: z.literal('heart/meeting'), mode: z.enum(['rule', 'ask']) }),
+  z.strictObject({
+    type: z.literal('debug/heart'),
+    target: z.string().min(1),
+    axis: z.string().min(1),
+    value: z.number().min(-100).max(100),
+  }),
   z.strictObject({
     type: z.literal('debug/fight'),
     foe: z.string().min(1),
@@ -485,6 +516,25 @@ export function applyAction(
         throw new ActionError(error instanceof Error ? error.message : String(error));
       }
       // Buying a blade, laying a keel: decisions that survive closing the tab.
+      if (!action.type.startsWith('debug/')) effects.push({ kind: 'autosave' });
+      break;
+
+    case 'heart/talk':
+    case 'heart/romance':
+    case 'heart/adopt':
+    case 'heart/will':
+    case 'heart/companion':
+    case 'heart/feedFruit':
+    case 'heart/banquet':
+    case 'heart/meeting':
+    case 'debug/heart':
+      try {
+        applyHeartCommand(state, data, action);
+      } catch (error) {
+        if (error instanceof ActionError) throw error;
+        throw new ActionError(error instanceof Error ? error.message : String(error));
+      }
+      // A word said, a feast thrown, a child taken in: decisions that survive closing the tab.
       if (!action.type.startsWith('debug/')) effects.push({ kind: 'autosave' });
       break;
 

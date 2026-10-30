@@ -3,6 +3,7 @@ import type { CharacterData, Entity } from '../../engine/state';
 import { statTotal } from './body';
 import { lifeLog, renderLife, reportLine, type LifeEnv } from './env';
 import { giveTraitTo, removeTrait } from './traits';
+import { deedHook } from '../heart/hooks';
 
 /**
  * Personality drift and earned traits (Phase 4).
@@ -126,6 +127,8 @@ export function drift(ctx: DriftCtx, tags: readonly string[]): void {
     moved = true;
   }
   if (moved) checkDrift(ctx);
+  // Phase 7: the same deed weighs on the conscience and is talked about where it happened.
+  if (ctx.env && tags.length > 0) deedHook.fire?.(ctx.env, tags, ctx.env.causeSeq);
 }
 
 /** Add to a behaviour counter (fights, severe injuries, months of Hard training). */

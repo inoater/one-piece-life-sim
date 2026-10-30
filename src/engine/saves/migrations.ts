@@ -95,6 +95,12 @@ export const MIGRATIONS: Readonly<Record<number, Migration>> = {
    * player's gear bought in Phases 4 and 5 (counts) becomes items (systems/hands/swords.ts).
    */
   6: (envelope) => ({ ...envelope, saveVersion: 7, state: { ...stateOf(envelope) } }),
+  /**
+   * 7 -> 8 (Phase 7, the heart): every new field is optional. A person's heart (personality,
+   * mood, memories) is made the first time the world has reason to know it; an old relationship's
+   * opinion is its Affection, and its other axes start at rest. Romance stays on.
+   */
+  7: (envelope) => ({ ...envelope, saveVersion: 8, state: { ...stateOf(envelope) } }),
 };
 
 export interface MigrationResult {

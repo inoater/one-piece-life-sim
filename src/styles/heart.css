@@ -1,0 +1,288 @@
+/* Phase 7: the People page and a person's page. */
+
+@layer components {
+  .heart-facts {
+    display: grid;
+    gap: var(--s-1) var(--s-4);
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    margin: 0 0 var(--s-3);
+  }
+  .heart-facts > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--s-2);
+  }
+  .heart-facts dt {
+    color: var(--mist);
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+  }
+  .heart-facts dd {
+    margin: 0;
+  }
+  .heart-tendencies {
+    margin: 0 0 var(--s-3);
+    padding-left: var(--s-5);
+    font-style: italic;
+  }
+  .heart-subhead {
+    margin: var(--s-4) 0 var(--s-2);
+    font-family: var(--font-ui);
+    font-size: var(--text-1);
+    color: var(--mist);
+  }
+  .heart-rep,
+  .heart-milestones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .heart-rep li,
+  .heart-milestones li {
+    display: flex;
+    gap: var(--s-2);
+    padding: var(--s-1) var(--s-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+  }
+  .heart-milestones li.is-reached {
+    border-color: var(--tide);
+    background: var(--tide-soft);
+  }
+  .heart-toggle {
+    display: inline-flex;
+    gap: var(--s-2);
+    align-items: center;
+    margin-top: var(--s-3);
+    font-family: var(--font-ui);
+  }
+
+  .contacts {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-2);
+    align-items: baseline;
+    padding-bottom: var(--s-2);
+    border-bottom: 1px solid var(--rule);
+  }
+  .contact__name {
+    font-weight: 650;
+  }
+  .contact__meta {
+    flex-basis: 100%;
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+  }
+
+  .heart-scenes,
+  .heart-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+    margin-bottom: var(--s-3);
+  }
+  .heart-topics label {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+  }
+  .heart-input {
+    min-width: 0;
+    max-width: 14rem;
+    padding: var(--s-1) var(--s-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--text-0);
+  }
+  .heart-told {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+    padding-left: var(--s-5);
+  }
+  .heart-told li.is-false {
+    text-decoration: line-through;
+    text-decoration-color: var(--squall);
+  }
+  .heart-memories {
+    margin: 0;
+    padding-left: var(--s-5);
+  }
+
+  .person-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--s-3);
+    align-items: start;
+  }
+  .portrait {
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border: 2px solid var(--brass-line);
+    border-radius: 50%;
+    background: var(--tide-soft);
+    color: var(--tide);
+    font-family: var(--font-ui);
+    font-size: var(--text-3);
+    font-weight: 700;
+  }
+
+  .heart-meters {
+    display: grid;
+    gap: var(--s-2);
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+  .heart-meter {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr 3ch;
+    gap: var(--s-2);
+    align-items: center;
+    padding: var(--s-1);
+    border-radius: var(--radius);
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+    cursor: help;
+  }
+  .heart-meter:focus-visible {
+    outline: 2px solid var(--tide);
+  }
+  .heart-meter__name {
+    overflow: hidden;
+    color: var(--mist);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .heart-meter__track {
+    position: relative;
+    height: 0.5rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--rule);
+  }
+  .heart-meter__fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: var(--tide);
+  }
+  .heart-meter__fill.is-negative {
+    background: var(--squall);
+  }
+  .heart-meter__zero {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--rule-strong);
+  }
+  .heart-meter__value {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .heart-breakdown .breakdown__note {
+    min-width: min(16rem, 50vw);
+    max-width: 22rem;
+    white-space: normal;
+  }
+
+  .heart-intent-list {
+    display: grid;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .heart-intent {
+    display: grid;
+    grid-template-columns: minmax(9rem, auto) 1fr;
+    gap: 0 var(--s-3);
+    align-items: center;
+  }
+  .heart-intent .button {
+    justify-self: start;
+  }
+  .heart-intent__odds {
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+  }
+  .heart-intent.is-locked .heart-intent__odds {
+    color: var(--mist);
+  }
+  .heart-intent__desc {
+    grid-column: 1 / -1;
+    font-size: var(--text-0);
+  }
+
+  .web {
+    margin: 0;
+  }
+  .web svg {
+    display: block;
+    width: 100%;
+    max-width: 26rem;
+    height: auto;
+  }
+  .web__edge {
+    stroke: var(--rule-strong);
+  }
+  .web__edge.is-cold {
+    stroke: var(--squall);
+    stroke-dasharray: 4 3;
+  }
+  .web__label {
+    fill: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 11px;
+  }
+}
+
+@layer layout {
+  .shell[data-route='people'] .panel,
+  .shell[data-route='people'] .year-rail,
+  .shell[data-route='person'] .panel,
+  .shell[data-route='person'] .year-rail {
+    display: none !important;
+  }
+  @media (min-width: 700px) {
+    .shell[data-route='people'] .tabs,
+    .shell[data-route='person'] .tabs {
+      grid-column: 1 / -1;
+      border-left: 0;
+    }
+    .shell[data-route='people'] .tab--feed,
+    .shell[data-route='person'] .tab--feed {
+      display: block;
+    }
+  }
+  @media (max-width: 520px) {
+    .person-head {
+      grid-template-columns: auto 1fr;
+    }
+    .heart-intent {
+      grid-template-columns: 1fr;
+    }
+    .heart-meter {
+      grid-template-columns: 6rem 1fr 3ch;
+    }
+  }
+}

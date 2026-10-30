@@ -24,8 +24,12 @@ import type { TravelView } from '../systems/voyage/view';
 import type { FruitsView, PowersView } from '../systems/powers/view';
 import type { BattleView, FightSelfView } from '../systems/battle/view';
 import type { DesignPreview, HandsView } from '../systems/hands/view';
+import type { HeartSelfView, PersonView, WebView } from '../systems/heart/view';
 
 export type {
+  HeartSelfView,
+  PersonView,
+  WebView,
   DesignPreview,
   HandsView,
   BattleView,
@@ -143,6 +147,8 @@ export interface Snapshot {
   fight: FightSelfView | null;
   /** Phase 6: what the player carries, the market and workshop here, their ship and the creator. */
   hands: HandsView | null;
+  /** Phase 7: the player's heart (mood, morale, conscience, reputation, facts) and their contacts. */
+  heart: HeartSelfView | null;
   /** At the present, before open-ended play: the epilogue to show. */
   epilogue: null | { title: string; text: string };
   /** The player's character sheet. Hidden facts are included only in omniscient views. */
@@ -423,6 +429,11 @@ export interface Protocol {
   // ---- Hands (Phase 6)
   /** The ship creator's live numbers for a design as it changes. */
   'hands/design': { req: { design: unknown }; res: DesignPreview | null };
+  // ---- The heart (Phase 7)
+  /** A person page: who they are, every axis and bar traced, memories, the intent menu. */
+  'heart/person': { req: { id: string; view: ViewOptions }; res: PersonView | null };
+  /** The relationship web of family, crew and the closest. */
+  'heart/web': { req: Record<string, never>; res: WebView | null };
 }
 
 /** A handful of headless lives of one race, for the debug panel's lifespan chart. */

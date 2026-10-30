@@ -99,6 +99,14 @@
     "reckless": {
       "axis": "caution",
       "by": -1
+    },
+    "loyal": {
+      "axis": "honesty",
+      "by": 0.5
+    },
+    "treacherous": {
+      "axis": "honesty",
+      "by": -2
     }
   },
   "counters": [

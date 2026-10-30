@@ -35,8 +35,9 @@ describe('the masthead', () => {
       'Vigor',
       'Location',
       'Berries',
+      'Morale',
     ]);
-    expect(qa('.vital__value.is-empty')).toHaveLength(5);
+    expect(qa('.vital__value.is-empty')).toHaveLength(6);
     expect(q('.vital__value')?.getAttribute('title')).toContain('Appears once a life has started');
   });
 
@@ -51,7 +52,7 @@ describe('the masthead', () => {
 });
 
 describe('navigation', () => {
-  it('has the five sections, the map, the Powers, Gear and Ship pages as real links, and Back-friendly hash URLs', () => {
+  it('has the five sections, the map, the Powers, Gear, Ship and People pages as real links, and Back-friendly hash URLs', () => {
     expect(qa('.tabs a').map((a) => [text(a), a.getAttribute('href')])).toEqual([
       ['Feed', '#/feed'],
       ['Character', '#/character'],
@@ -62,6 +63,7 @@ describe('navigation', () => {
       ['Powers', '#/powers'],
       ['Gear', '#/gear'],
       ['Ship', '#/ship'],
+      ['People', '#/people'],
     ]);
   });
 

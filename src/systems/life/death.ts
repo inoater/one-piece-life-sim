@@ -20,6 +20,8 @@ import { relationTitle } from './people';
 import { reapplyTraits } from './traits';
 import { entityIds } from '../../engine/entities';
 import { passCarriedFruits } from '../powers/fruits';
+import { keepInheritance, passFamilyName } from '../heart/family';
+import { ensureHeart } from '../heart/profile';
 
 /**
  * When the person being played dies (Phase 2): the life recap, and carrying on as someone else.
@@ -70,8 +72,14 @@ const INHERITS: ReadonlySet<ContinueMode> = new Set(['heir', 'protege', 'crewmat
 
 function candidatesFor(state: WorldState, dead: Person, mode: ContinueMode): Entity[] {
   const { c } = dead;
+  // Phase 7: an heir named in a will comes first among those of their kind.
+  const heir = c.heart?.heir;
   const byAge = (list: Entity[]) =>
-    [...list].sort((a, b) => (a.character?.birthTick ?? 0) - (b.character?.birthTick ?? 0));
+    [...list].sort(
+      (a, b) =>
+        Number(b.id === heir) - Number(a.id === heir) ||
+        (a.character?.birthTick ?? 0) - (b.character?.birthTick ?? 0),
+    );
   switch (mode) {
     case 'heir':
       return byAge(livingRelations(state, c, 'child'));
@@ -213,8 +221,8 @@ function promote(state: WorldState, data: GameData, target: Entity, dead: Person
   const mc = made?.character;
   if (!made || !mc) throw new ContinueError('Could not build a body for them');
   target.stats = structuredClone(made.stats);
-  if (mc.hidden) tc.hidden = structuredClone(mc.hidden);
-  tc.appearance = { ...mc.appearance };
+  // Phase 7: what they took after their parents is kept (looks; potential leaning theirs).
+  keepInheritance(data, mc, tc, tc.hidden, { ...tc.appearance });
   if (mc.adultHeightCm !== undefined) tc.adultHeightCm = mc.adultHeightCm;
   if (mc.focus) tc.focus = mc.focus;
   const kept = new Set(tc.traits);
@@ -423,6 +431,9 @@ export function continueAs(
   }
   const life = freshLife(data, target, state.tick, (deadLife?.generation ?? 1) + 1);
   life.predecessorId = dead.entity.id;
+  // Phase 7: a heart of their own, and the family name's reputation if they carry it.
+  ensureHeart(state, data, target);
+  if (tc.familyName && tc.familyName === dead.c.familyName) passFamilyName(dead.entity, target);
   if (mode === 'crewmate' && deadLife?.gang) {
     life.gang = deadLife.gang;
     target.flags['gang.member'] = true;

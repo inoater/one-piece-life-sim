@@ -36,6 +36,7 @@ import { canonView, factionViews, mapView, placeView, worldSummary } from '../sy
 import { travelView } from '../systems/voyage/view';
 import { fruitsView, powersView } from '../systems/powers/view';
 import { designPreview, handsView } from '../systems/hands/view';
+import { heartView, personView, webView } from '../systems/heart/view';
 import { battleView, fightSelfView } from '../systems/battle/view';
 import { entryWarnings } from '../systems/genesis/warnings';
 import type {
@@ -194,6 +195,8 @@ export class SimCore {
       'world/factions': (req) => factionViews(this.state, this.deps.data, req.generated ?? false),
       'powers/fruits': (req) => fruitsView(this.state, this.deps.data, req.view.omniscient),
       'hands/design': (req) => designPreview(this.state, this.deps.data, req.design),
+      'heart/person': (req) => personView(this.state, this.deps.data, req.id, req.view.omniscient),
+      'heart/web': () => webView(this.state, this.deps.data),
     };
   }
 
@@ -709,6 +712,7 @@ export class SimCore {
       battle: battleView(state, data),
       fight: fightSelfView(state, data),
       hands: handsView(state, data),
+      heart: heartView(state, data, view.omniscient),
       world: worldSummary(state, data),
       epilogue:
         !state.openEnded && hasReachedPresent(cal, state.tick)

@@ -1,0 +1,493 @@
+[
+  {
+    "id": "int_recruit",
+    "group": "bonds",
+    "name": "Recruit",
+    "description": "Ask them to join you.",
+    "stat": "charisma",
+    "difficulty": 45,
+    "feelings": {
+      "affection": -0.3,
+      "respect": -0.4,
+      "trust": -0.2
+    },
+    "values": {
+      "freedom": -10,
+      "family": 10
+    },
+    "requires": {
+      "notKinds": ["parent", "child", "crewmate", "superior", "subordinate", "companion", "owner"],
+      "minAge": 14
+    },
+    "criticalSuccess": {
+      "lines": ["{name} grins. {say.agree} Where do I sign?"],
+      "effects": {
+        "special": "recruit",
+        "bars": {
+          "loyalty": 15
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} thinks it over, then nods. {say.agree}"],
+      "effects": {
+        "special": "recruit"
+      }
+    },
+    "failure": {
+      "lines": ["{name} has a life here. {say.refuse}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} would rather drown. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "affection": -3
+        }
+      }
+    }
+  },
+  {
+    "id": "int_swear",
+    "group": "bonds",
+    "name": "Swear brotherhood",
+    "description": "Share a sake cup, and be family by choice.",
+    "stat": "charisma",
+    "difficulty": 30,
+    "feelings": {
+      "affection": -0.3,
+      "trust": -0.3
+    },
+    "requires": {
+      "min": {
+        "affection": 55,
+        "trust": 45
+      },
+      "sworn": false,
+      "minAge": 8,
+      "notKinds": ["sweetheart", "parent", "child", "companion", "owner"]
+    },
+    "criticalSuccess": {
+      "lines": ["You drink from the same cup. From today you are sworn siblings. {say.moved}"],
+      "effects": {
+        "special": "swear",
+        "memory": {
+          "kind": "promise",
+          "weight": 40
+        },
+        "mood": "elated",
+        "myMood": "elated"
+      }
+    },
+    "success": {
+      "lines": ["{name} raises the cup. {say.agree}"],
+      "effects": {
+        "special": "swear",
+        "memory": {
+          "kind": "promise",
+          "weight": 30
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} is not ready for that. {say.evasive}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} thinks you are joking, and laughs. {say.laugh}"],
+      "effects": {
+        "axes": {
+          "affection": -3
+        }
+      }
+    }
+  },
+  {
+    "id": "int_confess",
+    "group": "bonds",
+    "name": "Confess your feelings",
+    "description": "Tell them how you feel.",
+    "stat": "charisma",
+    "difficulty": 50,
+    "feelings": {
+      "affection": -0.35,
+      "attraction": -0.6
+    },
+    "requires": {
+      "romantic": true,
+      "notKinds": [
+        "parent",
+        "child",
+        "sibling",
+        "guardian",
+        "ward",
+        "sweetheart",
+        "companion",
+        "owner"
+      ]
+    },
+    "criticalSuccess": {
+      "lines": ["{name} takes your hand before you have finished. {say.moved}"],
+      "effects": {
+        "special": "confess",
+        "bars": {
+          "passion": 20
+        },
+        "mood": "elated",
+        "myMood": "elated"
+      }
+    },
+    "success": {
+      "lines": ["{name} goes quiet, then smiles. {say.warm}"],
+      "effects": {
+        "special": "confess",
+        "mood": "elated"
+      }
+    },
+    "failure": {
+      "lines": ["{name} is kind about it, but the answer is no. {say.sorry}"],
+      "effects": {
+        "myMorale": -10,
+        "axes": {
+          "attraction": -5
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} had no idea, and does not know where to look. {say.evasive}"],
+      "effects": {
+        "axes": {
+          "affection": -4
+        },
+        "myMorale": -12,
+        "myMood": "grieving"
+      }
+    }
+  },
+  {
+    "id": "int_propose",
+    "group": "bonds",
+    "name": "Propose",
+    "description": "Ask them to marry you.",
+    "stat": "charisma",
+    "difficulty": 40,
+    "feelings": {
+      "affection": -0.4
+    },
+    "values": {
+      "family": -10,
+      "freedom": 10
+    },
+    "requires": {
+      "kinds": ["sweetheart"],
+      "romance": ["together"],
+      "romantic": true
+    },
+    "criticalSuccess": {
+      "lines": ["{name} says yes before you have finished asking. {say.moved}"],
+      "effects": {
+        "special": "propose",
+        "bars": {
+          "commitment": 20
+        },
+        "mood": "elated",
+        "myMood": "elated",
+        "memory": {
+          "kind": "promise",
+          "weight": 40
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} says yes. {say.pleased}"],
+      "effects": {
+        "special": "propose",
+        "bars": {
+          "commitment": 10
+        },
+        "mood": "elated"
+      }
+    },
+    "failure": {
+      "lines": ["{name} is not ready. Not yet. {say.sorry}"],
+      "effects": {
+        "bars": {
+          "commitment": -5
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} says no, and something between you breaks. {say.sad}"],
+      "effects": {
+        "bars": {
+          "passion": -15,
+          "commitment": -10
+        },
+        "axes": {
+          "affection": -8
+        },
+        "myMood": "grieving"
+      }
+    }
+  },
+  {
+    "id": "int_marry",
+    "group": "bonds",
+    "name": "Marry",
+    "description": "Hold the wedding.",
+    "stat": "charisma",
+    "difficulty": 0,
+    "cost": 3000,
+    "requires": {
+      "kinds": ["sweetheart"],
+      "romance": ["engaged"],
+      "romantic": true
+    },
+    "criticalSuccess": {
+      "lines": ["The whole harbour turns out, and {name} has never looked happier. {say.moved}"],
+      "effects": {
+        "special": "marry",
+        "memory": {
+          "kind": "promise",
+          "weight": 50
+        },
+        "mood": "elated",
+        "myMood": "elated",
+        "myMorale": 15
+      }
+    },
+    "success": {
+      "lines": ["A small wedding, and a happy one. {say.warm}"],
+      "effects": {
+        "special": "marry",
+        "mood": "elated",
+        "myMood": "elated"
+      }
+    },
+    "failure": {
+      "lines": ["A small wedding, and a happy one. {say.warm}"],
+      "effects": {
+        "special": "marry",
+        "mood": "elated"
+      }
+    },
+    "criticalFailure": {
+      "lines": ["It rains the whole day, and you marry {name} anyway. {say.laugh}"],
+      "effects": {
+        "special": "marry"
+      }
+    }
+  },
+  {
+    "id": "int_apologise",
+    "group": "bonds",
+    "name": "Apologise",
+    "description": "Own up to what you did.",
+    "stat": "charisma",
+    "difficulty": 30,
+    "personality": {
+      "proud": 15,
+      "calm": -10
+    },
+    "feelings": {
+      "affection": -0.2
+    },
+    "deed": ["humble"],
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} hears you out, and the weight between you lifts. {say.sorry}"],
+      "effects": {
+        "special": "reconcile",
+        "axes": {
+          "affection": 8,
+          "trust": 4
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} accepts it, a little stiffly. {say.agree}"],
+      "effects": {
+        "special": "reconcile",
+        "axes": {
+          "affection": 4
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} is not ready to hear it. {say.doubt}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} only gets angrier. {say.angry}"],
+      "effects": {
+        "axes": {
+          "affection": -3
+        },
+        "mood": "angry"
+      }
+    }
+  },
+  {
+    "id": "int_forgive",
+    "group": "bonds",
+    "name": "Forgive them",
+    "description": "Let go of what they did to you.",
+    "stat": "willpower",
+    "difficulty": 20,
+    "deed": ["kind"],
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["You let it go, and {name} looks close to tears. {say.moved}"],
+      "effects": {
+        "axes": {
+          "affection": 8,
+          "trust": 3
+        },
+        "mine": {
+          "affection": 8,
+          "trust": 4
+        },
+        "special": "reconcile",
+        "mood": "elated"
+      }
+    },
+    "success": {
+      "lines": ["You tell {name} it is forgotten. {say.grateful}"],
+      "effects": {
+        "axes": {
+          "affection": 5
+        },
+        "mine": {
+          "affection": 5
+        }
+      }
+    },
+    "failure": {
+      "lines": ["You try, but you cannot quite let it go yet."],
+      "effects": {
+        "mine": {
+          "affection": 1
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} does not want your forgiveness. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "respect": -3
+        }
+      }
+    }
+  },
+  {
+    "id": "int_goodbye",
+    "group": "bonds",
+    "name": "Say goodbye",
+    "description": "Before a long voyage: a promise to write.",
+    "stat": "charisma",
+    "difficulty": 10,
+    "feelings": {
+      "affection": -0.1
+    },
+    "criticalSuccess": {
+      "lines": ["{name} makes you promise to come back. {say.farewell}"],
+      "effects": {
+        "special": "goodbye",
+        "memory": {
+          "kind": "promise",
+          "weight": 20
+        },
+        "bars": {
+          "commitment": 5,
+          "resentment": -10,
+          "jealousy": -15
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} sees you to the dock. {say.farewell}"],
+      "effects": {
+        "special": "goodbye",
+        "memory": {
+          "kind": "promise",
+          "weight": 12
+        },
+        "bars": {
+          "resentment": -5,
+          "jealousy": -10
+        }
+      }
+    },
+    "failure": {
+      "lines": ["A short goodbye. {say.farewell}"],
+      "effects": {
+        "special": "goodbye"
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} will not come to see you off. {say.sad}"],
+      "effects": {
+        "special": "goodbye",
+        "axes": {
+          "affection": -2
+        }
+      }
+    }
+  },
+  {
+    "id": "int_part_ways",
+    "group": "bonds",
+    "name": "Part ways",
+    "description": "End it: a romance, a place in your crew, an apprenticeship.",
+    "stat": "willpower",
+    "difficulty": 20,
+    "requires": {
+      "kinds": ["sweetheart", "crewmate", "protege"]
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["You end it as gently as such things end. {say.sad}"],
+      "effects": {
+        "special": "breakup",
+        "axes": {
+          "affection": -10
+        }
+      }
+    },
+    "success": {
+      "lines": ["It is over. {say.sad}"],
+      "effects": {
+        "special": "breakup",
+        "axes": {
+          "affection": -15
+        },
+        "mood": "grieving"
+      }
+    },
+    "failure": {
+      "lines": ["It is over, and it is ugly. {say.angry}"],
+      "effects": {
+        "special": "breakup",
+        "axes": {
+          "affection": -25
+        },
+        "memory": {
+          "kind": "grudge",
+          "weight": -15
+        },
+        "mood": "angry"
+      }
+    },
+    "criticalFailure": {
+      "lines": ["It is over, and {name} will hate you for it. {say.angry}"],
+      "effects": {
+        "special": "breakup",
+        "axes": {
+          "affection": -35
+        },
+        "memory": {
+          "kind": "betrayal",
+          "weight": -25
+        },
+        "mood": "angry"
+      }
+    }
+  }
+]

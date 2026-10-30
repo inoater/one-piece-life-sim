@@ -58,6 +58,8 @@ expands to gigabytes is rejected mid-stream), and unknown fields in the state ar
 | 4       | 3     | `state.canon`, `state.eventState`, `config.population`; places, factions, ships, travel, news places |
 | 5       | 4     | `character.powers`, `traitInfo`, `personality`; `fruit` entities; no data is moved                   |
 | 6       | 5     | `state.battle`, `character.fights`, `counters.battleId`; decisions marked `battle`                   |
+| 7       | 6     | `item` entities, `character.hands`, a ship's design and spirit, market supply; no data is moved      |
+| 8       | 7     | `character.heart`, relationship axes, bars and milestones, a modifier's `seq`; no data is moved      |
 
 A version 2 world gains its life block the first month it is played (full Health, an empty
 routine): `world_v2.opsim` is loaded and lived for three months in `tests/engine/golden.test.ts`.
@@ -73,6 +75,13 @@ the same test.
 A version 6 world is unchanged by its migration (every Phase 6 field is optional). The first month
 it is played it gains its blades and treasure, and the player's gear bought as counts in Phases 4
 and 5 becomes items: `world_v6.opsim` is loaded and lived in the same test.
+
+A version 7 world is unchanged by its migration too (every Phase 7 field is optional). Hearts are
+made the first time the world has reason to know someone (the player and the people around them
+on the first month; anyone who reaches out, gossips or marries); an old relationship's opinion is
+its Affection and its other axes start at rest; romance stays on. A tie made before meeting
+records were kept traces its base to the first record naming both. `world_v7.opsim` is loaded and
+lived in the same test; `world_v8.opsim` is the new golden save.
 
 ## Changing the saved shape
 

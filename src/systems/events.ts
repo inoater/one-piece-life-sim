@@ -10,6 +10,7 @@ import type { BattleState } from '../engine/battle-state';
 import type { CheckBand, FightSpec } from '../engine/data/schemas';
 import { beginContest, beginFight, buildFight, resolveBattleDecision } from './battle/player';
 import { onFightFinished } from './battle/finish-hooks';
+import { resolveHeartDecision } from './heart/initiatives';
 import { ensureLife, isJailed, livingRelations, relationKind } from './life/body';
 import { applyLifeEffect } from './life/effects';
 import { firstImpressions } from './life/traits';
@@ -388,6 +389,11 @@ export function resolveDecision(
   // Phase 5: the player's fight in progress (play it out, or decide the fate of the beaten).
   if (decision.battle) {
     resolveBattleDecision(state, data, decision, choiceId);
+    return;
+  }
+  // Phase 7: someone reaching out to the player (data/initiatives).
+  if (decision.heart) {
+    resolveHeartDecision(state, data, decision, choiceId);
     return;
   }
   const date = dateOf(data.calendar, state.tick);

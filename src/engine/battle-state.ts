@@ -262,7 +262,7 @@ export const BattleStateSchema = z.strictObject({
   log: z.array(BattleLineSchema),
   /** What started it, so its result can be applied when it ends. */
   source: z.strictObject({
-    kind: z.enum(['event', 'beat', 'activity', 'contest', 'debug']),
+    kind: z.enum(['event', 'beat', 'activity', 'contest', 'debug', 'heart']),
     id: z.string().min(1),
     choice: z.string().optional(),
     roles: z.record(z.string(), z.string()).optional(),

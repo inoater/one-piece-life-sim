@@ -11,6 +11,7 @@ import {
   battleRulesRefs,
   handsRulesRefs,
   shipRulesRefs,
+  heartRulesRefs,
   REF_EXTRACTORS,
   singletonTargets,
   TARGET_HOME,
@@ -41,6 +42,8 @@ import {
   TECH_TAGS,
   type BattleRules,
   type HandsRules,
+  type HeartRules,
+  HEART_LINE_IDS,
   type ShipRules,
   type Weapon,
   HANDS_LINE_IDS,
@@ -280,6 +283,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   const battle = singletons['data/battle.json'] as BattleRules | undefined;
   const hands = singletons['data/hands.json'] as HandsRules | undefined;
   const ships = singletons['data/ships.json'] as ShipRules | undefined;
+  const heart = singletons['data/heart.json'] as HeartRules | undefined;
 
   // ---- Pass 2: references --------------------------------------------------------------------
 
@@ -295,6 +299,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
     ...(battle ? { battle } : {}),
     ...(hands ? { hands } : {}),
     ...(ships ? { ships } : {}),
+    ...(heart ? { heart } : {}),
   });
   /** Is the target's id list available? If its file is broken, its references are not checked. */
   const has = (target: RefTarget, id: string): boolean | null => {
@@ -345,6 +350,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   if (battle) checkRefs('data/battle.json', '', battleRulesRefs(battle));
   if (hands) checkRefs('data/hands.json', '', handsRulesRefs(hands));
   if (ships) checkRefs('data/ships.json', '', shipRulesRefs(ships));
+  if (heart) checkRefs('data/heart.json', '', heartRulesRefs(heart));
 
   // ---- Pass 3: coherence ---------------------------------------------------------------------
 
@@ -779,6 +785,37 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
         );
       if ((templates.get(grade) ?? 0) !== 1)
         error('data/weapons/', '(file)', `Exactly one template for ${grade} swords is needed`);
+    }
+  }
+  // Phase 7: every line the heart writes; each bond's milestones name bars it has.
+  if (heart) {
+    for (const id of HEART_LINE_IDS) {
+      if (!(id in heart.lines))
+        error('data/heart.json', `lines.${id}`, 'Missing line', 'the heart writes this line');
+    }
+    for (const [kind, bond] of Object.entries(heart.bonds)) {
+      const ids = new Set<string>(bond?.bars.map((b) => b.id) ?? []);
+      bond?.milestones.forEach((m, i) => {
+        for (const key of [...Object.keys(m.min), ...Object.keys(m.max)]) {
+          if (
+            !ids.has(key) &&
+            !['affection', 'trust', 'respect', 'fear', 'rivalry', 'attraction', 'debt'].includes(
+              key,
+            )
+          )
+            error(
+              'data/heart.json',
+              `bonds.${kind}.milestones[${i}]`,
+              `No bar or axis "${key}" in a ${kind} bond`,
+            );
+        }
+        if (m.after && !bond.milestones.some((o) => o.id === m.after))
+          error(
+            'data/heart.json',
+            `bonds.${kind}.milestones[${i}].after`,
+            `No milestone "${m.after}"`,
+          );
+      });
     }
   }
   // Phase 5: battles. Every line the engine writes; the ladder climbs; each contest once; every

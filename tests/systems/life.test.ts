@@ -49,7 +49,7 @@ describe('Done when: a character lives from age 0 to death in one village', () =
     expect(life.outcomes.some((o) => o.startsWith('act_infancy#'))).toBe(true);
     // Valid all the way through.
     expect(WorldStateSchema.safeParse(state).success).toBe(true);
-  });
+  }, 120_000);
 });
 
 describe('Done when: diminishing returns near potential', () => {

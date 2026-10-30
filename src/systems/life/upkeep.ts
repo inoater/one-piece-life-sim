@@ -22,6 +22,8 @@ import { makePerson, relate, relationWords } from './people';
 import { releaseFruitOf } from '../powers/fruits';
 import { handsMonth } from '../hands/month';
 import { powersMonth } from '../powers/month';
+import { inheritFrom } from '../heart/family';
+import { markMet } from '../heart/bonds';
 
 /**
  * The passing of a month for the person being played and the people around them (step 7):
@@ -112,11 +114,18 @@ function siblingsDue(env: LifeEnv, rng: Rng): void {
     );
     for (const parent of parents)
       relate(parent, sibling, 'child', 60, tick, siblingRng.fork('parent', parent.id));
+    // Phase 7: they take after their parents.
+    inheritFrom(state, data, sibling, parents, siblingRng.fork('heredity'));
     family.siblingIds.push(sibling.id);
     const text = renderLife(env, data.life.lines.siblingBorn, {
       sibling: relationWords(p.c, sibling, 'sibling'),
     });
-    lifeLog(env, text, { kind: 'event', tags: ['family', 'birth'], others: [sibling.id] });
+    const born = lifeLog(env, text, {
+      kind: 'event',
+      tags: ['family', 'birth'],
+      others: [sibling.id],
+    });
+    markMet(p.entity, sibling, born.seq);
     reportLine(env, text, 'good');
   });
 }
@@ -138,12 +147,21 @@ function childrenDue(env: LifeEnv, rng: Rng): void {
     });
     relate(p.entity, child, 'child', 70, tick, childRng.fork('relate'));
     if (spouse) relate(spouse, child, 'child', 70, tick, childRng.fork('spouse'));
+    // Phase 7: traits, potential, looks and leanings from the player and their spouse.
+    inheritFrom(
+      state,
+      data,
+      child,
+      spouse ? [p.entity, spouse] : [p.entity],
+      childRng.fork('heredity'),
+    );
     const text = renderLife(env, data.life.lines.childBorn, { child: child.name });
-    lifeLog(env, text, {
+    const born = lifeLog(env, text, {
       kind: 'event',
       tags: ['family', 'birth', 'relationship'],
       others: [child.id],
     });
+    markMet(p.entity, child, born.seq);
     reportLine(env, text, 'good');
   });
 }
@@ -157,6 +175,8 @@ function relativesAge(env: LifeEnv, rng: Rng): void {
     const other = state.entities[rel.id];
     const oc = other?.character;
     if (!other || !oc?.alive) continue;
+    // Phase 7: an animal companion lives by its own kind's years (heart/companions.ts).
+    if (other.flags['animal'] !== undefined) continue;
     if (tick <= oc.birthTick || (tick - oc.birthTick) % 12 !== 0) continue;
     const person = personOf(data, other);
     if (!person) continue;

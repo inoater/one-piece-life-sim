@@ -1,0 +1,298 @@
+[
+  {
+    "id": "int_ask_help",
+    "group": "requests",
+    "name": "Ask for help",
+    "description": "You need a hand. Will they give one?",
+    "stat": "charisma",
+    "difficulty": 40,
+    "feelings": {
+      "affection": -0.4,
+      "debt": -0.3
+    },
+    "values": {
+      "family": -5
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} drops everything for you. {say.agree}"],
+      "effects": {
+        "axes": {
+          "debt": -10,
+          "affection": 2
+        },
+        "myMorale": 10,
+        "berries": 400,
+        "memory": {
+          "kind": "favour",
+          "weight": 12
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} helps, grumbling a little. {say.agree}"],
+      "effects": {
+        "axes": {
+          "debt": -8
+        },
+        "myMorale": 6,
+        "berries": 200,
+        "memory": {
+          "kind": "favour",
+          "weight": 8
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} has troubles of {their} own. {say.refuse}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} cannot believe you would ask. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "affection": -3
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_loan",
+    "group": "requests",
+    "name": "Ask for a loan",
+    "description": "Borrow Berries, to be paid back.",
+    "stat": "charisma",
+    "difficulty": 45,
+    "topic": "amount",
+    "feelings": {
+      "trust": -0.4,
+      "affection": -0.2
+    },
+    "values": {
+      "wealth": 10
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} counts it out without a second thought. {say.agree}"],
+      "effects": {
+        "special": "loan",
+        "memory": {
+          "kind": "debt",
+          "weight": -10
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} lends it, with a look that says it had better come back. {say.doubt}"],
+      "effects": {
+        "special": "loan",
+        "memory": {
+          "kind": "debt",
+          "weight": -15
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} does not lend money. Not even to you. {say.refuse}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} is offended you asked. {say.angry}"],
+      "effects": {
+        "axes": {
+          "trust": -4,
+          "affection": -2
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_teacher",
+    "group": "requests",
+    "name": "Ask them to teach you",
+    "description": "Learn what they know.",
+    "stat": "willpower",
+    "difficulty": 50,
+    "feelings": {
+      "respect": -0.4,
+      "affection": -0.2
+    },
+    "values": {
+      "knowledge": -10
+    },
+    "requires": {
+      "notKinds": ["parent", "child", "protege", "mentor"]
+    },
+    "criticalSuccess": {
+      "lines": ["{name} studies you for a long moment, then nods. {say.proud}"],
+      "effects": {
+        "special": "teach",
+        "bars": {
+          "approval": 10
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} agrees to take you on. {say.agree}"],
+      "effects": {
+        "special": "teach"
+      }
+    },
+    "failure": {
+      "lines": ["{name} does not take students. {say.refuse}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} laughs at the idea. {say.tease}"],
+      "effects": {
+        "axes": {
+          "respect": -3
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_passage",
+    "group": "requests",
+    "name": "Ask for a place on their ship",
+    "description": "Sail with them, under them.",
+    "stat": "charisma",
+    "difficulty": 45,
+    "feelings": {
+      "respect": -0.3,
+      "trust": -0.3
+    },
+    "requires": {
+      "notKinds": ["crewmate", "superior", "child", "protege"]
+    },
+    "criticalSuccess": {
+      "lines": ["{name} claps you on the back. {say.agree} There is always room for good hands."],
+      "effects": {
+        "special": "passage",
+        "bars": {
+          "loyalty": 10
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} agrees, if you pull your weight. {say.agree}"],
+      "effects": {
+        "special": "passage"
+      }
+    },
+    "failure": {
+      "lines": ["{name} has no berth for you. {say.refuse}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} would not have you aboard. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "respect": -3
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_shelter",
+    "group": "requests",
+    "name": "Ask for shelter",
+    "description": "A roof and a meal for a while.",
+    "stat": "charisma",
+    "difficulty": 35,
+    "feelings": {
+      "affection": -0.4
+    },
+    "values": {
+      "family": -10,
+      "peace": -5
+    },
+    "criticalSuccess": {
+      "lines": ["{name} makes up a bed and will not hear a word about paying. {say.warm}"],
+      "effects": {
+        "special": "shelter",
+        "axes": {
+          "debt": -6
+        },
+        "memory": {
+          "kind": "favour",
+          "weight": 10
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} gives you a corner for a while. {say.agree}"],
+      "effects": {
+        "special": "shelter",
+        "axes": {
+          "debt": -5
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} has no room. {say.refuse}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} shuts the door in your face. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "affection": -3
+        }
+      }
+    }
+  },
+  {
+    "id": "int_call_debt",
+    "group": "requests",
+    "name": "Call in a debt",
+    "description": "They owe you. Time to collect.",
+    "stat": "willpower",
+    "difficulty": 30,
+    "feelings": {
+      "debt": -0.4,
+      "trust": -0.2
+    },
+    "values": {
+      "honour": -15
+    },
+    "requires": {
+      "min": {
+        "debt": 10
+      }
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} pays every Berry and then some. {say.sorry}"],
+      "effects": {
+        "special": "callDebt",
+        "axes": {
+          "respect": 3
+        }
+      }
+    },
+    "success": {
+      "lines": ["{name} pays up. {say.grateful}"],
+      "effects": {
+        "special": "callDebt"
+      }
+    },
+    "failure": {
+      "lines": ["{name} claims not to remember owing you anything. {say.evasive}"],
+      "effects": {
+        "axes": {
+          "trust": -2
+        },
+        "mine": {
+          "trust": -4
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} tells you to go to hell. {say.angry}"],
+      "effects": {
+        "axes": {
+          "affection": -4
+        },
+        "mine": {
+          "affection": -5
+        }
+      }
+    }
+  }
+]

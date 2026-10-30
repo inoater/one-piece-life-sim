@@ -16,6 +16,7 @@ import { curse, findFruit, hearRumour, revealSecret } from '../powers/fruits';
 import { findSomething } from '../hands/gear';
 import { giveMap } from '../hands/treasure';
 import { loseCargo } from '../hands/market';
+import { firstMeeting } from '../heart/meet';
 import {
   addProgress,
   breakthroughTrack,
@@ -177,6 +178,8 @@ export function applyLifeEffect(env: LifeEnv, effect: LifeEffect, scope: EffectS
       });
       relate(p.entity, other, effect.role, effect.opinion, tick, rng.fork('relate'));
       firstImpressions(data, p.entity, other);
+      // Phase 7: what is said of the player here speaks first.
+      firstMeeting(env, other, env.causeSeq);
       scope.other = other;
       break;
     }

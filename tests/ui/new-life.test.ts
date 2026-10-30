@@ -159,6 +159,7 @@ describe('New Life', () => {
       'Vigor',
       'Location',
       'Berries',
+      'Morale',
     ]);
     expect(vitals[0]).toBe('16');
     expect(vitals[1]).toMatch(/^\d+\/\d+$/); // full Health at the start

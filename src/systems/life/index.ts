@@ -4,6 +4,7 @@ import { ensureLife } from './body';
 import type { LifeEnv } from './env';
 import { resolveRoutine } from './activities';
 import { liveMonth } from './upkeep';
+import { heartMonth } from '../heart/month';
 
 /**
  * The life loop's two places in the tick (Phase 2):
@@ -36,7 +37,11 @@ export function livePlayerRoutine(state: WorldState, ctx: TickContext): void {
 
 export function livePlayerMonth(state: WorldState, ctx: TickContext): void {
   const env = envFor(state, ctx);
-  if (env) liveMonth(env);
+  if (!env) return;
+  liveMonth(env);
+  // Phase 7: who they are, the people around them, who reaches out.
+  if (env.p.c.alive)
+    heartMonth({ ...env, cause: 'sys:heart', rng: ctx.rng.fork('heart', env.p.entity.id) });
 }
 
 export { playerHasDied } from './upkeep';

@@ -286,6 +286,55 @@ own, and a Hard slot may be pushed further, each point a Vigor more and a multip
 practice, pay and a project's pace. `resolveRoutine`, `setRoutine`, the life view and the planner
 all read the same functions.
 
+## The heart (Phase 7)
+
+`src/systems/heart/` makes people people. **Profiles** (`profile.ts`): seven axes, three values, a
+dream, likes, a voice (register, tic, laugh), a fear and a soft spot, made the first time the world
+has reason to know someone, from a stream keyed to their id (so the same whenever it is made):
+canon people from their voice pack, children from their parents, everyone else from their traits,
+home and trade. The player's axes are their traits plus Phase 4's drift counters, every month.
+Views read `heartOrRoll`, which never stores, so looking never changes the world.
+
+**Relationships** (`bonds.ts`): each side of a tie keeps seven axes (Affection is the old
+`opinion`; the rest live in `axes`), each a Stat whose modifiers are named for their source and
+carry the `seq` of the log record behind them (rule 3 and rule 6 together). A bond kind is read
+from the relation kind and shows bars: some are axes, the rest its own (on the other's record).
+Time works on bases (shared history, a lover's jealousy, attraction), events on modifiers, which
+wear toward nothing at the bond's pace. Labels and milestones are data. A monthly sweep stamps any
+modifier written by code that did not know its record (a spar's aftermath) with the month's record
+naming that person, so every axis traces.
+
+**Talk** (`talk.ts`, data/intents): a check of a player stat against a difficulty from the other's
+personality, feelings, values, mood and memories (or a Phase 5 fight), four bands, a line in their
+voice (`speech.ts`: `{say.refuse}` is a refusal in their register, with their tic or laugh and
+their mood on it), then effects (`effects.ts`), each traced to the talk's record. Information is
+told as **facts** (`facts.ts`) with a truth value and a source; deceitful people lie; arriving where
+a claim points shows it up. **Initiatives** (`initiatives.ts`, data/initiatives): each month (canon
+people) or quarter (everyone else) someone close may reach out, picked by weight among what their
+tie allows; with choices it is a decision marked `heart`, resolved here rather than by the event
+engine. **Deeds** (`deeds.ts`): Phase 4's drift tags also weigh on the conscience (against one's
+values it falls; below the line, guilt) and travel as reputation, place by place and along the sea
+lanes; first impressions (`meet.ts`) read it. **Memory** (`memory.ts`) fades by kind, surfaces in
+talk, and spreads as gossip (`scenes.ts`, with banquets and crew meetings). **Family**
+(`family.ts`): heredity, adoption, wills, grief, the family name. **Companions** are people
+flagged as animals. **The world** (`world.ts`): Tier 2 people befriend, fall out, duel and betray
+each other a few pairs a quarter.
+
+The player's heart runs in step 7 after the life loop (`month.ts`), the world's in step 4. A
+module others call into at load (`hooks.ts`, no imports) lets Phase 4's drift tell the heart about
+a deed and Phase 5's aftermath call a victory feast.
+
+## Performance (Phase 7)
+
+A whole headless life (birth to death, about 84 years) took 2.8 s with Phase 6's code and takes
+3.9 s now, 4.5 s with the autopilot talking to people most months (the same six seeds, the same
+machine, one after the other). About a fifth of a life's time is the heart's month (drift,
+milestones, people reaching out, gossip); the rest of the rise is what the heart makes happen
+(decisions, duels, people met). People apart from the player are updated a quarter at a time,
+three months' worth at once (rule 5). A ten-year adult life takes well under a second; 30 of them,
+`npm run heart`, 18 s. Hearts are made only when needed, so a full world's save grows
+by the people who meet the player or each other.
+
 ## Worker protocol
 
 `src/worker/protocol.ts` types every request and response (`boot`, `newWorld`, `advance`, `dispatch`,

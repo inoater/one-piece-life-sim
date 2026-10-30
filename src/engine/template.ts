@@ -127,6 +127,67 @@ export const CANON_VARS = [
   'fruit',
 ] as const;
 
+/**
+ * Phase 7: what someone says, in their own voice: `{say.refuse}` is a refusal in their register
+ * (formal, rough, cheerful, archaic, plain, cold), with their verbal tic or laugh, coloured by
+ * their mood. The acts are a fixed list so every register must cover every one.
+ */
+export const SPEECH_ACTS = [
+  'greet',
+  'agree',
+  'refuse',
+  'pleased',
+  'annoyed',
+  'angry',
+  'laugh',
+  'grateful',
+  'scared',
+  'moved',
+  'evasive',
+  'threat',
+  'sad',
+  'warm',
+  'proud',
+  'sorry',
+  'challenge',
+  'farewell',
+  'tease',
+  'doubt',
+] as const;
+export type SpeechAct = (typeof SPEECH_ACTS)[number];
+
+/**
+ * Conversation and the people who reach out (Phase 7): the world's variables, the person spoken
+ * to ({name}, {they}, {them}, {their}, and capitalised {They}, {Their}), the player ({you}), what
+ * the talk was about ({topic}, {fact}), what they like and dream of, a memory they bring up, and
+ * what they say ({say.agree}, {say.refuse}...).
+ */
+export const HEART_VARS = [
+  ...WORLD_VARS,
+  'name',
+  'given',
+  'they',
+  'them',
+  'their',
+  'They',
+  'Their',
+  'you',
+  'topic',
+  'fact',
+  'like',
+  'food',
+  'dislike',
+  'dream',
+  'memory',
+  'amount',
+  'item',
+  'value',
+  'fear',
+  'title',
+  'mood',
+  ...SPEECH_ACTS.map((a) => `say.${a}` as const),
+] as const;
+
 export const APPEARANCE_VARS = [
   'a',
   'adjectives',

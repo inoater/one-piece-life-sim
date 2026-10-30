@@ -1,0 +1,280 @@
+[
+  {
+    "id": "int_ask_person",
+    "group": "information",
+    "name": "Ask about someone",
+    "description": "Where are they, and what are they doing?",
+    "stat": "charisma",
+    "difficulty": 30,
+    "topic": "person",
+    "feelings": {
+      "trust": -0.3,
+      "affection": -0.15
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} leans in. {say.agree} {fact}."],
+      "effects": {
+        "axes": {
+          "trust": 2
+        },
+        "special": "fact"
+      }
+    },
+    "success": {
+      "lines": ["{name} thinks about it. {fact}."],
+      "effects": {
+        "special": "fact"
+      }
+    },
+    "failure": {
+      "lines": ["{say.evasive}", "{name} has not heard a thing. {say.evasive}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} narrows {their} eyes. {say.annoyed} Asking about people gets you noticed."],
+      "effects": {
+        "axes": {
+          "trust": -3
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_place",
+    "group": "information",
+    "name": "Ask about a place",
+    "description": "What is it like there, and who holds it?",
+    "stat": "charisma",
+    "difficulty": 15,
+    "topic": "place",
+    "feelings": {
+      "affection": -0.1
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} has been there, and tells you everything. {fact}."],
+      "effects": {
+        "axes": {
+          "affection": 2
+        },
+        "special": "fact"
+      }
+    },
+    "success": {
+      "lines": ["{fact}, {name} says. {say.agree}"],
+      "effects": {
+        "special": "fact"
+      }
+    },
+    "failure": {
+      "lines": ["{name} has never been and does not pretend to know."]
+    },
+    "criticalFailure": {
+      "lines": ["{name} waves you off. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "affection": -1
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_rumour",
+    "group": "information",
+    "name": "Ask for rumours",
+    "description": "What is the harbour talking about?",
+    "stat": "charisma",
+    "difficulty": 35,
+    "feelings": {
+      "trust": -0.2,
+      "affection": -0.2
+    },
+    "personality": {
+      "serious": 10
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} grins and lowers {their} voice. {fact}. {say.laugh}"],
+      "effects": {
+        "axes": {
+          "trust": 2
+        },
+        "special": "fact"
+      }
+    },
+    "success": {
+      "lines": ["{name} has heard a thing or two. {fact}."],
+      "effects": {
+        "special": "fact"
+      }
+    },
+    "failure": {
+      "lines": ["{name} has nothing worth repeating. {say.evasive}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} does not trade in gossip. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "affection": -2
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_fruit",
+    "group": "information",
+    "name": "Ask about Devil Fruits",
+    "description": "Have they heard of a fruit, or seen one?",
+    "stat": "intellect",
+    "difficulty": 40,
+    "feelings": {
+      "trust": -0.3
+    },
+    "values": {
+      "knowledge": -10
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} has seen one with {their} own eyes. {fact}."],
+      "effects": {
+        "axes": {
+          "trust": 2
+        },
+        "special": "fact"
+      }
+    },
+    "success": {
+      "lines": ["{name} has heard talk. {fact}."],
+      "effects": {
+        "special": "fact"
+      }
+    },
+    "failure": {
+      "lines": ["{name} knows only the stories everyone knows."]
+    },
+    "criticalFailure": {
+      "lines": ["{name} goes quiet. {say.scared} People who ask about those fruits disappear."],
+      "effects": {
+        "axes": {
+          "trust": -2
+        },
+        "mood": "scared"
+      }
+    }
+  },
+  {
+    "id": "int_ask_treasure",
+    "group": "information",
+    "name": "Ask about treasure",
+    "description": "Buried gold, sunken ships, old maps.",
+    "stat": "charisma",
+    "difficulty": 45,
+    "feelings": {
+      "trust": -0.4,
+      "affection": -0.1
+    },
+    "values": {
+      "wealth": 15
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} checks nobody is listening. {fact}. {say.laugh}"],
+      "effects": {
+        "axes": {
+          "trust": 3
+        },
+        "special": "fact"
+      }
+    },
+    "success": {
+      "lines": ["{name} has heard a tale. {fact}."],
+      "effects": {
+        "special": "fact"
+      }
+    },
+    "failure": {
+      "lines": ["{name} laughs. Everybody wants treasure. {say.tease}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} gives you a hard look. {say.threat}"],
+      "effects": {
+        "axes": {
+          "trust": -4
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_directions",
+    "group": "information",
+    "name": "Ask for directions",
+    "description": "Where is the nearest smith, doctor, yard or dojo?",
+    "stat": "charisma",
+    "difficulty": 10,
+    "feelings": {
+      "affection": -0.1
+    },
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["{name} draws it for you in the dirt. {fact}."],
+      "effects": {
+        "special": "fact"
+      }
+    },
+    "success": {
+      "lines": ["{fact}, {name} says, pointing."],
+      "effects": {
+        "special": "fact"
+      }
+    },
+    "failure": {
+      "lines": ["{name} is not from around here either."]
+    },
+    "criticalFailure": {
+      "lines": ["{name} ignores you entirely."],
+      "effects": {
+        "axes": {
+          "affection": -1
+        }
+      }
+    }
+  },
+  {
+    "id": "int_ask_number",
+    "group": "information",
+    "name": "Ask for their Den Den Mushi number",
+    "description": "So you can call them from anywhere.",
+    "stat": "charisma",
+    "difficulty": 30,
+    "feelings": {
+      "trust": -0.4,
+      "affection": -0.2
+    },
+    "criticalSuccess": {
+      "lines": ["{name} scribbles the number on your hand. {say.warm}"],
+      "effects": {
+        "axes": {
+          "trust": 3
+        },
+        "special": "number"
+      }
+    },
+    "success": {
+      "lines": ["{name} gives you the number. {say.agree}"],
+      "effects": {
+        "special": "number"
+      }
+    },
+    "failure": {
+      "lines": ["{name} hesitates. {say.refuse}"]
+    },
+    "criticalFailure": {
+      "lines": ["{name} looks at you like you asked for a kidney. {say.annoyed}"],
+      "effects": {
+        "axes": {
+          "trust": -2
+        }
+      }
+    }
+  }
+]

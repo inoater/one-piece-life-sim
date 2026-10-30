@@ -1,0 +1,242 @@
+[
+  {
+    "id": "int_insult",
+    "group": "conflict",
+    "name": "Insult",
+    "description": "Say the cruellest thing you can think of.",
+    "stat": "charisma",
+    "difficulty": 25,
+    "personality": {
+      "calm": 10
+    },
+    "deed": ["rash", "proud"],
+    "remote": true,
+    "criticalSuccess": {
+      "lines": ["It cuts deep. {name} will not forget it. {say.angry}"],
+      "effects": {
+        "axes": {
+          "affection": -15,
+          "rivalry": 10
+        },
+        "memory": {
+          "kind": "insult",
+          "weight": -20
+        },
+        "mood": "angry"
+      }
+    },
+    "success": {
+      "lines": ["{name} flushes red. {say.angry}"],
+      "effects": {
+        "axes": {
+          "affection": -10,
+          "rivalry": 5
+        },
+        "memory": {
+          "kind": "insult",
+          "weight": -12
+        },
+        "mood": "angry"
+      }
+    },
+    "failure": {
+      "lines": ["{name} just shrugs it off. {say.tease}"],
+      "effects": {
+        "axes": {
+          "respect": -3
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} laughs in your face, and the room laughs with {them}. {say.laugh}"],
+      "effects": {
+        "axes": {
+          "respect": -8
+        },
+        "myMorale": -5
+      }
+    }
+  },
+  {
+    "id": "int_provoke",
+    "group": "conflict",
+    "name": "Provoke",
+    "description": "Needle them until they lose their temper.",
+    "stat": "charisma",
+    "difficulty": 35,
+    "personality": {
+      "calm": 25
+    },
+    "deed": ["rash"],
+    "criticalSuccess": {
+      "lines": ["{name} snaps and comes at you. {say.challenge}"],
+      "effects": {
+        "axes": {
+          "rivalry": 12,
+          "affection": -8
+        },
+        "mood": "angry",
+        "special": "duel"
+      }
+    },
+    "success": {
+      "lines": ["{name} is furious. {say.angry}"],
+      "effects": {
+        "axes": {
+          "rivalry": 8,
+          "affection": -6
+        },
+        "mood": "angry"
+      }
+    },
+    "failure": {
+      "lines": ["{name} will not take the bait. {say.tease}"],
+      "effects": {
+        "axes": {
+          "respect": -2
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} turns it back on you, and you lose your own temper. {say.laugh}"],
+      "effects": {
+        "axes": {
+          "respect": -6
+        },
+        "myMood": "angry"
+      }
+    }
+  },
+  {
+    "id": "int_challenge",
+    "group": "conflict",
+    "name": "Challenge to a duel",
+    "description": "Settle it with a fight.",
+    "stat": "combatPower",
+    "difficulty": 0,
+    "fight": "duel",
+    "deed": ["brave"],
+    "criticalSuccess": {
+      "lines": ["You beat {name} soundly. {say.sorry}"],
+      "effects": {
+        "axes": {
+          "respect": 15,
+          "rivalry": 10,
+          "fear": 5
+        },
+        "memory": {
+          "kind": "fight",
+          "weight": 10
+        }
+      }
+    },
+    "success": {
+      "lines": ["You win the duel. {say.proud}"],
+      "effects": {
+        "axes": {
+          "respect": 8,
+          "rivalry": 8
+        },
+        "memory": {
+          "kind": "fight",
+          "weight": 6
+        }
+      }
+    },
+    "failure": {
+      "lines": ["{name} wins. {say.proud}"],
+      "effects": {
+        "axes": {
+          "respect": 2,
+          "rivalry": 6
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} beats you badly. {say.tease}"],
+      "effects": {
+        "axes": {
+          "respect": -5,
+          "rivalry": 4
+        }
+      }
+    }
+  },
+  {
+    "id": "int_betray",
+    "group": "conflict",
+    "name": "Betray",
+    "description": "Turn their trust into your profit.",
+    "stat": "intellect",
+    "difficulty": 35,
+    "feelings": {
+      "trust": -0.3
+    },
+    "personality": {
+      "serious": 5
+    },
+    "deed": ["treacherous"],
+    "requires": {
+      "min": {
+        "trust": 10
+      }
+    },
+    "criticalSuccess": {
+      "lines": ["It goes exactly as you planned. {name} does not see it until it is far too late."],
+      "effects": {
+        "berries": 2500,
+        "axes": {
+          "trust": -40,
+          "affection": -30
+        },
+        "memory": {
+          "kind": "betrayal",
+          "weight": -60
+        },
+        "special": "betray"
+      }
+    },
+    "success": {
+      "lines": ["You sell {name} out. {say.angry}"],
+      "effects": {
+        "berries": 1200,
+        "axes": {
+          "trust": -35,
+          "affection": -25
+        },
+        "memory": {
+          "kind": "betrayal",
+          "weight": -50
+        },
+        "special": "betray"
+      }
+    },
+    "failure": {
+      "lines": ["{name} sees it coming. {say.threat}"],
+      "effects": {
+        "axes": {
+          "trust": -30,
+          "affection": -20
+        },
+        "memory": {
+          "kind": "betrayal",
+          "weight": -40
+        }
+      }
+    },
+    "criticalFailure": {
+      "lines": ["{name} turns it back on you, blade first. {say.challenge}"],
+      "effects": {
+        "axes": {
+          "trust": -40,
+          "affection": -35
+        },
+        "memory": {
+          "kind": "betrayal",
+          "weight": -50
+        },
+        "special": "duel"
+      }
+    }
+  }
+]
