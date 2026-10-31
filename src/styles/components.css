@@ -86,6 +86,24 @@
     color: var(--ink);
     border-bottom-color: var(--tide);
   }
+  .tab:focus-visible {
+    outline: 2px solid var(--tide);
+    outline-offset: -2px;
+  }
+  /* The pages (Map to Crew) after the side panels' tabs, set apart by a rule. */
+  .tab--first-page {
+    margin-left: var(--s-2);
+    border-left: 1px solid var(--rule);
+  }
+  @media (max-width: 699.98px) {
+    .tab {
+      padding: var(--s-2) var(--s-3);
+    }
+    .tab--first-page {
+      margin-left: 0;
+      border-left: 0;
+    }
+  }
 
   /* ---- The Log Pose dial --------------------------------------------------------------- */
   .dial {

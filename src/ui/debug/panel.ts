@@ -1,4 +1,5 @@
 import type { App } from '../app';
+import { createSandboxTab } from './sandbox-tab';
 import { h, isTypingTarget } from '../dom';
 import type { UiState } from '../store';
 import { createEntitiesTab } from './entities-tab';
@@ -33,6 +34,7 @@ export function mountDebug(root: HTMLElement, app: App): void {
     { id: 'log', label: 'Log', tab: createLogTab(app) },
     { id: 'genesis', label: 'Genesis', tab: createGenesisTab(app) },
     { id: 'life', label: 'Life', tab: createLifeTab(app) },
+    { id: 'sandbox', label: 'Sandbox', tab: createSandboxTab(app) },
   ];
   let active = 0;
 

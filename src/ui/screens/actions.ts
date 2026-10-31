@@ -35,6 +35,60 @@ function current(life: LifeView): Slot[] {
   }));
 }
 
+/**
+ * Spend the rest of the pool: push the Hard slots further first (up to what the pool allows), then
+ * add more of the last working activity at Hard, until the plan uses the Vigor there is.
+ */
+export function fillVigor(life: LifeView): Slot[] {
+  const routine = current(life);
+  const hard = life.efforts.find((e) => e.id === 'hard')?.vigor ?? 3;
+  const cost = (s: Slot, i: number) => {
+    const act = life.activities.find((a) => a.id === s.activity);
+    if (!act || act.restful) return 0;
+    const effort = life.efforts.find((e) => e.id === s.effort)?.vigor ?? 2;
+    return effort + (s.commit ?? 0) + (i >= life.slots ? life.drive.surcharge : 0);
+  };
+  const planned = () => routine.reduce((n, s, i) => n + cost(s, i), 0);
+  const work = [...routine]
+    .reverse()
+    .find((s) => !life.activities.find((a) => a.id === s.activity)?.restful);
+  // More of the last working activity, while slots and Vigor last.
+  while (
+    work &&
+    routine.length < slotCount(life) &&
+    planned() + hard + life.drive.surcharge <= life.vigor.pool
+  )
+    routine.push({ activity: work.activity, effort: 'hard' });
+  // Then push Hard slots one point at a time, round and round.
+  for (let guard = 0; guard < 200 && planned() < life.vigor.pool; guard++) {
+    const target = routine.findIndex(
+      (s) =>
+        s.effort === 'hard' &&
+        (s.commit ?? 0) < life.drive.commitMax &&
+        !life.activities.find((a) => a.id === s.activity)?.restful,
+    );
+    const softer = routine.findIndex(
+      (s) => s.effort !== 'hard' && !life.activities.find((a) => a.id === s.activity)?.restful,
+    );
+    if (softer >= 0) routine[softer] = { activity: routine[softer]!.activity, effort: 'hard' };
+    else if (target >= 0) {
+      const lowest = routine.reduce(
+        (best, s, i) =>
+          s.effort === 'hard' &&
+          !life.activities.find((a) => a.id === s.activity)?.restful &&
+          (s.commit ?? 0) < life.drive.commitMax &&
+          (best < 0 || (s.commit ?? 0) < (routine[best]?.commit ?? 0))
+            ? i
+            : best,
+        -1,
+      );
+      const s = routine[lowest]!;
+      routine[lowest] = { ...s, commit: (s.commit ?? 0) + 1 };
+    } else break;
+  }
+  return routine;
+}
+
 function choose(life: LifeView, index: number | null, app: App, activity: string): void {
   const routine = current(life);
   const name = life.activities.find((a) => a.id === activity)?.name ?? activity;
@@ -213,7 +267,8 @@ function meter(value: number, max: number, label: string, tone: string): HTMLEle
 function routineSection(life: LifeView, app: App, busy: boolean): HTMLElement {
   const over = life.vigor.planned > life.vigor.pool;
   const slots: HTMLElement[] = [];
-  const total = slotCount(life);
+  // The stage's own slots, what is planned beyond them, and one more to add while Vigor allows.
+  const total = Math.min(slotCount(life), Math.max(life.slots, life.routine.length + 1));
   for (let i = 0; i < total; i++) {
     const slot = life.routine[i];
     const overtime = i >= life.slots;
@@ -259,7 +314,7 @@ function routineSection(life: LifeView, app: App, busy: boolean): HTMLElement {
             { class: 'planner__lead' },
             `${life.stage}: ${plural(life.slots, 'activity', 'activities')} a month. The routine repeats until you change it.`,
             life.drive.overtime > 0
-              ? ` Your Vigor (${life.vigor.pool}) opens ${plural(life.drive.overtime, 'overtime slot')}: one for every ${life.drive.perSlot} Vigor.`
+              ? ` Your Vigor (${life.vigor.pool}) opens up to ${plural(life.drive.overtime, 'more slot')} (one for every ${life.drive.perSlot} Vigor), and a Hard slot can be pushed up to +${life.drive.commitMax}: plan until the Vigor runs out.`
               : life.slots >= 2
                 ? ` With ${life.drive.perSlot} Vigor you would have an overtime slot.`
                 : '',
@@ -279,6 +334,19 @@ function routineSection(life: LifeView, app: App, busy: boolean): HTMLElement {
               `Vigor planned ${life.vigor.planned} of ${life.vigor.pool}`,
               over ? 'bad' : 'vigor',
             ),
+            life.vigor.planned < life.vigor.pool && life.routine.length > 0
+              ? h(
+                  'button',
+                  {
+                    class: 'button button--tiny planner__fill',
+                    type: 'button',
+                    disabled: busy,
+                    onclick: () =>
+                      sendRoutine(app, life, fillVigor(life), 'Every bit of Vigor is planned.'),
+                  },
+                  `Use the other ${life.vigor.pool - life.vigor.planned} Vigor`,
+                )
+              : null,
           ),
           h('ol', { class: 'routine' }, slots),
         ],

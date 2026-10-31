@@ -47,6 +47,8 @@ interface Local {
   filter: string;
   compare: string[];
   creating: boolean;
+  /** Crewmates whose details are open (kept across the monthly redraw). */
+  openMembers: Set<string>;
 }
 
 function button(label: string, busy: boolean, onclick: () => void, extra = ''): HTMLButtonElement {
@@ -623,7 +625,7 @@ function rosterTab(
             : null,
         )
       : null;
-  const details = shown.map((m) => memberDetail(m, crew, view, app, busy));
+  const details = shown.map((m) => memberDetail(m, crew, view, app, busy, local));
   return [
     section(
       'The roster',
@@ -665,7 +667,14 @@ function rosterTab(
   ];
 }
 
-function memberDetail(m: Member, crew: Crew, view: CrewView, app: App, busy: boolean): HTMLElement {
+function memberDetail(
+  m: Member,
+  crew: Crew,
+  view: CrewView,
+  app: App,
+  busy: boolean,
+  local: Local,
+): HTMLElement {
   const focus = select(
     'Train',
     view.options.focuses.map((f) => ({ value: f.id, text: f.name })),
@@ -701,7 +710,14 @@ function memberDetail(m: Member, crew: Crew, view: CrewView, app: App, busy: boo
   });
   return h(
     'details',
-    { class: 'crew-member' },
+    {
+      class: 'crew-member',
+      open: local.openMembers.has(m.id),
+      ontoggle: (e: Event) => {
+        if ((e.target as HTMLDetailsElement).open) local.openMembers.add(m.id);
+        else local.openMembers.delete(m.id);
+      },
+    },
     h('summary', null, `${m.name}: ${m.roleName}`),
     facts([
       ['Joined', `${m.joined} (${m.months} months)`],
@@ -1318,6 +1334,7 @@ export function createCrewPage(app: App): CrewPage {
     filter: '',
     compare: [],
     creating: false,
+    openMembers: new Set(),
   };
   let last: { view: CrewView | null; state: UiState } | null = null;
   const draw = () => {

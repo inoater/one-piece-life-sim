@@ -24,7 +24,8 @@ describe('npm run lives (tools/lives.ts)', () => {
     expect(race.mean).toBeGreaterThan(0);
     expect(Object.values(race.causes).reduce((a: number, b) => a + (b as number), 0)).toBe(2);
     expect(race.outcomesPerLife.min).toBeGreaterThan(10);
-  });
+    // Whole lives (with crews since Phase 8) need room under full-suite load.
+  }, 120_000);
 
   it('is repeatable: the same seeds live the same lives', () => {
     const run = () =>
@@ -33,5 +34,5 @@ describe('npm run lives (tools/lives.ts)', () => {
           .output,
       ).races[0].mean;
     expect(run()).toBe(run());
-  }, 90_000);
+  }, 240_000);
 });

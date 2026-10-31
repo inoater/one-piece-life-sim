@@ -663,11 +663,13 @@ describe('Markets, trade, treasure and the rest', () => {
 });
 
 describe('A month scaled by Vigor', () => {
-  it('a deep pool opens overtime slots: one per five Vigor, at most three', () => {
-    expect(overtimeSlots(data, 4, 3)).toBe(0);
+  it('a deep pool opens overtime slots: one per four Vigor, up to twenty', () => {
+    expect(overtimeSlots(data, 3, 3)).toBe(0);
     expect(overtimeSlots(data, 7, 3)).toBe(1);
-    expect(overtimeSlots(data, 12, 3)).toBe(2);
-    expect(overtimeSlots(data, 40, 3)).toBe(3);
+    expect(overtimeSlots(data, 12, 3)).toBe(3);
+    // Fifty Vigor fits a month of fifty: twelve more slots.
+    expect(overtimeSlots(data, 50, 3)).toBe(12);
+    expect(overtimeSlots(data, 400, 3)).toBe(20);
     // A child's single slot never stretches.
     expect(overtimeSlots(data, 40, 1)).toBe(0);
   });
@@ -687,7 +689,7 @@ describe('A month scaled by Vigor', () => {
     expect(view.routine[0]?.commit).toBe(1);
     expect(view.routine[0]?.vigor).toBe(data.life.efforts.hard.vigor + 1);
     expect(view.drive.commitMax).toBe(
-      Math.min(data.life.drive.commit.gain.length, Math.floor(pool / data.life.drive.commit.per)),
+      Math.min(data.life.drive.commit.max ?? 4, Math.floor(pool / data.life.drive.commit.per)),
     );
   });
 

@@ -42,6 +42,7 @@ import { addDebugModifier, spawnTestEntity } from './devtools';
 import { applyHandsCommand } from './hands/commands';
 import { applyHeartCommand } from './heart/commands';
 import { applyCrewCommand } from './crew/commands';
+import { debugAddCrewmate, debugGiveTrait, debugMoney, debugSetStat } from './sandbox';
 import { CREW_SITUATIONS } from '../engine/crew-state';
 import { ShipDesignSchema } from '../engine/data/defs';
 import { resolveDecision, scheduleEvent } from './events';
@@ -384,6 +385,23 @@ export const ActionSchema = z.discriminatedUnion('type', [
   }),
   z.strictObject({ type: z.literal('crew/import'), text: z.string().min(1).max(200000) }),
   z.strictObject({ type: z.literal('debug/plantSpy'), member: id, faction: id }),
+  // ---- The debug sandbox
+  z.strictObject({
+    type: z.literal('debug/setStat'),
+    entityId: id,
+    stat: id,
+    value: z.number().min(-1000).max(100000),
+  }),
+  z.strictObject({
+    type: z.literal('debug/money'),
+    field: z.enum(['berries', 'fame', 'infamy', 'bounty']),
+    value: z.number().min(-1e12).max(1e13),
+  }),
+  z.strictObject({ type: z.literal('debug/trait'), trait: id, remove: z.boolean().default(false) }),
+  z.strictObject({
+    type: z.literal('debug/addCrewmate'),
+    strength: z.number().min(0.2).max(10).default(1),
+  }),
   z.strictObject({
     type: z.literal('debug/heart'),
     target: z.string().min(1),
@@ -648,6 +666,22 @@ export function applyAction(
       }
       // A crew founded, a recruit won, a post set: decisions that survive closing the tab.
       if (!action.type.startsWith('debug/')) effects.push({ kind: 'autosave' });
+      break;
+
+    case 'debug/setStat':
+    case 'debug/money':
+    case 'debug/trait':
+    case 'debug/addCrewmate':
+      try {
+        if (action.type === 'debug/setStat')
+          debugSetStat(state, action.entityId, action.stat, action.value);
+        else if (action.type === 'debug/money') debugMoney(state, action.field, action.value);
+        else if (action.type === 'debug/trait')
+          debugGiveTrait(state, data, action.trait, action.remove);
+        else debugAddCrewmate(state, data, action.strength);
+      } catch (error) {
+        throw new ActionError(error instanceof Error ? error.message : String(error));
+      }
       break;
 
     case 'debug/setOpenEnded':

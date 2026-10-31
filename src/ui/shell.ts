@@ -75,6 +75,10 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   const berries = vital('Berries');
   // Phase 7: the player's morale (their mood over months).
   const morale = vital('Morale');
+  // Phase 8: the crew in a word (how many aboard, their spirits), a link to the Crew page.
+  const crew = vital('Crew');
+  const crewLinkValue = h('a', { class: 'vital__link', href: '#/crew' }, '—');
+  crew.value.replaceChildren(crewLinkValue);
   // Health and Vigor: a number and a thin bar each (Phase 2).
   const bar = (label: string) => {
     const fill = h('span', { class: 'vital-bar__fill' });
@@ -113,6 +117,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       location.row,
       berries.row,
       morale.row,
+      crew.row,
     ),
   );
 
@@ -124,19 +129,38 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       h('a', { class: `tab tab--${route}`, href: `#/${route}` }, ROUTE_LABELS[route]),
     );
   }
-  const mapLink = h('a', { class: 'tab tab--map', href: '#/map' }, ROUTE_LABELS.map);
-  const powersLink = h('a', { class: 'tab tab--powers', href: '#/powers' }, ROUTE_LABELS.powers);
+  // The pages (as opposed to the side panels) begin here: a divider in the bar says so.
+  const mapLink = h(
+    'a',
+    { class: 'tab tab--map tab--page tab--first-page', href: '#/map' },
+    ROUTE_LABELS.map,
+  );
+  const powersLink = h(
+    'a',
+    { class: 'tab tab--powers tab--page', href: '#/powers' },
+    ROUTE_LABELS.powers,
+  );
+  const fruitsLink = h(
+    'a',
+    { class: 'tab tab--fruits tab--page', href: '#/fruits' },
+    ROUTE_LABELS.fruits,
+  );
   // Phase 6: what the character carries, and their ship.
-  const gearLink = h('a', { class: 'tab tab--gear', href: '#/gear' }, ROUTE_LABELS.gear);
-  const shipLink = h('a', { class: 'tab tab--ship', href: '#/ship' }, ROUTE_LABELS.ship);
+  const gearLink = h('a', { class: 'tab tab--gear tab--page', href: '#/gear' }, ROUTE_LABELS.gear);
+  const shipLink = h('a', { class: 'tab tab--ship tab--page', href: '#/ship' }, ROUTE_LABELS.ship);
   // Phase 7: the people in the character's life.
-  const peopleLink = h('a', { class: 'tab tab--people', href: '#/people' }, ROUTE_LABELS.people);
+  const peopleLink = h(
+    'a',
+    { class: 'tab tab--people tab--page', href: '#/people' },
+    ROUTE_LABELS.people,
+  );
   // Phase 8: the crew.
-  const crewLink = h('a', { class: 'tab tab--crew', href: '#/crew' }, ROUTE_LABELS.crew);
+  const crewLink = h('a', { class: 'tab tab--crew tab--page', href: '#/crew' }, ROUTE_LABELS.crew);
   const nav = h('nav', { class: 'tabs', 'aria-label': 'Sections' }, [
     ...links.values(),
     mapLink,
     powersLink,
+    fruitsLink,
     gearLink,
     shipLink,
     peopleLink,
@@ -536,6 +560,13 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     morale.value.title = heart
       ? `${heart.mood}. Conscience: ${heart.conscienceWords.toLowerCase()}.`
       : 'Appears once a life has started';
+    const c = s.crew;
+    crew.value.classList.toggle('is-empty', !c);
+    crewLinkValue.textContent = c ? `${c.size} aboard` : 'None';
+    crew.value.title = c
+      ? `${c.name}: morale ${c.morale}${c.listening > 0 ? `, ${c.listening} with a quest open` : ''}.`
+      : 'Found a crew on the Crew page';
+    crew.row.classList.toggle('vital--low', !!c && c.morale < 35);
 
     const life = s.life;
     const bars: [typeof health, number, number, string][] = life
@@ -676,6 +707,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
         state.busy !== previous.busy)
     )
       void fruitsPage.show(state);
+    if (fruiting) fruitsLink.setAttribute('aria-current', 'page');
+    else fruitsLink.removeAttribute('aria-current');
     // Phase 6: redrawn when the world moves or the app stops being busy (its buttons).
     for (const [route, pageEl, page, link] of [
       ['gear', gearPageEl, gearPage, gearLink],

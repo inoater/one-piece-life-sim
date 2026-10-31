@@ -111,8 +111,7 @@ describe('the planner, scaled by Vigor', () => {
     await settle(10);
     expect(text(q('.push__value'))).toBe('+1');
     expect(text(q('.planner__vigor'))).toContain('Vigor 4 of');
-    expect(qa('.routine__slot--overtime').length).toBe(
-      ui.app.store.get().snapshot?.life?.drive.overtime,
-    );
+    // Planned within the stage's own slots: no overtime slot shows until they are full.
+    expect(qa('.routine__slot--overtime').length).toBe(0);
   });
 });

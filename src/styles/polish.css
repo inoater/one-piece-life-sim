@@ -1,0 +1,83 @@
+/* A polish layer over every screen: feedback on what can be pressed, sections that read as cards,
+   and a planner that shows its budget. (Pages redraw every month, so nothing animates on draw.) */
+
+@layer components {
+  .tab {
+    transition:
+      color 0.15s,
+      border-color 0.15s,
+      background-color 0.15s;
+  }
+  .tab:hover {
+    background: var(--tide-soft);
+  }
+
+  /* The newer pages' sections read as cards, like the side panel's. */
+  .crew-page .crew-section,
+  .recruit-page .crew-section,
+  .person-page .person-sheet {
+    padding: var(--s-3) var(--s-4) var(--s-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+  .crew-page .crew-section .powers-page__heading,
+  .recruit-page .crew-section .powers-page__heading {
+    margin-top: 0;
+  }
+  .person-sheet > summary {
+    cursor: pointer;
+    list-style-position: inside;
+  }
+
+  /* Rows that respond to the pointer. */
+  .crew-table tbody tr,
+  .crew-candidates li,
+  .sandbox__row {
+    transition: background-color 0.12s;
+  }
+  .crew-table tbody tr:hover,
+  .crew-candidates li:hover {
+    background: var(--tide-soft);
+  }
+  .crew-station {
+    cursor: help;
+  }
+  .crew-station circle {
+    transition: r 0.15s;
+  }
+  .crew-station:hover circle {
+    r: 4.2;
+  }
+
+  /* The planner's budget, and the button that spends the rest of it. */
+  .planner__vigor {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .planner__vigor .meter {
+    flex: 1 1 10rem;
+  }
+  .planner__fill {
+    border-color: var(--tide);
+    color: var(--tide);
+  }
+  .routine__slot--overtime {
+    border-left: 3px solid var(--brass-line);
+  }
+
+  /* A masthead reading that is a link (Crew), and one that warns (low morale). */
+  .vital__link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--rule-strong);
+  }
+  .vital__link:hover {
+    color: var(--tide);
+  }
+  .vital--low .vital__value {
+    color: var(--squall);
+  }
+}

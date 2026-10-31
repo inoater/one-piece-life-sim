@@ -323,3 +323,75 @@
     font-size: 8px;
   }
 }
+
+/* The sandbox tab: everything to hand out, by type. */
+@layer debug {
+  .sandbox-tab .sandbox__search {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: 2.4rem;
+    margin-bottom: var(--s-2);
+    resize: none;
+  }
+  .sandbox__block {
+    margin: 0 0 var(--s-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: var(--s-1) var(--s-2);
+    background: var(--surface);
+  }
+  .sandbox__title {
+    cursor: pointer;
+    font-weight: 600;
+    padding: var(--s-1) 0;
+  }
+  .sandbox__group {
+    margin: var(--s-2) 0 var(--s-1);
+    font-size: var(--text-0);
+    color: var(--mist);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .sandbox__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .sandbox__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-1) var(--s-2);
+    padding: 2px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .sandbox__name {
+    flex: 1 1 10rem;
+    min-width: 0;
+  }
+  .sandbox__meta {
+    color: var(--mist);
+    font-size: var(--text-0);
+  }
+  .sandbox__acts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-1);
+    margin: var(--s-1) 0;
+  }
+  .sandbox__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: var(--s-1) var(--s-3);
+  }
+  .sandbox__field {
+    display: grid;
+    grid-template-columns: 6.5rem 5rem auto;
+    align-items: center;
+    gap: var(--s-1);
+    font-size: var(--text-0);
+  }
+}

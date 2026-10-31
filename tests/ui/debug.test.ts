@@ -77,7 +77,7 @@ describe('the panel itself', () => {
     expect(panel().hidden).toBe(true);
   });
 
-  it('has World, Entities, Log, Genesis and Life tabs that switch like proper tabs', async () => {
+  it('has World, Entities, Log, Genesis, Life and Sandbox tabs that switch like proper tabs', async () => {
     await openPanel();
     expect([...panel().querySelectorAll('[role="tab"]')].map(text)).toEqual([
       'World',
@@ -85,6 +85,7 @@ describe('the panel itself', () => {
       'Log',
       'Genesis',
       'Life',
+      'Sandbox',
     ]);
     expect(tab('World').getAttribute('aria-selected')).toBe('true');
     expect(section('entities').hidden).toBe(true);
@@ -109,7 +110,8 @@ describe('the panel itself', () => {
       new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, cancelable: true }),
     );
     await settle();
-    expect(tab('Life').getAttribute('aria-selected')).toBe('true');
+    // Left from the first tab wraps round to the last.
+    expect(tab('Sandbox').getAttribute('aria-selected')).toBe('true');
   });
 });
 

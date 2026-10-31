@@ -58,7 +58,8 @@
   }
   @media (min-width: 700px) {
     .year-rail {
-      grid-row: 3 / 5;
+      /* Beside the chronicle, under the tab bar (which spans the page). */
+      grid-row: 4;
       display: flex !important;
     }
     .year-rail[hidden] {

@@ -1,6 +1,7 @@
 import type { HeartSelfView, PersonView, WebView } from '../../worker/protocol';
 import type { App } from '../app';
 import { attachBreakdownTooltip } from '../components/breakdown';
+import { renderSheet, type SheetHandle } from '../components/sheet';
 import { h, svg, type Child } from '../dom';
 import { errorMessage, formatInteger } from '../format';
 import { navigate } from '../router';
@@ -688,6 +689,9 @@ export function personIdOf(hash: string): string | null {
 
 export function createPersonPage(app: App): PersonPage {
   const body = h('div', { class: 'powers-page__body' });
+  // Their character sheet, like the player's own (its tooltips are closed before each redraw).
+  let sheet: SheetHandle | null = null;
+  let open = true;
   const el = h(
     'section',
     { class: 'powers-page person-page', 'aria-labelledby': 'person-title' },
@@ -702,16 +706,48 @@ export function createPersonPage(app: App): PersonPage {
         return;
       }
       try {
-        const view = await app.host.call('heart/person', {
-          id,
-          view: { omniscient: state.omniscient, hash: false },
-        });
-        body.replaceChildren(
-          ...((view
+        const options = { omniscient: state.omniscient, hash: false };
+        const [view, character] = await Promise.all([
+          app.host.call('heart/person', { id, view: options }),
+          app.host.call('heart/sheet', { id, view: options }),
+        ]);
+        sheet?.destroy();
+        sheet = null;
+        let sheetSection: HTMLElement | null = null;
+        if (view && character) {
+          sheet = renderSheet(character.sheet, {
+            tick: state.snapshot?.tick ?? 0,
+            compact: true,
+            place: `person-${id}`,
+          });
+          sheetSection = h(
+            'details',
+            {
+              class: 'powers-page__section person-sheet',
+              open,
+              ontoggle: (e: Event) => {
+                open = (e.target as HTMLDetailsElement).open;
+              },
+            },
+            h('summary', { class: 'powers-page__heading' }, 'Their character'),
+            character.estimated
+              ? h(
+                  'p',
+                  { class: 'muted' },
+                  'You do not know them well: the numbers are guesses, rounded to the nearest ten.',
+                )
+              : null,
+            sheet.el,
+          );
+        }
+        const parts = (
+          view
             ? renderPerson(view, app, state.busy !== null)
             : [h('p', { class: 'muted' }, 'You do not know them.')]
-          ).filter((e) => e) as Node[]),
-        );
+        ).filter((e) => e) as Node[];
+        // The sheet sits right after the header (the first part).
+        if (sheetSection) parts.splice(1, 0, sheetSection);
+        body.replaceChildren(...parts);
       } catch (error) {
         body.replaceChildren(h('p', { class: 'muted' }, errorMessage(error)));
       }

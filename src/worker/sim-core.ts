@@ -38,6 +38,8 @@ import { fruitsView, powersView } from '../systems/powers/view';
 import { designPreview, handsView } from '../systems/hands/view';
 import { heartView, personView, webView } from '../systems/heart/view';
 import { crewBrief, crewExportText, crewView, recruitView } from '../systems/crew/view';
+import { personSheet } from '../systems/heart/sheet';
+import { sandboxCatalog } from '../systems/sandbox';
 import { battleView, fightSelfView } from '../systems/battle/view';
 import { entryWarnings } from '../systems/genesis/warnings';
 import type {
@@ -190,6 +192,7 @@ export class SimCore {
         };
       },
       'debug/lives': (req) => this.debugLives(req),
+      'debug/catalog': () => sandboxCatalog(this.state, this.deps.data),
       'world/map': () => mapView(this.state, this.deps.data),
       'world/place': (req) => placeView(this.state, this.deps.data, req.id, req.view.omniscient),
       'world/canon': () => canonView(this.state, this.deps.data),
@@ -198,6 +201,7 @@ export class SimCore {
       'hands/design': (req) => designPreview(this.state, this.deps.data, req.design),
       'heart/person': (req) => personView(this.state, this.deps.data, req.id, req.view.omniscient),
       'heart/web': () => webView(this.state, this.deps.data),
+      'heart/sheet': (req) => personSheet(this.state, this.deps.data, req.id, req.view.omniscient),
       'crew/view': (req) => crewView(this.state, this.deps.data, req.view.omniscient),
       'crew/recruit': (req) => recruitView(this.state, this.deps.data, req.id, req.view.omniscient),
       'crew/export': () => crewExportText(this.state),

@@ -22,7 +22,7 @@ export function overtimeSlots(data: GameData, pool: number, baseSlots: number): 
 /** How many points past Hard a pool this deep allows on one slot. */
 export function commitMax(data: GameData, pool: number): number {
   const c = data.life.drive.commit;
-  return Math.max(0, Math.min(c.gain.length, Math.floor(pool / c.per)));
+  return Math.max(0, Math.min(c.max ?? c.gain.length, Math.floor(pool / c.per)));
 }
 
 /** The commitment a slot actually carries: only on Hard, never beyond what the pool allows. */
@@ -38,7 +38,7 @@ export function commitMults(
 ): { gain: number; pay: number; risk: number } {
   const c = data.life.drive.commit;
   let gain = 1;
-  for (let i = 0; i < commit && i < c.gain.length; i++) gain += c.gain[i] ?? 0;
+  for (let i = 0; i < commit; i++) gain += i < c.gain.length ? (c.gain[i] ?? 0) : c.tail;
   return {
     gain: Math.round(gain * 1000) / 1000,
     pay: 1 + c.pay * commit,

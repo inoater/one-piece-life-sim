@@ -1743,7 +1743,7 @@ export const LifeRulesSchema = z
       overtime: z.strictObject({
         /** One overtime slot for every this much Vigor in the pool. */
         perSlot: z.number().int().min(1),
-        max: z.number().int().min(0).max(4),
+        max: z.number().int().min(0).max(30),
         /** Vigor an overtime slot costs on top of its effort. */
         surcharge: z.number().int().min(0),
         /** Only from a stage with at least this many slots of its own (adolescents and up). */
@@ -1752,8 +1752,12 @@ export const LifeRulesSchema = z
       commit: z.strictObject({
         /** One point of commitment past Hard for every this much Vigor in the pool. */
         per: z.number().int().min(1),
-        /** What each point adds to the slot's gains, in order (so its length is the most). */
+        /** What each point adds to the slot's gains, in order. */
         gain: z.array(z.number().min(0)).min(1).max(8),
+        /** What each point past the listed ones adds (diminishing returns that never quite stop). */
+        tail: z.number().min(0).default(0),
+        /** The most points past Hard, whatever the pool (the listed gains' count when absent). */
+        max: z.number().int().min(1).max(40).optional(),
         /** Pay added per point (a share: 0.12 is +12%). */
         pay: z.number().min(0),
         /** Risk added per point (a share). */

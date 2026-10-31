@@ -35,14 +35,16 @@
   },
   "drive": {
     "overtime": {
-      "perSlot": 5,
-      "max": 3,
+      "perSlot": 4,
+      "max": 20,
       "surcharge": 1,
       "fromSlots": 2
     },
     "commit": {
       "per": 3,
       "gain": [0.3, 0.25, 0.2, 0.15],
+      "tail": 0.08,
+      "max": 15,
       "pay": 0.12,
       "risk": 0.3
     }

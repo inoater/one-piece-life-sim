@@ -26,10 +26,14 @@ import type { BattleView, FightSelfView } from '../systems/battle/view';
 import type { DesignPreview, HandsView } from '../systems/hands/view';
 import type { HeartSelfView, PersonView, WebView } from '../systems/heart/view';
 import type { CrewBrief, CrewView, RecruitProfile } from '../systems/crew/view';
+import type { PersonSheet } from '../systems/heart/sheet';
+import type { Catalog } from '../systems/sandbox';
 
 export type {
   HeartSelfView,
   CrewBrief,
+  PersonSheet,
+  Catalog,
   CrewView,
   RecruitProfile,
   PersonView,
@@ -425,6 +429,8 @@ export interface Protocol {
     res: { points: CurvePoint[]; softCap: number };
   };
   'debug/lives': { req: { raceId: string; lives: number; seed?: string }; res: LivesReport };
+  /** The sandbox: everything that can be handed out, by type, and the player's numbers. */
+  'debug/catalog': { req: Record<string, never>; res: Catalog };
   // ---- The world (Phase 3)
   'world/map': { req: Record<string, never>; res: MapView };
   'world/place': { req: { id: string; view: ViewOptions }; res: PlaceDetailView | null };
@@ -440,6 +446,8 @@ export interface Protocol {
   'heart/person': { req: { id: string; view: ViewOptions }; res: PersonView | null };
   /** The relationship web of family, crew and the closest. */
   'heart/web': { req: Record<string, never>; res: WebView | null };
+  /** Anyone's character sheet, as far as the player knows them (estimates for strangers). */
+  'heart/sheet': { req: { id: string; view: ViewOptions }; res: PersonSheet | null };
   // ---- Crews (Phase 8)
   /** The Crew page: the creator, the roster, the posts, recruits, fleet, bases, the log. */
   'crew/view': { req: { view: ViewOptions }; res: CrewView | null };

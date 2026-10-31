@@ -72,8 +72,9 @@ export function openActivityPicker(options: PickerOptions): ModalHandle {
   };
 
   const card = (a: ActivityView): HTMLElement => {
-    const taken = planned.has(a.id) && a.id !== chosen && !a.repeatable;
-    const reason = a.lock ?? (taken ? 'Already in your routine' : null);
+    // A month scaled by Vigor: the same activity may fill more than one slot (more of it).
+    const taken = planned.has(a.id) && a.id !== chosen;
+    const reason = a.lock;
     const isChosen = a.id === chosen;
     return h(
       'li',
@@ -83,6 +84,7 @@ export function openActivityPicker(options: PickerOptions): ModalHandle {
         {
           class: `activity-card${isChosen ? ' activity-card--chosen' : ''}`,
           type: 'button',
+          'aria-label': `${a.name}${reason ? `: ${reason}` : taken ? ' (planned already: again)' : ''}`,
           disabled: reason !== null || !free,
           dataset: { activity: a.id, category: a.category, locked: String(a.lock !== null) },
           onclick: () => {
@@ -95,7 +97,7 @@ export function openActivityPicker(options: PickerOptions): ModalHandle {
           { class: 'activity-card__head' },
           h('span', { class: 'activity-card__name' }, a.name),
           isChosen ? h('span', { class: 'activity-card__tag' }, 'Chosen') : null,
-          taken ? h('span', { class: 'activity-card__tag' }, 'Planned') : null,
+          taken ? h('span', { class: 'activity-card__tag' }, 'Planned: again') : null,
         ),
         h('span', { class: 'activity-card__text' }, a.description),
         h(

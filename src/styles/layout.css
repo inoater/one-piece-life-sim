@@ -68,15 +68,15 @@
     grid-row: 2;
   }
 
+  /* Every section and page in one bar that wraps, so nothing hides off the edge. */
   .tabs {
     grid-row: 3;
+    grid-column: 1 / -1;
     display: flex;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    align-items: stretch;
     border-bottom: 1px solid var(--rule);
-    scrollbar-width: none;
-  }
-  .tabs::-webkit-scrollbar {
-    display: none;
+    background: var(--surface);
   }
 
   .panel {
@@ -143,16 +143,16 @@
       grid-column: 1 / -1;
     }
     .tabs {
-      grid-column: 2;
+      grid-column: 1 / -1;
       grid-row: 3;
-      border-left: 1px solid var(--rule);
+      padding: 0 var(--s-3);
     }
     .tab--feed {
       display: none;
     }
     .panel--feed {
       grid-column: 1;
-      grid-row: 3 / 5;
+      grid-row: 4;
       padding: var(--s-5) var(--s-6);
       display: block !important;
     }

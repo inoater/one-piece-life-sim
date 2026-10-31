@@ -61,7 +61,7 @@ describe('the masthead', () => {
   it('shows Health and Vigor as numbers and bars once a life starts', async () => {
     await startLife();
     const vitals = qa('.vital').map((v) => text(v.querySelector('.vital__label')));
-    expect(vitals).toEqual(['Age', 'Health', 'Vigor', 'Location', 'Berries', 'Morale']);
+    expect(vitals).toEqual(['Age', 'Health', 'Vigor', 'Location', 'Berries', 'Morale', 'Crew']);
     const health = qa('.vital--bar')[0]!;
     expect(text(health.querySelector('.vital__value'))).toMatch(/^(\d+)\/\1$/);
     expect(health.querySelector('.vital-bar')?.hasAttribute('hidden')).toBe(false);
@@ -74,9 +74,8 @@ describe('the Actions planner', () => {
     navigate('actions');
     await settle();
     expect(qa('.routine__slot:not(.routine__slot--overtime)')).toHaveLength(3);
-    // Phase 6: the Vigor pool opens overtime slots after the stage's own.
-    const overtime = ui.app.store.get().snapshot?.life?.drive.overtime ?? 0;
-    expect(qa('.routine__slot--overtime')).toHaveLength(overtime);
+    // The stage's own slots show; the slots Vigor opens beyond them appear one at a time.
+    expect(qa('.routine__slot--overtime')).toHaveLength(0);
     await choose(0, 'act_spar');
     expect(q('.routine__slot .slot-card')?.dataset['activity']).toBe('act_spar');
     expect(document.querySelector('.modal-backdrop')).toBeNull();

@@ -36,8 +36,9 @@ describe('the masthead', () => {
       'Location',
       'Berries',
       'Morale',
+      'Crew',
     ]);
-    expect(qa('.vital__value.is-empty')).toHaveLength(6);
+    expect(qa('.vital__value.is-empty')).toHaveLength(7);
     expect(q('.vital__value')?.getAttribute('title')).toContain('Appears once a life has started');
   });
 
@@ -61,6 +62,7 @@ describe('navigation', () => {
       ['News', '#/news'],
       ['Map', '#/map'],
       ['Powers', '#/powers'],
+      ['Devil Fruits', '#/fruits'],
       ['Gear', '#/gear'],
       ['Ship', '#/ship'],
       ['People', '#/people'],
