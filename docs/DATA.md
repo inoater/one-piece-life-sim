@@ -22,6 +22,7 @@ checked against a schema when the game starts, in `npm run validate`, in the pre
 | `data/factions/`, `cast/`, `canon/`                          | factions and crews; the canon cast; the canon beats             | schemas exist (Phase 3)                           |
 | `data/powers.json`, `personality.json`, `fruitMatchups.json` | power rules; personality and behaviour; fruit matchups          | required (Phase 4)                                |
 | `data/fruits/`, `tracks/`, `techniques/`, `movesets/`        | Devil Fruits; power tracks; techniques; canon movesets by era   | schemas exist (Phase 4)                           |
+| `data/crew.json`, `conditions/`, `arcs/`                     | crews and command; joining conditions; crewmates' stories       | required (Phase 8)                                |
 | `data/news/`                                                 | _reserved_                                                      | **files here are rejected until a schema exists** |
 
 A file may hold one object or an array of objects. Subfolders are fine. By convention a single-item file
@@ -340,6 +341,44 @@ How the files fit together, and the rules the loader enforces beyond each schema
   `{amount}`, `{title}`, `{mood}` and `{say.<act>}` (what they say, in their own voice). Write
   `{name} says` rather than `{they} say`: present-tense verbs after a pronoun do not agree.
 - **personality.json** gained the tags `loyal` and `treacherous`.
+
+## Crews (Phase 8)
+
+- **data/crew.json**: the kinds of group (pirate crew, Marine unit, mercenary company, hunter band,
+  Revolutionary cell, Cipher Pol team, syndicate, trading house: each with its noun, mark, leader's
+  title, a default name, what its template fixes, default command, structure, pay and creed, a rank
+  chart, and whether it is outlaw or fights for a living); the creed (six rules, each option with
+  the deed tags that break or keep it and how much each personality cares); command styles (what
+  overruling costs, what asking gives), structures (officers, divisions and what they add to the
+  limit), pay (wages a month, shares, how each value takes it); the limit (6 + Charisma / 10 + 4 a
+  fame tier); the roles (stat weights, skills, tracks, traits and trades that count, the reason
+  either way, perks of mastery, bounty weight); the posts (situation, role, whether deck hands can
+  stand there, a least rank, one or more effects, each an effect key with a value at a perfect fit
+  and one when empty, the empty post's cost in words, where it is drawn); titles for long service;
+  fit, morale, loyalty and chemistry numbers; traditions; missions (stats, difficulty, a target, a
+  report per result band, trouble); recruiting (the pitches and what each means to each value and
+  nature, the objections and their answers, boards, cells, auctions, legends, secrets); spies;
+  betrayal; bases and rooms; fleet orders and the oath; prisoners; how crewmates grow; bounties and
+  epithets; lives that change; and every line a crew writes.
+- **Effect keys**: every key in `CREW_EFFECT_KEYS` must be fed by at least one post (the loader
+  refuses a key nobody stands for), and each is read by one system: `voyage.pace` the miles a month,
+  `sea.danger` the voyage events rolled, `sea.morale`/`sea.scurvy`/`sea.supplies`/`sea.heal`/
+  `sea.repair`/`sea.discipline` the month at sea, `check.perception`/`check.navigation` checks at
+  sea, `storm.hull`/`storm.supplies`/`storm.delay` a weather event's toll, `naval.*` and `battle.*`
+  a sea fight (guns, powder, aim, boarding, guard, helm, fire, injuries, morale), `port.*` a month in
+  port (rumours, theft, prices, the board, raids).
+- **data/conditions/** (prefix `jc`): joining conditions, each of one of twenty kinds (the loader
+  refuses a kind with no condition): what they ask in their own voice, the tracker's line, the
+  line when it is done, weight by values and nature, an amount (Berries, or a multiplier on
+  strength or fame), months, and when an open one is given up.
+- **data/arcs/** (prefix `arc`): crewmates' personal stories: who carries them (dreams, values,
+  trades), steps (months aboard, a new place, a region, a fight of their own against a share of
+  their strength, training a stat, talks with the captain, Berries, months asking in port), each
+  with its line; the closing line, the stat whose potential the finish raises, and loyalty.
+- **Templates** in crews are the heart's (a crewmate speaks in their own voice) plus `{crew}`,
+  `{captain}`, `{role}`, `{post}`, `{mission}`, `{target}`, `{report}`, `{quest}`, `{arc}`,
+  `{other}`, `{epithet}`, `{bounty}`, `{months}`, `{count}`. The same rule holds: `{name} is`, not
+  `{they} are`.
 
 ## Dev fixtures
 

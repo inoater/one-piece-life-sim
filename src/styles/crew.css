@@ -1,0 +1,197 @@
+/* Phase 8: the Crew page (creator, roster, positions, recruits, command, log) and a recruit's
+   profile. Colours come from tokens.css, so both themes follow. */
+
+@layer components {
+  .crew-tabs,
+  .crew-subtabs,
+  .crew-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+    margin: 0 0 var(--s-3);
+  }
+  .crew-tabs .button.is-on,
+  .crew-subtabs .button.is-on {
+    background: var(--tide);
+    color: var(--tide-ink);
+    border-color: var(--tide);
+  }
+  .crew-sub {
+    margin: 0 0 var(--s-3);
+  }
+  .crew-form {
+    display: grid;
+    gap: var(--s-2) var(--s-4);
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    margin: 0 0 var(--s-3);
+  }
+  .crew-field {
+    display: grid;
+    gap: var(--s-1);
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+    color: var(--mist);
+  }
+  .crew-field > .heart-input,
+  .crew-form .heart-input {
+    width: 100%;
+    min-width: 0;
+  }
+  .crew-file {
+    width: 100%;
+    font-family: var(--font-mono);
+  }
+  .crew-note {
+    margin: 0 0 var(--s-3);
+  }
+  .crew-creed,
+  .crew-log,
+  .crew-candidates,
+  .crew-pitches,
+  .crew-fits,
+  .crew-stats {
+    margin: 0;
+    padding-left: var(--s-5);
+  }
+  .crew-creed li,
+  .crew-log li,
+  .crew-candidates li,
+  .crew-pitches li,
+  .crew-fits li {
+    margin: 0 0 var(--s-2);
+  }
+  .crew-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--s-1) var(--s-4);
+    list-style: none;
+    padding: 0;
+  }
+  .crew-table-wrap {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  .crew-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+  }
+  .crew-table th,
+  .crew-table td {
+    padding: var(--s-1) var(--s-2);
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    vertical-align: top;
+  }
+  .crew-table thead th {
+    color: var(--mist);
+    font-weight: 600;
+  }
+  .crew-table tr.is-pinned td:first-child {
+    border-left: 3px solid var(--brass-line);
+  }
+  .crew-table tr.is-empty th,
+  .crew-table tr.is-empty td {
+    background: var(--squall-soft);
+  }
+  .crew-row-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1);
+    align-items: center;
+  }
+  .crew-cost {
+    color: var(--squall);
+  }
+  .crew-lock {
+    color: var(--mist);
+    font-family: var(--font-ui);
+    font-size: var(--text-0);
+    margin-left: var(--s-1);
+  }
+  .crew-act {
+    display: inline-flex;
+    gap: var(--s-1);
+    align-items: center;
+  }
+  .crew-member {
+    margin: 0 0 var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .crew-member summary {
+    cursor: pointer;
+    font-family: var(--font-ui);
+  }
+  .crew-objection {
+    padding: var(--s-2) var(--s-3);
+    margin: 0 0 var(--s-2);
+    border-left: 3px solid var(--tide);
+  }
+  .crew-history {
+    font-style: italic;
+  }
+  .crew-ship {
+    display: block;
+    width: 100%;
+    max-width: 24rem;
+    margin: var(--s-2) auto var(--s-3);
+  }
+  .crew-ship__hull {
+    fill: var(--tide-soft);
+    stroke: var(--rule-strong);
+    stroke-width: 0.6;
+  }
+  .crew-ship__mast {
+    stroke: var(--rule-strong);
+    stroke-width: 0.5;
+    stroke-dasharray: 1.5 1;
+  }
+  .crew-station circle {
+    stroke: var(--surface);
+    stroke-width: 0.6;
+  }
+  .crew-station.is-filled circle {
+    fill: var(--tide);
+  }
+  .crew-station.is-hands circle {
+    fill: var(--brass-line);
+  }
+  .crew-station.is-empty circle {
+    fill: var(--squall);
+  }
+  .crew-station text {
+    fill: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 3px;
+  }
+  .person-head__links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+}
+
+@layer layout {
+  .shell[data-route='crew'] .panel,
+  .shell[data-route='crew'] .year-rail,
+  .shell[data-route='recruit'] .panel,
+  .shell[data-route='recruit'] .year-rail {
+    display: none !important;
+  }
+  @media (min-width: 700px) {
+    .shell[data-route='crew'] .tabs,
+    .shell[data-route='recruit'] .tabs {
+      grid-column: 1 / -1;
+      border-left: 0;
+    }
+    .shell[data-route='crew'] .tab--feed,
+    .shell[data-route='recruit'] .tab--feed {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,2487 @@
+{
+  "kinds": [
+    {
+      "id": "pirate",
+      "name": "Pirate crew",
+      "noun": "crew",
+      "mark": "Jolly Roger",
+      "leader": "Captain",
+      "defaultName": "The {player.familyName} Pirates",
+      "defaults": {
+        "command": "word",
+        "structure": "ranks",
+        "pay": "shares",
+        "creed": {
+          "kill": "fair",
+          "civilians": "leave_be",
+          "loot": "equal",
+          "drink": "free",
+          "deserters": "let_go",
+          "cowards": "forgiven"
+        }
+      },
+      "outlaw": true
+    },
+    {
+      "id": "marine",
+      "name": "Marine unit",
+      "noun": "unit",
+      "mark": "unit emblem",
+      "leader": "Commanding officer",
+      "defaultName": "The {player.familyName} Detachment",
+      "fixed": {
+        "command": "word",
+        "structure": "ranks",
+        "pay": "wages"
+      },
+      "defaults": {
+        "command": "word",
+        "structure": "ranks",
+        "pay": "wages",
+        "creed": {
+          "kill": "fair",
+          "civilians": "protect",
+          "loot": "by_rank",
+          "drink": "port_only",
+          "deserters": "death",
+          "cowards": "shamed"
+        }
+      },
+      "ranks": [
+        "Seaman Recruit",
+        "Seaman Apprentice",
+        "Seaman",
+        "Petty Officer",
+        "Chief Petty Officer",
+        "Warrant Officer",
+        "Ensign",
+        "Lieutenant"
+      ]
+    },
+    {
+      "id": "mercenary",
+      "name": "Mercenary company",
+      "noun": "company",
+      "mark": "company badge",
+      "leader": "Captain",
+      "defaultName": "The {player.familyName} Company",
+      "defaults": {
+        "command": "council",
+        "structure": "ranks",
+        "pay": "wages",
+        "creed": {
+          "kill": "freely",
+          "civilians": "leave_be",
+          "loot": "by_rank",
+          "drink": "free",
+          "deserters": "maroon",
+          "cowards": "shamed"
+        }
+      }
+    },
+    {
+      "id": "hunter",
+      "name": "Bounty hunter band",
+      "noun": "band",
+      "mark": "band sign",
+      "leader": "Leader",
+      "defaultName": "The {player.familyName} Hunters",
+      "defaults": {
+        "command": "word",
+        "structure": "flat",
+        "pay": "shares",
+        "creed": {
+          "kill": "fair",
+          "civilians": "leave_be",
+          "loot": "equal",
+          "drink": "free",
+          "deserters": "let_go",
+          "cowards": "forgiven"
+        }
+      }
+    },
+    {
+      "id": "revolutionary",
+      "name": "Revolutionary cell",
+      "noun": "cell",
+      "mark": "cell sign",
+      "leader": "Cell leader",
+      "defaultName": "Cell {player.familyName}",
+      "fixed": {
+        "command": "council",
+        "structure": "ranks"
+      },
+      "defaults": {
+        "command": "council",
+        "structure": "ranks",
+        "pay": "dream",
+        "creed": {
+          "kill": "fair",
+          "civilians": "protect",
+          "loot": "equal",
+          "drink": "port_only",
+          "deserters": "maroon",
+          "cowards": "forgiven"
+        }
+      },
+      "outlaw": true
+    },
+    {
+      "id": "cipher",
+      "name": "Cipher Pol team",
+      "noun": "team",
+      "mark": "agency seal",
+      "leader": "Team leader",
+      "defaultName": "Team {player.familyName}",
+      "fixed": {
+        "command": "word",
+        "structure": "ranks",
+        "pay": "wages"
+      },
+      "defaults": {
+        "command": "word",
+        "structure": "ranks",
+        "pay": "wages",
+        "creed": {
+          "kill": "freely",
+          "civilians": "leave_be",
+          "loot": "by_rank",
+          "drink": "never",
+          "deserters": "death",
+          "cowards": "shamed"
+        }
+      },
+      "ranks": ["Agent", "Senior Agent", "Field Leader"]
+    },
+    {
+      "id": "syndicate",
+      "name": "Underworld syndicate",
+      "noun": "syndicate",
+      "mark": "family crest",
+      "leader": "Boss",
+      "defaultName": "The {player.familyName} Family",
+      "defaults": {
+        "command": "word",
+        "structure": "divisions",
+        "pay": "wages",
+        "creed": {
+          "kill": "freely",
+          "civilians": "prey",
+          "loot": "captain",
+          "drink": "free",
+          "deserters": "death",
+          "cowards": "shamed"
+        }
+      },
+      "outlaw": true
+    },
+    {
+      "id": "trading",
+      "name": "Trading house",
+      "noun": "house",
+      "mark": "house mark",
+      "leader": "Master",
+      "defaultName": "House {player.familyName}",
+      "defaults": {
+        "command": "council",
+        "structure": "ranks",
+        "pay": "wages",
+        "creed": {
+          "kill": "never",
+          "civilians": "protect",
+          "loot": "by_rank",
+          "drink": "port_only",
+          "deserters": "let_go",
+          "cowards": "forgiven"
+        }
+      },
+      "fighting": false
+    }
+  ],
+  "creed": [
+    {
+      "id": "kill",
+      "name": "When killing is allowed",
+      "options": [
+        {
+          "id": "never",
+          "name": "Never",
+          "text": "Nobody dies by our hands.",
+          "breaks": ["kill", "merciless"],
+          "keeps": ["kind", "spare"],
+          "cares": {
+            "kind": 45,
+            "calm": 10
+          }
+        },
+        {
+          "id": "fair",
+          "name": "In a fair fight only",
+          "text": "We fight to win, never to butcher the beaten.",
+          "breaks": ["merciless"],
+          "keeps": ["spare"],
+          "cares": {
+            "kind": 30,
+            "proud": 15
+          }
+        },
+        {
+          "id": "freely",
+          "name": "As we see fit",
+          "text": "Whoever stands against us takes their chances.",
+          "breaks": [],
+          "keeps": [],
+          "cares": {
+            "kind": -30,
+            "bold": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "civilians",
+      "name": "How civilians are treated",
+      "options": [
+        {
+          "id": "protect",
+          "name": "Protect them",
+          "text": "Ordinary people are under our protection.",
+          "breaks": ["prey", "cruel"],
+          "keeps": ["kind", "protect"],
+          "cares": {
+            "kind": 40,
+            "serious": 10
+          }
+        },
+        {
+          "id": "leave_be",
+          "name": "Leave them be",
+          "text": "We do not prey on people who cannot fight back.",
+          "breaks": ["prey"],
+          "keeps": ["protect"],
+          "cares": {
+            "kind": 25,
+            "honest": 10
+          }
+        },
+        {
+          "id": "prey",
+          "name": "Fair game",
+          "text": "Anyone ashore is a purse.",
+          "breaks": [],
+          "keeps": [],
+          "cares": {
+            "kind": -35
+          }
+        }
+      ]
+    },
+    {
+      "id": "loot",
+      "name": "How loot is split",
+      "options": [
+        {
+          "id": "equal",
+          "name": "Equal shares",
+          "text": "Everyone takes the same, the captain included.",
+          "breaks": ["unfair_split"],
+          "keeps": ["fair_split"],
+          "cares": {
+            "honest": 25,
+            "free": 15
+          }
+        },
+        {
+          "id": "by_rank",
+          "name": "By rank",
+          "text": "Officers take more; everyone takes something.",
+          "breaks": ["unfair_split"],
+          "keeps": ["fair_split"],
+          "cares": {
+            "free": -15,
+            "serious": 15
+          }
+        },
+        {
+          "id": "captain",
+          "name": "The captain's choice",
+          "text": "The captain decides who gets what.",
+          "breaks": [],
+          "keeps": [],
+          "cares": {
+            "free": -25,
+            "proud": -10
+          }
+        }
+      ]
+    },
+    {
+      "id": "drink",
+      "name": "Drink",
+      "options": [
+        {
+          "id": "free",
+          "name": "Whenever we like",
+          "text": "A crew that cannot drink together cannot sail together.",
+          "breaks": [],
+          "keeps": [],
+          "cares": {
+            "serious": -25
+          }
+        },
+        {
+          "id": "port_only",
+          "name": "In port only",
+          "text": "Nobody drinks with the sea under them.",
+          "breaks": ["drink_at_sea"],
+          "keeps": ["sober"],
+          "cares": {
+            "serious": 25,
+            "calm": 10
+          }
+        },
+        {
+          "id": "never",
+          "name": "Never",
+          "text": "Clear heads, always.",
+          "breaks": ["drink_at_sea", "drink"],
+          "keeps": ["sober"],
+          "cares": {
+            "serious": 40
+          }
+        }
+      ]
+    },
+    {
+      "id": "deserters",
+      "name": "What happens to deserters",
+      "options": [
+        {
+          "id": "let_go",
+          "name": "Let them go",
+          "text": "Anyone may leave; nobody is kept against their will.",
+          "breaks": ["punish_deserter"],
+          "keeps": ["spare_deserter"],
+          "cares": {
+            "free": 35,
+            "kind": 15
+          }
+        },
+        {
+          "id": "maroon",
+          "name": "Marooned",
+          "text": "A deserter is left on the nearest rock.",
+          "breaks": ["spare_deserter", "kill_deserter"],
+          "keeps": ["punish_deserter"],
+          "cares": {
+            "serious": 20
+          }
+        },
+        {
+          "id": "death",
+          "name": "Death",
+          "text": "Nobody walks away.",
+          "breaks": ["spare_deserter"],
+          "keeps": ["punish_deserter", "kill_deserter"],
+          "cares": {
+            "kind": -30,
+            "free": -25
+          }
+        }
+      ]
+    },
+    {
+      "id": "cowards",
+      "name": "Cowards",
+      "options": [
+        {
+          "id": "forgiven",
+          "name": "Forgiven",
+          "text": "Everyone is afraid sometimes.",
+          "breaks": ["shame_coward"],
+          "keeps": ["kind"],
+          "cares": {
+            "kind": 25,
+            "proud": -15
+          }
+        },
+        {
+          "id": "shamed",
+          "name": "Shamed",
+          "text": "Nobody runs. Not even the captain.",
+          "breaks": ["cowardly"],
+          "keeps": ["brave"],
+          "cares": {
+            "bold": 30,
+            "proud": 20
+          }
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "id": "word",
+      "name": "The captain's word",
+      "text": "The captain decides. Asking is a courtesy.",
+      "ignored": 2,
+      "asked": 2
+    },
+    {
+      "id": "council",
+      "name": "An officers' council",
+      "text": "The officers are heard before anything is decided.",
+      "ignored": 5,
+      "asked": 3
+    },
+    {
+      "id": "vote",
+      "name": "A crew vote",
+      "text": "Everyone has a say, and the vote stands.",
+      "ignored": 9,
+      "asked": 4
+    }
+  ],
+  "structures": [
+    {
+      "id": "flat",
+      "name": "Flat",
+      "text": "Nobody outranks anybody but the captain.",
+      "officers": 0,
+      "divisions": 0,
+      "perOfficer": 0,
+      "perDivision": 0
+    },
+    {
+      "id": "ranks",
+      "name": "Ranks",
+      "text": "A first mate, officers, and everyone else.",
+      "officers": 4,
+      "divisions": 0,
+      "perOfficer": 1,
+      "perDivision": 0
+    },
+    {
+      "id": "divisions",
+      "name": "Numbered divisions",
+      "text": "Divisions with commanders, as in the great pirate fleets.",
+      "officers": 6,
+      "divisions": 16,
+      "perOfficer": 1,
+      "perDivision": 6
+    }
+  ],
+  "pays": [
+    {
+      "id": "shares",
+      "name": "Shares",
+      "text": "A share of every haul.",
+      "wage": 0,
+      "shares": true,
+      "values": {
+        "wealth": 0.3,
+        "freedom": 0.2
+      }
+    },
+    {
+      "id": "wages",
+      "name": "Wages",
+      "text": "So much a month, whatever the sea brings.",
+      "wage": 1500,
+      "shares": false,
+      "values": {
+        "wealth": 0.4,
+        "family": 0.2,
+        "freedom": -0.2
+      }
+    },
+    {
+      "id": "dream",
+      "name": "Nothing but the dream",
+      "text": "Food, a berth, and the dream.",
+      "wage": 0,
+      "shares": false,
+      "values": {
+        "wealth": -0.6,
+        "freedom": 0.4,
+        "fame": 0.2,
+        "justice": 0.3
+      }
+    }
+  ],
+  "limits": {
+    "base": 6,
+    "perCharisma": 0.1,
+    "fameTiers": [10, 30, 60, 100, 160],
+    "perFameTier": 4,
+    "strain": 3
+  },
+  "roles": [
+    {
+      "id": "captain",
+      "name": "Captain",
+      "stats": {
+        "charisma": 0.4,
+        "willpower": 0.3,
+        "strength": 0.15,
+        "perception": 0.15
+      },
+      "traits": {
+        "trait_kings_qualities": 20,
+        "trait_charming": 8,
+        "trait_well_liked": 6
+      },
+      "good": "people listen to {them}",
+      "bad": "nobody would follow {them} into a tavern",
+      "officer": true,
+      "bounty": 1.5
+    },
+    {
+      "id": "first_mate",
+      "name": "First mate",
+      "stats": {
+        "willpower": 0.3,
+        "charisma": 0.25,
+        "strength": 0.25,
+        "perception": 0.2
+      },
+      "traits": {
+        "trait_disciplined": 10,
+        "trait_loyal": 8,
+        "trait_drilled": 6
+      },
+      "occupations": {
+        "occ_retired_marine": 10,
+        "occ_guard": 6
+      },
+      "good": "keeps order without raising {their} voice",
+      "bad": "could not keep order in a rowing boat",
+      "perks": [
+        {
+          "at": 60,
+          "id": "iron_order",
+          "name": "Iron order",
+          "text": "Mutiny checks roll against the first mate at a third harder."
+        }
+      ],
+      "officer": true,
+      "bounty": 1.2
+    },
+    {
+      "id": "quartermaster",
+      "name": "Quartermaster",
+      "stats": {
+        "intellect": 0.45,
+        "charisma": 0.25,
+        "perception": 0.3
+      },
+      "traits": {
+        "trait_honest": 8,
+        "trait_eye_for_detail": 8,
+        "trait_greedy": -10
+      },
+      "occupations": {
+        "occ_merchant": 15,
+        "occ_shopkeeper": 10,
+        "occ_innkeeper": 6
+      },
+      "good": "can count a hold of stores by eye",
+      "bad": "has never kept a ledger",
+      "perks": [
+        {
+          "at": 50,
+          "id": "fair_ledger",
+          "name": "A fair ledger",
+          "text": "Shares are split without a grumble: loot never counts as unfair."
+        }
+      ],
+      "officer": true,
+      "bounty": 0.6
+    },
+    {
+      "id": "navigator",
+      "name": "Navigator",
+      "stats": {
+        "intellect": 0.6,
+        "perception": 0.3,
+        "dexterity": 0.1
+      },
+      "skills": {},
+      "traits": {
+        "trait_weather_wary": 12,
+        "trait_pathfinder": 10,
+        "trait_sharp_mind": 8,
+        "trait_old_salt": 6
+      },
+      "occupations": {
+        "occ_sailor": 10,
+        "occ_old_sailor": 15,
+        "occ_scholar": 6
+      },
+      "good": "reads charts and skies alike",
+      "bad": "has never held a chart",
+      "perks": [
+        {
+          "at": 60,
+          "id": "grand_line_weather",
+          "name": "Grand Line weather",
+          "text": "Reads the Grand Line's weather: storms cost a third less hull."
+        }
+      ],
+      "bounty": 0.7
+    },
+    {
+      "id": "helmsman",
+      "name": "Helmsman",
+      "stats": {
+        "dexterity": 0.35,
+        "strength": 0.25,
+        "perception": 0.25,
+        "willpower": 0.15
+      },
+      "traits": {
+        "trait_sea_legs": 10,
+        "trait_seasoned_sailor": 10,
+        "trait_steady_hands": 8
+      },
+      "occupations": {
+        "occ_sailor": 12,
+        "occ_fisher": 6,
+        "occ_old_sailor": 10
+      },
+      "good": "holds a wheel in a gale",
+      "bad": "has never steered anything bigger than a cart",
+      "bounty": 0.9
+    },
+    {
+      "id": "lookout",
+      "name": "Lookout",
+      "stats": {
+        "perception": 0.7,
+        "willpower": 0.1,
+        "endurance": 0.2
+      },
+      "traits": {
+        "trait_keen_eyed": 15,
+        "trait_light_sleeper": 6,
+        "trait_night_owl": 6,
+        "trait_haki_sensitive": 8
+      },
+      "tracks": {
+        "track_observation": 15
+      },
+      "good": "sees a sail before anyone else",
+      "bad": "would miss a Sea King in a bathtub",
+      "bounty": 0.6
+    },
+    {
+      "id": "sniper",
+      "name": "Sniper",
+      "stats": {
+        "dexterity": 0.5,
+        "perception": 0.4,
+        "willpower": 0.1
+      },
+      "skills": {
+        "firearm": 0.3,
+        "bow": 0.2
+      },
+      "traits": {
+        "trait_sharpshooter": 15,
+        "trait_steady_hands": 8,
+        "trait_keen_eyed": 6
+      },
+      "tracks": {
+        "track_gunmanship": 15,
+        "track_archery": 12
+      },
+      "good": "can hit a gull at a hundred paces",
+      "bad": "has never fired a shot in anger",
+      "bounty": 1.1
+    },
+    {
+      "id": "cook",
+      "name": "Cook",
+      "stats": {
+        "dexterity": 0.35,
+        "intellect": 0.25,
+        "perception": 0.2,
+        "endurance": 0.2
+      },
+      "skills": {
+        "cooking": 0.5
+      },
+      "traits": {
+        "trait_big_eater": 4,
+        "trait_iron_stomach": 4
+      },
+      "tracks": {
+        "track_black_leg": 8
+      },
+      "occupations": {
+        "occ_cook": 25,
+        "occ_innkeeper": 10
+      },
+      "good": "can cook",
+      "bad": "has never cooked for a crew",
+      "perks": [
+        {
+          "at": 50,
+          "id": "hearty_meals",
+          "name": "Hearty meals",
+          "text": "Meals that restore Vigor: the captain's month at sea starts rested."
+        }
+      ],
+      "bounty": 0.8
+    },
+    {
+      "id": "doctor",
+      "name": "Doctor",
+      "stats": {
+        "intellect": 0.55,
+        "dexterity": 0.3,
+        "perception": 0.15
+      },
+      "skills": {
+        "medicine": 0.5
+      },
+      "traits": {
+        "trait_field_medic": 15,
+        "trait_steady_hands": 8,
+        "trait_learned": 6
+      },
+      "occupations": {
+        "occ_doctor": 30
+      },
+      "good": "has set bones and stitched wounds",
+      "bad": "faints at the sight of blood",
+      "perks": [
+        {
+          "at": 70,
+          "id": "any_sickness",
+          "name": "Any sickness",
+          "text": "Can treat any sickness: illnesses aboard heal twice as fast."
+        }
+      ],
+      "bounty": 0.5
+    },
+    {
+      "id": "shipwright",
+      "name": "Shipwright",
+      "stats": {
+        "strength": 0.3,
+        "dexterity": 0.4,
+        "intellect": 0.3
+      },
+      "skills": {
+        "shipbuilding": 0.5
+      },
+      "traits": {
+        "trait_workhorse": 6,
+        "trait_steady_hands": 6
+      },
+      "occupations": {
+        "occ_carpenter": 25,
+        "occ_craftsman": 10,
+        "occ_woodcutter": 6
+      },
+      "good": "has built a hull with {their} own hands",
+      "bad": "could not patch a bucket",
+      "perks": [
+        {
+          "at": 60,
+          "id": "mid_battle",
+          "name": "Repairs under fire",
+          "text": "Repairs mid-battle: damage control works twice as well."
+        }
+      ],
+      "bounty": 0.7
+    },
+    {
+      "id": "musician",
+      "name": "Musician",
+      "stats": {
+        "charisma": 0.5,
+        "dexterity": 0.3,
+        "willpower": 0.2
+      },
+      "traits": {
+        "trait_storyteller": 12,
+        "trait_charming": 8,
+        "trait_loudmouth": 4
+      },
+      "good": "has a song for every sea",
+      "bad": "cannot carry a tune in a barrel",
+      "bounty": 0.5
+    },
+    {
+      "id": "archaeologist",
+      "name": "Archaeologist",
+      "stats": {
+        "intellect": 0.7,
+        "perception": 0.2,
+        "willpower": 0.1
+      },
+      "traits": {
+        "trait_scholars_eye": 15,
+        "trait_bookworm": 10,
+        "trait_bookish": 8
+      },
+      "occupations": {
+        "occ_scholar": 25,
+        "occ_teacher": 10
+      },
+      "good": "reads old scripts as others read the news",
+      "bad": "has never opened a history book",
+      "perks": [
+        {
+          "at": 80,
+          "id": "poneglyphs",
+          "name": "The old script",
+          "text": "Can read what is carved on the indestructible stones (Phase 11)."
+        }
+      ],
+      "bounty": 0.8
+    },
+    {
+      "id": "fighter",
+      "name": "Fighter",
+      "stats": {
+        "strength": 0.35,
+        "speed": 0.25,
+        "durability": 0.25,
+        "willpower": 0.15
+      },
+      "traits": {
+        "trait_brawler": 8,
+        "trait_battle_hardened": 10,
+        "trait_street_fighter": 6,
+        "trait_warrior_pride": 6
+      },
+      "tracks": {
+        "track_swordsmanship": 8,
+        "track_brawling": 6,
+        "track_armament": 10
+      },
+      "occupations": {
+        "occ_mercenary": 15,
+        "occ_swordsman": 15,
+        "occ_warrior": 15,
+        "occ_samurai": 15,
+        "occ_bandit": 8
+      },
+      "good": "has stood in a real fight and won",
+      "bad": "has never thrown a punch",
+      "perks": [
+        {
+          "at": 60,
+          "id": "division_commander",
+          "name": "Division commander",
+          "text": "Can lead a division in a crew battle."
+        }
+      ],
+      "officer": false,
+      "bounty": 1.4
+    },
+    {
+      "id": "hand",
+      "name": "Deck hand",
+      "stats": {
+        "strength": 0.35,
+        "endurance": 0.35,
+        "dexterity": 0.3
+      },
+      "traits": {
+        "trait_sea_legs": 6,
+        "trait_workhorse": 6,
+        "trait_landlubber": -10
+      },
+      "occupations": {
+        "occ_sailor": 10,
+        "occ_dockworker": 8,
+        "occ_fisher": 6
+      },
+      "good": "can haul a line all night",
+      "bad": "gets in the way on deck",
+      "bounty": 0.4
+    }
+  ],
+  "posts": [
+    {
+      "id": "helm",
+      "situation": "sea",
+      "name": "Helm",
+      "role": "helmsman",
+      "effects": [
+        {
+          "key": "voyage.pace",
+          "full": 0.06,
+          "empty": -0.06
+        }
+      ],
+      "emptyText": "Nobody at the helm: a voyage runs about 6% slower.",
+      "x": 82,
+      "y": 50
+    },
+    {
+      "id": "navigation",
+      "situation": "sea",
+      "name": "Navigation",
+      "role": "navigator",
+      "effects": [
+        {
+          "key": "voyage.pace",
+          "full": 0.15,
+          "empty": 0
+        },
+        {
+          "key": "check.navigation",
+          "full": 15,
+          "empty": -5
+        }
+      ],
+      "emptyText": "No navigator: the captain reads the charts, and no faster for it.",
+      "x": 74,
+      "y": 35
+    },
+    {
+      "id": "lookout",
+      "situation": "sea",
+      "name": "Lookout",
+      "role": "lookout",
+      "effects": [
+        {
+          "key": "sea.danger",
+          "full": -0.4,
+          "empty": 0.25
+        },
+        {
+          "key": "check.perception",
+          "full": 12,
+          "empty": -5
+        }
+      ],
+      "emptyText": "Nobody in the crow's nest: more trouble finds the ship.",
+      "x": 50,
+      "y": 8
+    },
+    {
+      "id": "rigging",
+      "situation": "sea",
+      "name": "Rigging crew",
+      "role": "hand",
+      "hands": true,
+      "effects": [
+        {
+          "key": "voyage.pace",
+          "full": 0.05,
+          "empty": -0.08
+        }
+      ],
+      "emptyText": "Nobody on the rigging: the sails are trimmed badly, 8% slower.",
+      "x": 50,
+      "y": 26
+    },
+    {
+      "id": "galley",
+      "situation": "sea",
+      "name": "Galley",
+      "role": "cook",
+      "effects": [
+        {
+          "key": "sea.scurvy",
+          "full": -0.9,
+          "empty": 0.5
+        },
+        {
+          "key": "sea.morale",
+          "full": 3,
+          "empty": -2
+        },
+        {
+          "key": "sea.supplies",
+          "full": -0.15,
+          "empty": 0.1
+        }
+      ],
+      "emptyText": "Nobody in the galley: scurvy comes sooner, morale sinks, stores spoil.",
+      "x": 30,
+      "y": 62
+    },
+    {
+      "id": "sick_bay",
+      "situation": "sea",
+      "name": "Sick bay",
+      "role": "doctor",
+      "effects": [
+        {
+          "key": "sea.heal",
+          "full": 1,
+          "empty": 0
+        }
+      ],
+      "emptyText": "Nobody in the sick bay: wounds heal only as fast as they will.",
+      "x": 40,
+      "y": 74
+    },
+    {
+      "id": "repairs",
+      "situation": "sea",
+      "name": "Repairs",
+      "role": "shipwright",
+      "effects": [
+        {
+          "key": "sea.repair",
+          "full": 6,
+          "empty": 0
+        }
+      ],
+      "emptyText": "Nobody on repairs: the hull mends only in a yard.",
+      "x": 20,
+      "y": 50
+    },
+    {
+      "id": "watch",
+      "situation": "sea",
+      "name": "Officer of the watch",
+      "role": "first_mate",
+      "minRank": 3,
+      "effects": [
+        {
+          "key": "sea.discipline",
+          "full": -0.5,
+          "empty": 0.3
+        },
+        {
+          "key": "sea.morale",
+          "full": 1,
+          "empty": -1
+        }
+      ],
+      "emptyText": "No officer of the watch: grumbling grows into worse.",
+      "x": 64,
+      "y": 50
+    },
+    {
+      "id": "upper_guns",
+      "situation": "battle",
+      "name": "Gun crew, upper deck",
+      "role": "hand",
+      "hands": true,
+      "effects": [
+        {
+          "key": "naval.cannons",
+          "full": 0.15,
+          "empty": -0.3
+        }
+      ],
+      "emptyText": "Nobody on the upper guns: a third of the broadside is silent.",
+      "x": 50,
+      "y": 40
+    },
+    {
+      "id": "lower_guns",
+      "situation": "battle",
+      "name": "Gun crew, lower deck",
+      "role": "hand",
+      "hands": true,
+      "effects": [
+        {
+          "key": "naval.cannons",
+          "full": 0.15,
+          "empty": -0.3
+        }
+      ],
+      "emptyText": "Nobody on the lower guns: a third of the broadside is silent.",
+      "x": 50,
+      "y": 70
+    },
+    {
+      "id": "powder",
+      "situation": "battle",
+      "name": "Powder runners",
+      "role": "hand",
+      "hands": true,
+      "effects": [
+        {
+          "key": "naval.reload",
+          "full": 0.15,
+          "empty": -0.25
+        }
+      ],
+      "emptyText": "Nobody running powder: the guns fire slowly, a quarter less damage.",
+      "x": 36,
+      "y": 78
+    },
+    {
+      "id": "sharpshooters",
+      "situation": "battle",
+      "name": "Sharpshooters in the rigging",
+      "role": "sniper",
+      "effects": [
+        {
+          "key": "naval.accuracy",
+          "full": 0.3,
+          "empty": 0
+        }
+      ],
+      "emptyText": "Nobody in the rigging with a rifle: the gunners aim alone.",
+      "x": 50,
+      "y": 12
+    },
+    {
+      "id": "boarding",
+      "situation": "battle",
+      "name": "Boarding party",
+      "role": "fighter",
+      "effects": [
+        {
+          "key": "naval.boarding",
+          "full": 0.35,
+          "empty": -0.15
+        }
+      ],
+      "emptyText": "No boarding party: whoever goes over the rail goes leaderless.",
+      "x": 88,
+      "y": 44
+    },
+    {
+      "id": "guard",
+      "situation": "battle",
+      "name": "Guard against boarders",
+      "role": "fighter",
+      "effects": [
+        {
+          "key": "naval.guard",
+          "full": -0.3,
+          "empty": 0.15
+        }
+      ],
+      "emptyText": "Nobody guarding the deck: boarders come aboard unopposed.",
+      "x": 12,
+      "y": 44
+    },
+    {
+      "id": "battle_helm",
+      "situation": "battle",
+      "name": "Helm",
+      "role": "helmsman",
+      "effects": [
+        {
+          "key": "naval.speed",
+          "full": 0.2,
+          "empty": -0.2
+        }
+      ],
+      "emptyText": "Nobody at the helm in a fight: she turns slowly, escapes and rams fail.",
+      "x": 82,
+      "y": 56
+    },
+    {
+      "id": "damage_control",
+      "situation": "battle",
+      "name": "Damage control",
+      "role": "shipwright",
+      "effects": [
+        {
+          "key": "naval.fire",
+          "full": -0.6,
+          "empty": 0.3
+        }
+      ],
+      "emptyText": "No damage control: fires burn longer and hotter.",
+      "x": 24,
+      "y": 64
+    },
+    {
+      "id": "medic",
+      "situation": "battle",
+      "name": "Medic station",
+      "role": "doctor",
+      "effects": [
+        {
+          "key": "battle.medic",
+          "full": -0.5,
+          "empty": 0.1
+        }
+      ],
+      "emptyText": "No medic station: big blows leave worse injuries.",
+      "x": 40,
+      "y": 88
+    },
+    {
+      "id": "captains_deck",
+      "situation": "battle",
+      "name": "The captain's deck",
+      "role": "captain",
+      "effects": [
+        {
+          "key": "battle.morale",
+          "full": 12,
+          "empty": -10
+        }
+      ],
+      "emptyText": "Nobody on the captain's deck: the crew fights without a voice to follow.",
+      "x": 72,
+      "y": 30
+    },
+    {
+      "id": "shore_party",
+      "situation": "port",
+      "name": "Shore party",
+      "role": "fighter",
+      "effects": [
+        {
+          "key": "port.rumours",
+          "full": 0.35,
+          "empty": 0
+        }
+      ],
+      "emptyText": "No shore party: what is said in the taverns stays there.",
+      "x": 86,
+      "y": 62
+    },
+    {
+      "id": "ship_guard",
+      "situation": "port",
+      "name": "Ship's guard",
+      "role": "hand",
+      "hands": true,
+      "effects": [
+        {
+          "key": "port.theft",
+          "full": -0.06,
+          "empty": 0.08
+        }
+      ],
+      "emptyText": "Nobody guarding the ship: thieves help themselves to the stores.",
+      "x": 48,
+      "y": 58
+    },
+    {
+      "id": "purser",
+      "situation": "port",
+      "name": "Purser",
+      "role": "quartermaster",
+      "effects": [
+        {
+          "key": "port.prices",
+          "full": -0.1,
+          "empty": 0
+        }
+      ],
+      "emptyText": "No purser: you pay what the stalls ask.",
+      "x": 30,
+      "y": 40
+    },
+    {
+      "id": "recruiter",
+      "situation": "port",
+      "name": "Recruiter",
+      "role": "first_mate",
+      "effects": [
+        {
+          "key": "port.board",
+          "full": 0.6,
+          "empty": 0
+        }
+      ],
+      "emptyText": "No recruiter: only those who come asking are on the list.",
+      "x": 68,
+      "y": 72
+    },
+    {
+      "id": "port_lookout",
+      "situation": "port",
+      "name": "Lookout",
+      "role": "lookout",
+      "effects": [
+        {
+          "key": "port.raid",
+          "full": -0.6,
+          "empty": 0.2
+        }
+      ],
+      "emptyText": "No lookout in port: a raid comes with no warning.",
+      "x": 50,
+      "y": 8
+    },
+    {
+      "id": "storm_helm",
+      "situation": "storm",
+      "name": "Helm",
+      "role": "helmsman",
+      "effects": [
+        {
+          "key": "storm.delay",
+          "full": -0.5,
+          "empty": 0.5
+        }
+      ],
+      "emptyText": "Nobody at the helm in a storm: she is blown off course, weeks lost.",
+      "x": 82,
+      "y": 50
+    },
+    {
+      "id": "lines",
+      "situation": "storm",
+      "name": "Lines and sails",
+      "role": "hand",
+      "hands": true,
+      "effects": [
+        {
+          "key": "storm.hull",
+          "full": -0.2,
+          "empty": 0.3
+        }
+      ],
+      "emptyText": "Nobody on the lines: the sails tear and the masts take it.",
+      "x": 50,
+      "y": 26
+    },
+    {
+      "id": "pumps",
+      "situation": "storm",
+      "name": "Pumps",
+      "role": "hand",
+      "hands": true,
+      "effects": [
+        {
+          "key": "storm.hull",
+          "full": -0.2,
+          "empty": 0.4
+        }
+      ],
+      "emptyText": "Nobody on the pumps: the hull takes 40% more from storms.",
+      "x": 36,
+      "y": 78
+    },
+    {
+      "id": "lashing",
+      "situation": "storm",
+      "name": "Lashing the cargo",
+      "role": "hand",
+      "hands": true,
+      "effects": [
+        {
+          "key": "storm.supplies",
+          "full": -0.4,
+          "empty": 0.4
+        }
+      ],
+      "emptyText": "Nobody lashing the cargo: stores go over the side.",
+      "x": 26,
+      "y": 58
+    }
+  ],
+  "titles": [
+    {
+      "post": "upper_guns",
+      "months": 18,
+      "mastery": 50,
+      "title": "Master Gunner"
+    },
+    {
+      "post": "lower_guns",
+      "months": 18,
+      "mastery": 50,
+      "title": "Master Gunner"
+    },
+    {
+      "post": "navigation",
+      "months": 24,
+      "mastery": 60,
+      "title": "Sailing Master"
+    },
+    {
+      "post": "helm",
+      "months": 24,
+      "mastery": 55,
+      "title": "Master Helmsman"
+    },
+    {
+      "post": "galley",
+      "months": 24,
+      "mastery": 55,
+      "title": "Ship's Chef"
+    },
+    {
+      "post": "sick_bay",
+      "months": 24,
+      "mastery": 60,
+      "title": "Ship's Surgeon"
+    },
+    {
+      "post": "repairs",
+      "months": 24,
+      "mastery": 55,
+      "title": "Master Carpenter"
+    },
+    {
+      "post": "lookout",
+      "months": 18,
+      "mastery": 50,
+      "title": "Eagle Eye"
+    },
+    {
+      "post": "watch",
+      "months": 24,
+      "mastery": 50,
+      "title": "Boatswain"
+    },
+    {
+      "post": "boarding",
+      "months": 12,
+      "mastery": 50,
+      "title": "First Over the Rail"
+    }
+  ],
+  "fit": {
+    "mastery": 25,
+    "hurt": 25,
+    "hand": 0.4,
+    "double": 0.65,
+    "learn": 1.5,
+    "words": [
+      {
+        "min": 85,
+        "text": "a natural"
+      },
+      {
+        "min": 65,
+        "text": "very good"
+      },
+      {
+        "min": 45,
+        "text": "capable"
+      },
+      {
+        "min": 28,
+        "text": "makes do"
+      },
+      {
+        "min": -1000,
+        "text": "a poor fit"
+      }
+    ]
+  },
+  "morale": {
+    "rest": 55,
+    "drift": 4,
+    "win": 8,
+    "loss": -10,
+    "death": -12,
+    "joined": 2,
+    "unpaid": -8,
+    "hungry": -10,
+    "grumble": 35,
+    "desert": 22,
+    "mutiny": 12,
+    "captain": {
+      "from": 30,
+      "per": 1.5,
+      "perFameTier": 2
+    }
+  },
+  "loyalty": {
+    "together": 0.3,
+    "win": 3,
+    "loss": -2,
+    "fair": 3,
+    "unfair": -6,
+    "creedBreak": -8,
+    "creedKeep": 4,
+    "unpaid": -3,
+    "poachBelow": 30
+  },
+  "chemistry": {
+    "value": 8,
+    "axes": {
+      "kind": -14,
+      "honest": -12,
+      "calm": -10,
+      "serious": -8,
+      "bold": -6,
+      "proud": -10
+    },
+    "synergy": 12,
+    "friction": -10,
+    "frictionChance": 0.08,
+    "trainBonus": 1.2
+  },
+  "traditions": [
+    {
+      "id": "toast",
+      "name": "The victory toast",
+      "trigger": "victory",
+      "line": "The {crew} raise their cups the way they always do now after a win: one for the living, one for the sea.",
+      "morale": 4,
+      "minMembers": 2,
+      "chance": 0.5
+    },
+    {
+      "id": "song",
+      "name": "The crew's song",
+      "trigger": "voyage",
+      "line": "Somewhere out of sight of land, the {crew} sing their song again, badly and loudly.",
+      "morale": 3,
+      "minMembers": 3,
+      "chance": 0.3
+    },
+    {
+      "id": "sake_cup",
+      "name": "The sake cup",
+      "trigger": "join",
+      "line": "{name} drinks from the crew's cup, as everyone who joins the {crew} does now.",
+      "morale": 3,
+      "minMembers": 3,
+      "chance": 0.6
+    },
+    {
+      "id": "absent_friend",
+      "name": "A promise to an absent friend",
+      "trigger": "death",
+      "line": "The {crew} keep a place at the table for {name}. They always will.",
+      "morale": 5,
+      "minMembers": 1,
+      "chance": 0.8
+    },
+    {
+      "id": "founding_day",
+      "name": "Founding day",
+      "trigger": "anniversary",
+      "line": "Another year of the {crew}: a feast on the deck, and the old stories told again.",
+      "morale": 5,
+      "minMembers": 2,
+      "chance": 0.7
+    },
+    {
+      "id": "vow",
+      "name": "The vow after a defeat",
+      "trigger": "loss",
+      "line": "After the beating, the {crew} make the same vow they always make: never again.",
+      "morale": 4,
+      "minMembers": 2,
+      "chance": 0.4
+    }
+  ],
+  "missions": [
+    {
+      "id": "scout",
+      "kind": "scout",
+      "name": "Scout an island",
+      "text": "Go ahead, and come back with what is there.",
+      "months": {
+        "min": 1,
+        "max": 3
+      },
+      "stats": {
+        "perception": 0.5,
+        "speed": 0.3,
+        "intellect": 0.2
+      },
+      "difficulty": 40,
+      "target": "place",
+      "report": {
+        "criticalSuccess": "{name} is back from {target} with a sketch of every road and who walks them: {report}",
+        "success": "{name} scouted {target}: {report}",
+        "failure": "{name} saw little of {target} worth telling: {report}",
+        "criticalFailure": "{name} was spotted on {target} and barely got away: {report}"
+      },
+      "trouble": 0.1
+    },
+    {
+      "id": "rumours",
+      "kind": "rumours",
+      "name": "Gather rumours",
+      "text": "Drink, listen, and remember.",
+      "months": {
+        "min": 1,
+        "max": 2
+      },
+      "stats": {
+        "charisma": 0.5,
+        "perception": 0.3,
+        "intellect": 0.2
+      },
+      "difficulty": 35,
+      "report": {
+        "criticalSuccess": "{name} heard everything worth hearing in {place}: {report}",
+        "success": "{name} came back with talk from the taverns: {report}",
+        "failure": "{name} heard nothing but sea stories: {report}",
+        "criticalFailure": "{name} said too much and heard too little: {report}"
+      },
+      "trouble": 0.08
+    },
+    {
+      "id": "supplies",
+      "kind": "supplies",
+      "name": "Buy supplies",
+      "text": "Fill the hold, and do not get cheated.",
+      "months": {
+        "min": 1,
+        "max": 1
+      },
+      "stats": {
+        "intellect": 0.5,
+        "charisma": 0.5
+      },
+      "difficulty": 30,
+      "report": {
+        "criticalSuccess": "{name} bargained like a fishwife: {report}",
+        "success": "{name} filled the hold: {report}",
+        "failure": "{name} paid too much: {report}",
+        "criticalFailure": "{name} was cheated blind: {report}"
+      },
+      "trouble": 0.03
+    },
+    {
+      "id": "recruit",
+      "kind": "recruit",
+      "name": "Recruit",
+      "text": "Find someone worth a berth.",
+      "months": {
+        "min": 1,
+        "max": 3
+      },
+      "stats": {
+        "charisma": 0.6,
+        "perception": 0.4
+      },
+      "difficulty": 45,
+      "report": {
+        "criticalSuccess": "{name} found someone remarkable: {report}",
+        "success": "{name} brought back a name: {report}",
+        "failure": "{name} found nobody worth the berth: {report}",
+        "criticalFailure": "{name} picked a fight instead of a recruit: {report}"
+      },
+      "trouble": 0.08
+    },
+    {
+      "id": "debt",
+      "kind": "debt",
+      "name": "Collect a debt",
+      "text": "Someone owes you. Make them pay.",
+      "months": {
+        "min": 1,
+        "max": 2
+      },
+      "stats": {
+        "strength": 0.4,
+        "charisma": 0.3,
+        "willpower": 0.3
+      },
+      "difficulty": 40,
+      "target": "person",
+      "report": {
+        "criticalSuccess": "{name} came back with every Berry {target} owed, and an apology: {report}",
+        "success": "{name} collected from {target}: {report}",
+        "failure": "{target} had nothing to give {name}: {report}",
+        "criticalFailure": "{target} sent {name} back bruised: {report}"
+      },
+      "trouble": 0.15
+    },
+    {
+      "id": "message",
+      "kind": "message",
+      "name": "Carry a message",
+      "text": "Take word to someone, and bring theirs back.",
+      "months": {
+        "min": 1,
+        "max": 3
+      },
+      "stats": {
+        "speed": 0.4,
+        "endurance": 0.3,
+        "charisma": 0.3
+      },
+      "difficulty": 30,
+      "target": "person",
+      "report": {
+        "criticalSuccess": "{name} delivered your word to {target}, and came back with theirs and more: {report}",
+        "success": "{name} delivered your word to {target}: {report}",
+        "failure": "{name} could not find {target}: {report}",
+        "criticalFailure": "{name} lost the message on the way: {report}"
+      },
+      "trouble": 0.05
+    },
+    {
+      "id": "guard",
+      "kind": "guard",
+      "name": "Guard a place",
+      "text": "Hold it until relieved.",
+      "months": {
+        "min": 2,
+        "max": 4
+      },
+      "stats": {
+        "strength": 0.3,
+        "durability": 0.3,
+        "willpower": 0.2,
+        "perception": 0.2
+      },
+      "difficulty": 40,
+      "target": "place",
+      "report": {
+        "criticalSuccess": "{name} held {target} and sent off two lots of trouble: {report}",
+        "success": "{name} kept {target} safe: {report}",
+        "failure": "{name} kept watch over {target}, and was robbed anyway: {report}",
+        "criticalFailure": "{name} was driven off {target}: {report}"
+      },
+      "trouble": 0.12
+    },
+    {
+      "id": "track",
+      "kind": "track",
+      "name": "Track someone",
+      "text": "Find out where they are and what they are doing.",
+      "months": {
+        "min": 1,
+        "max": 4
+      },
+      "stats": {
+        "perception": 0.5,
+        "intellect": 0.3,
+        "speed": 0.2
+      },
+      "difficulty": 50,
+      "target": "person",
+      "report": {
+        "criticalSuccess": "{name} tracked {target} down to the very house: {report}",
+        "success": "{name} found where {target} is: {report}",
+        "failure": "{name} lost {target}'s trail: {report}",
+        "criticalFailure": "{target} noticed {name} following and laid a false trail: {report}"
+      },
+      "trouble": 0.12
+    }
+  ],
+  "recruit": {
+    "pitches": [
+      {
+        "id": "dream",
+        "name": "A dream",
+        "text": "Tell them where you are going, and why.",
+        "values": {
+          "fame": 10,
+          "strength": 8,
+          "freedom": 6,
+          "knowledge": 6
+        },
+        "axes": {
+          "bold": 12,
+          "serious": -6
+        }
+      },
+      {
+        "id": "freedom",
+        "name": "Freedom",
+        "text": "No master, no orders but your own.",
+        "values": {
+          "freedom": 16,
+          "justice": -4,
+          "honour": -2
+        },
+        "axes": {
+          "free": 18
+        }
+      },
+      {
+        "id": "adventure",
+        "name": "Adventure",
+        "text": "The whole sea, and everything on it.",
+        "values": {
+          "freedom": 8,
+          "knowledge": 8,
+          "fame": 4
+        },
+        "axes": {
+          "bold": 18,
+          "serious": -10
+        }
+      },
+      {
+        "id": "money",
+        "name": "Money",
+        "text": "Pay, and a share of everything.",
+        "values": {
+          "wealth": 18,
+          "family": 4,
+          "honour": -4
+        },
+        "axes": {
+          "kind": -6
+        },
+        "berries": 5000
+      },
+      {
+        "id": "revenge",
+        "name": "Revenge",
+        "text": "Whoever wronged them, you will help them pay.",
+        "values": {
+          "justice": 8,
+          "honour": 8,
+          "strength": 6,
+          "peace": -10
+        },
+        "axes": {
+          "calm": -14,
+          "kind": -6
+        }
+      },
+      {
+        "id": "protection",
+        "name": "Protection",
+        "text": "Nobody will hurt them while you stand.",
+        "values": {
+          "family": 10,
+          "peace": 8,
+          "strength": -2
+        },
+        "axes": {
+          "bold": -12
+        }
+      },
+      {
+        "id": "belonging",
+        "name": "Belonging",
+        "text": "A place among people who will not leave them.",
+        "values": {
+          "family": 14,
+          "honour": 4,
+          "faith": 4
+        },
+        "axes": {
+          "proud": -8,
+          "kind": 6
+        }
+      },
+      {
+        "id": "cause",
+        "name": "A cause",
+        "text": "Something bigger than any of you.",
+        "values": {
+          "justice": 16,
+          "faith": 8,
+          "peace": 6,
+          "wealth": -6
+        },
+        "axes": {
+          "serious": 12,
+          "kind": 6
+        }
+      }
+    ],
+    "lands": 50,
+    "objections": [
+      {
+        "id": "family",
+        "when": "family",
+        "line": "{name} shakes {their} head. “I have family here who need me.”",
+        "answers": [
+          {
+            "id": "promise",
+            "kind": "promise",
+            "label": "Promise to bring them home safe and often",
+            "line": "{name} holds your eye a long moment. {say.agree}"
+          },
+          {
+            "id": "pay",
+            "kind": "pay",
+            "label": "Leave money for the family",
+            "amount": 20000,
+            "line": "{name} looks at the purse, then at you. {say.grateful}"
+          }
+        ]
+      },
+      {
+        "id": "weak",
+        "when": "weak",
+        "line": "{name} laughs. “You? I could beat you with one arm.”",
+        "answers": [
+          {
+            "id": "prove",
+            "kind": "check",
+            "label": "Show them what you are made of",
+            "stat": "combatPower",
+            "difficulty": 0,
+            "line": "{name} rubs {their} jaw. {say.pleased}"
+          },
+          {
+            "id": "deed",
+            "kind": "deed",
+            "label": "Let them see you fight first",
+            "line": "{name} nods slowly. “Show me, then.”"
+          }
+        ]
+      },
+      {
+        "id": "distrust",
+        "when": "distrust",
+        "line": "{name} folds {their} arms. “I don't trust outlaws.”",
+        "answers": [
+          {
+            "id": "honest",
+            "kind": "check",
+            "label": "Tell them the truth about your crew",
+            "stat": "charisma",
+            "difficulty": 45,
+            "line": "{name} thinks about it. {say.doubt}"
+          },
+          {
+            "id": "promise",
+            "kind": "promise",
+            "label": "Promise you will never hurt the innocent",
+            "line": "{name} lets out a breath. {say.agree}"
+          }
+        ]
+      },
+      {
+        "id": "job",
+        "when": "job",
+        "line": "{name} looks around {their} workplace. “I have a trade here. A good one.”",
+        "answers": [
+          {
+            "id": "better",
+            "kind": "check",
+            "label": "Tell them what the sea pays",
+            "stat": "charisma",
+            "difficulty": 38,
+            "line": "{name} wipes {their} hands. {say.pleased}"
+          },
+          {
+            "id": "pay",
+            "kind": "pay",
+            "label": "Pay them for the work they leave",
+            "amount": 8000,
+            "line": "{name} pockets it. {say.agree}"
+          }
+        ]
+      },
+      {
+        "id": "loyal",
+        "when": "loyal",
+        "line": "{name} shakes {their} head. “I already have a captain.”",
+        "answers": [
+          {
+            "id": "better_captain",
+            "kind": "check",
+            "label": "Ask what their captain ever did for them",
+            "stat": "charisma",
+            "difficulty": 52,
+            "line": "{name} goes quiet. {say.doubt}"
+          }
+        ]
+      },
+      {
+        "id": "debt",
+        "when": "debt",
+        "line": "{name} winces. “I owe money. They would come after me.”",
+        "answers": [
+          {
+            "id": "pay",
+            "kind": "pay",
+            "label": "Pay off what they owe",
+            "amount": 15000,
+            "line": "{name} stares at you. {say.grateful}"
+          },
+          {
+            "id": "promise",
+            "kind": "promise",
+            "label": "Promise to deal with anyone who comes",
+            "line": "{name} grins in spite of everything. {say.agree}"
+          }
+        ]
+      },
+      {
+        "id": "seasick",
+        "when": "seasick",
+        "line": "{name} goes green at the very word. “The sea and I do not get on.”",
+        "answers": [
+          {
+            "id": "laugh",
+            "kind": "check",
+            "label": "Laugh it off: everyone gets their sea legs",
+            "stat": "charisma",
+            "difficulty": 32,
+            "line": "{name} laughs, a little sick. {say.agree}"
+          }
+        ]
+      },
+      {
+        "id": "cause",
+        "when": "cause",
+        "line": "{name} frowns. “I have no wish to fight for a living.”",
+        "answers": [
+          {
+            "id": "promise",
+            "kind": "promise",
+            "label": "Promise they will never have to fight",
+            "line": "{name} nods. {say.warm}"
+          },
+          {
+            "id": "persuade",
+            "kind": "check",
+            "label": "Tell them who you fight for",
+            "stat": "charisma",
+            "difficulty": 45,
+            "line": "{name} listens. {say.moved}"
+          }
+        ]
+      },
+      {
+        "id": "old",
+        "when": "old",
+        "line": "{name} chuckles. “Look at me. My sailing days are behind me.”",
+        "answers": [
+          {
+            "id": "need",
+            "kind": "check",
+            "label": "Tell them you need what they know",
+            "stat": "charisma",
+            "difficulty": 40,
+            "line": "{name} straightens up a little. {say.proud}"
+          }
+        ]
+      }
+    ],
+    "refusalMonths": 6,
+    "conditionChance": 0.55,
+    "boards": {
+      "sizes": {
+        "low": 2,
+        "medium": 3,
+        "high": 5
+      },
+      "refreshMonths": 3,
+      "ages": {
+        "min": 16,
+        "max": 45
+      },
+      "secretChance": 0.25,
+      "spyChance": 0.08
+    },
+    "prisons": {
+      "size": 2,
+      "bailPerCp": 120
+    },
+    "auctions": {
+      "size": 2,
+      "pricePerCp": 300
+    },
+    "legends": {
+      "count": 5,
+      "kinds": [
+        {
+          "id": "prodigy_child",
+          "name": "A prodigy",
+          "text": "a child whose teachers have stopped trying to teach",
+          "talent": "monster",
+          "ages": {
+            "min": 12,
+            "max": 16
+          },
+          "power": 1.4
+        },
+        {
+          "id": "anomaly",
+          "name": "An anomaly",
+          "text": "someone the island whispers about and nobody understands",
+          "talent": "anomaly",
+          "ages": {
+            "min": 14,
+            "max": 24
+          },
+          "power": 1.6
+        },
+        {
+          "id": "retired_legend",
+          "name": "A retired legend",
+          "text": "an old sailor who once sailed with the greatest crews of the age",
+          "talent": "prodigy",
+          "ages": {
+            "min": 58,
+            "max": 72
+          },
+          "power": 2.1,
+          "track": "track_armament",
+          "stage": 3
+        },
+        {
+          "id": "hermit_swordsman",
+          "name": "A hermit swordsman",
+          "text": "a swordsman who lives alone and cuts waterfalls for practice",
+          "talent": "prodigy",
+          "ages": {
+            "min": 30,
+            "max": 50
+          },
+          "power": 1.9,
+          "track": "track_swordsmanship",
+          "stage": 5
+        },
+        {
+          "id": "wandering_doctor",
+          "name": "A wandering doctor",
+          "text": "a doctor said to have cured a sickness every other doctor gave up on",
+          "talent": "gifted",
+          "ages": {
+            "min": 35,
+            "max": 60
+          },
+          "power": 1.3
+        }
+      ],
+      "rumourReach": 2
+    },
+    "secrets": [
+      {
+        "id": "fugitive",
+        "name": "A fugitive",
+        "text": "{name} is running from a sentence {they} never served.",
+        "weight": 3
+      },
+      {
+        "id": "lost_royal",
+        "name": "A lost royal",
+        "text": "{name} was born royal, in a kingdom that no longer wants {them}.",
+        "weight": 1
+      },
+      {
+        "id": "cursed_blood",
+        "name": "A cursed bloodline",
+        "text": "Everyone in {name}'s family has died young, and the reason is no secret to {them}.",
+        "weight": 1
+      },
+      {
+        "id": "alias",
+        "name": "A bounty under another name",
+        "text": "{name} once had a bounty under another name, and a face on a poster.",
+        "weight": 2
+      },
+      {
+        "id": "spy",
+        "name": "A spy",
+        "text": "{name} was sent to watch you.",
+        "weight": 0
+      }
+    ]
+  },
+  "spies": {
+    "factions": ["org_marines", "org_world_government", "org_underworld"],
+    "sign": 0.18,
+    "signs": [
+      "{name} was seen at the Den Den Mushi in the middle of the night.",
+      "{name} knew where you were going before you had said.",
+      "{name} slipped a letter to a stranger on the docks.",
+      "Someone has been through your charts, and {name} was on watch."
+    ],
+    "detect": {
+      "base": 0,
+      "perception": 0.55,
+      "intellect": 0.3,
+      "observation": 8,
+      "trust": -0.1
+    },
+    "cover": {
+      "base": 20,
+      "charisma": 0.3,
+      "intellect": 0.3,
+      "deceit": 12
+    }
+  },
+  "betrayal": {
+    "below": 18,
+    "chance": 0.06,
+    "kinds": [
+      {
+        "id": "sellout",
+        "weight": 3,
+        "line": "{name} sold your course to the Marines, and slipped away in the night."
+      },
+      {
+        "id": "fruit",
+        "weight": 2,
+        "line": "{name} took the Devil Fruit from the hold and vanished with it."
+      },
+      {
+        "id": "treasury",
+        "weight": 3,
+        "line": "{name} emptied the {crew}'s purse and was gone by morning."
+      },
+      {
+        "id": "ship",
+        "weight": 1,
+        "line": "{name} and a few hands cut the moorings and took the ship."
+      }
+    ]
+  },
+  "bases": {
+    "kinds": [
+      {
+        "id": "cove",
+        "name": "Hideout cove",
+        "text": "A sheltered inlet nobody passes.",
+        "cost": 60000,
+        "needs": ["coast"],
+        "defence": 35
+      },
+      {
+        "id": "fortress",
+        "name": "Captured fortress",
+        "text": "Stone walls someone else built.",
+        "cost": 400000,
+        "needs": ["coast"],
+        "defence": 70
+      },
+      {
+        "id": "graveyard",
+        "name": "Ship graveyard",
+        "text": "A tangle of old hulls to live in.",
+        "cost": 30000,
+        "needs": ["docks"],
+        "defence": 25
+      },
+      {
+        "id": "capital",
+        "name": "A territory's capital",
+        "text": "The seat of an island you hold (Phase 9's territories).",
+        "cost": 1500000,
+        "needs": ["market"],
+        "defence": 80
+      }
+    ],
+    "rooms": [
+      {
+        "id": "dock",
+        "name": "Dock",
+        "text": "Mends a moored ship's hull a month.",
+        "cost": 40000,
+        "upkeep": 800,
+        "value": 8
+      },
+      {
+        "id": "armoury",
+        "name": "Armoury",
+        "text": "Adds to the base's defence against raids.",
+        "cost": 50000,
+        "upkeep": 600,
+        "value": 20
+      },
+      {
+        "id": "training",
+        "name": "Training ground",
+        "text": "Crewmates train faster while ashore here.",
+        "cost": 35000,
+        "upkeep": 500,
+        "value": 0.3
+      },
+      {
+        "id": "infirmary",
+        "name": "Infirmary",
+        "text": "Wounds heal faster here, crewmates' and yours.",
+        "cost": 45000,
+        "upkeep": 700,
+        "value": 1
+      },
+      {
+        "id": "treasury",
+        "name": "Treasury",
+        "text": "The common purse grows a little a month, and is safe from thieves.",
+        "cost": 60000,
+        "upkeep": 400,
+        "value": 0.005
+      },
+      {
+        "id": "prison",
+        "name": "Prison",
+        "text": "Holds prisoners, and keeps them held.",
+        "cost": 30000,
+        "upkeep": 400,
+        "value": 6
+      },
+      {
+        "id": "library",
+        "name": "Library",
+        "text": "Crewmates' minds sharpen while ashore here.",
+        "cost": 40000,
+        "upkeep": 300,
+        "value": 0.4
+      },
+      {
+        "id": "shrine",
+        "name": "Shrine",
+        "text": "A quiet place: the crew's morale steadies.",
+        "cost": 20000,
+        "upkeep": 200,
+        "value": 2
+      }
+    ],
+    "raidChance": 0.03,
+    "raidPerFameTier": 0.01
+  },
+  "fleet": {
+    "orders": [
+      {
+        "id": "patrol",
+        "name": "Patrol",
+        "text": "Sail the waters around a place and keep them yours.",
+        "berries": 2000,
+        "risk": 0.05,
+        "target": "place"
+      },
+      {
+        "id": "raid",
+        "name": "Raid",
+        "text": "Take what can be taken.",
+        "berries": 12000,
+        "risk": 0.18,
+        "target": "place"
+      },
+      {
+        "id": "escort",
+        "name": "Escort",
+        "text": "Guard merchant ships for a fee.",
+        "berries": 6000,
+        "risk": 0.08
+      },
+      {
+        "id": "hold",
+        "name": "Hold a territory",
+        "text": "Stay, and let nobody else in.",
+        "berries": 1000,
+        "risk": 0.06,
+        "target": "place"
+      },
+      {
+        "id": "battle",
+        "name": "Join the next battle",
+        "text": "Sail with you and fight beside you.",
+        "berries": -2000,
+        "risk": 0.02
+      }
+    ],
+    "swear": {
+      "respect": 40,
+      "fear": 50
+    },
+    "breakBelow": 25
+  },
+  "prisoners": {
+    "ransomPerCp": 60,
+    "marinePerCp": 90,
+    "escape": 0.08,
+    "brig": 2
+  },
+  "growth": {
+    "points": {
+      "light": 0.35,
+      "normal": 0.6,
+      "hard": 0.9
+    },
+    "practice": 2,
+    "teach": 0.1,
+    "teacherMult": 1.3,
+    "haki": 0.004
+  },
+  "bounty": {
+    "perPower": 120,
+    "notable": 10000000,
+    "epithets": {
+      "roles": {
+        "fighter": ["the Iron Wall", "Red Knuckles", "the Cleaver"],
+        "sniper": ["Deadeye", "the Long Shot", "Hawkeye"],
+        "navigator": ["Stormreader", "the Compass", "Weatherwitch"],
+        "cook": ["the Butcher of the Galley", "Hot Pan"],
+        "doctor": ["Black Stitch", "the Bonesetter"],
+        "helmsman": ["Steady Hand", "the Wheel"],
+        "first_mate": ["Iron Order", "the Right Hand"],
+        "shipwright": ["Hammerhead", "the Carpenter"],
+        "musician": ["Siren", "the Drum"],
+        "captain": ["the Flag", "Sea Lord"]
+      },
+      "traits": {
+        "trait_hot_headed": ["Wildfire"],
+        "trait_cruel": ["the Butcher"],
+        "trait_charming": ["Silk"],
+        "trait_tough_as_nails": ["Ironhide"],
+        "trait_sharpshooter": ["Pinpoint"]
+      },
+      "generic": ["the Wanderer", "Saltblood", "the Grin", "Thunderclap", "the Ghost"]
+    }
+  },
+  "lives": {
+    "promote": {
+      "months": 18,
+      "loyalty": 60
+    },
+    "retire": 66,
+    "dreamLeave": 0.02,
+    "childJoins": 16,
+    "funeral": {
+      "morale": 6,
+      "belonging": 6
+    }
+  },
+  "lines": {
+    "founded": "You founded the {crew}.",
+    "joined": "{name} joined the {crew} as {role}. {say.pleased}",
+    "refused": "{name} will not join you. {say.refuse}",
+    "listening": "{name} is listening. {say.doubt}",
+    "objection": "{name} has a doubt: {quest}",
+    "answered": "{name} is satisfied on that score. {say.agree}",
+    "questStart": "{name} wants something first: {quest}. {say.challenge}",
+    "questDone": "{name} has what {they} asked for: {quest}. {say.moved}",
+    "questFailed": "{name} gave up waiting: {quest}. {say.sad}",
+    "left": "{name} left the {crew}. {say.farewell}",
+    "deserted": "{name} deserted the {crew} in the night.",
+    "mutiny": "The {crew} mutinied: {name} led them, and {count} went with {them}.",
+    "grumble": "The {crew} are grumbling: about the pay, the food, the captain.",
+    "died": "{name} of the {crew} is dead.",
+    "funeral": "A funeral at sea for {name}: the {crew} stood bareheaded on the deck while {they} went into the water.",
+    "retired": "{name} has hung up {their} cutlass and left the {crew} to grow old somewhere quiet. {say.farewell}",
+    "dreamLeave": "{name} is leaving to chase {their} own dream: to {dream}. {say.farewell}",
+    "promoted": "{name} is an officer of the {crew} now. {say.proud}",
+    "title": "{name} has earned a name aboard: {post}.",
+    "taught": "{name} taught {other} everything {name} knows of {target}.",
+    "technique": "{name} learned a new technique: {target}.",
+    "hakiWoke": "Something woke in {name}: {target}.",
+    "arcStep": "{name}'s story, {arc}: {quest}",
+    "arcDone": "{name}'s story is told: {arc}. {say.moved}",
+    "bounty": "A bounty on {name}: {bounty} Berries.",
+    "epithet": "The papers have a name for {name} now: “{epithet}”.",
+    "missionBack": "{report}",
+    "missionTrouble": "{name} brought trouble back from {mission}: {report}",
+    "friction": "{name} and {other} came to blows on deck.",
+    "synergy": "{name} and {other} fight like one person now.",
+    "tradition": "{report}",
+    "creedBroken": "You broke the {crew}'s creed ({quest}), and they saw it.",
+    "creedKept": "You kept the {crew}'s creed ({quest}) when it would have been easier not to.",
+    "spySign": "{report}",
+    "spyCaught": "{name} was a spy for {target}. You caught {them} at it.",
+    "betrayal": "{report}",
+    "fruitYes": "{name} eats the fruit. {say.moved}",
+    "fruitNo": "{name} will not eat it. {say.refuse}",
+    "prisoner": "{name} is your prisoner now.",
+    "ransomed": "{name} was ransomed for {bounty} Berries.",
+    "escaped": "{name} escaped.",
+    "baseClaimed": "The {crew} have a base: {target}.",
+    "baseRaid": "Raiders hit {target}: {report}",
+    "fleetSworn": "{name} drank from your cup: {their} crew sails under your flag now.",
+    "fleetOrder": "{report}",
+    "fleetBroke": "{name} has broken away from your fleet.",
+    "allianceMade": "{name} and you are allies: {quest}.",
+    "allianceMet": "The alliance with {name} has done what it was for: {quest}.",
+    "allianceBroken": "{name} betrayed the alliance.",
+    "boardHere": "{count} looking for a ship in {place}.",
+    "legendRumour": "Somebody in {place} talks of {report}, out at {target}.",
+    "legendFound": "You found {name}: {report}",
+    "secretFound": "You learned {name}'s secret: {report}",
+    "childJoins": "{name}, {other}'s child, wants to sail with the {crew}. {say.challenge}",
+    "logVoyage": "Made {target}.",
+    "logBattle": "{report}",
+    "logJoined": "{name} came aboard as {role}.",
+    "logLeft": "{name} left: {report}.",
+    "logDied": "{name} died: {report}.",
+    "peopleNews": "{report}"
+  }
+}

@@ -568,7 +568,15 @@ export function renderPerson(view: PersonView, app: App, busy: boolean): Child[]
           `${view.bond}, since ${view.sinceText}. ${view.mood}${view.morale ? `, ${view.morale.toLowerCase()}` : ''}.${view.sworn ? ' Sworn sibling.' : ''}`,
         ),
       ),
-      h('a', { class: 'button button--tiny', href: '#/people' }, 'All people'),
+      h(
+        'div',
+        { class: 'person-head__links' },
+        h('a', { class: 'button button--tiny', href: '#/people' }, 'All people'),
+        // Phase 8: what the player knows of them as a recruit, and the scene of winning them over.
+        view.alive && !view.animal
+          ? h('a', { class: 'button button--tiny', href: `#/recruit/${view.id}` }, 'As a recruit')
+          : null,
+      ),
     ),
     h(
       'section',

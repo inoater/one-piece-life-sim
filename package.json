@@ -1,8 +1,8 @@
 {
   "name": "one-piece-life-sim",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
-  "description": "One Piece Life Sim: a static-site life simulation. Phase 7: personality, relationships and their bars, memory, conversation, people who reach out, reputation, family and companions, on weapons and ships, battles, powers, the world, the life loop and character genesis.",
+  "description": "One Piece Life Sim: a static-site life simulation. Phase 8: recruitment, the crew creator, positions aboard, teammates who grow, missions, fleets, bases, prisoners and spies, on the heart, weapons and ships, battles, powers, the world, the life loop and character genesis.",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -23,6 +23,7 @@
     "battle": "tsx tools/battle.ts",
     "economy": "tsx tools/economy.ts",
     "heart": "tsx tools/heart.ts",
+    "crew": "tsx tools/crew.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "golden:update": "tsx tools/update-golden.ts",

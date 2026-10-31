@@ -22,6 +22,9 @@ import { tierSpan } from './ladder';
 import { ownShipInBattle } from '../hands/fight';
 import { bloodthirstIntent } from '../hands/curses';
 import { autoBoard, placeAtFronts, runBattle, stepBattle, type NavalPlan } from './scales';
+import { crewHooks } from '../crew/hooks';
+import { crewEffect, onHandCrew, prisonRoomHook, takePrisonersHook } from '../crew/fx';
+import { CREW_EFFECT_KEYS } from '../../engine/data/schemas';
 
 /**
  * The player's fights (Phase 5). An event's `fight` (or a canon beat's, or a contest's) becomes a
@@ -204,12 +207,26 @@ export function buildFight(
 
   // Who stands with the player: the ship's hands, or friends who are here.
   if (spec.allies === 'crew' && big) {
-    const count = hands(state, p.entity);
+    // Phase 8: the fleet told to join the next battle brings its ranks.
+    const count = hands(state, p.entity) + onHandCrew(state, data).fleet;
     if (count > 0) {
       ranks[0] = count;
       const span = tierSpan(data, 'thug');
       rankPower[0] = Math.round((span.min + (span.max ?? span.min)) / 2);
     }
+    // Phase 8: named crewmates stand with their captain (the best four on hand).
+    onHandCrew(state, data)
+      .members.slice(0, 4)
+      .forEach((e, i) =>
+        fighters.push(
+          fighterOf(state, data, e, site.tick, {
+            id: `crew${i + 1}`,
+            side: 0,
+            intent: spec.mine,
+            ...rules,
+          }),
+        ),
+      );
   } else if (spec.allies === 'friends') {
     const here = p.c.place;
     const friends = [
@@ -330,6 +347,22 @@ export function buildFight(
     ...(stance ? { stance } : {}),
   });
   setBonds(state, data, battle, site.tick);
+  // Phase 8: what the player's posts are worth in this fight (only with a crew of their own).
+  const posts: Record<string, number> = {};
+  for (const key of CREW_EFFECT_KEYS)
+    if (key.startsWith('naval.') || key.startsWith('battle.')) {
+      const v = crewEffect(state, data, key);
+      if (v !== 0) posts[key] = Math.round(v * 1000) / 1000;
+    }
+  if (Object.keys(posts).length > 0) {
+    battle.posts = posts;
+    battle.sides[0].morale += posts['battle.morale'] ?? 0;
+    const mine = battle.ships[0];
+    if (mine) {
+      mine.cannons = Math.max(0, Math.round(mine.cannons * (1 + (posts['naval.cannons'] ?? 0))));
+      mine.speed = Math.round(mine.speed * (1 + (posts['naval.speed'] ?? 0)));
+    }
+  }
   if (scale === 'crew') autoBoard(battle);
   if (scale === 'war') placeAtFronts(battle);
   openingLine(ctxOf(state, data, battle));
@@ -408,7 +441,11 @@ export function beginFight(
   finishFight(state, data, battle, title);
 }
 
-function fateChoices(data: GameData, battle: BattleState): PendingDecision['choices'] {
+function fateChoices(
+  state: WorldState,
+  data: GameData,
+  battle: BattleState,
+): PendingDecision['choices'] {
   const beaten = battle.fighters.filter(
     (f) => f.side === 1 && (f.down === 'ko' || f.down === 'captured' || f.down === 'surrendered'),
   );
@@ -423,6 +460,10 @@ function fateChoices(data: GameData, battle: BattleState): PendingDecision['choi
     ...(bounty ? [{ id: 'hand_over', label: 'Bind them and hand them to the Marines' }] : []),
     ...(beaten.some((f) => f.entityId)
       ? [{ id: 'recruit', label: 'Offer them a place beside you' }]
+      : []),
+    // Phase 8: a crew with a brig (or a base's cells) can hold them.
+    ...(beaten.some((f) => f.entityId) && prisonRoomFree(state, data)
+      ? [{ id: 'prisoner', label: 'Take them prisoner' }]
       : []),
     { id: 'rob', label: 'Take what they carry' },
     { id: 'kill', label: 'Finish them' },
@@ -479,7 +520,9 @@ export function finishFight(
   }
   pushNews(state, drafts);
   finisherFor(battle.source.kind)?.(state, data, battle, aftermath);
-  const choices = result?.how === 'won' && p?.c.alive ? fateChoices(data, battle) : [];
+  // Phase 8: the crew's share of it (quests, morale, loot, bounties, the captain's log).
+  crewHooks.fought?.(state, data, battle);
+  const choices = result?.how === 'won' && p?.c.alive ? fateChoices(state, data, battle) : [];
   const free = state.battle === null || state.battle === battle;
   if (choices.length > 0 && !battle.spar && battle.contest === null && free) {
     state.battle = battle;
@@ -539,6 +582,25 @@ export function beginContest(
   finisherFor(site.source.kind)?.(state, data, battle, { lines: [], seen: [], news: false });
 }
 
+/** A life context for the player, for the crew's side of a fate (Phase 8). */
+function fateEnv(state: WorldState, data: GameData): LifeEnv | null {
+  const p = playerPerson(state, data);
+  if (!p?.c.life) return null;
+  return {
+    state,
+    data,
+    tick: state.tick,
+    rng: Rng.root(state.seed).fork('fate-crew', state.tick),
+    p,
+    life: p.c.life,
+    cause: 'battle:fate',
+  };
+}
+
+function prisonRoomFree(state: WorldState, data: GameData): boolean {
+  return prisonRoomHook(state, data) > 0;
+}
+
 /** The winner's choice for the beaten (the player decides; data/battle.json words it). */
 function applyFate(state: WorldState, data: GameData, battle: BattleState, fate: string): void {
   const p = playerPerson(state, data);
@@ -576,21 +638,10 @@ function applyFate(state: WorldState, data: GameData, battle: BattleState, fate:
       );
       for (const f of joined) {
         const e = state.entities[f.entityId as string];
-        if (e?.character && !p.c.relationships.some((r) => r.id === e.id)) {
-          // Phase 7: a place beside the player is a place in their crew.
-          p.c.relationships.push({
-            id: e.id,
-            kind: 'crewmate',
-            opinion: { base: 20, mods: [] },
-            sinceTick: state.tick,
-          });
-          e.character.relationships.push({
-            id: p.entity.id,
-            kind: 'crewmate',
-            opinion: { base: 25, mods: [] },
-            sinceTick: state.tick,
-          });
-          e.flags['crew.of'] = p.entity.id;
+        if (e?.character && e.flags['crew.of'] !== p.entity.id) {
+          // Phase 8: spared, and offered a place: a defeated enemy joins the crew.
+          const env = fateEnv(state, data);
+          if (env && crewHooks.join) crewHooks.join(env, e, undefined, 'spared');
         }
       }
       text =
@@ -610,8 +661,21 @@ function applyFate(state: WorldState, data: GameData, battle: BattleState, fate:
       (p.entity.stats['infamy'] as { base: number }).base += 1;
       break;
     }
+    case 'prisoner': {
+      const env = fateEnv(state, data);
+      const ids = beaten.filter((f) => f.entityId).map((f) => f.entityId as string);
+      const taken = env ? takePrisonersHook(env, ids) : [];
+      text =
+        taken.length > 0
+          ? `You took ${taken.map((id) => state.entities[id]?.name ?? id).join(', ')} prisoner.`
+          : `There was no room to hold ${names}.`;
+      break;
+    }
     case 'kill': {
       text = `You finished ${names}.`;
+      // Phase 8: finishing the beaten is what a crew's creed on killing is about.
+      const env = fateEnv(state, data);
+      if (env) crewHooks.deed?.(env, ['kill', 'merciless'], undefined);
       for (const f of beaten) {
         f.down = 'dead';
         f.downBy = PLAYER_FIGHTER;

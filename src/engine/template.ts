@@ -188,6 +188,28 @@ export const HEART_VARS = [
   ...SPEECH_ACTS.map((a) => `say.${a}` as const),
 ] as const;
 
+/**
+ * Phase 8: a crew's lines: the heart's (a crewmate speaking, in their own voice) plus the crew,
+ * its captain, the role and post, a mission, its target and report, a quest, an arc.
+ */
+export const CREW_VARS = [
+  ...HEART_VARS,
+  'crew',
+  'captain',
+  'role',
+  'post',
+  'mission',
+  'target',
+  'report',
+  'quest',
+  'arc',
+  'other',
+  'epithet',
+  'bounty',
+  'months',
+  'count',
+] as const;
+
 export const APPEARANCE_VARS = [
   'a',
   'adjectives',

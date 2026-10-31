@@ -1,4 +1,5 @@
 import type { LifeEffect } from '../../engine/data/schemas';
+import { crewEffect } from '../crew/fx';
 import type { Entity, RelationKind } from '../../engine/state';
 import { scheduleEvent } from '../events';
 import { formatBerries } from '../genesis/text';
@@ -104,6 +105,17 @@ export function arrest(env: LifeEnv, fine: number, months: number): void {
     life.job = null;
   }
   reputation(p.entity, 'infamy').base += 1;
+}
+
+/**
+ * Phase 8: weather's toll scaled by the storm posts (helm, lines and sails, pumps, lashing), for
+ * an event tagged weather and a captain with a crew; 1 otherwise.
+ */
+function stormShare(env: LifeEnv, key: 'storm.hull' | 'storm.supplies' | 'storm.delay'): number {
+  const id = env.cause.split('#')[0] ?? '';
+  if (!env.data.events[id]?.tags.includes('weather') || env.p.c.travel?.voyage?.mode !== 'own')
+    return 1;
+  return Math.max(0.1, 1 + crewEffect(env.state, env.data, key));
 }
 
 export function applyLifeEffect(env: LifeEnv, effect: LifeEffect, scope: EffectScope): void {
@@ -245,10 +257,18 @@ export function applyLifeEffect(env: LifeEnv, effect: LifeEffect, scope: EffectS
       break;
     // Phase 3: the vessel the character is aboard (or their own ship, moored where they are).
     case 'hull':
-      shipEffect(env, 'hull', effect.value);
+      shipEffect(
+        env,
+        'hull',
+        effect.value < 0 ? effect.value * stormShare(env, 'storm.hull') : effect.value,
+      );
       break;
     case 'supplies':
-      shipEffect(env, 'supplies', effect.months);
+      shipEffect(
+        env,
+        'supplies',
+        effect.months < 0 ? effect.months * stormShare(env, 'storm.supplies') : effect.months,
+      );
       break;
     case 'crew':
       shipEffect(env, 'crew', effect.value);
@@ -257,7 +277,10 @@ export function applyLifeEffect(env: LifeEnv, effect: LifeEffect, scope: EffectS
       shipEffect(env, 'morale', effect.value);
       break;
     case 'delay':
-      delayVoyage(env, effect.months);
+      delayVoyage(
+        env,
+        effect.months > 0 ? effect.months * stormShare(env, 'storm.delay') : effect.months,
+      );
       break;
     case 'redirect': {
       const voyage = p.c.travel?.voyage;

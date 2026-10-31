@@ -1,4 +1,5 @@
 import { dateOf, formatDate } from '../../engine/calendar';
+import { passCrew } from '../crew/succession';
 import type { GameData } from '../../engine/data/schemas';
 import { mintGeneratedId } from '../../engine/entities';
 import { appendLog } from '../../engine/log';
@@ -88,15 +89,16 @@ function candidatesFor(state: WorldState, dead: Person, mode: ContinueMode): Ent
     case 'sibling':
       return byAge(livingRelations(state, c, 'sibling'));
     case 'crewmate': {
-      // Gang members (Phase 2), and the shipmates made at sea (Phase 3).
+      // Gang members (Phase 2), the shipmates made at sea (Phase 3), and (Phase 8) the crew.
       const gang = c.life?.gang;
-      return byAge(
-        livingRelations(state, c, 'friend').filter(
+      return byAge([
+        ...livingRelations(state, c, 'crewmate'),
+        ...livingRelations(state, c, 'friend').filter(
           (e) =>
             (gang !== null && gang !== undefined && e.flags['gang.name'] === gang) ||
             e.flags['shipmate'] === true,
         ),
-      );
+      ]);
     }
     default:
       return [];
@@ -434,6 +436,12 @@ export function continueAs(
   // Phase 7: a heart of their own, and the family name's reputation if they carry it.
   ensureHeart(state, data, target);
   if (tc.familyName && tc.familyName === dead.c.familyName) passFamilyName(dead.entity, target);
+  // Phase 8: command of the crew passes to whoever carries on, if they sailed with it (or are
+  // the dead captain's heir, protégé or sibling): they lead it from here.
+  if (INHERITS.has(mode)) {
+    const notesCrew = passCrew(state, data, dead.entity, target);
+    if (notesCrew) notes.push(notesCrew);
+  }
   if (mode === 'crewmate' && deadLife?.gang) {
     life.gang = deadLife.gang;
     target.flags['gang.member'] = true;

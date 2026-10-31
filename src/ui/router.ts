@@ -9,7 +9,7 @@ export const ROUTES = ['feed', 'character', 'actions', 'world', 'news'] as const
  * Full-page screens that are not tabs: New Life, the Map, the life recap after a death,
  * (Phase 3) the canon timeline with its Divergence Log, and (Phase 4) the Powers and Devil Fruit
  * pages, and (Phase 6) the Gear and Ship pages, and (Phase 7) People and a person's page
- * (`#/person/<id>`).
+ * (`#/person/<id>`), and (Phase 8) the Crew page and a recruit's profile (`#/recruit/<id>`).
  */
 export const PAGE_ROUTES = [
   'new',
@@ -22,6 +22,8 @@ export const PAGE_ROUTES = [
   'ship',
   'people',
   'person',
+  'crew',
+  'recruit',
 ] as const;
 export type TabRoute = (typeof ROUTES)[number];
 export type Route = TabRoute | (typeof PAGE_ROUTES)[number];
@@ -45,6 +47,8 @@ export const ROUTE_LABELS: Record<Route, string> = {
   ship: 'Ship',
   people: 'People',
   person: 'Person',
+  crew: 'Crew',
+  recruit: 'Recruit',
 };
 
 export function parseHash(hash: string): Route {

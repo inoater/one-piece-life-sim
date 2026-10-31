@@ -1,4 +1,6 @@
 import type { GameData, TravelMode } from '../../engine/data/schemas';
+import { crewEffect } from '../crew/fx';
+import { speedHealing } from '../life/health';
 import type { Rng } from '../../engine/rng';
 import type { CharacterData, TravelData, Voyage, WorldState } from '../../engine/state';
 import { formatBerries, numberWords } from '../genesis/text';
@@ -388,7 +390,11 @@ function payTheMonth(env: LifeEnv, voyage: Voyage): void {
       line(env, data.travel.lines.unpaid, {}, 'bad');
     }
   }
-  const eat = mouthsAboard(vessel);
+  // Phase 8: a cook keeps the stores from spoiling (and an empty galley lets them).
+  const eat =
+    Math.round(
+      mouthsAboard(vessel) * Math.max(0.3, 1 + crewEffect(state, data, 'sea.supplies')) * 10,
+    ) / 10;
   if (vessel.supplies >= eat) changeVessel(state, voyage, 'supplies', -eat);
   else {
     changeVessel(state, voyage, 'supplies', -vessel.supplies);
@@ -410,7 +416,9 @@ function sicknessAtSea(env: LifeEnv, voyage: Voyage): void {
   if (
     voyage.months > rules.scurvy.afterMonths &&
     (voyage.mode === 'own' || voyage.mode === 'crew' || voyage.mode === 'stowaway') &&
-    rng.fork('scurvy').chance(rules.scurvy.chance)
+    rng
+      .fork('scurvy')
+      .chance(rules.scurvy.chance * Math.max(0, 1 + crewEffect(env.state, data, 'sea.scurvy')))
   ) {
     fallIll(env, 'scurvy');
   }
@@ -476,6 +484,16 @@ export function sailMonth(env: LifeEnv): void {
 
   // Morale drifts back toward its resting level.
   const vessel = vesselNow(state, voyage);
+  // Phase 8: the posts at sea: the galley and the watch lift spirits, a shipwright mends, a doctor
+  // speeds healing.
+  if (voyage.mode === 'own') {
+    const lift = crewEffect(state, data, 'sea.morale');
+    if (lift !== 0) changeVessel(state, voyage, 'morale', Math.round(lift * 10) / 10);
+    const mend = crewEffect(state, data, 'sea.repair');
+    if (mend > 0) changeVessel(state, voyage, 'hull', Math.round(mend * 10) / 10);
+  }
+  const heal = crewEffect(state, data, 'sea.heal');
+  if (heal > 0 && (voyage.mode === 'own' || voyage.mode === 'crew')) speedHealing(env, heal);
   if (vessel) {
     const rest = data.travel.morale.rest;
     const drift = Math.min(data.travel.morale.drift, Math.abs(rest - vessel.morale));

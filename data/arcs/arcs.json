@@ -1,0 +1,348 @@
+[
+  {
+    "id": "arc_burned_village",
+    "name": "The man who burned my village",
+    "dreams": ["revenge"],
+    "values": ["justice", "honour"],
+    "weight": 3,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 4,
+        "line": "{name} tells you, late one night, about the fire that took {their} village, and the man who set it."
+      },
+      {
+        "kind": "port",
+        "amount": 2,
+        "line": "In a tavern, {name} heard a name {name} has waited years to hear."
+      },
+      {
+        "kind": "visit",
+        "line": "The trail leads here. {name} has gone very quiet."
+      },
+      {
+        "kind": "fight",
+        "power": 0.95,
+        "line": "{name} found the man who burned {their} village, and settled it."
+      }
+    ],
+    "done": "{name} has nothing left to hunt. For the first time in years, {name} sleeps through the night.",
+    "breakthrough": "willpower",
+    "loyalty": 20
+  },
+  {
+    "id": "arc_cure_sister",
+    "name": "Cure my sister",
+    "dreams": ["cure"],
+    "values": ["family"],
+    "occupations": ["occ_doctor"],
+    "weight": 3,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 3,
+        "line": "{name} keeps a letter from {their} sick sister in {their} coat, and reads it every night."
+      },
+      {
+        "kind": "train",
+        "stat": "intellect",
+        "amount": 3,
+        "line": "{name} has been reading every medical book aboard, twice."
+      },
+      {
+        "kind": "berries",
+        "amount": 20000,
+        "line": "{name} has found the medicine. It costs more than {name} has."
+      },
+      {
+        "kind": "visit",
+        "line": "The medicine went home on a fast ship. A letter came back: she is getting better."
+      }
+    ],
+    "done": "{name}'s sister is well. {name} has never been lighter.",
+    "breakthrough": "intellect",
+    "loyalty": 25
+  },
+  {
+    "id": "arc_old_map",
+    "name": "Prove the old map true",
+    "dreams": ["map_world", "one_piece", "deep_island", "stones"],
+    "values": ["knowledge", "freedom"],
+    "weight": 3,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 3,
+        "line": "{name} unrolls an old map on the galley table: {their} grandfather's, and everyone said it was a fake."
+      },
+      {
+        "kind": "visit",
+        "line": "The coastline here matches the map. {name} is shaking."
+      },
+      {
+        "kind": "port",
+        "amount": 1,
+        "line": "Old sailors here remember the island on {name}'s map."
+      },
+      {
+        "kind": "visit",
+        "line": "Here it is: exactly where the map said. {name} laughs until the tears come."
+      }
+    ],
+    "done": "The old map was true. {name} has written the family name on it, under {their} grandfather's.",
+    "breakthrough": "perception",
+    "loyalty": 18
+  },
+  {
+    "id": "arc_best_blade",
+    "name": "Become the greatest swordsman",
+    "dreams": ["best_blade", "strongest"],
+    "values": ["strength", "honour"],
+    "occupations": ["occ_swordsman", "occ_samurai"],
+    "weight": 3,
+    "steps": [
+      {
+        "kind": "train",
+        "stat": "dexterity",
+        "amount": 3,
+        "line": "{name} trains until {their} hands bleed, and then trains some more."
+      },
+      {
+        "kind": "fight",
+        "power": 1,
+        "line": "{name} challenged a swordsman of renown, and won."
+      },
+      {
+        "kind": "serve",
+        "amount": 6,
+        "line": "{name} swore an oath to you on {their} blade: never to lose again."
+      },
+      {
+        "kind": "fight",
+        "power": 1.1,
+        "line": "{name} faced a better swordsman than any {name} had ever met, and cut through."
+      }
+    ],
+    "done": "{name} is not the greatest yet. But the day is coming.",
+    "breakthrough": "dexterity",
+    "loyalty": 20
+  },
+  {
+    "id": "arc_all_blue",
+    "name": "The sea where every fish swims",
+    "dreams": ["all_blue", "famous_chef"],
+    "occupations": ["occ_cook", "occ_fisher"],
+    "weight": 3,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 3,
+        "line": "{name} tells the crew about a sea where every fish in the world swims together. Nobody laughs."
+      },
+      {
+        "kind": "region",
+        "region": "paradise",
+        "line": "{name} cooked a fish from the Grand Line nobody aboard had ever seen."
+      },
+      {
+        "kind": "port",
+        "amount": 2,
+        "line": "An old cook in port has heard of the sea {name} seeks."
+      }
+    ],
+    "done": "{name} has not found it yet. But {name} knows which way it lies now.",
+    "breakthrough": "dexterity",
+    "loyalty": 15
+  },
+  {
+    "id": "arc_family_name",
+    "name": "Clear the family name",
+    "dreams": ["proud_family", "hero"],
+    "values": ["honour", "family"],
+    "weight": 2,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 4,
+        "line": "{name} admits {their} family name is a curse word back home, for something {their} father never did."
+      },
+      {
+        "kind": "talk",
+        "amount": 3,
+        "line": "{name} has told you the whole story now, piece by piece."
+      },
+      {
+        "kind": "visit",
+        "line": "Here lives the one witness who knows the truth."
+      },
+      {
+        "kind": "fight",
+        "power": 0.9,
+        "line": "{name} faced the man who lied about {their} father, and made him tell the truth."
+      }
+    ],
+    "done": "{name}'s family name is clean. {name} says it out loud now, proudly.",
+    "breakthrough": "charisma",
+    "loyalty": 20
+  },
+  {
+    "id": "arc_ship_of_my_own",
+    "name": "A ship worth building",
+    "dreams": ["ship"],
+    "occupations": ["occ_carpenter", "occ_craftsman"],
+    "weight": 2,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 3,
+        "line": "{name} sketches ship designs on every scrap of paper aboard."
+      },
+      {
+        "kind": "train",
+        "stat": "dexterity",
+        "amount": 2,
+        "line": "{name}'s joints are tighter than any yard's now."
+      },
+      {
+        "kind": "port",
+        "amount": 2,
+        "line": "{name} has been talking to every shipwright in port."
+      }
+    ],
+    "done": "{name} has drawn the ship {name} will build one day, down to the last nail.",
+    "breakthrough": "intellect",
+    "loyalty": 12
+  },
+  {
+    "id": "arc_be_strong",
+    "name": "Never be weak again",
+    "dreams": ["strongest", "hero", "admiral"],
+    "values": ["strength"],
+    "weight": 3,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 3,
+        "line": "{name} tells you about the day {name} could not protect someone."
+      },
+      {
+        "kind": "train",
+        "stat": "strength",
+        "amount": 3,
+        "line": "{name} is training like someone possessed."
+      },
+      {
+        "kind": "fight",
+        "power": 1,
+        "line": "{name} stood between the crew and a much bigger fighter, and did not fall."
+      }
+    ],
+    "done": "{name} is strong now. Strong enough that it will never happen again.",
+    "breakthrough": "strength",
+    "loyalty": 18
+  },
+  {
+    "id": "arc_free_island",
+    "name": "Free my island",
+    "dreams": ["free_island", "no_more_war"],
+    "values": ["freedom", "justice", "peace"],
+    "weight": 2,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 4,
+        "line": "{name}'s island is ruled by a tyrant. {name} has never said it aloud before."
+      },
+      {
+        "kind": "port",
+        "amount": 2,
+        "line": "{name} has found others who want the same."
+      },
+      {
+        "kind": "fight",
+        "power": 1.05,
+        "line": "{name} led the uprising's first fight, and won it."
+      }
+    ],
+    "done": "{name}'s island is free. {name} will always have a home there now, and so will you.",
+    "breakthrough": "willpower",
+    "loyalty": 22
+  },
+  {
+    "id": "arc_far_love",
+    "name": "A love on the far shore",
+    "dreams": ["far_love", "grandchildren", "inn", "quiet_shore", "farm_back"],
+    "values": ["family", "peace"],
+    "weight": 2,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 4,
+        "line": "{name} writes letters to someone on another island, and never sends them."
+      },
+      {
+        "kind": "talk",
+        "amount": 2,
+        "line": "{name} told you who the letters are for."
+      },
+      {
+        "kind": "visit",
+        "line": "{name} sent every one of the letters at last."
+      }
+    ],
+    "done": "A letter came back. {name} reads it every night, smiling.",
+    "breakthrough": "charisma",
+    "loyalty": 15
+  },
+  {
+    "id": "arc_find_my_place",
+    "name": "Find where I belong",
+    "weight": 1,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 4,
+        "line": "{name} admits joining only for want of anywhere else to go."
+      },
+      {
+        "kind": "talk",
+        "amount": 2,
+        "line": "{name} has started to talk about the crew as home."
+      },
+      {
+        "kind": "visit",
+        "line": "Somewhere new, {name} realised what home was: the ship."
+      }
+    ],
+    "done": "{name} knows where home is now: here.",
+    "breakthrough": "willpower",
+    "loyalty": 25
+  },
+  {
+    "id": "arc_riches",
+    "name": "Rich enough never to be poor",
+    "dreams": ["richest"],
+    "values": ["wealth"],
+    "weight": 2,
+    "steps": [
+      {
+        "kind": "serve",
+        "amount": 3,
+        "line": "{name} counts {their} share every night, and tells you how poor the family was."
+      },
+      {
+        "kind": "berries",
+        "amount": 10000,
+        "line": "{name} wants to send money home. You helped."
+      },
+      {
+        "kind": "port",
+        "amount": 2,
+        "line": "{name} has found a deal worth making."
+      }
+    ],
+    "done": "{name}'s family will never go hungry again.",
+    "breakthrough": "intellect",
+    "loyalty": 14
+  }
+]

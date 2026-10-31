@@ -41,6 +41,8 @@ import {
 import { addDebugModifier, spawnTestEntity } from './devtools';
 import { applyHandsCommand } from './hands/commands';
 import { applyHeartCommand } from './heart/commands';
+import { applyCrewCommand } from './crew/commands';
+import { CREW_SITUATIONS } from '../engine/crew-state';
 import { ShipDesignSchema } from '../engine/data/defs';
 import { resolveDecision, scheduleEvent } from './events';
 import { livePlayerRoutine } from './life';
@@ -85,6 +87,20 @@ import {
  * Actions are validated at the boundary, so a malformed message fails with a clear error instead
  * of corrupting state.
  */
+
+const id = z.string().min(1).max(200);
+/** The crew creator's fields (Phase 8): every one optional when editing. */
+const crewSpec = {
+  name: z.string().max(60).optional(),
+  symbol: z.string().max(120).optional(),
+  colours: z.string().max(120).optional(),
+  dress: z.string().max(120).optional(),
+  creed: z.record(z.string(), z.string()).optional(),
+  command: z.string().optional(),
+  structure: z.string().optional(),
+  pay: z.string().optional(),
+  home: z.enum(['ship', 'base', 'none']).optional(),
+};
 
 export const ActionSchema = z.discriminatedUnion('type', [
   z.strictObject({
@@ -309,6 +325,65 @@ export const ActionSchema = z.discriminatedUnion('type', [
   }),
   z.strictObject({ type: z.literal('heart/banquet') }),
   z.strictObject({ type: z.literal('heart/meeting'), mode: z.enum(['rule', 'ask']) }),
+  // ---- Crews (Phase 8)
+  z.strictObject({ type: z.literal('crew/found'), ...crewSpec, kind: z.string().min(1) }),
+  z.strictObject({ type: z.literal('crew/edit'), ...crewSpec }),
+  z.strictObject({ type: z.literal('crew/pitch'), target: id, pitch: id }),
+  z.strictObject({ type: z.literal('crew/answer'), target: id, objection: id, answer: id }),
+  z.strictObject({ type: z.literal('crew/quest'), target: id, act: id }),
+  z.strictObject({
+    type: z.literal('crew/free'),
+    target: id,
+    how: z.enum(['bail', 'break', 'buy']),
+  }),
+  z.strictObject({ type: z.literal('crew/role'), member: id, role: id }),
+  z.strictObject({
+    type: z.literal('crew/post'),
+    situation: z.enum(CREW_SITUATIONS),
+    post: id,
+    member: id.nullable(),
+  }),
+  z.strictObject({
+    type: z.literal('crew/lock'),
+    situation: z.enum(CREW_SITUATIONS),
+    post: id,
+    on: z.boolean(),
+  }),
+  z.strictObject({ type: z.literal('crew/auto'), on: z.boolean() }),
+  z.strictObject({
+    type: z.literal('crew/plan'),
+    member: id,
+    focus: id,
+    effort: z.enum(EFFORTS),
+    partner: id.nullable(),
+  }),
+  z.strictObject({ type: z.literal('crew/send'), member: id, mission: id, target: id.nullable() }),
+  z.strictObject({ type: z.literal('crew/dismiss'), member: id }),
+  z.strictObject({ type: z.literal('crew/promote'), member: id }),
+  z.strictObject({
+    type: z.literal('crew/division'),
+    member: id,
+    division: z.number().int().min(0).max(40).nullable(),
+  }),
+  z.strictObject({ type: z.literal('crew/pin'), member: id, on: z.boolean() }),
+  z.strictObject({ type: z.literal('crew/offerFruit'), member: id, fruit: id }),
+  z.strictObject({ type: z.literal('crew/swear'), captain: id }),
+  z.strictObject({ type: z.literal('crew/detach'), member: id, ship: id }),
+  z.strictObject({ type: z.literal('crew/order'), crew: id, order: id, target: id.nullable() }),
+  z.strictObject({ type: z.literal('crew/ally'), captain: id, goal: id, target: id.nullable() }),
+  z.strictObject({
+    type: z.literal('crew/claimBase'),
+    kind: id,
+    name: z.string().max(60).optional(),
+  }),
+  z.strictObject({ type: z.literal('crew/build'), base: id, room: id }),
+  z.strictObject({ type: z.literal('crew/prisoner'), prisoner: id, act: id }),
+  z.strictObject({
+    type: z.literal('crew/treasury'),
+    amount: z.number().int().min(-1e12).max(1e12),
+  }),
+  z.strictObject({ type: z.literal('crew/import'), text: z.string().min(1).max(200000) }),
+  z.strictObject({ type: z.literal('debug/plantSpy'), member: id, faction: id }),
   z.strictObject({
     type: z.literal('debug/heart'),
     target: z.string().min(1),
@@ -535,6 +610,43 @@ export function applyAction(
         throw new ActionError(error instanceof Error ? error.message : String(error));
       }
       // A word said, a feast thrown, a child taken in: decisions that survive closing the tab.
+      if (!action.type.startsWith('debug/')) effects.push({ kind: 'autosave' });
+      break;
+
+    case 'crew/found':
+    case 'crew/edit':
+    case 'crew/pitch':
+    case 'crew/answer':
+    case 'crew/quest':
+    case 'crew/free':
+    case 'crew/role':
+    case 'crew/post':
+    case 'crew/lock':
+    case 'crew/auto':
+    case 'crew/plan':
+    case 'crew/send':
+    case 'crew/dismiss':
+    case 'crew/promote':
+    case 'crew/division':
+    case 'crew/pin':
+    case 'crew/offerFruit':
+    case 'crew/swear':
+    case 'crew/detach':
+    case 'crew/order':
+    case 'crew/ally':
+    case 'crew/claimBase':
+    case 'crew/build':
+    case 'crew/prisoner':
+    case 'crew/treasury':
+    case 'crew/import':
+    case 'debug/plantSpy':
+      try {
+        applyCrewCommand(state, data, action);
+      } catch (error) {
+        if (error instanceof ActionError) throw error;
+        throw new ActionError(error instanceof Error ? error.message : String(error));
+      }
+      // A crew founded, a recruit won, a post set: decisions that survive closing the tab.
       if (!action.type.startsWith('debug/')) effects.push({ kind: 'autosave' });
       break;
 

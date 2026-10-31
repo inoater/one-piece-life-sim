@@ -1,4 +1,5 @@
 import type { GameData, ItemDef, Location, Weapon } from '../../engine/data/schemas';
+import { crewEffect } from '../crew/fx';
 import type { Entity, WorldState } from '../../engine/state';
 import { formatBerries } from '../genesis/text';
 import { statTotal, type Person } from '../life/body';
@@ -286,8 +287,10 @@ export function listPrice(
   black: boolean,
 ): number {
   const base = def.price ?? 0;
+  // Phase 8: a purser at their post bargains.
+  const purser = Math.max(0.5, 1 + crewEffect(state, data, 'port.prices'));
   return Math.round(
-    base * priceMult(state, data, placeId) * (black ? data.hands.market.blackMarkup : 1),
+    base * priceMult(state, data, placeId) * (black ? data.hands.market.blackMarkup : 1) * purser,
   );
 }
 

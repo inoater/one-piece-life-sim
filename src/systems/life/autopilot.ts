@@ -10,6 +10,7 @@ import { sortedValues } from '../genesis/options';
 import { circle, together } from '../heart/bonds';
 import { talk, talkLock } from '../heart/talk';
 import { companionPrice, speciesHere, takeCompanion } from '../heart/companions';
+import { crewAround } from '../crew/autopilot';
 
 /**
  * A stand-in player for headless runs (balancing, the lifespan check, the 40-outcomes check). It
@@ -36,6 +37,10 @@ export interface AutopilotOptions {
   variety?: boolean;
   /** Phase 7: say nothing to anyone (the balancing tools that predate the heart). */
   quietHeart?: boolean;
+  /** Phase 8: found no crew and recruit nobody (the balancing tools that predate crews). */
+  quietCrew?: boolean;
+  /** Phase 8: found a crew at once (the crew sweep), rather than now and then. */
+  captain?: boolean;
 }
 
 export function autopilot(
@@ -108,6 +113,8 @@ export function autopilot(
   }));
   life.routine = routine;
   if (!options.quietHeart) talkAround(env, rng.fork('talk'), options.variety === true);
+  if (!options.quietCrew)
+    crewAround(env, rng.fork('crew'), options.variety === true, options.captain === true);
 }
 
 /** What a sensible person says to the people around them (Phase 7); `variety` tries anything. */

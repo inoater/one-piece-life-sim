@@ -290,11 +290,20 @@ function navalRound(ctx: BattleCtx, plans: [NavalPlan, NavalPlan], rng: Rng): vo
     const them = battle.ships[side === 0 ? 1 : 0] as ShipInBattle;
     if (me.sunk || them.sunk || me.struck) continue;
     const plan = plans[side];
+    // Phase 8: the player's posts (sharpshooters' aim, powder runners' pace) feed side 0.
+    const post = (key: string) => (side === 0 ? (battle.posts?.[key] ?? 0) : 0);
     if (plan.attack === 'fire' && battle.range !== 'adjacent') {
       const skill = Math.max(0.3, Math.min(2, (battle.sides[side].rankPower || 150) / 150));
-      const acc = rules.cannon.accuracy * weather.accuracy * (battle.range === 'near' ? 1.2 : 0.8);
+      const acc =
+        rules.cannon.accuracy *
+        weather.accuracy *
+        (battle.range === 'near' ? 1.2 : 0.8) *
+        Math.max(0.2, 1 + post('naval.accuracy'));
       const hits = Math.round(me.cannons * acc * rng.fork('shots', side).float(0.6, 1.4));
-      const damage = Math.round(hits * rules.cannon.damage * skill * 10) / 10;
+      const damage =
+        Math.round(
+          hits * rules.cannon.damage * skill * Math.max(0.2, 1 + post('naval.reload')) * 10,
+        ) / 10;
       them.hull = Math.max(0, them.hull - damage);
       if (hits > 0 && rng.fork('fire', side).chance(Math.min(0.8, rules.fire.chance * hits)))
         them.fire += 2;
@@ -305,19 +314,25 @@ function navalRound(ctx: BattleCtx, plans: [NavalPlan, NavalPlan], rng: Rng): vo
         side === 0 ? 'good' : 'bad',
       );
     } else if (plan.attack === 'ram' && battle.range === 'adjacent') {
-      const force = rules.ram.damage * (me.hull / me.maxHull);
+      const force =
+        rules.ram.damage * (me.hull / me.maxHull) * Math.max(0.3, 1 + post('naval.speed') / 2);
       them.hull = Math.max(0, them.hull - force);
       me.hull = Math.max(0, me.hull - force * rules.ram.self);
       say(ctx, 'naval_ram', { a: me.name, b: them.name }, side === 0 ? 'good' : 'bad');
     } else if (plan.attack === 'board' && battle.range === 'adjacent' && !battle.boarded) {
       battle.boarded = true;
+      // Phase 8: the boarding party leads the player's rank and file over; the guard meets theirs.
+      battle.sides[0].rankPower *= Math.max(0.3, 1 + (battle.posts?.['naval.boarding'] ?? 0));
+      battle.sides[1].rankPower *= Math.max(0.3, 1 + (battle.posts?.['naval.guard'] ?? 0));
       say(ctx, 'naval_board', { a: me.name, b: them.name }, side === 0 ? 'good' : 'bad');
     }
   }
   for (const side of [0, 1] as const) {
     const ship = battle.ships[side] as ShipInBattle;
     if (ship.fire > 0) {
-      ship.hull = Math.max(0, ship.hull - rules.fire.damage);
+      // Phase 8: damage control (side 0) keeps a fire small.
+      const control = side === 0 ? Math.max(0.1, 1 + (battle.posts?.['naval.fire'] ?? 0)) : 1;
+      ship.hull = Math.max(0, ship.hull - rules.fire.damage * control);
       ship.fire = rng.fork('putOut', side).chance(0.35) ? 0 : ship.fire - 1;
     }
     if (!ship.sunk && ship.hull <= 0) sinkShip(ctx, side);

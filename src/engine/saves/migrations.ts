@@ -101,6 +101,12 @@ export const MIGRATIONS: Readonly<Record<number, Migration>> = {
    * opinion is its Affection, and its other axes start at rest. Romance stays on.
    */
   7: (envelope) => ({ ...envelope, saveVersion: 8, state: { ...stateOf(envelope) } }),
+  /**
+   * 8 -> 9 (Phase 8, crews): every new field is optional. Phase 7's crewmates stay crewmates; the
+   * first crew the player founds (or the first recruit who joins) takes them in. A world gains its
+   * recruiting grounds and hidden legends the first month it runs.
+   */
+  8: (envelope) => ({ ...envelope, saveVersion: 9, state: { ...stateOf(envelope) } }),
 };
 
 export interface MigrationResult {

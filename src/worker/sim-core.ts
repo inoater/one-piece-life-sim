@@ -37,6 +37,7 @@ import { travelView } from '../systems/voyage/view';
 import { fruitsView, powersView } from '../systems/powers/view';
 import { designPreview, handsView } from '../systems/hands/view';
 import { heartView, personView, webView } from '../systems/heart/view';
+import { crewBrief, crewExportText, crewView, recruitView } from '../systems/crew/view';
 import { battleView, fightSelfView } from '../systems/battle/view';
 import { entryWarnings } from '../systems/genesis/warnings';
 import type {
@@ -197,6 +198,9 @@ export class SimCore {
       'hands/design': (req) => designPreview(this.state, this.deps.data, req.design),
       'heart/person': (req) => personView(this.state, this.deps.data, req.id, req.view.omniscient),
       'heart/web': () => webView(this.state, this.deps.data),
+      'crew/view': (req) => crewView(this.state, this.deps.data, req.view.omniscient),
+      'crew/recruit': (req) => recruitView(this.state, this.deps.data, req.id, req.view.omniscient),
+      'crew/export': () => crewExportText(this.state),
     };
   }
 
@@ -713,6 +717,7 @@ export class SimCore {
       fight: fightSelfView(state, data),
       hands: handsView(state, data),
       heart: heartView(state, data, view.omniscient),
+      crew: crewBrief(state),
       world: worldSummary(state, data),
       epilogue:
         !state.openEnded && hasReachedPresent(cal, state.tick)

@@ -190,8 +190,12 @@ function playerAftermath(
     .forEach((w, i) => {
       if (injuries >= rules.damage.maxInjuries) return;
       const r = env.rng.fork('wound', i);
+      // Phase 8: a medic station takes the worst off a big blow.
+      const medic = Math.max(0.1, 1 + (battle.posts?.['battle.medic'] ?? 0));
       const chance =
-        Math.min(0.9, w * rules.damage.injuryChance) * (battle.spar ? rules.spar.injuryMult : 1);
+        Math.min(0.9, w * rules.damage.injuryChance) *
+        (battle.spar ? rules.spar.injuryMult : 1) *
+        medic;
       if (!r.fork('roll').chance(chance)) return;
       let severity: 'minor' | 'serious' | 'severe' = 'minor';
       for (const band of rules.damage.severities) if (w >= band.atLeast) severity = band.severity;

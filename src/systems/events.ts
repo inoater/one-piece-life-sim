@@ -11,6 +11,7 @@ import type { CheckBand, FightSpec } from '../engine/data/schemas';
 import { beginContest, beginFight, buildFight, resolveBattleDecision } from './battle/player';
 import { onFightFinished } from './battle/finish-hooks';
 import { resolveHeartDecision } from './heart/initiatives';
+import { resolveCrewDecision } from './crew/decisions';
 import { ensureLife, isJailed, livingRelations, relationKind } from './life/body';
 import { applyLifeEffect } from './life/effects';
 import { firstImpressions } from './life/traits';
@@ -394,6 +395,11 @@ export function resolveDecision(
   // Phase 7: someone reaching out to the player (data/initiatives).
   if (decision.heart) {
     resolveHeartDecision(state, data, decision, choiceId);
+    return;
+  }
+  // Phase 8: a crew's decision (loot, a quarrel, a traitor, a child, mutiny, the moment).
+  if (decision.crew) {
+    resolveCrewDecision(state, data, decision, choiceId);
     return;
   }
   const date = dateOf(data.calendar, state.tick);

@@ -1,4 +1,5 @@
 import type { Check, CheckBand } from '../../engine/data/schemas';
+import { crewEffect } from '../crew/fx';
 import type { Rng } from '../../engine/rng';
 import { checkBonus } from '../life/traits';
 import { statForCheck } from './conditions';
@@ -36,7 +37,16 @@ export interface CheckResult {
 
 export function rollCheck(ctx: StoryCtx, check: Check, rng: Rng): CheckResult {
   // Phase 4: traits add to the value tested ("Silver-Tongued: +10 on Charisma checks").
-  const value = statForCheck(ctx, check.stat) + checkBonus(ctx.data, ctx.p?.c, check.stat);
+  // Phase 8: at sea, the lookout and the navigator at their posts help the checks they know.
+  const posts =
+    ctx.voyage && (check.stat === 'perception' || check.stat === 'navigation')
+      ? crewEffect(
+          ctx.state,
+          ctx.data,
+          check.stat === 'perception' ? 'check.perception' : 'check.navigation',
+        )
+      : 0;
+  const value = statForCheck(ctx, check.stat) + checkBonus(ctx.data, ctx.p?.c, check.stat) + posts;
   const danger = ctx.lane?.danger ?? ctx.place?.danger ?? 0;
   const difficulty = check.difficulty + check.perDanger * danger;
   const chance = successChance(value, difficulty);

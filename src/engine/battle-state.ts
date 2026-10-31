@@ -273,6 +273,11 @@ export const BattleStateSchema = z.strictObject({
   /** The post-fight card (injuries, what it taught, bounty, who saw), once it is over. */
   card: z.array(BattleLineSchema),
   result: BattleResultSchema.nullable(),
+  /**
+   * Phase 8: what the player's posts are worth in this fight (gun crews, powder, sharpshooters,
+   * boarding party, guard, helm, damage control, medic, the captain's deck): effect key -> value.
+   */
+  posts: z.record(z.string(), z.number()).optional(),
 });
 export type BattleState = z.infer<typeof BattleStateSchema>;
 

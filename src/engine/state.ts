@@ -1,5 +1,16 @@
 import { z } from 'zod';
 import { BattleStateSchema, FightRecordSchema } from './battle-state';
+import { CrewStateSchema, CrewWorldSchema, RecruitStateSchema } from './crew-state';
+export type {
+  ArcState,
+  Base,
+  CrewMember,
+  CrewSituation,
+  CrewState,
+  CrewWorld,
+  FleetEntry,
+  RecruitState,
+} from './crew-state';
 import {
   CRAFTS,
   CURSES,
@@ -685,6 +696,10 @@ export const CharacterSchema = z.strictObject({
   hands: HandsSchema.optional(),
   /** Personality, mood, morale, conscience, memories (save version 8). */
   heart: HeartSchema.optional(),
+  /** Phase 8 (save version 9): being recruited: pitches tried, objections, a joining quest. */
+  recruit: RecruitStateSchema.optional(),
+  /** Phase 8: a hidden past to uncover (a spy, a fugitive, a lost royal...), and whether it is. */
+  secret: z.strictObject({ id: z.string().min(1), found: z.boolean() }).optional(),
 });
 export type CharacterData = z.infer<typeof CharacterSchema>;
 
@@ -875,6 +890,8 @@ export const EntitySchema = z.strictObject({
   fruit: FruitStateSchema.optional(),
   /** Phase 6: present on item entities. */
   item: ItemStateSchema.optional(),
+  /** Phase 8: present on a crew, unit, company or cell the player leads (or one sworn to them). */
+  crew: CrewStateSchema.optional(),
 });
 export type Entity = z.infer<typeof EntitySchema>;
 
@@ -979,6 +996,8 @@ export const PendingDecisionSchema = z.strictObject({
    * holds who (`other`). Resolved by the heart, not the event engine.
    */
   heart: z.boolean().optional(),
+  /** Phase 8: a crew's decision (loot, a traitor, a quarrel on deck, a fruit, a funeral). */
+  crew: z.boolean().optional(),
 });
 export type PendingDecision = z.infer<typeof PendingDecisionSchema>;
 
@@ -1063,6 +1082,8 @@ export const WorldStateSchema = z
     ),
     /** The player's tactical fight in progress (save version 6). */
     battle: BattleStateSchema.nullable(),
+    /** Phase 8 (save version 9): boards, prisons, auctions and the hidden legends. */
+    crews: CrewWorldSchema.optional(),
   })
   .superRefine((state, ctx) => {
     for (const [key, entity] of Object.entries(state.entities)) {

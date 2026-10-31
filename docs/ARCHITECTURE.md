@@ -324,6 +324,59 @@ The player's heart runs in step 7 after the life loop (`month.ts`), the world's 
 module others call into at load (`hooks.ts`, no imports) lets Phase 4's drift tell the heart about
 a deed and Phase 5's aftermath call a victory feast.
 
+## Crews (Phase 8)
+
+`src/systems/crew/` is everyone at the player's side. **A crew is an organization entity** with a
+`crew` block (rule 2): its kind, creed, command, structure, pay, home, members, line-ups, log,
+fleet, alliances, bases and prisoners. Who is in it is the members list; how each feels about the
+captain stays on their Phase 7 crewmate bars (Loyalty, Morale, Respect, Belonging), so no number is
+kept twice. The creator (`creator.ts`) builds every kind of group from data/crew.json, fixing what
+a kind's template fixes, and exports and imports a crew file. Joining and leaving (`members.ts`)
+make someone a crewmate both ways, Tier 1 while they serve, with a hidden potential and 1 to 3
+arcs; a canon character who joins leaves the story.
+
+**Recruiting** (`recruit.ts`, `quests.ts`, `world.ts`) is a scene: a pitch scored by the
+candidate's values and nature, the player's Charisma and fame and what is between them; their
+objections, each answered by a check, a promise, a deed or a payment; then for someone worth
+having a joining condition, one of twenty kinds, run as a quest with a tracker. The world's side
+makes the lists at the place the player stands (a port's board each quarter, a Marine base's cells,
+an underworld auction) from Phase 3's named-person maker, and dissolves the unmet back into the
+island's numbers when a list is remade (rule 5); it seeds five hidden legends per world, found by
+rumour and exploring. A recruit's profile (`view.ts`) shows only what the player has learned
+(rule 4): a stranger's stats are words, sharpened by Perception, Intellect, Observation and time.
+
+**Positions** (`posts.ts`): a role says what someone is good at, a post where they stand. Each
+situation (sea, battle, port, storm) has its own line-up; the auto-fill puts people at posts by
+role each month, specialists first, locked posts kept, nobody on more than two posts. Each post
+names effect keys, and `crewEffect(state, data, key)` (exported through `fx.ts`, the one module
+older systems import) sums what the posts are worth: a filled post its value times the fit, an
+empty one its cost. With no crew it is 0, so a life without one sails by Phase 3's numbers. The
+voyage's pace, the sea's events, checks at sea, storms, the month at sea, a sea fight's guns, aim,
+boarding and fires, market prices and the port's lists each read their own keys; the value is
+cached per month and line-up, since the voyage planner asks many times over.
+
+**The month** (`month.ts`, step 7 after the heart's): lists and legends, quests, the people the
+player knows (Tier 1 while close, their news reaching port), then the crew's: the dead mourned,
+everyone aboard where the captain is, posts filled and served (role mastery, titles), pay, morale
+and loyalty, grumbling, desertion and mutiny (against the first mate), chemistry (synergy makes two
+crewmates friends, which Phase 5's bonds read for combination attacks; friction a quarrel to
+settle), every crewmate's training (`growth.ts`: Phase 2's formula, Phase 4's tracks and haki
+seeds, styles taught by crewmates), their arcs (`arcs.ts`), bounties and epithets, lives changing,
+missions back (`missions.ts`), the fleet, alliances, bases, prisoners (`holdings.ts`), spies and
+betrayal (`spies.ts`, the same detection rule for the world's crews in step 4), and the port.
+Decisions marked `crew` (`decisions.ts`) are resolved here: the captain rules or asks, as the
+creed's command style says, and a crew remembers being overruled. `hooks.ts` (no imports) lets the
+heart's Recruit intent, a deed, a talk and a fight's end reach the crew.
+
+## Performance (Phase 8)
+
+A whole headless life (birth to death, the same seeds) takes about 3.6 s, against 4.5 s in Phase 7,
+when the autopilot does not captain; a life that captains a crew of 25 to 30 for decades takes
+about 5.4 s. Two things kept it there: listed people the player never meets dissolve back into the
+place's numbers when the list is remade (before that, a life made a thousand people it never met
+and ran three times slower), and the auto-fill scores posts with the role fit's number alone,
+without writing its reasons. A ten-year captaincy (`npm run crew`) takes about two seconds.
+
 ## Performance (Phase 7)
 
 A whole headless life (birth to death, about 84 years) took 2.8 s with Phase 6's code and takes

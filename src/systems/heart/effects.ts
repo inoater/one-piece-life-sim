@@ -1,4 +1,5 @@
 import type { FightSpec, HeartEffect, RelAxis } from '../../engine/data/schemas';
+import { crewHooks } from '../crew/hooks';
 import type { Rng } from '../../engine/rng';
 import type { Entity, RelationKind } from '../../engine/state';
 import { formatBerries } from '../genesis/text';
@@ -84,7 +85,11 @@ export function heartDeed(env: LifeEnv, tags: readonly string[], seq: number | u
     guiltHook.fire?.(env, record.seq);
   }
 }
-deedHook.fire = (env, tags, seq) => heartDeed(env as LifeEnv, tags, seq);
+deedHook.fire = (env, tags, seq) => {
+  heartDeed(env as LifeEnv, tags, seq);
+  // Phase 8: the creed of the crew the player leads.
+  crewHooks.deed?.(env, tags, seq);
+};
 
 /** Set by initiatives.ts (the guilt decision), so effects need not import the initiatives. */
 export const guiltHook: { fire?: (env: LifeEnv, seq: number) => void } = {};
@@ -269,8 +274,12 @@ function special(site: HeartSite, what: NonNullable<HeartEffect['special']>): vo
       break;
     }
     case 'recruit':
-      setKinds(pair, 'crewmate');
-      other.flags['crew.of'] = p.entity.id;
+      // Phase 8: a yes to the Recruit intent is a pitch that landed: their doubts, then a crew.
+      if (crewHooks.join) crewHooks.join(env, other, seq, 'intent');
+      else {
+        setKinds(pair, 'crewmate');
+        other.flags['crew.of'] = p.entity.id;
+      }
       break;
     case 'swear':
       pair.mine.sworn = true;
@@ -336,6 +345,7 @@ function special(site: HeartSite, what: NonNullable<HeartEffect['special']>): vo
       } else if (kind === 'crewmate') {
         setKinds(pair, 'friend');
         delete other.flags['crew.of'];
+        crewHooks.leave?.(state, data, other.id, 'parted ways');
       } else if (kind === 'protege') setKinds(pair, 'friend');
       break;
     }
@@ -344,6 +354,7 @@ function special(site: HeartSite, what: NonNullable<HeartEffect['special']>): vo
       if (pair.mine.kind === 'crewmate' || pair.mine.kind === 'subordinate') {
         setKinds(pair, 'friend');
         delete other.flags['crew.of'];
+        crewHooks.leave?.(state, data, other.id, what === 'mutiny' ? 'mutinied' : 'deserted');
       }
       break;
     case 'graduate':

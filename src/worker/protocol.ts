@@ -25,9 +25,13 @@ import type { FruitsView, PowersView } from '../systems/powers/view';
 import type { BattleView, FightSelfView } from '../systems/battle/view';
 import type { DesignPreview, HandsView } from '../systems/hands/view';
 import type { HeartSelfView, PersonView, WebView } from '../systems/heart/view';
+import type { CrewBrief, CrewView, RecruitProfile } from '../systems/crew/view';
 
 export type {
   HeartSelfView,
+  CrewBrief,
+  CrewView,
+  RecruitProfile,
   PersonView,
   WebView,
   DesignPreview,
@@ -149,6 +153,8 @@ export interface Snapshot {
   hands: HandsView | null;
   /** Phase 7: the player's heart (mood, morale, conscience, reputation, facts) and their contacts. */
   heart: HeartSelfView | null;
+  /** Phase 8: the crew the player leads, in brief (the Crew page asks for the rest). */
+  crew: CrewBrief | null;
   /** At the present, before open-ended play: the epilogue to show. */
   epilogue: null | { title: string; text: string };
   /** The player's character sheet. Hidden facts are included only in omniscient views. */
@@ -434,6 +440,13 @@ export interface Protocol {
   'heart/person': { req: { id: string; view: ViewOptions }; res: PersonView | null };
   /** The relationship web of family, crew and the closest. */
   'heart/web': { req: Record<string, never>; res: WebView | null };
+  // ---- Crews (Phase 8)
+  /** The Crew page: the creator, the roster, the posts, recruits, fleet, bases, the log. */
+  'crew/view': { req: { view: ViewOptions }; res: CrewView | null };
+  /** A recruit's profile: only what the player has learned (rule 4). */
+  'crew/recruit': { req: { id: string; view: ViewOptions }; res: RecruitProfile | null };
+  /** The crew as a file, to start a new game with the same companions. */
+  'crew/export': { req: Record<string, never>; res: string | null };
 }
 
 /** A handful of headless lives of one race, for the debug panel's lifespan chart. */

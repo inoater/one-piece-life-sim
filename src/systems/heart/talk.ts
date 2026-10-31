@@ -1,4 +1,5 @@
 import type { GameData, HeartBand, RelAxis, TalkIntent } from '../../engine/data/schemas';
+import { crewHooks } from '../crew/hooks';
 import { STAT_IDS } from '../../engine/stats';
 import { Rng } from '../../engine/rng';
 import type { BattleState } from '../../engine/battle-state';
@@ -324,6 +325,8 @@ export function talk(
     other.character.berries += amount;
   }
   noteTalk(p, other.id, intent.id, state.tick);
+  // Phase 8: a crewmate's arc may need talking.
+  crewHooks.talked?.(state, other.id);
   const withAmount: TalkOptions = { ...opts, ...(amount !== undefined ? { amount } : {}) };
   if (intent.fight) {
     startHeartFight(

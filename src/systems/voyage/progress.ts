@@ -1,4 +1,5 @@
 import { dateOf } from '../../engine/calendar';
+import { crewEffect } from '../crew/fx';
 import type { GameData, Lane, TravelMode } from '../../engine/data/schemas';
 import type { CharacterData, Entity, VesselState, Voyage, WorldState } from '../../engine/state';
 import { statValue } from '../../engine/stats';
@@ -152,7 +153,10 @@ export function voyagePace(
   const vessel = vesselNow(state, voyage);
   const navigator =
     voyage.mode === 'own' ? navigatorBonus(data, player ?? null, tick) : data.travel.navigator.npc;
-  return monthlyMiles(data, lane, vessel?.speed ?? 100, navigator, tick);
+  // Phase 8: the helm, the rigging and the navigator at their posts (own ship, with a crew).
+  const posts =
+    voyage.mode === 'own' ? Math.max(0.3, 1 + crewEffect(state, data, 'voyage.pace')) : 1;
+  return monthlyMiles(data, lane, vessel?.speed ?? 100, navigator, tick) * posts;
 }
 
 /** Whole months still to go at the current pace, or null when not at sea. */

@@ -44,6 +44,12 @@ import {
   type HandsRules,
   type HeartRules,
   HEART_LINE_IDS,
+  type Arc,
+  CONDITION_KINDS,
+  CREW_EFFECT_KEYS,
+  CREW_LINE_IDS,
+  type CrewRules,
+  type JoiningCondition,
   type ShipRules,
   type Weapon,
   HANDS_LINE_IDS,
@@ -284,6 +290,7 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
   const hands = singletons['data/hands.json'] as HandsRules | undefined;
   const ships = singletons['data/ships.json'] as ShipRules | undefined;
   const heart = singletons['data/heart.json'] as HeartRules | undefined;
+  const crew = singletons['data/crew.json'] as CrewRules | undefined;
 
   // ---- Pass 2: references --------------------------------------------------------------------
 
@@ -816,6 +823,70 @@ export function loadGameData(input: readonly RawFile[]): LoadResult {
             `No milestone "${m.after}"`,
           );
       });
+    }
+  }
+  // Phase 8: every line a crew writes; posts name roles that exist; kinds name options that do;
+  // every kind of joining condition has content; arcs and conditions name real things.
+  if (crew) {
+    const F = 'data/crew.json';
+    for (const id of CREW_LINE_IDS)
+      if (!(id in crew.lines)) error(F, `lines.${id}`, 'Missing line', 'a crew writes this line');
+    const roles = new Set(crew.roles.map((r) => r.id));
+    const posts = new Set<string>();
+    crew.posts.forEach((post, i) => {
+      if (!roles.has(post.role)) error(F, `posts[${i}].role`, `No role "${post.role}"`);
+      const key = `${post.situation}:${post.id}`;
+      if (posts.has(key)) error(F, `posts[${i}].id`, `Duplicate post "${key}"`);
+      posts.add(key);
+    });
+    for (const key of CREW_EFFECT_KEYS)
+      if (!crew.posts.some((p) => p.effects.some((e) => e.key === key)))
+        error(F, 'posts', `No post changes "${key}"`, 'every system a crew feeds has a post');
+    crew.titles.forEach((t, i) => {
+      if (!crew.posts.some((p) => p.id === t.post))
+        error(F, `titles[${i}].post`, `No post "${t.post}"`);
+    });
+    const ids = (list: readonly { id: string }[]) => new Set(list.map((x) => x.id));
+    const commands = ids(crew.commands);
+    const structures = ids(crew.structures);
+    const pays = ids(crew.pays);
+    crew.kinds.forEach((k, i) => {
+      const at = `kinds[${i}]`;
+      for (const [field, set, value] of [
+        ['command', commands, k.defaults.command],
+        ['structure', structures, k.defaults.structure],
+        ['pay', pays, k.defaults.pay],
+        ['command', commands, k.fixed.command],
+        ['structure', structures, k.fixed.structure],
+        ['pay', pays, k.fixed.pay],
+      ] as const) {
+        if (value !== undefined && !set.has(value))
+          error(F, `${at}.${field}`, `No ${field} "${value}"`);
+      }
+      for (const rule of crew.creed) {
+        const chosen = k.defaults.creed[rule.id];
+        if (!chosen || !rule.options.some((o) => o.id === chosen))
+          error(
+            F,
+            `${at}.defaults.creed.${rule.id}`,
+            `Choose one of ${rule.options.map((o) => o.id).join(', ')}`,
+          );
+      }
+    });
+    for (const [role, list] of Object.entries(crew.bounty.epithets.roles))
+      if (!roles.has(role) || list.length === 0)
+        error(F, `bounty.epithets.roles.${role}`, `No role "${role}" (or no epithets)`);
+    for (const kind of CONDITION_KINDS)
+      if (![...parsed.conditions.values()].some((e) => (e.value as JoiningCondition).kind === kind))
+        error('data/conditions/', '(file)', `No joining condition of kind "${kind}"`);
+    for (const [, entry] of parsed.arcs) {
+      const arc = entry.value as Arc;
+      for (const d of arc.dreams)
+        if (heart && !heart.dreams.some((x) => x.id === d))
+          error(entry.file, `${entry.field}dreams`, `No dream "${d}" in data/heart.json`);
+      for (const o of arc.occupations)
+        if (!parsed.occupations.has(o))
+          error(entry.file, `${entry.field}occupations`, `No occupation "${o}"`);
     }
   }
   // Phase 5: battles. Every line the engine writes; the ladder climbs; each contest once; every

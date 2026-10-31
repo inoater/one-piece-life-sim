@@ -8,6 +8,7 @@ import { worldBuilt } from './places/setup';
 import { fruitsMonth } from './powers/fruits';
 import { handsWorldMonth } from './hands/month';
 import { heartWorldQuarter } from './heart/world';
+import { npcSpiesQuarter } from './crew/spies';
 
 /**
  * Step 4: update world state (factions, territory, economy).
@@ -54,6 +55,8 @@ export const worldMonth: WorldSystem = (state, ctx) => {
   handsWorldMonth(state, data, tick, ctx.rng.fork('hands'), ctx.newsDrafts);
   // Phase 7: Tier 2 people befriend, fall out, duel and betray each other.
   heartWorldQuarter(state, data, tick, ctx.rng.fork('heart'), ctx.newsDrafts);
+  // Phase 8: spies planted in the world's crews, caught or missed by their captains.
+  if (tick % 3 === 0) npcSpiesQuarter(state, data, tick, ctx.rng.fork('crew-spies'));
 };
 
 export const WORLD_SYSTEMS: readonly WorldSystem[] = [entropyProbe, worldMonth];

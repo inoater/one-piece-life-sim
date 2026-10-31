@@ -24,6 +24,7 @@ import { createFruitsPage } from './screens/fruits';
 import { createPowersPage } from './screens/powers';
 import { createGearPage } from './screens/gear';
 import { createPeoplePage, createPersonPage } from './screens/people';
+import { createCrewPage, createRecruitPage } from './screens/crew';
 import { createShipPage } from './screens/ship';
 import { createMapPage } from './screens/map';
 import { renderEnd } from './screens/end';
@@ -130,6 +131,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
   const shipLink = h('a', { class: 'tab tab--ship', href: '#/ship' }, ROUTE_LABELS.ship);
   // Phase 7: the people in the character's life.
   const peopleLink = h('a', { class: 'tab tab--people', href: '#/people' }, ROUTE_LABELS.people);
+  // Phase 8: the crew.
+  const crewLink = h('a', { class: 'tab tab--crew', href: '#/crew' }, ROUTE_LABELS.crew);
   const nav = h('nav', { class: 'tabs', 'aria-label': 'Sections' }, [
     ...links.values(),
     mapLink,
@@ -137,6 +140,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     gearLink,
     shipLink,
     peopleLink,
+    crewLink,
   ]);
 
   // ---- Panels
@@ -205,6 +209,20 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     personPage.el,
   );
   let personHash = '';
+  // Phase 8: the Crew page and a recruit's profile (asked for, by id).
+  const crewPage = createCrewPage(app);
+  const crewPageEl = h(
+    'div',
+    { class: 'canon-page-slot crew-page-slot', hidden: true },
+    crewPage.el,
+  );
+  const recruitPage = createRecruitPage(app);
+  const recruitPageEl = h(
+    'div',
+    { class: 'canon-page-slot recruit-page-slot', hidden: true },
+    recruitPage.el,
+  );
+  let recruitHash = '';
 
   // ---- Controls
   const nextButton = h('button', { class: 'button button--primary', type: 'button' }, 'Next month');
@@ -304,6 +322,8 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     gearPageEl,
     peoplePageEl,
     personPageEl,
+    crewPageEl,
+    recruitPageEl,
     shipPageEl,
     controls,
     toasts,
@@ -350,6 +370,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       does: 'Feed, Character, Actions, World, News, Map, Powers, Devil Fruits, Gear, Ship',
     },
     { keys: 'P', does: 'People' },
+    { keys: 'C', does: 'Crew' },
     { keys: 'L', does: 'Start a new life' },
     { keys: 'M', does: 'Menu: saves and appearance' },
     { keys: '?', does: 'This list' },
@@ -406,6 +427,7 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     ];
     if (key === 'n') press(nextButton);
     else if (key === 'p') navigate('people');
+    else if (key === 'c') navigate('crew');
     else if (key === 's') press(skipButton);
     else if (key === 'e') press(eventButton);
     else if (key === 'm') menuButton.click();
@@ -451,7 +473,9 @@ export function mountShell(root: HTMLElement, app: App): Shell {
       state.route === 'gear' ||
       state.route === 'ship' ||
       state.route === 'people' ||
-      state.route === 'person'
+      state.route === 'person' ||
+      state.route === 'crew' ||
+      state.route === 'recruit'
         ? null
         : isWide() && !isSideRoute(state.route)
           ? state.sideTab
@@ -692,6 +716,29 @@ export function mountShell(root: HTMLElement, app: App): Shell {
     if (state.route === 'people' || state.route === 'person')
       peopleLink.setAttribute('aria-current', 'page');
     else peopleLink.removeAttribute('aria-current');
+    // Phase 8: the Crew page, and a recruit's profile (redrawn when the person changes).
+    for (const [route, pageEl, page] of [
+      ['crew', crewPageEl, crewPage],
+      ['recruit', recruitPageEl, recruitPage],
+    ] as const) {
+      const on = state.route === route;
+      if (on !== !pageEl.hidden) pageEl.hidden = !on;
+      const hashMoved = route === 'recruit' && window.location.hash !== recruitHash;
+      if (
+        on &&
+        (previous?.route !== route ||
+          hashMoved ||
+          state.snapshot !== previous.snapshot ||
+          state.busy !== previous.busy ||
+          state.omniscient !== previous.omniscient)
+      ) {
+        if (route === 'recruit') recruitHash = window.location.hash;
+        void page.show(state);
+      }
+    }
+    if (state.route === 'crew' || state.route === 'recruit')
+      crewLink.setAttribute('aria-current', 'page');
+    else crewLink.removeAttribute('aria-current');
     const ending = state.route === 'end';
     if (ending !== !endPageEl.hidden) endPageEl.hidden = !ending;
     if (

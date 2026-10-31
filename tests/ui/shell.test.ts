@@ -52,7 +52,7 @@ describe('the masthead', () => {
 });
 
 describe('navigation', () => {
-  it('has the five sections, the map, the Powers, Gear, Ship and People pages as real links, and Back-friendly hash URLs', () => {
+  it('has the five sections, the map, the Powers, Gear, Ship, People and Crew pages as real links, and Back-friendly hash URLs', () => {
     expect(qa('.tabs a').map((a) => [text(a), a.getAttribute('href')])).toEqual([
       ['Feed', '#/feed'],
       ['Character', '#/character'],
@@ -64,6 +64,7 @@ describe('navigation', () => {
       ['Gear', '#/gear'],
       ['Ship', '#/ship'],
       ['People', '#/people'],
+      ['Crew', '#/crew'],
     ]);
   });
 

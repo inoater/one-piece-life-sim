@@ -47,11 +47,13 @@ import {
   type TechTag,
   type When,
 } from './defs';
+import { CREW_SITUATIONS } from '../crew-state';
 import {
   APPEARANCE_VARS,
   BACKSTORY_VARS,
   CANON_VARS,
   checkTemplate,
+  CREW_VARS,
   HEART_VARS,
   LIFE_VARS,
   SPEECH_ACTS,
@@ -5105,6 +5107,730 @@ export const HeartRulesSchema = z
   });
 export type HeartRules = z.infer<typeof HeartRulesSchema>;
 
+// ---------------------------------------------------------------------------------------------
+// Phase 8: data/crew.json, data/conditions and data/arcs
+// ---------------------------------------------------------------------------------------------
+
+/** A crew's lines: a crewmate speaking in their own voice, plus the crew's own variables. */
+const crewTemplate = templateOf(CREW_VARS);
+const crewId = z.string().regex(/^[a-z][a-z0-9_]*$/, {
+  message: 'crew ids use lowercase letters, digits and "_"',
+});
+const span = z.strictObject({ min: z.number(), max: z.number() });
+
+/**
+ * What a post on the ship changes, and in which system (every key is read by one system; a test
+ * checks each one moves its number). Fractions are added to a multiplier (1 + sum) unless the key
+ * says otherwise.
+ */
+export const CREW_EFFECT_KEYS = [
+  /** Miles a month at sea (helm, rigging, navigation). */
+  'voyage.pace',
+  /** Voyage events rolled a month (lookout): added to the sea's danger modifier. */
+  'sea.danger',
+  /** Points of ship morale a month (galley, watch officer). */
+  'sea.morale',
+  /** The chance of scurvy (galley). */
+  'sea.scurvy',
+  /** Stores eaten a month (galley). */
+  'sea.supplies',
+  /** Months of healing a month at sea (sick bay). */
+  'sea.heal',
+  /** Hull mended a month at sea, in points (repairs). */
+  'sea.repair',
+  /** Grumbling, desertion and mutiny at sea (the officer of the watch). */
+  'sea.discipline',
+  /** Points on Perception checks at sea (lookout). */
+  'check.perception',
+  /** Points on navigation checks at sea (navigation). */
+  'check.navigation',
+  /** Hull lost to weather (lines and sails, pumps). */
+  'storm.hull',
+  /** Stores lost to weather (lashing the cargo). */
+  'storm.supplies',
+  /** Months lost to weather (the storm helm). */
+  'storm.delay',
+  /** Guns that fire in a sea fight (gun crews). */
+  'naval.cannons',
+  /** Cannon damage (powder runners). */
+  'naval.reload',
+  /** Gunnery's aim (sharpshooters in the rigging). */
+  'naval.accuracy',
+  /** The rank and file's strength when the player's side boards (boarding party). */
+  'naval.boarding',
+  /** The enemy's strength when they board (guard against boarders). */
+  'naval.guard',
+  /** The ship's speed in a sea fight: escapes and rams (battle helm). */
+  'naval.speed',
+  /** Hull lost to fire (damage control). */
+  'naval.fire',
+  /** The chance a big blow leaves an injury on the player (medic station). */
+  'battle.medic',
+  /** The player's side's morale as a fight opens, in points (the captain's deck). */
+  'battle.morale',
+  /** The chance a month in port brings a rumour (shore party). */
+  'port.rumours',
+  /** The chance a month in port loses stores or Berries to thieves (ship's guard). */
+  'port.theft',
+  /** What the player pays in markets (purser). */
+  'port.prices',
+  /** How many are on the "Looking for a ship" list (recruiter). */
+  'port.board',
+  /** The chance a raid on the ship or a base comes with no warning (lookout in port). */
+  'port.raid',
+] as const;
+export type CrewEffectKey = (typeof CREW_EFFECT_KEYS)[number];
+
+/** The kinds of joining condition: each runs end to end as a personal quest with a tracker. */
+export const CONDITION_KINDS = [
+  'duel',
+  'rival',
+  'home',
+  'debt',
+  'kin',
+  'blessing',
+  'escort',
+  'strength',
+  'fame',
+  'ship',
+  'fruit',
+  'blade',
+  'honour',
+  'moment',
+  'teach',
+  'prison',
+  'signing',
+  'trust',
+  'doctor',
+  'contest',
+] as const;
+export type ConditionKind = (typeof CONDITION_KINDS)[number];
+
+/** A personal arc's steps. */
+export const ARC_STEP_KINDS = [
+  /** Months in the crew. */
+  'serve',
+  /** Land somewhere they have not been with the crew. */
+  'visit',
+  /** Land in a region. */
+  'region',
+  /** A fight of their own when the step comes: someone from their past. */
+  'fight',
+  /** A stat raised by an amount. */
+  'train',
+  /** Talks with the captain. */
+  'talk',
+  /** Berries from the treasury (the captain pays). */
+  'berries',
+  /** Months in port, asking around. */
+  'port',
+] as const;
+export type ArcStepKind = (typeof ARC_STEP_KINDS)[number];
+
+export const MISSION_KINDS = [
+  'scout',
+  'rumours',
+  'supplies',
+  'recruit',
+  'debt',
+  'message',
+  'guard',
+  'track',
+] as const;
+export type MissionKind = (typeof MISSION_KINDS)[number];
+
+export const OBJECTION_WHEN = [
+  /** They have family who need them (a parent or child close by). */
+  'family',
+  /** They are stronger than the player. */
+  'weak',
+  /** They value justice, or are dutiful, and the crew is outlaws. */
+  'distrust',
+  /** They have a trade they like here. */
+  'job',
+  /** They serve another crew or captain. */
+  'loyal',
+  /** They owe money. */
+  'debt',
+  /** The sea makes them ill. */
+  'seasick',
+  /** They value peace and the crew fights for a living. */
+  'cause',
+  /** They are old. */
+  'old',
+] as const;
+
+export const BASE_EFFECT_KEYS = [
+  'dock',
+  'armoury',
+  'training',
+  'infirmary',
+  'treasury',
+  'prison',
+  'library',
+  'shrine',
+] as const;
+
+export const CREW_LINE_IDS = [
+  'founded',
+  'joined',
+  'refused',
+  'listening',
+  'objection',
+  'answered',
+  'questStart',
+  'questDone',
+  'questFailed',
+  'left',
+  'deserted',
+  'mutiny',
+  'grumble',
+  'died',
+  'funeral',
+  'retired',
+  'dreamLeave',
+  'promoted',
+  'title',
+  'taught',
+  'technique',
+  'hakiWoke',
+  'arcStep',
+  'arcDone',
+  'bounty',
+  'epithet',
+  'missionBack',
+  'missionTrouble',
+  'friction',
+  'synergy',
+  'tradition',
+  'creedBroken',
+  'creedKept',
+  'spySign',
+  'spyCaught',
+  'betrayal',
+  'fruitYes',
+  'fruitNo',
+  'prisoner',
+  'ransomed',
+  'escaped',
+  'baseClaimed',
+  'baseRaid',
+  'fleetSworn',
+  'fleetOrder',
+  'fleetBroke',
+  'allianceMade',
+  'allianceMet',
+  'allianceBroken',
+  'boardHere',
+  'legendRumour',
+  'legendFound',
+  'secretFound',
+  'childJoins',
+  'logVoyage',
+  'logBattle',
+  'logJoined',
+  'logLeft',
+  'logDied',
+  'peopleNews',
+] as const;
+export type CrewLineId = (typeof CREW_LINE_IDS)[number];
+
+export const CrewRoleSchema = z.strictObject({
+  id: crewId,
+  name: nonEmptyText,
+  /** Stat weights: what makes someone good at it (they sum to about 1). */
+  stats: statNumbers,
+  /** Phase 6 skills and crafts that count (0 to 100 each), by weight. */
+  skills: z.record(z.string(), z.number()).default({}),
+  /** Power tracks that count (their stage, by weight). */
+  tracks: z.record(z.string(), z.number()).default({}),
+  /** Traits that make them better (or worse) at it, in fit points. */
+  traits: z.record(z.string(), z.number()).default({}),
+  occupations: z.record(z.string(), z.number()).default({}),
+  /** The reason, either way: "can cook" / "has never cooked for a crew". */
+  good: nonEmptyText,
+  bad: nonEmptyText,
+  /** What role mastery opens (a navigator who reads Grand Line weather). */
+  perks: z
+    .array(
+      z.strictObject({
+        at: z.number().min(0).max(100),
+        id: crewId,
+        name: nonEmptyText,
+        text: nonEmptyText,
+      }),
+    )
+    .default([]),
+  officer: z.boolean().default(false),
+  /** How fast their bounty climbs when the crew fights. */
+  bounty: z.number().min(0).default(1),
+});
+export type CrewRole = z.infer<typeof CrewRoleSchema>;
+
+export const CrewPostSchema = z.strictObject({
+  id: crewId,
+  situation: z.enum(CREW_SITUATIONS),
+  name: nonEmptyText,
+  role: crewId,
+  /** Deck hands (the ship's hired crew) can stand here when nobody named does. */
+  hands: z.boolean().default(false),
+  /** A ranked crew's least rank for the post (a gunnery officer: a Petty Officer at least). */
+  minRank: z.number().int().min(0).default(0),
+  /** What it changes (a galley feeds morale, scurvy and the stores alike). */
+  effects: z
+    .array(
+      z.strictObject({
+        key: z.enum(CREW_EFFECT_KEYS),
+        /** At a perfect fit; scaled by the fit. */
+        full: z.number(),
+        /** When nobody stands there. */
+        empty: z.number(),
+      }),
+    )
+    .min(1),
+  /** What an empty post costs, in words. */
+  emptyText: nonEmptyText,
+  /** Where it is drawn on the ship (0 to 100 across, 0 to 100 down). */
+  x: z.number().min(0).max(100),
+  y: z.number().min(0).max(100),
+});
+export type CrewPost = z.infer<typeof CrewPostSchema>;
+
+const creedOption = z.strictObject({
+  id: crewId,
+  name: nonEmptyText,
+  text: nonEmptyText,
+  /** Deed tags that break it ("kill", "cruel", "greedy"). */
+  breaks: z.array(z.string().regex(/^[a-z_]+$/)).default([]),
+  /** Deed tags that keep it under pressure. */
+  keeps: z.array(z.string().regex(/^[a-z_]+$/)).default([]),
+  /** How much someone cares that it is kept, per 100 points of a personality axis. */
+  cares: heartAxisNumbers,
+});
+
+export const CrewKindSchema = z.strictObject({
+  id: crewId,
+  name: nonEmptyText,
+  /** What its members call it: crew, unit, company, band, cell, team, syndicate, house. */
+  noun: nonEmptyText,
+  /** What its sign is called: Jolly Roger, unit emblem, house mark. */
+  mark: nonEmptyText,
+  /** What its leader is called. */
+  leader: nonEmptyText,
+  /** A name to start from: "{player.familyName} Pirates". */
+  defaultName: crewTemplate,
+  /** Fixed by the service or the army (a Marine unit's structure, a cell's command). */
+  fixed: z
+    .strictObject({
+      command: crewId.optional(),
+      structure: crewId.optional(),
+      pay: crewId.optional(),
+    })
+    .default({}),
+  defaults: z.strictObject({
+    command: crewId,
+    structure: crewId,
+    pay: crewId,
+    creed: z.record(z.string(), crewId),
+  }),
+  /** A rank chart, lowest first (a Marine unit's ranks); posts may need a rank. */
+  ranks: z.array(nonEmptyText).default([]),
+  /** Outlaws: the law hunts them, and the dutiful distrust them. */
+  outlaw: z.boolean().default(false),
+  /** Fights for a living (pirates, mercenaries, hunters): the peaceful object. */
+  fighting: z.boolean().default(true),
+});
+export type CrewKind = z.infer<typeof CrewKindSchema>;
+
+export const MissionSchema = z.strictObject({
+  id: crewId,
+  kind: z.enum(MISSION_KINDS),
+  name: nonEmptyText,
+  text: nonEmptyText,
+  months: span,
+  /** The stats it runs on (by weight), against a difficulty. */
+  stats: statNumbers,
+  difficulty: z.number(),
+  target: z.enum(['none', 'place', 'person']).default('none'),
+  /** The report, by result band, in the member's voice. */
+  report: z.strictObject({
+    criticalSuccess: crewTemplate,
+    success: crewTemplate,
+    failure: crewTemplate,
+    criticalFailure: crewTemplate,
+  }),
+  /** Sometimes trouble comes back with them. */
+  trouble: z.number().min(0).max(1),
+});
+export type Mission = z.infer<typeof MissionSchema>;
+
+export const CrewRulesSchema = z.strictObject({
+  kinds: z.array(CrewKindSchema).min(1),
+  creed: z.array(
+    z.strictObject({ id: crewId, name: nonEmptyText, options: z.array(creedOption).min(2) }),
+  ),
+  commands: z.array(
+    z.strictObject({
+      id: crewId,
+      name: nonEmptyText,
+      text: nonEmptyText,
+      /** Loyalty each member loses when the captain overrules them. */
+      ignored: z.number(),
+      /** Morale when they are asked. */
+      asked: z.number(),
+    }),
+  ),
+  structures: z.array(
+    z.strictObject({
+      id: crewId,
+      name: nonEmptyText,
+      text: nonEmptyText,
+      officers: z.number().int().min(0),
+      divisions: z.number().int().min(0),
+      perOfficer: z.number().min(0),
+      perDivision: z.number().min(0),
+    }),
+  ),
+  pays: z.array(
+    z.strictObject({
+      id: crewId,
+      name: nonEmptyText,
+      text: nonEmptyText,
+      /** Berries a member a month. */
+      wage: z.number().int().min(0),
+      /** Loot is split in shares. */
+      shares: z.boolean(),
+      /** Loyalty a month, for members who hold a value among their three. */
+      values: z.record(z.string(), z.number()).default({}),
+    }),
+  ),
+  limits: z.strictObject({
+    base: z.number().int(),
+    perCharisma: z.number(),
+    fameTiers: z.array(z.number()),
+    perFameTier: z.number(),
+    /** Morale lost a month for each member past the limit. */
+    strain: z.number(),
+  }),
+  roles: z.array(CrewRoleSchema).min(1),
+  posts: z.array(CrewPostSchema).min(1),
+  titles: z.array(
+    z.strictObject({
+      post: crewId,
+      months: z.number().int().min(1),
+      mastery: z.number().min(0).max(100),
+      title: nonEmptyText,
+    }),
+  ),
+  fit: z.strictObject({
+    /** Fit points from role mastery (at 100). */
+    mastery: z.number(),
+    /** Fit points lost while hurt. */
+    hurt: z.number(),
+    /** Fit of a deck hand. */
+    hand: z.number().min(0).max(1),
+    /** Two posts at once: each at this share. */
+    double: z.number().min(0).max(1),
+    /** Role mastery a month at a post. */
+    learn: z.number(),
+    words: z.array(z.strictObject({ min: z.number(), text: nonEmptyText })).min(1),
+  }),
+  morale: z.strictObject({
+    rest: z.number(),
+    drift: z.number(),
+    win: z.number(),
+    loss: z.number(),
+    death: z.number(),
+    joined: z.number(),
+    unpaid: z.number(),
+    hungry: z.number(),
+    grumble: z.number(),
+    desert: z.number(),
+    mutiny: z.number(),
+    /** The captain's Charisma and fame lift it: points per 10 Charisma above `from`. */
+    captain: z.strictObject({ from: z.number(), per: z.number(), perFameTier: z.number() }),
+  }),
+  loyalty: z.strictObject({
+    together: z.number(),
+    win: z.number(),
+    loss: z.number(),
+    fair: z.number(),
+    unfair: z.number(),
+    creedBreak: z.number(),
+    creedKeep: z.number(),
+    unpaid: z.number(),
+    /** A rival crew's member below this loyalty to their captain can be poached. */
+    poachBelow: z.number(),
+  }),
+  chemistry: z.strictObject({
+    /** Points per value shared, and per 100 points of difference on an axis. */
+    value: z.number(),
+    axes: heartAxisNumbers,
+    synergy: z.number(),
+    friction: z.number(),
+    frictionChance: z.number().min(0).max(1),
+    /** Training together with synergy: a multiplier. */
+    trainBonus: z.number(),
+  }),
+  traditions: z.array(
+    z.strictObject({
+      id: crewId,
+      name: nonEmptyText,
+      trigger: z.enum(['victory', 'loss', 'join', 'death', 'anniversary', 'voyage', 'feast']),
+      line: crewTemplate,
+      morale: z.number(),
+      minMembers: z.number().int().min(0),
+      chance: z.number().min(0).max(1),
+    }),
+  ),
+  missions: z.array(MissionSchema).min(1),
+  recruit: z.strictObject({
+    pitches: z.array(
+      z.strictObject({
+        id: crewId,
+        name: nonEmptyText,
+        text: nonEmptyText,
+        /** How much it lands with someone who holds a value (points). */
+        values: z.record(z.string(), z.number()).default({}),
+        axes: heartAxisNumbers,
+        /** Costs Berries up front (money). */
+        berries: z.number().int().min(0).default(0),
+      }),
+    ),
+    /** Points a pitch must reach to land (Charisma, the bond and the pitch together). */
+    lands: z.number(),
+    objections: z.array(
+      z.strictObject({
+        id: crewId,
+        when: z.enum(OBJECTION_WHEN),
+        line: crewTemplate,
+        answers: z
+          .array(
+            z.strictObject({
+              id: crewId,
+              kind: z.enum(['check', 'promise', 'deed', 'pay']),
+              label: nonEmptyText,
+              stat: z.enum(CHECK_STATS).optional(),
+              difficulty: z.number().default(40),
+              amount: z.number().int().min(0).default(0),
+              line: crewTemplate,
+            }),
+          )
+          .min(1),
+      }),
+    ),
+    /** Months before someone who refused will hear the same pitch again. */
+    refusalMonths: z.number().int().min(0),
+    /** The chance someone worth having names a condition before they join. */
+    conditionChance: z.number().min(0).max(1),
+    boards: z.strictObject({
+      sizes: z.record(z.string(), z.number().int().min(0)),
+      refreshMonths: z.number().int().min(1),
+      ages: span,
+      secretChance: z.number().min(0).max(1),
+      spyChance: z.number().min(0).max(1),
+    }),
+    prisons: z.strictObject({ size: z.number().int().min(0), bailPerCp: z.number() }),
+    auctions: z.strictObject({ size: z.number().int().min(0), pricePerCp: z.number() }),
+    legends: z.strictObject({
+      count: z.number().int().min(0),
+      kinds: z.array(
+        z.strictObject({
+          id: crewId,
+          name: nonEmptyText,
+          text: nonEmptyText,
+          talent: z.string().min(1),
+          ages: span,
+          /** Their stats sit this far above an ordinary person's (multiplier). */
+          power: z.number(),
+          track: z.string().optional(),
+          stage: z.number().int().min(0).default(0),
+        }),
+      ),
+      /** Lanes away a rumour of them can be heard. */
+      rumourReach: z.number().int().min(0),
+    }),
+    secrets: z.array(
+      z.strictObject({
+        id: crewId,
+        name: nonEmptyText,
+        text: crewTemplate,
+        weight: z.number().min(0),
+      }),
+    ),
+  }),
+  spies: z.strictObject({
+    factions: z.array(z.string().min(1)).min(1),
+    /** A month's chance a spy shows a sign. */
+    sign: z.number().min(0).max(1),
+    signs: z.array(crewTemplate).min(1),
+    /** The captain's eye: points per Perception, Intellect, Observation stage, the spy's trust. */
+    detect: z.strictObject({
+      base: z.number(),
+      perception: z.number(),
+      intellect: z.number(),
+      observation: z.number(),
+      trust: z.number(),
+    }),
+    /** The spy's cover: points per Charisma and Intellect, and per 100 of deceit. */
+    cover: z.strictObject({
+      base: z.number(),
+      charisma: z.number(),
+      intellect: z.number(),
+      deceit: z.number(),
+    }),
+  }),
+  betrayal: z.strictObject({
+    below: z.number(),
+    chance: z.number().min(0).max(1),
+    kinds: z.array(
+      z.strictObject({
+        id: z.enum(['sellout', 'fruit', 'treasury', 'ship']),
+        weight: z.number().min(0),
+        line: crewTemplate,
+      }),
+    ),
+  }),
+  bases: z.strictObject({
+    kinds: z.array(
+      z.strictObject({
+        id: crewId,
+        name: nonEmptyText,
+        text: nonEmptyText,
+        cost: z.number().int().min(0),
+        needs: z.array(z.enum(PLACE_FEATURES)).default([]),
+        defence: z.number().min(0).max(100),
+      }),
+    ),
+    rooms: z.array(
+      z.strictObject({
+        id: z.enum(BASE_EFFECT_KEYS),
+        name: nonEmptyText,
+        text: nonEmptyText,
+        cost: z.number().int().min(0),
+        upkeep: z.number().int().min(0),
+        value: z.number(),
+      }),
+    ),
+    raidChance: z.number().min(0).max(1),
+    raidPerFameTier: z.number().min(0),
+  }),
+  fleet: z.strictObject({
+    orders: z.array(
+      z.strictObject({
+        id: crewId,
+        name: nonEmptyText,
+        text: nonEmptyText,
+        /** Berries a month it brings in (raids, escort fees) or costs. */
+        berries: z.number().int(),
+        /** The chance a month goes wrong. */
+        risk: z.number().min(0).max(1),
+        target: z.enum(['none', 'place']).default('none'),
+      }),
+    ),
+    /** What a captain must feel to swear to the player: Respect, or Fear. */
+    swear: z.strictObject({ respect: z.number(), fear: z.number() }),
+    /** Below this loyalty, an ambitious captain breaks away. */
+    breakBelow: z.number(),
+  }),
+  prisoners: z.strictObject({
+    ransomPerCp: z.number(),
+    marinePerCp: z.number(),
+    escape: z.number().min(0).max(1),
+    /** How many a ship's brig holds. */
+    brig: z.number().int().min(0),
+  }),
+  growth: z.strictObject({
+    /** Training points a month by effort (the Phase 2 formula's base gain). */
+    points: z.strictObject({ light: z.number(), normal: z.number(), hard: z.number() }),
+    /** Practice points a month on a track they train. */
+    practice: z.number(),
+    /** The chance a month a crewmate teaches a track they know to one who trains with them. */
+    teach: z.number().min(0).max(1),
+    teacherMult: z.number().min(1),
+    /** The chance a month Train Spirit wakes a seed of haki in a crewmate. */
+    haki: z.number().min(0).max(1),
+  }),
+  bounty: z.strictObject({
+    /** Berries per point of Combat Power when the crew wins a fight against the law. */
+    perPower: z.number(),
+    /** Bounty at which a member is notable (an epithet, the news). */
+    notable: z.number().int().min(0),
+    epithets: z.strictObject({
+      roles: z.record(z.string(), z.array(nonEmptyText)),
+      traits: z.record(z.string(), z.array(nonEmptyText)),
+      generic: z.array(nonEmptyText).min(1),
+    }),
+  }),
+  lives: z.strictObject({
+    /** Months of service and Loyalty to be made an officer. */
+    promote: z.strictObject({ months: z.number().int(), loyalty: z.number() }),
+    /** Human age at which they think of retiring. */
+    retire: z.number(),
+    /** A month's chance that someone whose arcs are done and whose loyalty is low leaves for their dream. */
+    dreamLeave: z.number().min(0).max(1),
+    /** Human age at which a crewmate's child may ask to join. */
+    childJoins: z.number(),
+    funeral: z.strictObject({ morale: z.number(), belonging: z.number() }),
+  }),
+  lines: z.record(z.string(), crewTemplate),
+});
+export type CrewRules = z.infer<typeof CrewRulesSchema>;
+
+/** A joining condition (data/conditions): what someone worth having wants before they join. */
+export const JoiningConditionSchema = z.strictObject({
+  id: slug('jc'),
+  kind: z.enum(CONDITION_KINDS),
+  name: nonEmptyText,
+  /** What they say, in their own voice. */
+  ask: crewTemplate,
+  /** The quest tracker's line: "Beat {name} in a duel". */
+  tracker: crewTemplate,
+  done: crewTemplate,
+  weight: z.number().min(0),
+  /** More likely for people who hold these values. */
+  values: z.record(z.string(), z.number()).default({}),
+  /** ...or lean these ways (per 100 points). */
+  axes: heartAxisNumbers,
+  /** Berries, or a multiplier on their own strength or fame. */
+  amount: z.number().default(0),
+  /** Months it may take, or a wait. */
+  months: z.number().int().min(0).default(0),
+  /** Months before an open quest is given up (0: never). */
+  expires: z.number().int().min(0).default(0),
+});
+export type JoiningCondition = z.infer<typeof JoiningConditionSchema>;
+
+/** A crewmate's personal story (data/arcs): drawn from their backstory and dream. */
+export const ArcSchema = z.strictObject({
+  id: slug('arc'),
+  name: nonEmptyText,
+  /** Who carries it: dreams (data/heart.json), values, occupations; empty: anyone. */
+  dreams: z.array(z.string()).default([]),
+  values: z.array(z.string()).default([]),
+  occupations: z.array(z.string()).default([]),
+  weight: z.number().min(0),
+  steps: z
+    .array(
+      z.strictObject({
+        kind: z.enum(ARC_STEP_KINDS),
+        /** Months (serve, port), points (train), talks (talk), Berries (berries). */
+        amount: z.number().default(0),
+        stat: statId.optional(),
+        region: z.enum(REGIONS).optional(),
+        /** A fight's foe, as a share of their own Combat Power. */
+        power: z.number().default(1),
+        line: crewTemplate,
+      }),
+    )
+    .min(1),
+  done: crewTemplate,
+  /** The stat whose potential the finish raises (a breakthrough, Phase 2). */
+  breakthrough: statId,
+  loyalty: z.number(),
+});
+export type Arc = z.infer<typeof ArcSchema>;
+
 export const COLLECTIONS = {
   traits: { schema: TraitSchema, prefix: 'trait', label: 'trait' },
   weapons: { schema: WeaponSchema, prefix: 'weapon', label: 'weapon' },
@@ -5135,6 +5861,9 @@ export const COLLECTIONS = {
   // Phase 7
   intents: { schema: IntentSchema, prefix: 'int', label: 'conversation intent' },
   initiatives: { schema: InitiativeSchema, prefix: 'ini', label: 'initiative' },
+  // Phase 8
+  conditions: { schema: JoiningConditionSchema, prefix: 'jc', label: 'joining condition' },
+  arcs: { schema: ArcSchema, prefix: 'arc', label: 'personal arc' },
 } as const;
 export type CollectionKind = keyof typeof COLLECTIONS;
 export const COLLECTION_KINDS = Object.keys(COLLECTIONS) as CollectionKind[];
@@ -5632,6 +6361,7 @@ export const SINGLETONS = {
   'data/hands.json': { key: 'hands', schema: HandsRulesSchema },
   'data/ships.json': { key: 'ships', schema: ShipRulesSchema },
   'data/heart.json': { key: 'heart', schema: HeartRulesSchema },
+  'data/crew.json': { key: 'crew', schema: CrewRulesSchema },
 } as const;
 export type SingletonPath = keyof typeof SINGLETONS;
 
@@ -5655,6 +6385,7 @@ export interface GameData {
   hands: HandsRules;
   ships: ShipRules;
   heart: HeartRules;
+  crew: CrewRules;
   traits: Readonly<Record<string, Trait>>;
   weapons: Readonly<Record<string, Weapon>>;
   locations: Readonly<Record<string, Location>>;
@@ -5681,4 +6412,6 @@ export interface GameData {
   recipes: Readonly<Record<string, Recipe>>;
   intents: Readonly<Record<string, TalkIntent>>;
   initiatives: Readonly<Record<string, Initiative>>;
+  conditions: Readonly<Record<string, JoiningCondition>>;
+  arcs: Readonly<Record<string, Arc>>;
 }

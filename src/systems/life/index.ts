@@ -5,6 +5,7 @@ import type { LifeEnv } from './env';
 import { resolveRoutine } from './activities';
 import { liveMonth } from './upkeep';
 import { heartMonth } from '../heart/month';
+import { crewMonth, rememberData } from '../crew/month';
 
 /**
  * The life loop's two places in the tick (Phase 2):
@@ -42,6 +43,10 @@ export function livePlayerMonth(state: WorldState, ctx: TickContext): void {
   // Phase 7: who they are, the people around them, who reaches out.
   if (env.p.c.alive)
     heartMonth({ ...env, cause: 'sys:heart', rng: ctx.rng.fork('heart', env.p.entity.id) });
+  // Phase 8: the crew the player leads, the people they could recruit, the people they know.
+  rememberData(state, ctx.data);
+  if (env.p.c.alive)
+    crewMonth({ ...env, cause: 'sys:crew', rng: ctx.rng.fork('crew', env.p.entity.id) });
 }
 
 export { playerHasDied } from './upkeep';

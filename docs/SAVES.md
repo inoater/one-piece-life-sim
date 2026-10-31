@@ -60,6 +60,7 @@ expands to gigabytes is rejected mid-stream), and unknown fields in the state ar
 | 6       | 5     | `state.battle`, `character.fights`, `counters.battleId`; decisions marked `battle`                   |
 | 7       | 6     | `item` entities, `character.hands`, a ship's design and spirit, market supply; no data is moved      |
 | 8       | 7     | `character.heart`, relationship axes, bars and milestones, a modifier's `seq`; no data is moved      |
+| 9       | 8     | `crew` on organizations, `character.recruit` and `secret`, `state.crews`, decisions marked `crew`    |
 
 A version 2 world gains its life block the first month it is played (full Health, an empty
 routine): `world_v2.opsim` is loaded and lived for three months in `tests/engine/golden.test.ts`.

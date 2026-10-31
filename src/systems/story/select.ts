@@ -1,4 +1,5 @@
 import type { EventDef } from '../../engine/data/schemas';
+import { crewEffect } from '../crew/fx';
 import type { Rng } from '../../engine/rng';
 import { laneZone } from '../places/graph';
 import { allHold } from './conditions';
@@ -60,7 +61,12 @@ export function rollCount(rng: Rng, weights: readonly number[]): number {
 export function voyageRolls(ctx: StoryCtx, rng: Rng): number {
   const { data, lane } = ctx;
   const zone = lane ? laneZone(data, lane) : (ctx.place?.region ?? 'east_blue');
-  const extra = data.travel.regionDanger[zone as keyof typeof data.travel.regionDanger] ?? 0;
+  // Phase 8: a lookout in the crow's nest (with a crew of one's own) steers clear of trouble.
+  const lookout = ctx.voyage?.mode === 'own' ? crewEffect(ctx.state, data, 'sea.danger') : 0;
+  const extra = Math.max(
+    0,
+    (data.travel.regionDanger[zone as keyof typeof data.travel.regionDanger] ?? 0) + lookout,
+  );
   const whole = Math.floor(extra);
   return data.travel.baseEvents + whole + (rng.chance(extra - whole) ? 1 : 0);
 }
